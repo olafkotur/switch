@@ -1,11 +1,12 @@
 import React from 'react';
 import { Add } from '@material-ui/icons';
 import { ISidebarItem } from '../../typings/component';
-import { Avatar, Button, ButtonBase, Chip } from '@material-ui/core';
+import { ButtonBase, Chip } from '@material-ui/core';
 import './sidebar.css';
 
 interface IProps {
-  handleChangeService: (url: string) => void;
+  activeSidebar: ISidebarItem | null;
+  handleChangeService: (item: ISidebarItem) => void;
 }
 
 interface IState {
@@ -27,37 +28,52 @@ export default class Sidebar extends React.Component<IProps, IState> {
   }
 
   public async componentDidMount(): Promise<void> {
-    // const res = await fetch('http://www.google.com/s2/favicons?domain=www.notion.so').then(res => res.json());
     this.items.push({
       name: 'Notion',
       url: 'https://notion.so',
-      icon: 'https://www.google.com/s2/favicons?domain=www.notion.so',
+      icon: require('../../../assets/notion.png'),
       order: 1,
     });
 
     this.items.push({
       name: 'Whatsapp',
       url: 'https://web.whatsapp.com',
-      icon: 'https://www.google.com/s2/favicons?domain=www.whatsapp.com',
-      order: 1,
+      icon: require('../../../assets/whatsapp.png'),
+      order: 2,
     });
 
     this.items.push({
       name: 'Messenger',
       url: 'https://messenger.com',
-      icon: 'https://www.google.com/s2/favicons?domain=www.messenger.com',
-      order: 1,
+      icon: require('../../../assets/messenger.png'),
+      order: 3,
     });
 
+    this.items.push({
+      name: 'Slack',
+      url: 'https://slack.com',
+      icon: require('../../../assets/slack.png'),
+      order: 4,
+    });
+
+    this.props.handleChangeService(this.items[0]);
     this.setState({ isLoading: false });
   }
 
   protected generateItems() {
     return this.items.map((v, i) => {
       return (
-        <div key={`sidebar-item-${i}`} className="">
-          <ButtonBase>
-            <img src={v.icon} className="sidebar-web-item" />
+        <div
+          key={`sidebar-item-${i}`}
+        >
+          <ButtonBase
+            onClick={() => this.props.handleChangeService(v)}
+          >
+            <img
+              src={v.icon}
+              className="sidebar-web-item"
+              // className={`sidebar-web-item ${this.props.activeSidebar && this.props.activeSidebar.name === v.name ? 'bg-primary' : ''}`}
+            />
           </ButtonBase>
         </div>
       );

@@ -3,6 +3,7 @@ import Landing from './pages/Landing/Landing';
 import WebView from './pages/WebView/WebView';
 import Sidebar from './components/Sidebar/Sidebar';
 import { render } from 'react-dom';
+import { ISidebarItem } from './typings/component';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import './global.css';
@@ -13,7 +14,7 @@ document.body.appendChild(mainElement);
 
 interface IState {
   isLoading: boolean;
-  activeServiceUrl: string;
+  activeSidebar: ISidebarItem | null;
 }
 
 export default class App extends React.Component<{}, IState> {
@@ -26,7 +27,7 @@ export default class App extends React.Component<{}, IState> {
 
     this.state = {
       isLoading: true,
-      activeServiceUrl: '',
+      activeSidebar: null,
     };
 
     // scope binding
@@ -40,9 +41,8 @@ export default class App extends React.Component<{}, IState> {
     setTimeout(() => this.setState({ isLoading: false }), 1000);
   }
 
-  protected handleChangeService(url: string) {
-    console.log(url);
-    this.setState({ activeServiceUrl: url });
+  protected handleChangeService(activeSidebar: ISidebarItem) {
+    this.setState({ activeSidebar });
   }
 
   render() {
@@ -51,6 +51,7 @@ export default class App extends React.Component<{}, IState> {
         <div className="row">
           <div className="sidebar">
             <Sidebar
+              activeSidebar={this.state.activeSidebar}
               handleChangeService={this.handleChangeService}
             />
           </div>
@@ -61,7 +62,7 @@ export default class App extends React.Component<{}, IState> {
 
                 <Route path="/webview">
                   <WebView
-                    activeServiceUrl={this.state.activeServiceUrl}
+                    activeSidebarUrl={this.state.activeSidebar ? this.state.activeSidebar.url : ''}
                   />
                 </Route>
 

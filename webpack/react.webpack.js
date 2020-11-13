@@ -19,6 +19,14 @@ module.exports = {
         use: { loader: 'babel-loader' }
       },
       { test: /\.css$/, loader: "style-loader!css-loader" },
+      {
+        test: /\.(jpe?g|png|gif|svg|eot|ttf|woff|woff2)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          esModule: false
+        }
+      },
     ],
   },
   devServer: {
