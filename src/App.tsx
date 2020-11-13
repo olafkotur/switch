@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-import './custom.css';
+import './global.css';
 
 const mainElement = document.createElement('div');
 mainElement.setAttribute('id', 'root');

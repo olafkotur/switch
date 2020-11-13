@@ -1,6 +1,8 @@
 import React from 'react';
 import { Add } from '@material-ui/icons';
 import { ISidebarItem } from '../../typings/component';
+import { Avatar, Button, ButtonBase, Chip } from '@material-ui/core';
+import './sidebar.css';
 
 interface IProps {
   handleChangeService: (url: string) => void;
@@ -53,12 +55,10 @@ export default class Sidebar extends React.Component<IProps, IState> {
   protected generateItems() {
     return this.items.map((v, i) => {
       return (
-        <div key={`sidebar-item-${i}`}>
-          <img
-            src={v.icon}
-            className="sidebar-web-item"
-            onClick={() => this.props.handleChangeService(v.url)}
-          />
+        <div key={`sidebar-item-${i}`} className="">
+          <ButtonBase>
+            <img src={v.icon} className="sidebar-web-item" />
+          </ButtonBase>
         </div>
       );
     });
@@ -66,15 +66,22 @@ export default class Sidebar extends React.Component<IProps, IState> {
 
   render() {
     return (
-      !this.state.isLoading && <div className="d-flex row justify-content-center">
-        <div className="fixed-top pt-2">
-          <h6 className="secondary ml-2">beta</h6>
+      !this.state.isLoading && <div>
+        <div>
+          <div className="d-flex justify-content-center pt-2">
+            <Chip
+              label="beta"
+              color="secondary"
+              size="small"
+            />
+          </div>
+          <div className="d-flex flex-column justify-content-center align-items-center mt-2">
+            {this.generateItems()}
+          </div>
         </div>
-        <div className="sidebar-web-items pt-3">
-          {this.generateItems()}
-        </div>
-        <div className="fixed-bottom">
-          <Add />
+
+        <div className="d-flex justify-content-center">
+          <Add className="d-flex align-self-center primary"/>
         </div>
       </div>
     );

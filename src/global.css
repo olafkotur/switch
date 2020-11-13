@@ -1,4 +1,3 @@
-/* General */
 body {
   font-family: 'Courier New', Courier, monospace; 
   background-color: #303136;
@@ -26,21 +25,4 @@ body {
 
 .quaternary {
   color: #CCAE62;
-}
-
-/* Sidebar */
-.sidebar {
-  background: #1F2225;
-  width: 50px;
-}
-
-.sidebar-web-items {
-  overflow-y: scroll;
-}
-
-.sidebar-web-item {
-  width: 30px;
-  height: 30px;
-  margin-top: 15px;
-  margin-bottom: 15px;
 }
