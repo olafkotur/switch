@@ -2,18 +2,19 @@ import { app, screen, BrowserWindow, globalShortcut } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
-const getScreenSize = (): { width: number, height: number } => {
-  return screen.getPrimaryDisplay().workAreaSize;
+const getWindowSize = (): { width: number, height: number } => {
+  const screenSize = screen.getPrimaryDisplay().workAreaSize;
+  return { width: screenSize.width - 50, height: screenSize.height - 25 };
 };
 
 const createWindow = (): void => {
-  const screenSize = getScreenSize();
-
+  let windowSize = getWindowSize();
   let mainWindow: BrowserWindow | null = new BrowserWindow({
-    width: screenSize.width - 50,
-    height: screenSize.height - 25,
+    width: windowSize.width,
+    height: windowSize.height,
     frame: false,
     center: true,
+    transparent: true,
     backgroundColor: '#1F2225',
     webPreferences: {
       nodeIntegration: true,
@@ -28,12 +29,21 @@ const createWindow = (): void => {
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
 
   // register global shortcut to show/hide window
-  globalShortcut.register('CommandOrControl+Esc', () => {
-    if (mainWindow) {
-      const isVisible = mainWindow.isVisible();
-      isVisible ? mainWindow.hide() : mainWindow.show();
-      console.log(`main::setting window visibility to - ${!isVisible}`);
+  globalShortcut.register('CommandOrControl+Esc', (): void => {
+    if (!mainWindow) {
+      return;
     }
+
+    // check if window size has changed - happens if user switches displays
+    const newWindowSize = getWindowSize();
+    if (newWindowSize.width !== windowSize.width || newWindowSize.height !== windowSize.height) {
+      windowSize = { ...newWindowSize };
+      mainWindow.setSize(windowSize.width, windowSize.height);
+    }
+
+    // set visibility
+    const isVisible = mainWindow.isVisible();
+    isVisible ? mainWindow.hide() : mainWindow.show();
   });
 
   if (process.env.NODE_ENV === 'development') {

@@ -5,11 +5,6 @@ import { IMenuItem } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import Loader from '../../components/Loader/Loader';
 
-interface IWebView {
-  id: string;
-  view: React.ReactElement;
-}
-
 interface IState {
   isLoading: boolean;
   focusedItem: IMenuItem | null;
