@@ -15,7 +15,7 @@ export default class SearchBar extends React.Component<IProps> {
         <TextField
           variant="standard"
           className="search-bar-input"
-          placeholder="notion"
+          placeholder="https://notion.so"
           inputProps={{
             style: {
               fontSize: 18,

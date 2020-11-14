@@ -9,3 +9,8 @@ export interface IWebView {
   id: string;
   view: React.ReactElement;
 }
+
+export interface IServiceDetails {
+  name: string;
+  url: string;
+}

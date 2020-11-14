@@ -28,7 +28,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'web',
+      page: 'search',
       isLoading: true,
       focusedItem: null,
     };
@@ -43,7 +43,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // set the active item
     if (this.menuItems.length) {
-      this.handleMenuItemClicked('web', this.menuItems[0]);
+      // this.handleMenuItemClicked('web', this.menuItems[0]);
     } else {
       this.setState({ page: 'search' });
     }
@@ -100,11 +100,11 @@ export default class Dashboard extends React.Component<{}, IState> {
                 })}
               </div>
 
-              {this.state.page === 'search' &&
+              {this.state.page === 'search' && <div className="d-flex justify-content-center">
                 <Search
                   items={this.menuItems}
                 />
-              }
+              </div>}
             </div>
           </div>
         </div>

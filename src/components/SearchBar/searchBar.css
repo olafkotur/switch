@@ -1,6 +1,6 @@
 .search-bar {
   height: 70px;
-  width: 60vw;
+  width: 100%;
   background: #56585C;
   border-radius: 15px;
   display: flex;
