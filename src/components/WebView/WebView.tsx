@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IProps {
-  activeSidebarUrl: string;
+  url: string;
 }
 
 export default class WebView extends React.Component<IProps> {
@@ -9,8 +9,8 @@ export default class WebView extends React.Component<IProps> {
   render() {
     return (
       <webview
-        src={this.props.activeSidebarUrl}
         className="vh-100"
+        src={this.props.url}
       />
     );
   }

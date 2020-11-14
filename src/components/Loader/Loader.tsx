@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Landing extends React.Component {
+export default class Loader extends React.Component {
   render() {
     return (
       <div className="vh-100 d-flex justify-content-center" style={{ marginTop: '50vh' }}>

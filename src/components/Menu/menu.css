@@ -1,9 +1,9 @@
-.sidebar {
+.menu {
   background: #1F2225;
   width: 60px;
 }
 
-.sidebar-web-item {
+.menu-item {
   width: 30px;
   height: 30px;
   margin-top: 10px;
