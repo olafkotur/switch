@@ -1,60 +1,41 @@
 import React from 'react';
-import { Add, Visibility, Settings, Maximize } from '@material-ui/icons';
+import { Add, Visibility, Settings } from '@material-ui/icons';
 import { IMenuItem } from '../../typings/d';
-import { ButtonBase, Chip } from '@material-ui/core';
-import { MenuService } from '../../services/menu';
+import { ButtonBase, Chip, IconButton } from '@material-ui/core';
+import { TPages } from '../../pages/Dashboard/Dashboard';
 import './menu.css';
 
 interface IProps {
-  focusedItem: IMenuItem | null;
-  handleChangeService: (item: IMenuItem) => void;
+  page: TPages;
+  items: IMenuItem[];
+  focusedItem: IMenuItem;
+  handleClick: (action: TPages, item?: IMenuItem) => void;
 }
 
-interface IState {
-  isLoading: boolean;
-}
-
-export default class Menu extends React.Component<IProps, IState> {
+export default class Menu extends React.Component<IProps> {
   /**
-   * Local properties.
+   * Generates menu items
    */
-  protected items: IMenuItem[] = [];
-
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {
-      isLoading: true,
-    };
-  }
-
-  public async componentDidMount(): Promise<void> {
-    this.items = MenuService.getItems();
-    this.props.handleChangeService(this.items[0]);
-    this.setState({ isLoading: false });
-  }
-
   protected generateItems() {
-    return this.items.map((v, i) => {
+    return this.props.items.map((v, i) => {
       return (
-        <div key={`menu-item-${i}`}>
-          <ButtonBase
-            onClick={() => this.props.handleChangeService(v)}
-          >
-            <img
-              src={v.icon}
-              className="menu-item"
-              // className={`sidebar-web-item ${this.props.activeSidebar && this.props.activeSidebar.name === v.name ? 'bg-primary' : ''}`}
-            />
-          </ButtonBase>
-        </div>
+        <ButtonBase
+          key={`menu-item-${i}`}
+          className={`menu-item ${this.props.focusedItem.id === v.id ? 'menu-selected' : ''}`}
+          onClick={() => this.props.handleClick('web', v)}
+        >
+          <img
+            className="menu-image"
+            src={v.icon}
+          />
+        </ButtonBase>
       );
     });
   }
 
   render() {
     return (
-      !this.state.isLoading && <div>
+      <div className="vh-100">
         <div className="menu-top">
           <div className="d-flex justify-content-center pt-2">
             <Chip
@@ -68,10 +49,29 @@ export default class Menu extends React.Component<IProps, IState> {
           </div>
         </div>
 
-        <div className="menu-bottom d-flex flex-column justify-content-center align-items-center">
-          <Add className="primary mt-2" />
-          <Visibility className="primary mt-2" />
-          <Settings className="primary mt-2" />
+        <div className="menu-bottom">
+          <div className="menu-actions d-flex flex-column justify-content-center align-items-center">
+            <IconButton
+              className={`menu-item ${this.props.page === 'search' ? 'menu-selected' : ''}`}
+              onClick={() => this.props.handleClick('search')}
+            >
+              <Add className="primary"/>
+            </IconButton>
+
+            <IconButton
+              className="menu-item"
+              onClick={() => console.log('TODO: Toggle visibility')}
+            >
+              <Visibility className="primary" />
+            </IconButton>
+
+            <IconButton
+              className={`menu-item ${this.props.page === 'settings' ? 'menu-selected' : ''}`}
+              onClick={() => this.props.handleClick('settings')}
+            >
+              <Settings className="primary" />
+            </IconButton>
+          </div>
         </div>
       </div>
     );

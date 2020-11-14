@@ -1,11 +1,15 @@
 import React from 'react';
 import WebView from '../../components/WebView/WebView';
 import Menu from '../../components/Menu/Menu';
+import Loader from '../../components/Loader/Loader';
+import Search from '../../components/Search/Search';
 import { IMenuItem } from '../../typings/d';
 import { MenuService } from '../../services/menu';
-import Loader from '../../components/Loader/Loader';
+
+export type TPages = 'web' | 'search' | 'settings';
 
 interface IState {
+  page: TPages;
   isLoading: boolean;
   focusedItem: IMenuItem | null;
 }
@@ -23,12 +27,13 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
+      page: 'web',
       isLoading: true,
       focusedItem: null,
     };
 
     // scope binding
-    this.handleUpdateMenuItem = this.handleUpdateMenuItem.bind(this);
+    this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
@@ -36,18 +41,23 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // set the active item
     if (this.menuItems.length) {
-      this.handleUpdateMenuItem(this.menuItems[0]);
+      this.handleMenuItemClicked('web', this.menuItems[0]);
     }
 
-    this.setState({ isLoading: false });
+    setTimeout(() => this.setState({ isLoading: false }), 750);
   }
 
   /**
    * Sets the new focused menu item
+   * @param action - target page
    * @param menuItem - focused item
    */
-  protected handleUpdateMenuItem(menuItem: IMenuItem): void {
-    this.setState({ focusedItem: menuItem });
+  protected handleMenuItemClicked(action: TPages, menuItem: IMenuItem | null = null): void {
+    if (action === 'web') {
+      this.setState({ page: action, focusedItem: menuItem });
+    } else {
+      this.setState({ page: action });
+    }
   }
 
   render() {
@@ -57,12 +67,23 @@ export default class Dashboard extends React.Component<{}, IState> {
           <div className="row">
             <div className="menu">
               <Menu
+                page={this.state.page}
+                items={this.menuItems}
                 focusedItem={this.state.focusedItem}
-                handleChangeService={this.handleUpdateMenuItem}
+                handleClick={this.handleMenuItemClicked}
               />
             </div>
             <div className="col p-0">
-              {this.state.focusedItem && <WebView url={this.state.focusedItem.url} />}
+              {this.state.page === 'web' && this.state.focusedItem &&
+                <WebView
+                  url={this.state.focusedItem.url}
+                />
+              }
+              {this.state.page === 'search' &&
+                <Search
+                  items={this.menuItems}
+                />
+              }
             </div>
           </div>
         </div>
