@@ -1,3 +1,4 @@
+/********* General *********/
 body {
   font-family: 'Courier New', Courier, monospace; 
   background-color: #303136;
@@ -7,6 +8,12 @@ button:focus {
   outline: none;
 }
 
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/********* Colors *********/
 .bg-primary {
   background: #303136 !important;
 }
@@ -24,17 +31,17 @@ button:focus {
 }
 
 .primary {
-  color: #fff;
+  color: #fff !important;
 }
 
 .secondary {
-  color: #B33939;
+  color: #B33939 !important;
 }
 
 .tertiary {
-  color: #227093;
+  color: #227093 !important;
 }
 
 .quaternary {
-  color: #CCAE62;
+  color: #CCAE62 !important;
 }

@@ -40,8 +40,8 @@ export default class Menu extends React.Component<IProps> {
           <div className="d-flex justify-content-center pt-2">
             <Chip
               label="beta"
-              color="secondary"
               size="small"
+              className="menu-beta"
             />
           </div>
           <div className="d-flex flex-column justify-content-center align-items-center mt-2">

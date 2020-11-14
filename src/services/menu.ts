@@ -40,6 +40,6 @@ export const MenuService = {
       icon: require('../../assets/discord.png'),
     });
 
-    return items;
+    return items;;
   },
 };
