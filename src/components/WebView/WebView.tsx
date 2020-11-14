@@ -5,7 +5,6 @@ interface IProps {
 }
 
 export default class WebView extends React.Component<IProps> {
-
   render() {
     return (
       <webview

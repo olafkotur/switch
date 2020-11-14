@@ -4,3 +4,8 @@ export interface IMenuItem {
   url: string;
   icon: string;
 }
+
+export interface IWebView {
+  id: string;
+  view: React.ReactElement;
+}

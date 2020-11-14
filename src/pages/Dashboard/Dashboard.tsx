@@ -3,7 +3,7 @@ import WebView from '../../components/WebView/WebView';
 import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
 import Search from '../../components/Search/Search';
-import { IMenuItem } from '../../typings/d';
+import { IMenuItem, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 
 export type TPages = 'web' | 'search' | 'settings';
@@ -19,6 +19,7 @@ export default class Dashboard extends React.Component<{}, IState> {
    * Local properties
    */
   protected menuItems: IMenuItem[] = [];
+  protected webViews: IWebView[] = [];
 
   /**
    * Dashboard constructor
@@ -34,6 +35,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // scope binding
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
+    this.generateWebViews = this.generateWebViews.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
@@ -42,8 +44,11 @@ export default class Dashboard extends React.Component<{}, IState> {
     // set the active item
     if (this.menuItems.length) {
       this.handleMenuItemClicked('web', this.menuItems[0]);
+    } else {
+      this.setState({ page: 'search' });
     }
 
+    this.generateWebViews();
     setTimeout(() => this.setState({ isLoading: false }), 750);
   }
 
@@ -60,6 +65,18 @@ export default class Dashboard extends React.Component<{}, IState> {
     }
   }
 
+  /**
+   * Generates web views components
+   */
+  protected generateWebViews() {
+    this.webViews = this.menuItems.map((v) => {
+      return {
+        id: v.id,
+        view: <WebView url={v.url} />,
+      };
+    });
+  }
+
   render() {
     return (
       !this.state.isLoading ?
@@ -74,11 +91,15 @@ export default class Dashboard extends React.Component<{}, IState> {
               />
             </div>
             <div className="col p-0">
-              {this.state.page === 'web' && this.state.focusedItem &&
-                <WebView
-                  url={this.state.focusedItem.url}
-                />
-              }
+              {/* these must stay as hidden elements to avoid re-rendering */}
+              <div className={`${this.state.page !== 'web' ? 'd-none' : ''}`}>
+                {this.menuItems.map((v) => {
+                  return <div key={v.id} className={`${this.state.focusedItem && this.state.focusedItem.id !== v.id ? 'd-none' : ''}`}>
+                    {this.webViews.find(i => i.id === v.id)?.view}
+                  </div>;
+                })}
+              </div>
+
               {this.state.page === 'search' &&
                 <Search
                   items={this.menuItems}
