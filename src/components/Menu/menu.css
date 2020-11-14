@@ -1,6 +1,6 @@
 .menu {
   background: #1F2225;
-  width: 60px;
+  width: 50px;
 }
 
 .menu-item {
@@ -8,4 +8,12 @@
   height: 30px;
   margin-top: 10px;
   margin-bottom: 10px;;
+}
+
+.menu-top {
+  height: 85vh;
+}
+
+.menu-bottom {
+  height: 15vh;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Add } from '@material-ui/icons';
+import { Add, Visibility, Settings, Maximize } from '@material-ui/icons';
 import { IMenuItem } from '../../typings/d';
 import { ButtonBase, Chip } from '@material-ui/core';
 import { MenuService } from '../../services/menu';
@@ -55,7 +55,7 @@ export default class Menu extends React.Component<IProps, IState> {
   render() {
     return (
       !this.state.isLoading && <div>
-        <div>
+        <div className="menu-top">
           <div className="d-flex justify-content-center pt-2">
             <Chip
               label="beta"
@@ -68,8 +68,10 @@ export default class Menu extends React.Component<IProps, IState> {
           </div>
         </div>
 
-        <div className="d-flex justify-content-center">
-          <Add className="d-flex align-self-center primary"/>
+        <div className="menu-bottom d-flex flex-column justify-content-center align-items-center">
+          <Add className="primary mt-2" />
+          <Visibility className="primary mt-2" />
+          <Settings className="primary mt-2" />
         </div>
       </div>
     );
