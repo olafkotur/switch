@@ -1,0 +1,15 @@
+.search-bar {
+  height: 70px;
+  width: 60vw;
+  background: #56585C;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-bar-input {
+  height: 75%;
+  width: 95%;
+  justify-content: center;
+}

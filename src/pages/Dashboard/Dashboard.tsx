@@ -49,7 +49,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     }
 
     this.generateWebViews();
-    setTimeout(() => this.setState({ isLoading: false }), 750);
+    setTimeout(() => this.setState({ isLoading: false }), 0);
   }
 
   /**
