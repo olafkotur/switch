@@ -3,12 +3,24 @@ body {
   background-color: #303136;
 }
 
+button:focus {
+  outline: none;
+}
+
 .bg-primary {
-  background: #303136;
+  background: #303136 !important;
 }
 
 .bg-secondary {
-  background: #1F2225;
+  background: #1F2225 !important;
+}
+
+.bg-red {
+  background:red !important;
+}
+
+.bg-blue {
+  background: blue !important;
 }
 
 .primary {

@@ -65,7 +65,7 @@ export default class Dashboard extends React.Component<{}, IState> {
       !this.state.isLoading ?
         <div className="container-fluid">
           <div className="row">
-            <div className="menu">
+            <div className="menu bg-secondary">
               <Menu
                 page={this.state.page}
                 items={this.menuItems}
