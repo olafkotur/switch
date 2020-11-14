@@ -1,46 +1,47 @@
-/* General */
+/********* General *********/
 body {
   font-family: 'Courier New', Courier, monospace; 
   background-color: #303136;
 }
 
+button:focus {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/********* Colors *********/
 .bg-primary {
-  background: #303136;
+  background: #303136 !important;
 }
 
 .bg-secondary {
-  background: #1F2225;
+  background: #1F2225 !important;
+}
+
+.bg-red {
+  background:red !important;
+}
+
+.bg-blue {
+  background: blue !important;
 }
 
 .primary {
-  color: #fff;
+  color: #fff !important;
 }
 
 .secondary {
-  color: #B33939;
+  color: #B33939 !important;
 }
 
 .tertiary {
-  color: #227093;
+  color: #227093 !important;
 }
 
 .quaternary {
-  color: #CCAE62;
-}
-
-/* Sidebar */
-.sidebar {
-  background: #1F2225;
-  width: 50px;
-}
-
-.sidebar-web-items {
-  overflow-y: scroll;
-}
-
-.sidebar-web-item {
-  width: 30px;
-  height: 30px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  color: #CCAE62 !important;
 }
