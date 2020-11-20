@@ -2,7 +2,8 @@ import React from 'react';
 import WebView from '../../components/WebView/WebView';
 import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
-import Search from '../../components/Search/Search';
+import Search from '../Search/Search';
+import Settings from '../Settings/Settings';
 import { IMenuItem, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 
@@ -28,7 +29,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'search',
+      page: 'settings',
       isLoading: true,
       focusedItem: null,
     };
@@ -44,8 +45,6 @@ export default class Dashboard extends React.Component<{}, IState> {
     // set the active item
     if (this.menuItems.length) {
       // this.handleMenuItemClicked('web', this.menuItems[0]);
-    } else {
-      this.setState({ page: 'search' });
     }
 
     this.generateWebViews();
@@ -104,6 +103,10 @@ export default class Dashboard extends React.Component<{}, IState> {
                 <Search
                   items={this.menuItems}
                 />
+              </div>}
+
+              {this.state.page === 'settings' && <div className="d-flex justify-content-center">
+                <Settings />
               </div>}
             </div>
           </div>

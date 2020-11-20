@@ -14,3 +14,11 @@ export interface IServiceDetails {
   name: string;
   url: string;
 }
+
+export interface ISettingConfig {
+  name: string;
+  value: string;
+  label: string;
+  type: 'switch';
+  defaultValue?: string;
+}
