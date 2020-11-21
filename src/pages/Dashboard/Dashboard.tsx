@@ -6,6 +6,7 @@ import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
 import { IMenuItem, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
+import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -81,7 +82,7 @@ export default class Dashboard extends React.Component<{}, IState> {
       !this.state.isLoading ?
         <div className="container-fluid">
           <div className="row">
-            <div className="menu bg-secondary position-fixed">
+            <div className="menu bg-secondary">
               <Menu
                 page={this.state.page}
                 items={this.menuItems}
@@ -99,13 +100,13 @@ export default class Dashboard extends React.Component<{}, IState> {
                 })}
               </div>
 
-              {this.state.page === 'search' && <div className="d-flex justify-content-center">
+              {this.state.page === 'search' && <div className="dashboard-container d-flex justify-content-center">
                 <Search
                   items={this.menuItems}
                 />
               </div>}
 
-              {this.state.page === 'settings' && <div className="d-flex justify-content-center">
+              {this.state.page === 'settings' && <div className="dashboard-container d-flex justify-content-center">
                 <Settings />
               </div>}
             </div>
