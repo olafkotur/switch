@@ -1,9 +1,9 @@
 import React from 'react';
-import { Add, Visibility, Settings } from '@material-ui/icons';
+import { VisibilityOff, Search, Settings } from '@material-ui/icons';
 import { IMenuItem } from '../../typings/d';
-import { ButtonBase, Chip, IconButton } from '@material-ui/core';
+import { ButtonBase, Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
-import { remote, webContents } from 'electron';
+import { remote } from 'electron';
 import './menu.css';
 
 interface IProps {
@@ -52,26 +52,32 @@ export default class Menu extends React.Component<IProps> {
 
         <div className="menu-bottom">
           <div className="menu-actions d-flex flex-column justify-content-center align-items-center">
-            <IconButton
-              className={`menu-item flex-column ${this.props.page === 'search' ? 'menu-selected' : ''}`}
-              onClick={() => this.props.handleClick('search')}
-            >
-              <Add className="primary" />
-            </IconButton>
+            <Tooltip title="Hide window" enterDelay={750}>
+              <IconButton
+                className="menu-item flex-column"
+                onClick={() => remote.getCurrentWindow().hide()}
+              >
+                <VisibilityOff className="primary" fontSize="small" />
+              </IconButton>
+            </Tooltip>
 
-            <IconButton
-              className="menu-item flex-column"
-              onClick={() => remote.getCurrentWindow().hide()}
-            >
-              <Visibility className="primary" />
-            </IconButton>
+            <Tooltip title="Add new services" enterDelay={750}>
+              <IconButton
+                className={`menu-item flex-column ${this.props.page === 'search' ? 'menu-selected' : ''}`}
+                onClick={() => this.props.handleClick('search')}
+              >
+                <Search className="primary" />
+              </IconButton>
+            </Tooltip>
 
-            <IconButton
-              className={`menu-item flex-column ${this.props.page === 'settings' ? 'menu-selected' : ''}`}
-              onClick={() => this.props.handleClick('settings')}
-            >
-              <Settings className="primary" />
-            </IconButton>
+            <Tooltip title="Access settings page" enterDelay={750}>
+              <IconButton
+                className={`menu-item flex-column ${this.props.page === 'settings' ? 'menu-selected' : ''}`}
+                onClick={() => this.props.handleClick('settings')}
+              >
+                <Settings className="primary" />
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
       </div>
