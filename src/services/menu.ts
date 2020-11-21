@@ -1,8 +1,9 @@
 import moment from 'moment';
 import { IMenuItem } from '../typings/d';
+import { StorageService } from './storage';
 
 export const MenuService = {
-  getItems: (): IMenuItem[] => {
+  getItems: async (): Promise<IMenuItem[]> => {
     const items: IMenuItem[] = [];
 
     items.push({

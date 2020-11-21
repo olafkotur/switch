@@ -41,7 +41,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   }
 
   public async componentDidMount(): Promise<void> {
-    this.menuItems = MenuService.getItems();
+    this.menuItems = await MenuService.getItems();
 
     // set the active item
     if (this.menuItems.length) {

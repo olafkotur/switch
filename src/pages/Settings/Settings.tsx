@@ -90,6 +90,7 @@ export default class Settings extends React.Component<IProps, IState> {
         <hr />
         {this.general.map(v => (
           <Setting
+            key={`general-setting-${v.name}`}
             name={v.name}
             value={this.state[v.name]}
             label={v.label}
@@ -103,6 +104,7 @@ export default class Settings extends React.Component<IProps, IState> {
         <hr />
         {this.beta.map(v => (
           <Setting
+            key={`beta-setting-${v.name}`}
             name={v.name}
             value={this.state[v.name]}
             label={v.label}
