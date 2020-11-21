@@ -57,14 +57,16 @@ export default class Settings extends React.Component<IProps, IState> {
         name: 'featureRequest',
         value: this.state['featureRequest'],
         label: 'Feature Request',
-        type: 'switch',
+        type: 'button',
+        action: 'send',
         defaultValue: 'true',
       },
       {
         name: 'bugReport',
         value: this.state['bugReport'],
         label: 'Bug Reprot',
-        type: 'switch',
+        type: 'button',
+        action: 'send',
         defaultValue: 'true',
       },
     ];
@@ -80,10 +82,11 @@ export default class Settings extends React.Component<IProps, IState> {
   /**
    * Handles setting update
    */
-  protected handleUpdate(name: string, value: string): void {
-    console.log(name, value);
-    this.setState({ [name]: value });
-    console.log(this.state);
+  protected handleUpdate(name: string, value?: string): void {
+    if (value) {
+      this.setState({ [name]: value });
+    } else {
+    }
   }
 
   render() {
@@ -98,6 +101,7 @@ export default class Settings extends React.Component<IProps, IState> {
             value={this.state[v.name]}
             label={v.label}
             type={v.type}
+            action={v.action}
             handleUpdate={this.handleUpdate}
           />
         ))}
@@ -110,6 +114,7 @@ export default class Settings extends React.Component<IProps, IState> {
             value={this.state[v.name]}
             label={v.label}
             type={v.type}
+            action={v.action}
             handleUpdate={this.handleUpdate}
           />
         ))}

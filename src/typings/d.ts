@@ -19,6 +19,7 @@ export interface ISettingConfig {
   name: string;
   value: string;
   label: string;
-  type: 'switch';
+  type: 'switch' | 'button';
   defaultValue?: string;
+  action?: string;
 }
