@@ -29,7 +29,7 @@ const createWindow = (): void => {
   mainWindow.setFullScreenable(false);
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
 
-  // register global shortcut to show/hide window
+  // register global shortcuts
   globalShortcut.register('CommandOrControl+Esc', (): void => {
     if (!mainWindow) {
       return;
@@ -47,17 +47,14 @@ const createWindow = (): void => {
     isVisible ? mainWindow.hide() : mainWindow.show();
   });
 
-  // new window handlers
-  app.on('browser-window-created', () => {
-    console.log('browser-window-created');
-  });
-
+  // web content handlers
   mainWindow.webContents.on('new-window', async (event, url) => {
     event.preventDefault();
+    console.log('hello world');
     await open(url);
   });
 
-
+  // render config
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:4000');
   } else {

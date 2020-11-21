@@ -3,7 +3,7 @@ import { Add, Visibility, Settings } from '@material-ui/icons';
 import { IMenuItem } from '../../typings/d';
 import { ButtonBase, Chip, IconButton } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
-import { remote } from 'electron';
+import { remote, webContents } from 'electron';
 import './menu.css';
 
 interface IProps {
