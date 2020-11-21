@@ -1,8 +1,9 @@
 import React from 'react';
 import { Add, Visibility, Settings } from '@material-ui/icons';
 import { IMenuItem } from '../../typings/d';
-import { Button, ButtonBase, Chip, IconButton } from '@material-ui/core';
+import { ButtonBase, Chip, IconButton } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
+import { remote, webContents } from 'electron';
 import './menu.css';
 
 interface IProps {
@@ -60,7 +61,7 @@ export default class Menu extends React.Component<IProps> {
 
             <IconButton
               className="menu-item flex-column"
-              onClick={() => console.log('TODO: Toggle visibility')}
+              onClick={() => remote.getCurrentWindow().hide()}
             >
               <Visibility className="primary" />
             </IconButton>

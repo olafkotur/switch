@@ -1,6 +1,7 @@
 import { app, screen, BrowserWindow, globalShortcut } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+const open = require('open');
 
 const getWindowSize = (): { width: number, height: number } => {
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -12,6 +13,8 @@ const createWindow = (): void => {
   let mainWindow: BrowserWindow | null = new BrowserWindow({
     width: windowSize.width,
     height: windowSize.height,
+    minHeight: 500,
+    minWidth: 500,
     frame: false,
     center: true,
     transparent: true,
@@ -28,7 +31,7 @@ const createWindow = (): void => {
   mainWindow.setFullScreenable(false);
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
 
-  // register global shortcut to show/hide window
+  // register global shortcuts
   globalShortcut.register('CommandOrControl+Esc', (): void => {
     if (!mainWindow) {
       return;
@@ -46,6 +49,14 @@ const createWindow = (): void => {
     isVisible ? mainWindow.hide() : mainWindow.show();
   });
 
+  // web content handlers
+  mainWindow.webContents.on('new-window', async (event, url) => {
+    event.preventDefault();
+    console.log('hello world');
+    await open(url);
+  });
+
+  // render config
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:4000');
   } else {

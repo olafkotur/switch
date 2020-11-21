@@ -13,6 +13,13 @@ export const MenuService = {
     });
 
     items.push({
+      id: `calendar-${moment().unix().toString()}`,
+      name: 'Calendar',
+      url: 'http://calendar.google.com/',
+      icon: require('../../assets/calendar.png'),
+    });
+
+    items.push({
       id: `whatsapp-${moment().unix().toString()}`,
       name: 'Whatsapp',
       url: 'https://web.whatsapp.com',
@@ -35,9 +42,16 @@ export const MenuService = {
 
     items.push({
       id: `discord-${moment().unix().toString()}`,
-      name: 'Discor',
+      name: 'Discord',
       url: 'https://discord.com/app',
       icon: require('../../assets/discord.png'),
+    });
+
+    items.push({
+      id: `youtube-${moment().unix().toString()}`,
+      name: 'Youtube',
+      url: 'https://youtube.com',
+      icon: require('../../assets/youtube.png'),
     });
 
     return items;

@@ -5,7 +5,7 @@ import './searchBar.css';
 
 interface IProps {
   value: string;
-  handleUpdate: (value: string) => void;
+  handleUpdate: (value: string) => Promise<void>;
 }
 
 export default class SearchBar extends React.Component<IProps> {
@@ -34,7 +34,7 @@ export default class SearchBar extends React.Component<IProps> {
             </InputAdornment>,
           }}
           value={this.props.value}
-          onChange={e => this.props.handleUpdate(e.target.value)}
+          onChange={async e => await this.props.handleUpdate(e.target.value)}
         />
       </div>
     );

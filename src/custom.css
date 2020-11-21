@@ -45,3 +45,7 @@ button:focus {
 .quaternary {
   color: #CCAE62 !important;
 }
+
+.border-primary {
+  border-color: #fff !important;
+}
