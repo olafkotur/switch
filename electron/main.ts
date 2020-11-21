@@ -1,6 +1,7 @@
 import { app, screen, BrowserWindow, globalShortcut } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+const open = require('open');
 
 const getWindowSize = (): { width: number, height: number } => {
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -45,6 +46,17 @@ const createWindow = (): void => {
     const isVisible = mainWindow.isVisible();
     isVisible ? mainWindow.hide() : mainWindow.show();
   });
+
+  // new window handlers
+  app.on('browser-window-created', () => {
+    console.log('browser-window-created');
+  });
+
+  mainWindow.webContents.on('new-window', async (event, url) => {
+    event.preventDefault();
+    await open(url);
+  });
+
 
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:4000');
