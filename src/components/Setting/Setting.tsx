@@ -31,9 +31,8 @@ export default class Setting extends React.Component<IProps> {
   }
 
   render() {
-    console.log(this.props);
     return (
-      <div className="d-flex flex-row justify-content-between">
+      <div className="d-flex flex-row justify-content-between mt-2">
         <h5 className="primary">{this.props.label}</h5>
         { this.renderType() }
       </div>

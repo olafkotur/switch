@@ -36,13 +36,6 @@ export default class Settings extends React.Component<IProps, IState> {
         type: 'switch',
         defaultValue: 'true',
       },
-      {
-        name: 'darkMode',
-        value: this.state['darkMode'],
-        label: 'Dark Mode',
-        type: 'switch',
-        defaultValue: 'true',
-      },
     ];
 
     this.beta = [
@@ -118,6 +111,16 @@ export default class Settings extends React.Component<IProps, IState> {
             handleUpdate={this.handleUpdate}
           />
         ))}
+
+        <div className="d-flex justify-content-center mt-5">
+          <a
+            className="text-muted"
+            href="https://www.notion.so/olafkotur/What-s-New-87a42395e92d44f4866d895fcd91d0ac"
+            target="_blank"
+          >
+            what's new?
+          </a>
+        </div>
 
       </div>
     );

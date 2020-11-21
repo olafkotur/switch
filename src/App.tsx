@@ -30,6 +30,10 @@ export default class App extends React.Component {
         fontWeightRegular: 400,
         fontWeightMedium: 500,
       },
+      palette: {
+        primary: { main: '#fff' },
+        secondary: { main: '#B33939' },
+      },
     });
   }
 
