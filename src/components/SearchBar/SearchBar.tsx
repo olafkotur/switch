@@ -1,11 +1,13 @@
 import React from 'react';
-import { InputAdornment, TextField } from '@material-ui/core';
+import { Button, InputAdornment, TextField } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import './searchBar.css';
 
 interface IProps {
   value: string;
+  isValid: boolean;
   handleUpdate: (value: string) => Promise<void>;
+  handleConfirm: () => Promise<void>;
 }
 
 export default class SearchBar extends React.Component<IProps> {
@@ -36,6 +38,15 @@ export default class SearchBar extends React.Component<IProps> {
           value={this.props.value}
           onChange={async e => await this.props.handleUpdate(e.target.value)}
         />
+        <Button
+          className="primary mr-3"
+          variant="contained"
+          color="primary"
+          disabled={!this.props.isValid}
+          onClick={this.props.handleConfirm}
+        >
+          Confirm
+        </Button>
       </div>
     );
   }

@@ -4,21 +4,23 @@ import SearchResult from '../../components/SearchResult/SearchResult';
 import { IMenuItem, IServiceDetails } from '../../typings/d';
 import { SearchService } from '../../services/search';
 import './search.css';
+import { Button } from '@material-ui/core';
+import { MenuService } from '../../services/menu';
 
 interface IProps {
   items: IMenuItem[];
+  handleRefresh: () => Promise<void>;
 }
 
 interface IState {
   search: string;
-  isSearching: boolean;
+  isValid: boolean;
 }
 
 export default class Search extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
-  protected resultComponents: React.ReactElement[] = [];
   protected suggestComponents: React.ReactElement[] = [];
 
   /**
@@ -30,15 +32,16 @@ export default class Search extends React.Component<IProps, IState> {
 
     this.state = {
       search: '',
-      isSearching: false,
+      isValid: false,
     };
 
     // scope binding
     this.handleUpdateSearch = this.handleUpdateSearch.bind(this);
-    this.generateResultComponents = this.generateResultComponents.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
+    this.generateSuggestions = this.generateSuggestions.bind(this);
 
     const suggestions = SearchService.getSearchSuggestions();
-    this.suggestComponents = this.generateResultComponents(suggestions);
+    this.suggestComponents = this.generateSuggestions(suggestions);
   }
 
   /**
@@ -46,22 +49,26 @@ export default class Search extends React.Component<IProps, IState> {
    * @param value - search value
    */
   protected async handleUpdateSearch(value: string): Promise<void> {
-    this.setState({ search: value });
+    const isValid = SearchService.validateUrl(value);
+    this.setState({ isValid, search: value });
+  }
 
-    this.setState({ isSearching: true });
-
-    const res = await fetch('http://localhost:8080/switch-api/us-central1/query?search=hello');
-    console.log(res);
-    const serviceDetails: IServiceDetails[] = value ? [{ name: '', url: value }] : [];
-    this.resultComponents = this.generateResultComponents(serviceDetails);
-    this.setState({ isSearching: false });
+  /**
+   * Handles confirm
+   */
+  protected async handleConfirm(): Promise<void> {
+    const success = await MenuService.save(this.state.search);
+    if (!success) {
+      alert('Something went wrong whilst adding the service, please try again');
+    }
+    this.props.handleRefresh(); // do not await
   }
 
   /**
    * Generates result components
    * @param data - details required to build component
    */
-  protected generateResultComponents(data: IServiceDetails[]): React.ReactElement[] {
+  protected generateSuggestions(data: IServiceDetails[]): React.ReactElement[] {
     return data.map((v) => {
       return <SearchResult
         key={v.url}
@@ -75,13 +82,11 @@ export default class Search extends React.Component<IProps, IState> {
       <div className="search-container">
         <SearchBar
           value={this.state.search}
+          isValid={this.state.isValid}
           handleUpdate={this.handleUpdateSearch}
+          handleConfirm={this.handleConfirm}
         />
         <p className="text-muted align-self-center">enter the full url address of the website you wish to add</p>
-
-        {!this.state.isSearching && <div className="d-flex flex-row overflow-auto">
-          {this.resultComponents}
-        </div>}
 
         <h3 className="primary mt-5">Suggestions</h3>
         <div className="d-flex flex-row overflow-auto">
