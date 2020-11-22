@@ -38,7 +38,7 @@ export default class App extends React.Component {
       },
       palette: {
         primary: { main: '#227093' },
-        secondary: { main: '#B33939' },
+        secondary: { main: '#fff' },
       },
     });
   }

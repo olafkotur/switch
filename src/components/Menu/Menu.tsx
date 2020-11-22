@@ -1,5 +1,5 @@
 import React from 'react';
-import { VisibilityOff, Search, Settings } from '@material-ui/icons';
+import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
 import { IMenuItem } from '../../typings/d';
 import { ButtonBase, Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
@@ -15,6 +15,10 @@ interface IProps {
 
 export default class Menu extends React.Component<IProps> {
   /**
+   * Local properties
+   */
+
+  /**
    * Generates menu items
    */
   protected generateItems() {
@@ -25,10 +29,10 @@ export default class Menu extends React.Component<IProps> {
           className={`menu-item mt-2 ${this.props.page === 'web' && this.props.focusedItem && this.props.focusedItem.id === v.id ? 'menu-selected' : ''}`}
           onClick={() => this.props.handleClick('web', v)}
         >
-          <img
-            className="menu-image"
-            src={v.icon}
-          />
+          {v.icon
+            ? <img className="menu-image" src={v.icon} />
+            : <Image className="menu-image" color="secondary" />
+          }
         </ButtonBase>
       );
     });
