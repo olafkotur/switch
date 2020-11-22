@@ -27,7 +27,19 @@ export const MenuService = {
 
   update: async (id: string, icon: string): Promise<boolean> => {
     const previousData = await MenuService.fetchList();
+
+    // update icon by id
     const updatedData: IMenuItem[] = previousData.map(v => id === v.id ? { ...v, icon } : { ...v });
+    const saveData: IStoredMenuItems = { data: [...updatedData] };
+
+    return await StorageService.set('menuItems', saveData);
+  },
+
+  delete: async (id: string): Promise<boolean> => {
+    const previousData = await MenuService.fetchList();
+
+    // remove deleted item
+    const updatedData: IMenuItem[] = previousData.filter(v => id !== v.id);
     const saveData: IStoredMenuItems = { data: [...updatedData] };
 
     return await StorageService.set('menuItems', saveData);

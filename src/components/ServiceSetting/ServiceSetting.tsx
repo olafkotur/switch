@@ -6,6 +6,7 @@ import './serviceSetting.css';
 
 interface IProps extends IServiceSettingConfig {
   handleUpload: (id: string, file: File) => Promise<void>;
+  handleDelete: (id: string) => Promise<void>;
 }
 
 export default class ServiceSetting extends React.Component<IProps> {
@@ -18,13 +19,13 @@ export default class ServiceSetting extends React.Component<IProps> {
             <IconButton
               className="mr-2 menu-image"
             >
-              <label htmlFor="file-upload" className="position-absolute">
+              <label htmlFor={`file-upload-${this.props.id}`} className="position-absolute">
                 <input
-                  id="file-upload"
+                  id={`file-upload-${this.props.id}`}
                   className="d-none"
                   accept="image/*"
                   type="file"
-                  onChange={e => e.target.files && this.props.handleUpload(this.props.id, e.target.files[0])}
+                  onChange={async e => e.target.files && await this.props.handleUpload(this.props.id, e.target.files[0])}
                 />
                 {this.props.icon
                   ? <img src={this.props.icon} className="menu-image" />
@@ -37,7 +38,7 @@ export default class ServiceSetting extends React.Component<IProps> {
         </div>
         <div className="pl-4">
           <IconButton
-            onClick={() => console.log('delete')}
+            onClick={async () => await this.props.handleDelete(this.props.id)}
           >
             <DeleteOutline color="error" />
           </IconButton>
