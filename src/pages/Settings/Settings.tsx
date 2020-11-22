@@ -6,6 +6,7 @@ import './settings.css';
 import ServiceSetting from '../../components/ServiceSetting/ServiceSetting';
 import { StorageService } from '../../services/storage';
 import { MenuService } from '../../services/menu';
+import { SettingsService } from '../../services/settings';
 
 interface IProps {
   items: IMenuItem[];
@@ -31,7 +32,9 @@ export default class Settings extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isLoading: 'true',
+    };
 
     // local properties
     this.general = [
@@ -58,7 +61,6 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Feature Request',
         type: 'button',
         action: 'send',
-        defaultValue: 'true',
       },
       {
         name: 'bugReport',
@@ -66,7 +68,6 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Bug Report',
         type: 'button',
         action: 'send',
-        defaultValue: 'true',
       },
     ];
 
@@ -78,7 +79,7 @@ export default class Settings extends React.Component<IProps, IState> {
 
     // assign default state values
     const config: ISettingConfig[] = [...this.general, ...this.beta];
-    this.state = Object.assign({}, ...config.map(v => ({ [v.name]: v.defaultValue || '' })));
+    this.state = Object.assign({ ...this.state }, ...config.map(v => ({ [v.name]: v.defaultValue || '' })));
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -87,11 +88,31 @@ export default class Settings extends React.Component<IProps, IState> {
   }
 
   /**
-   * Handles setting update
+   * Component mounting
    */
-  protected handleUpdate(name: string, value?: string): void {
+  public async componentDidMount() {
+    const userSettings = await SettingsService.fetchList();
+    const state: IState = { ...this.state };
+
+    // update each setting
+    for (const setting of userSettings) {
+      state[setting.name] = setting.value;
+    }
+    this.setState({ ...state, isLoading: 'false' });
+  }
+
+  /**
+   * Handles setting update
+   * @param name - setting name
+   * @param value - setting value
+   */
+  protected async handleUpdate(name: string, value?: string): Promise<void> {
     if (value) {
       this.setState({ [name]: value });
+      const res = await SettingsService.update(name, value);
+      if (!res) {
+        alert('Something went wrong, please try again');
+      }
     }
   }
 
@@ -121,6 +142,7 @@ export default class Settings extends React.Component<IProps, IState> {
     return (
       <div className="settings-container">
 
+      {this.state['isLoading'] === 'false' && <>
         <h3 className="primary font-weight-bold">General</h3>
         <hr />
         {this.general.map(v => (
@@ -163,6 +185,7 @@ export default class Settings extends React.Component<IProps, IState> {
             what's new?
           </a>
         </div>
+      </>}
 
       </div>
     );

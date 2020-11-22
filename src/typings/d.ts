@@ -15,9 +15,12 @@ export interface IServiceDetails {
   url: string;
 }
 
-export interface ISettingConfig {
+export interface ISetting {
   name: string;
   value: string;
+}
+
+export interface ISettingConfig extends ISetting {
   label: string;
   type: 'switch' | 'button';
   defaultValue?: string;
@@ -33,4 +36,8 @@ export interface IServiceSettingConfig {
 
 export interface IStoredMenuItems {
   data: IMenuItem[];
+}
+
+export interface IStoredSettings {
+  data: ISetting[];
 }
