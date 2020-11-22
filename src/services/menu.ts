@@ -11,54 +11,6 @@ export const MenuService = {
     return hash;
   },
 
-  getItems: async (): Promise<IMenuItem[]> => {
-    const items: IMenuItem[] = [];
-
-    items.push({
-      id: `notion-${moment().unix().toString()}`,
-      url: 'https://notion.so',
-      icon: require('../../assets/notion.png'),
-    });
-
-    items.push({
-      id: `calendar-${moment().unix().toString()}`,
-      url: 'http://calendar.google.com/',
-      icon: require('../../assets/calendar.png'),
-    });
-
-    items.push({
-      id: `whatsapp-${moment().unix().toString()}`,
-      url: 'https://web.whatsapp.com',
-      icon: require('../../assets/whatsapp.png'),
-    });
-
-    items.push({
-      id: `messenger-${moment().unix().toString()}`,
-      url: 'https://messenger.com',
-      icon: require('../../assets/messenger.png'),
-    });
-
-    items.push({
-      id: `slack-${moment().unix().toString()}`,
-      url: 'https://slack.com',
-      icon: require('../../assets/slack.png'),
-    });
-
-    items.push({
-      id: `discord-${moment().unix().toString()}`,
-      url: 'https://discord.com/app',
-      icon: require('../../assets/discord.png'),
-    });
-
-    items.push({
-      id: `youtube-${moment().unix().toString()}`,
-      url: 'https://youtube.com',
-      icon: require('../../assets/youtube.png'),
-    });
-
-    return items;
-  },
-
   save: async (url: string): Promise<boolean> => {
     const newData: IMenuItem = {
       url,
@@ -68,9 +20,17 @@ export const MenuService = {
 
     // append new data to previous
     const previousData = await MenuService.fetchList();
-    const updateData: IStoredMenuItems = { data: [...previousData, newData] };
+    const saveData: IStoredMenuItems = { data: [...previousData, newData] };
 
-    return await StorageService.set('menuItems', updateData);
+    return await StorageService.set('menuItems', saveData);
+  },
+
+  update: async (id: string, icon: string): Promise<boolean> => {
+    const previousData = await MenuService.fetchList();
+    const updatedData: IMenuItem[] = previousData.map(v => id === v.id ? { ...v, icon } : { ...v });
+    const saveData: IStoredMenuItems = { data: [...updatedData] };
+
+    return await StorageService.set('menuItems', saveData);
   },
 
   fetchList: async (): Promise<IMenuItem[]> => {

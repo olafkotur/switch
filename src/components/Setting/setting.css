@@ -1,0 +1,10 @@
+.setting-button {
+  background-color: #777171 !important;
+  align-self: center;
+}
+
+.setting-button-text {
+  font-size: 10px;
+  text-transform: lowercase;
+}
+

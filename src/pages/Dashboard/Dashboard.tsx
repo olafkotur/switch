@@ -30,7 +30,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'search',
+      page: 'settings',
       isLoading: true,
       focusedItem: null,
     };
@@ -54,7 +54,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // set the active item
     if (this.menuItems.length) {
-      this.handleMenuItemClicked('web', this.menuItems[0]);
+      // this.handleMenuItemClicked('web', this.menuItems[0]);
     }
     this.generateWebViews();
     this.setState({ isLoading: false });
@@ -116,7 +116,10 @@ export default class Dashboard extends React.Component<{}, IState> {
               </div>}
 
               {this.state.page === 'settings' && <div className="dashboard-container d-flex justify-content-center">
-                <Settings />
+                <Settings
+                  items={this.menuItems}
+                  handleRefresh={this.handleRefreshMenu}
+                />
               </div>}
             </div>
           </div>

@@ -1,0 +1,5 @@
+.service-setting-label {
+  width: 50vw;
+  margin: 5px 0;
+  overflow-x: scroll;
+}

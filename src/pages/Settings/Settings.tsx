@@ -1,10 +1,15 @@
 import React from 'react';
 import Setting from '../../components/Setting/Setting';
-import { ISettingConfig } from '../../typings/d';
+import { IMenuItem, IServiceSettingConfig, ISettingConfig } from '../../typings/d';
 import * as _ from 'lodash';
 import './settings.css';
+import ServiceSetting from '../../components/ServiceSetting/ServiceSetting';
+import { StorageService } from '../../services/storage';
+import { MenuService } from '../../services/menu';
 
 interface IProps {
+  items: IMenuItem[];
+  handleRefresh: () => Promise<void>;
 }
 
 interface IState {
@@ -17,6 +22,7 @@ export default class Settings extends React.Component<IProps, IState> {
    */
   protected general: ISettingConfig[];
   protected beta: ISettingConfig[];
+  protected services: IServiceSettingConfig[];
 
   /**
    * Settings constructor
@@ -64,12 +70,19 @@ export default class Settings extends React.Component<IProps, IState> {
       },
     ];
 
+    this.services = this.props.items.map(v => ({
+      id: v.id,
+      label: v.url,
+      icon: v.icon,
+    }));
+
     // assign default state values
     const config: ISettingConfig[] = [...this.general, ...this.beta];
     this.state = Object.assign({}, ...config.map(v => ({ [v.name]: v.defaultValue || '' })));
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   /**
@@ -78,8 +91,21 @@ export default class Settings extends React.Component<IProps, IState> {
   protected handleUpdate(name: string, value?: string): void {
     if (value) {
       this.setState({ [name]: value });
-    } else {
     }
+  }
+
+  /**
+   * Handles file upload
+   * @param id - service id
+   * @param file - file
+   */
+  protected async handleUpload(id: string, file: File): Promise<void> {
+    const base64 = await StorageService.base64(file);
+    const res = await MenuService.update(id, base64);
+    if (!res) {
+      alert('Something went wrong, please try again');
+    }
+    this.props.handleRefresh();
   }
 
   render() {
@@ -90,12 +116,9 @@ export default class Settings extends React.Component<IProps, IState> {
         <hr />
         {this.general.map(v => (
           <Setting
+            {...v}
             key={`general-setting-${v.name}`}
-            name={v.name}
             value={this.state[v.name]}
-            label={v.label}
-            type={v.type}
-            action={v.action}
             handleUpdate={this.handleUpdate}
           />
         ))}
@@ -104,13 +127,20 @@ export default class Settings extends React.Component<IProps, IState> {
         <hr />
         {this.beta.map(v => (
           <Setting
+            {...v}
             key={`beta-setting-${v.name}`}
-            name={v.name}
             value={this.state[v.name]}
-            label={v.label}
-            type={v.type}
-            action={v.action}
             handleUpdate={this.handleUpdate}
+          />
+        ))}
+
+        <h3 className="primary font-weight-bold mt-5 ">Services</h3>
+        <hr />
+        {this.services.map(v => (
+          <ServiceSetting
+            {...v}
+            key={`service-setting-${v.id}`}
+            handleUpload={this.handleUpload}
           />
         ))}
 

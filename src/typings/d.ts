@@ -1,7 +1,8 @@
 export interface IMenuItem {
   id: string;
   url: string;
-  icon: string;
+  // tslint:disable-next-line: no-any
+  icon: any;
 }
 
 export interface IWebView {
@@ -21,6 +22,13 @@ export interface ISettingConfig {
   type: 'switch' | 'button';
   defaultValue?: string;
   action?: string;
+}
+
+export interface IServiceSettingConfig {
+  id: string;
+  label: string;
+  // tslint:disable-next-line: no-any
+  icon: any;
 }
 
 export interface IStoredMenuItems {
