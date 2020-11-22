@@ -72,7 +72,7 @@ export default class Settings extends React.Component<IProps, IState> {
 
     this.services = this.props.items.map(v => ({
       id: v.id,
-      label: v.url,
+      label: v.url.split('://')[1],
       icon: v.icon,
     }));
 
