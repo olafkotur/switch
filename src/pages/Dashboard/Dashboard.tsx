@@ -36,20 +36,28 @@ export default class Dashboard extends React.Component<{}, IState> {
     };
 
     // scope binding
+    this.handleRefreshMenu = this.handleRefreshMenu.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
     this.generateWebViews = this.generateWebViews.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
-    this.menuItems = MenuService.getItems();
+    await this.handleRefreshMenu();
+  }
+
+   /**
+   * Handles menu refresh request
+   */
+  protected async handleRefreshMenu(): Promise<void> {
+    this.setState({ isLoading: true });
+    this.menuItems = await MenuService.fetchList();
 
     // set the active item
     if (this.menuItems.length) {
       // this.handleMenuItemClicked('web', this.menuItems[0]);
     }
-
     this.generateWebViews();
-    setTimeout(() => this.setState({ isLoading: false }), 0);
+    this.setState({ isLoading: false });
   }
 
   /**
@@ -103,11 +111,15 @@ export default class Dashboard extends React.Component<{}, IState> {
               {this.state.page === 'search' && <div className="dashboard-container d-flex justify-content-center">
                 <Search
                   items={this.menuItems}
+                  handleRefresh={this.handleRefreshMenu}
                 />
               </div>}
 
               {this.state.page === 'settings' && <div className="dashboard-container d-flex justify-content-center">
-                <Settings />
+                <Settings
+                  items={this.menuItems}
+                  handleRefresh={this.handleRefreshMenu}
+                />
               </div>}
             </div>
           </div>

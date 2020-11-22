@@ -1,59 +1,52 @@
 import moment from 'moment';
-import { IMenuItem } from '../typings/d';
+import { IMenuItem, IServiceDetails, IStoredMenuItems } from '../typings/d';
+import { StorageService } from './storage';
+import crypto from 'crypto';
 
 export const MenuService = {
-  getItems: (): IMenuItem[] => {
-    const items: IMenuItem[] = [];
+  generateId: (value: string): string => {
+    const input = `${value}-${moment().milliseconds()}-${Math.random()}`;
+    const algorithm = crypto.createHash('sha256');
+    const hash = algorithm.update(input).digest('hex').toString();
+    return hash;
+  },
 
-    items.push({
-      id: `notion-${moment().unix().toString()}`,
-      name: 'Notion',
-      url: 'https://notion.so',
-      icon: require('../../assets/notion.png'),
-    });
+  save: async (url: string): Promise<boolean> => {
+    const newData: IMenuItem = {
+      url,
+      id: MenuService.generateId(url),
+      icon: '',
+    };
 
-    items.push({
-      id: `calendar-${moment().unix().toString()}`,
-      name: 'Calendar',
-      url: 'http://calendar.google.com/',
-      icon: require('../../assets/calendar.png'),
-    });
+    // append new data to previous
+    const previousData = await MenuService.fetchList();
+    const saveData: IStoredMenuItems = { data: [...previousData, newData] };
 
-    items.push({
-      id: `whatsapp-${moment().unix().toString()}`,
-      name: 'Whatsapp',
-      url: 'https://web.whatsapp.com',
-      icon: require('../../assets/whatsapp.png'),
-    });
+    return await StorageService.set('menuItems', saveData);
+  },
 
-    items.push({
-      id: `messenger-${moment().unix().toString()}`,
-      name: 'Messenger',
-      url: 'https://messenger.com',
-      icon: require('../../assets/messenger.png'),
-    });
+  update: async (id: string, icon: string): Promise<boolean> => {
+    const previousData = await MenuService.fetchList();
 
-    items.push({
-      id: `slack-${moment().unix().toString()}`,
-      name: 'Slack',
-      url: 'https://slack.com',
-      icon: require('../../assets/slack.png'),
-    });
+    // update icon by id
+    const updatedData: IMenuItem[] = previousData.map(v => id === v.id ? { ...v, icon } : { ...v });
+    const saveData: IStoredMenuItems = { data: [...updatedData] };
 
-    items.push({
-      id: `discord-${moment().unix().toString()}`,
-      name: 'Discord',
-      url: 'https://discord.com/app',
-      icon: require('../../assets/discord.png'),
-    });
+    return await StorageService.set('menuItems', saveData);
+  },
 
-    items.push({
-      id: `youtube-${moment().unix().toString()}`,
-      name: 'Youtube',
-      url: 'https://youtube.com',
-      icon: require('../../assets/youtube.png'),
-    });
+  delete: async (id: string): Promise<boolean> => {
+    const previousData = await MenuService.fetchList();
 
-    return items;
+    // remove deleted item
+    const updatedData: IMenuItem[] = previousData.filter(v => id !== v.id);
+    const saveData: IStoredMenuItems = { data: [...updatedData] };
+
+    return await StorageService.set('menuItems', saveData);
+  },
+
+  fetchList: async (): Promise<IMenuItem[]> => {
+    const res: IStoredMenuItems | null = await StorageService.get('menuItems') as IStoredMenuItems | null;
+    return res && res.data ? res.data : [];
   },
 };

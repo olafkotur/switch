@@ -1,10 +1,16 @@
 import React from 'react';
 import Setting from '../../components/Setting/Setting';
-import { ISettingConfig } from '../../typings/d';
+import { IMenuItem, IServiceSettingConfig, ISettingConfig } from '../../typings/d';
 import * as _ from 'lodash';
 import './settings.css';
+import ServiceSetting from '../../components/ServiceSetting/ServiceSetting';
+import { StorageService } from '../../services/storage';
+import { MenuService } from '../../services/menu';
+import { SettingsService } from '../../services/settings';
 
 interface IProps {
+  items: IMenuItem[];
+  handleRefresh: () => Promise<void>;
 }
 
 interface IState {
@@ -17,6 +23,7 @@ export default class Settings extends React.Component<IProps, IState> {
    */
   protected general: ISettingConfig[];
   protected beta: ISettingConfig[];
+  protected services: IServiceSettingConfig[];
 
   /**
    * Settings constructor
@@ -25,7 +32,9 @@ export default class Settings extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isLoading: 'true',
+    };
 
     // local properties
     this.general = [
@@ -52,7 +61,6 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Feature Request',
         type: 'button',
         action: 'send',
-        defaultValue: 'true',
       },
       {
         name: 'bugReport',
@@ -60,41 +68,88 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Bug Report',
         type: 'button',
         action: 'send',
-        defaultValue: 'true',
       },
     ];
 
+    this.services = this.props.items.map(v => ({
+      id: v.id,
+      label: v.url.split('://')[1],
+      icon: v.icon,
+    }));
+
     // assign default state values
     const config: ISettingConfig[] = [...this.general, ...this.beta];
-    this.state = Object.assign({}, ...config.map(v => ({ [v.name]: v.defaultValue || '' })));
+    this.state = Object.assign({ ...this.state }, ...config.map(v => ({ [v.name]: v.defaultValue || '' })));
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  /**
+   * Component mounting
+   */
+  public async componentDidMount() {
+    const userSettings = await SettingsService.fetchList();
+    const state: IState = { ...this.state };
+
+    // update each setting
+    for (const setting of userSettings) {
+      state[setting.name] = setting.value;
+    }
+    this.setState({ ...state, isLoading: 'false' });
   }
 
   /**
    * Handles setting update
+   * @param name - setting name
+   * @param value - setting value
    */
-  protected handleUpdate(name: string, value?: string): void {
+  protected async handleUpdate(name: string, value?: string): Promise<void> {
     if (value) {
       this.setState({ [name]: value });
-    } else {
+      const res = await SettingsService.update(name, value);
+      if (!res) {
+        alert('Something went wrong, please try again');
+      }
     }
+  }
+
+  /**
+   * Handles file upload
+   * @param id - service id
+   * @param file - file
+   */
+  protected async handleUpload(id: string, file: File): Promise<void> {
+    const base64 = await StorageService.base64(file);
+    const res = await MenuService.update(id, base64);
+    if (!res) {
+      alert('Something went wrong, please try again');
+    }
+    this.props.handleRefresh();
+  }
+
+  protected async handleDelete(id: string): Promise<void> {
+    const res = await MenuService.delete(id);
+    if (!res) {
+      alert('Something went wrong, please try again');
+    }
+    this.props.handleRefresh();
   }
 
   render() {
     return (
       <div className="settings-container">
 
+      {this.state['isLoading'] === 'false' && <>
         <h3 className="primary font-weight-bold">General</h3>
         <hr />
         {this.general.map(v => (
           <Setting
-            name={v.name}
+            {...v}
+            key={`general-setting-${v.name}`}
             value={this.state[v.name]}
-            label={v.label}
-            type={v.type}
-            action={v.action}
             handleUpdate={this.handleUpdate}
           />
         ))}
@@ -103,12 +158,21 @@ export default class Settings extends React.Component<IProps, IState> {
         <hr />
         {this.beta.map(v => (
           <Setting
-            name={v.name}
+            {...v}
+            key={`beta-setting-${v.name}`}
             value={this.state[v.name]}
-            label={v.label}
-            type={v.type}
-            action={v.action}
             handleUpdate={this.handleUpdate}
+          />
+        ))}
+
+        <h3 className="primary font-weight-bold mt-5 ">Services</h3>
+        <hr />
+        {this.services.map(v => (
+          <ServiceSetting
+            {...v}
+            key={`service-setting-${v.id}`}
+            handleUpload={this.handleUpload}
+            handleDelete={this.handleDelete}
           />
         ))}
 
@@ -121,6 +185,7 @@ export default class Settings extends React.Component<IProps, IState> {
             what's new?
           </a>
         </div>
+      </>}
 
       </div>
     );

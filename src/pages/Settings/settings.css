@@ -2,13 +2,3 @@
   margin-top: 5vh;
   width: 60vw;
 }
-
-.setting-button {
-  background-color: #777171 !important;
-  align-self: center;
-}
-
-.setting-button-text {
-  font-size: 10px;
-  text-transform: lowercase;
-}

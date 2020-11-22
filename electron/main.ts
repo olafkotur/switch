@@ -22,6 +22,7 @@ const createWindow = (): void => {
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
+      enableRemoteModule: true,
     },
   });
 
@@ -52,7 +53,6 @@ const createWindow = (): void => {
   // web content handlers
   mainWindow.webContents.on('new-window', async (event, url) => {
     event.preventDefault();
-    console.log('hello world');
     await open(url);
   });
 
