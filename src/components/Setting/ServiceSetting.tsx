@@ -38,10 +38,10 @@ export default class ServiceSetting extends React.Component<IProps> {
     return (
       <div className="d-flex flex-row justify-content-between mt-2 setting-container">
         <div className="d-flex flex-row align-items-center">
-          <Tooltip title="Upload a custom image">
-            <IconButton
-              className="mr-3 menu-image"
-            >
+          <IconButton
+            className="mr-3 menu-image"
+          >
+            <Tooltip title="Upload a custom image">
               <label
                 htmlFor={`file-upload-${this.props.id}`}
                 className="position-absolute"
@@ -58,14 +58,14 @@ export default class ServiceSetting extends React.Component<IProps> {
                   : <ImageSearch color="secondary" />
                 }
               </label>
-            </IconButton>
-          </Tooltip>
+            </Tooltip>
+          </IconButton>
           <h5 className="primary setting-label">{this.props.label}</h5>
         </div>
         <div className="d-flex flex-row pl-4">
           {/* re-order */}
           <div className="d-flex flex-row">
-          <Tooltip title="Move upwards" enterDelay={750} className="p-0 setting-order-button">
+            <Tooltip title="Move upwards" enterDelay={750} className="p-1">
               <IconButton
                 onClick={async () => await this.props.handleOrder(this.props.id, 'up')}
               >
@@ -73,7 +73,7 @@ export default class ServiceSetting extends React.Component<IProps> {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Move downwards" enterDelay={750} className="p-0 setting-order-button">
+            <Tooltip title="Move downwards" enterDelay={750} className="p-1">
               <IconButton
                 onClick={async () => await this.props.handleOrder(this.props.id, 'down')}
               >
