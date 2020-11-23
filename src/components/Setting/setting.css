@@ -1,3 +1,8 @@
+.setting-container {
+  height: 30px;
+  margin-bottom: 20px;
+}
+
 .setting-button {
   background-color: #777171 !important;
   align-self: center;
@@ -9,8 +14,8 @@
 }
 
 .setting-label {
-  width: 50vw;
-  margin: 5px 0;
+  max-width: 45vw;
+  margin: 15px 0 0 0;
   overflow-x: scroll;
 }
 

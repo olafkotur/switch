@@ -36,8 +36,8 @@ export default class ServiceSetting extends React.Component<IProps> {
 
   render() {
     return (
-      <div className="d-flex flex-row justify-content-between mt-2">
-        <div className="d-flex flex-row">
+      <div className="d-flex flex-row justify-content-between mt-2 setting-container">
+        <div className="d-flex flex-row align-items-center">
           <Tooltip title="Upload a custom image">
             <IconButton
               className="mr-3 menu-image"
@@ -83,7 +83,7 @@ export default class ServiceSetting extends React.Component<IProps> {
           </div>
 
           {/* delete */}
-          <Tooltip title="Delete service" enterDelay={750}>
+          <Tooltip title="Delete service" enterDelay={750} className="align-self-center">
             <IconButton
               onClick={async () => await this.props.handleDelete(this.props.id)}
             >
