@@ -1,12 +1,12 @@
 import React from 'react';
-import Setting from '../../components/Setting/Setting';
+import GeneralSetting from '../../components/Setting/GeneralSetting';
+import ServiceSetting from '../../components/Setting/ServiceSetting';
 import { IMenuItem, IServiceSettingConfig, ISetting, ISettingConfig } from '../../typings/d';
-import * as _ from 'lodash';
-import './settings.css';
-import ServiceSetting from '../../components/ServiceSetting/ServiceSetting';
 import { StorageService } from '../../services/storage';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
+import * as _ from 'lodash';
+import './settings.css';
 
 interface IProps {
   items: IMenuItem[];
@@ -123,7 +123,7 @@ export default class Settings extends React.Component<IProps, IState> {
         <h3 className="primary font-weight-bold">General</h3>
         <hr />
         {this.general.map(v => (
-          <Setting
+          <GeneralSetting
             {...v}
             key={`general-setting-${v.name}`}
             value={this.state[v.name]}

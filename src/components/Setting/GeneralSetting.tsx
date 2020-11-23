@@ -7,7 +7,7 @@ interface IProps extends ISettingConfig {
   handleUpdate: (name: string, value?: string) => void;
 }
 
-export default class Setting extends React.Component<IProps> {
+export default class GeneralSetting extends React.Component<IProps> {
 
   protected renderType(): React.ReactElement {
     switch (this.props.type) {

@@ -3,7 +3,7 @@ import { IServiceSettingConfig } from '../../typings/d';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { ImageSearch, DeleteOutline } from '@material-ui/icons';
 import * as _ from 'lodash';
-import './serviceSetting.css';
+import './setting.css';
 
 interface IProps extends IServiceSettingConfig {
   handleUpload: (id: string, file: File) => Promise<void>;
@@ -53,13 +53,13 @@ export default class ServiceSetting extends React.Component<IProps> {
                   onChange={this.handleUpload}
                 />
                 {this.props.icon
-                  ? <img src={this.props.icon} className="service-setting-image" />
+                  ? <img src={this.props.icon} className="setting-image" />
                   : <ImageSearch color="secondary" />
                 }
               </label>
             </IconButton>
           </Tooltip>
-          <h5 className="primary service-setting-label">{this.props.label}</h5>
+          <h5 className="primary setting-label">{this.props.label}</h5>
         </div>
         <div className="pl-4">
           <Tooltip title="Delete service" enterDelay={750}>
