@@ -4,9 +4,10 @@ import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import { IMenuItem, IWebView } from '../../typings/d';
+import { IMenuItem, ISetting, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import './dashboard.css';
+import { SettingsService } from '../../services/settings';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -20,6 +21,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   /**
    * Local properties
    */
+  protected userSettings: ISetting[] = [];
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
 
@@ -51,6 +53,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   protected async handleRefreshMenu(): Promise<void> {
     this.setState({ isLoading: true });
     this.menuItems = await MenuService.fetchList();
+    this.userSettings = await SettingsService.fetchList();
 
     // set the active item
     if (this.menuItems.length) {
@@ -95,6 +98,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                 page={this.state.page}
                 items={this.menuItems}
                 focusedItem={this.state.focusedItem}
+                userSettings={this.userSettings}
                 handleClick={this.handleMenuItemClicked}
               />
             </div>
@@ -118,6 +122,7 @@ export default class Dashboard extends React.Component<{}, IState> {
               {this.state.page === 'settings' && <div className="dashboard-container d-flex justify-content-center">
                 <Settings
                   items={this.menuItems}
+                  userSettings={this.userSettings}
                   handleRefresh={this.handleRefreshMenu}
                 />
               </div>}

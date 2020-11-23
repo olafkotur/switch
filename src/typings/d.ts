@@ -23,7 +23,6 @@ export interface ISetting {
 export interface ISettingConfig extends ISetting {
   label: string;
   type: 'switch' | 'button';
-  defaultValue?: string;
   action?: string;
 }
 

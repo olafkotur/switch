@@ -1,7 +1,6 @@
 import React from 'react';
 import { ISettingConfig } from '../../typings/d';
-import { Button, IconButton, Switch, Tooltip } from '@material-ui/core';
-import { ImageSearch, DeleteOutline } from '@material-ui/icons';
+import { Button, Switch } from '@material-ui/core';
 import './setting.css';
 
 interface IProps extends ISettingConfig {

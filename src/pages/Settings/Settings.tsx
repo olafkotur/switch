@@ -1,6 +1,6 @@
 import React from 'react';
 import Setting from '../../components/Setting/Setting';
-import { IMenuItem, IServiceSettingConfig, ISettingConfig } from '../../typings/d';
+import { IMenuItem, IServiceSettingConfig, ISetting, ISettingConfig } from '../../typings/d';
 import * as _ from 'lodash';
 import './settings.css';
 import ServiceSetting from '../../components/ServiceSetting/ServiceSetting';
@@ -10,6 +10,7 @@ import { SettingsService } from '../../services/settings';
 
 interface IProps {
   items: IMenuItem[];
+  userSettings: ISetting[];
   handleRefresh: () => Promise<void>;
 }
 
@@ -22,7 +23,6 @@ export default class Settings extends React.Component<IProps, IState> {
    * Local properties
    */
   protected general: ISettingConfig[];
-  protected beta: ISettingConfig[];
   protected services: IServiceSettingConfig[];
 
   /**
@@ -32,28 +32,22 @@ export default class Settings extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {
-      isLoading: 'true',
-    };
+    // state
+    this.state = Object.assign({}, ...this.props.userSettings.map(v => ({ [v.name]: v.value })));
 
     // local properties
     this.general = [
       {
         name: 'startUpLaunch',
-        value: this.state['startUpLaunch'],
         label: 'Launch on Start-up',
         type: 'switch',
-        defaultValue: 'true',
+        value: this.state['startUpLaunch'],
       },
-    ];
-
-    this.beta = [
       {
         name: 'showBetaStatus',
         value: this.state['showBetaStatus'],
         label: 'Show Beta Status',
         type: 'switch',
-        defaultValue: 'true',
       },
       {
         name: 'featureRequest',
@@ -77,28 +71,10 @@ export default class Settings extends React.Component<IProps, IState> {
       icon: v.icon,
     }));
 
-    // assign default state values
-    const config: ISettingConfig[] = [...this.general, ...this.beta];
-    this.state = Object.assign({ ...this.state }, ...config.map(v => ({ [v.name]: v.defaultValue || '' })));
-
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  /**
-   * Component mounting
-   */
-  public async componentDidMount() {
-    const userSettings = await SettingsService.fetchList();
-    const state: IState = { ...this.state };
-
-    // update each setting
-    for (const setting of userSettings) {
-      state[setting.name] = setting.value;
-    }
-    this.setState({ ...state, isLoading: 'false' });
   }
 
   /**
@@ -107,6 +83,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param value - setting value
    */
   protected async handleUpdate(name: string, value?: string): Promise<void> {
+    const shouldRefresh = ['showBetaStatus'].includes(name);
     if (value) {
       this.setState({ [name]: value });
       const res = await SettingsService.update(name, value);
@@ -114,6 +91,7 @@ export default class Settings extends React.Component<IProps, IState> {
         alert('Something went wrong, please try again');
       }
     }
+    shouldRefresh && await this.props.handleRefresh();
   }
 
   /**
@@ -141,8 +119,7 @@ export default class Settings extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="settings-container">
-
-      {this.state['isLoading'] === 'false' && <>
+        {/* general settings */}
         <h3 className="primary font-weight-bold">General</h3>
         <hr />
         {this.general.map(v => (
@@ -154,17 +131,7 @@ export default class Settings extends React.Component<IProps, IState> {
           />
         ))}
 
-        <h3 className="primary font-weight-bold mt-5 ">Beta</h3>
-        <hr />
-        {this.beta.map(v => (
-          <Setting
-            {...v}
-            key={`beta-setting-${v.name}`}
-            value={this.state[v.name]}
-            handleUpdate={this.handleUpdate}
-          />
-        ))}
-
+        {/* service settings */}
         <h3 className="primary font-weight-bold mt-5 ">Services</h3>
         <hr />
         {this.services.map(v => (
@@ -176,6 +143,7 @@ export default class Settings extends React.Component<IProps, IState> {
           />
         ))}
 
+        {/* footer */}
         <div className="d-flex justify-content-center my-5">
           <a
             className="text-muted"
@@ -185,8 +153,6 @@ export default class Settings extends React.Component<IProps, IState> {
             what's new?
           </a>
         </div>
-      </>}
-
       </div>
     );
   }
