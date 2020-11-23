@@ -1,18 +1,12 @@
 export interface IMenuItem {
   id: string;
   url: string;
-  // tslint:disable-next-line: no-any
-  icon: any;
+  icon: Icon;
 }
 
 export interface IWebView {
   id: string;
   view: React.ReactElement;
-}
-
-export interface IServiceDetails {
-  name: string;
-  url: string;
 }
 
 export interface ISetting {
@@ -29,8 +23,7 @@ export interface ISettingConfig extends ISetting {
 export interface IServiceSettingConfig {
   id: string;
   label: string;
-  // tslint:disable-next-line: no-any
-  icon: any;
+  icon: Icon;
 }
 
 export interface IStoredMenuItems {
@@ -40,3 +33,6 @@ export interface IStoredMenuItems {
 export interface IStoredSettings {
   data: ISetting[];
 }
+
+// tslint:disable-next-line: no-any
+export type Icon = any;

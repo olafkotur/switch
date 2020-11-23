@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IMenuItem, IStoredMenuItems } from '../typings/d';
+import { Icon, IMenuItem, IStoredMenuItems } from '../typings/d';
 import { StorageService } from './storage';
 import crypto from 'crypto';
 import * as _ from 'lodash';
@@ -17,11 +17,11 @@ export const MenuService = {
     return res && res.data ? res.data : [];
   },
 
-  save: async (url: string): Promise<boolean> => {
+  save: async (url: string, icon?: Icon): Promise<boolean> => {
     const newData: IMenuItem = {
       url,
       id: MenuService.generateId(url),
-      icon: '',
+      icon: icon || '',
     };
 
     // append new data to previous

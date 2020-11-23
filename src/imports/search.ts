@@ -1,8 +1,8 @@
-import { IServiceDetails } from '../typings/d';
+import { IMenuItem } from '../typings/d';
 
-export const suggestions: IServiceDetails[] = [
-  { name: 'Notion', url: 'notion.so' },
-  { name: 'Whatsapp', url: 'web.whatsapp.com' },
-  { name: 'Messenger', url: 'messenger.com' },
-  { name: 'Slack', url: 'slack.com' },
+export const suggestions: IMenuItem[] = [
+  { id: 'Notion', url: 'notion.so', icon: '' },
+  { id: 'Whatsapp', url: 'web.whatsapp.com', icon: '' },
+  { id: 'Messenger', url: 'messenger.com', icon: '' },
+  { id: 'Slack', url: 'slack.com', icon: '' },
 ];

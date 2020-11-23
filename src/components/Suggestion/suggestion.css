@@ -4,3 +4,8 @@
   background-color: #fff !important;
   opacity: 80% !important;
 }
+
+.suggestion-image {
+  width: 60px;
+  height: 60px;
+}

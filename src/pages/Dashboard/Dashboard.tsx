@@ -32,7 +32,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'settings',
+      page: 'search',
       isLoading: true,
       focusedItem: null,
     };

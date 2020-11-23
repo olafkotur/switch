@@ -29,7 +29,7 @@ export default class SearchBar extends React.Component<IProps> {
           }}
           InputProps={{
             disableUnderline: true,
-            startAdornment: <InputAdornment position="start">
+            startAdornment: <InputAdornment position="start" className="pl-3">
               <div className="primary pt-1 pb-1 pr-3 border-right">
                 <Search color="inherit" fontSize="large" />
               </div>
