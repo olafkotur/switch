@@ -1,7 +1,8 @@
 import moment from 'moment';
-import { IMenuItem, IServiceDetails, IStoredMenuItems } from '../typings/d';
+import { IMenuItem, IStoredMenuItems } from '../typings/d';
 import { StorageService } from './storage';
 import crypto from 'crypto';
+import * as _ from 'lodash';
 
 export const MenuService = {
   generateId: (value: string): string => {
@@ -9,6 +10,11 @@ export const MenuService = {
     const algorithm = crypto.createHash('sha256');
     const hash = algorithm.update(input).digest('hex').toString();
     return hash;
+  },
+
+  fetchList: async (): Promise<IMenuItem[]> => {
+    const res: IStoredMenuItems | null = await StorageService.get('menuItems') as IStoredMenuItems | null;
+    return res && res.data ? res.data : [];
   },
 
   save: async (url: string): Promise<boolean> => {
@@ -45,8 +51,27 @@ export const MenuService = {
     return await StorageService.set('menuItems', saveData);
   },
 
-  fetchList: async (): Promise<IMenuItem[]> => {
-    const res: IStoredMenuItems | null = await StorageService.get('menuItems') as IStoredMenuItems | null;
-    return res && res.data ? res.data : [];
+  order: async (id: string, direction: 'up' | 'down'): Promise<boolean> => {
+    const previousData = await MenuService.fetchList();
+
+    // determine indexes
+    const oldIndex = previousData.findIndex(v => v.id === id);
+    const newIndex = direction === 'up' ? oldIndex - 1 : oldIndex + 1;
+
+    // safeguard against illegal moves
+    if (newIndex < 0 || newIndex > previousData.length - 1) {
+      return true;
+    }
+
+    // re-order
+    const updatedData: IMenuItem[] = [];
+    _.without(previousData, previousData[oldIndex]).forEach((v, i) => {
+      i === newIndex && updatedData.push(previousData[oldIndex]);
+      updatedData.push(v);
+    });
+    newIndex > updatedData.length - 1 && updatedData.push(previousData[oldIndex]);
+
+    const saveData: IStoredMenuItems = { data: [...updatedData] };
+    return await StorageService.set('menuItems', saveData);
   },
 };

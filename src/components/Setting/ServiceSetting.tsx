@@ -1,13 +1,14 @@
 import React from 'react';
 import { IServiceSettingConfig } from '../../typings/d';
 import { IconButton, Tooltip } from '@material-ui/core';
-import { ImageSearch, DeleteOutline } from '@material-ui/icons';
+import { ImageSearch, DeleteOutline, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import * as _ from 'lodash';
 import './setting.css';
 
 interface IProps extends IServiceSettingConfig {
   handleUpload: (id: string, file: File) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
+  handleOrder: (id: string, direction: 'up' | 'down') => Promise<void>;
 }
 
 export default class ServiceSetting extends React.Component<IProps> {
@@ -61,7 +62,27 @@ export default class ServiceSetting extends React.Component<IProps> {
           </Tooltip>
           <h5 className="primary setting-label">{this.props.label}</h5>
         </div>
-        <div className="pl-4">
+        <div className="d-flex flex-row pl-4">
+          {/* re-order */}
+          <div className="d-flex flex-row">
+          <Tooltip title="Move upwards" enterDelay={750} className="p-0 setting-order-button">
+              <IconButton
+                onClick={async () => await this.props.handleOrder(this.props.id, 'up')}
+              >
+                <ArrowDropUp color="secondary" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Move downwards" enterDelay={750} className="p-0 setting-order-button">
+              <IconButton
+                onClick={async () => await this.props.handleOrder(this.props.id, 'down')}
+              >
+                <ArrowDropDown color="secondary" />
+              </IconButton>
+            </Tooltip>
+          </div>
+
+          {/* delete */}
           <Tooltip title="Delete service" enterDelay={750}>
             <IconButton
               onClick={async () => await this.props.handleDelete(this.props.id)}

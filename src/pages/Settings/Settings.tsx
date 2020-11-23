@@ -72,9 +72,18 @@ export default class Settings extends React.Component<IProps, IState> {
     }));
 
     // scope binding
+    this.alertError = this.alertError.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleOrder = this.handleOrder.bind(this);
+  }
+
+  /**
+   * Shows an error alert
+   */
+  protected alertError(): void {
+    alert('Something went wrong, please try again');
   }
 
   /**
@@ -88,10 +97,10 @@ export default class Settings extends React.Component<IProps, IState> {
       this.setState({ [name]: value });
       const res = await SettingsService.update(name, value);
       if (!res) {
-        alert('Something went wrong, please try again');
+        this.alertError();
       }
     }
-    shouldRefresh && await this.props.handleRefresh();
+    shouldRefresh && this.props.handleRefresh();
   }
 
   /**
@@ -103,15 +112,32 @@ export default class Settings extends React.Component<IProps, IState> {
     const base64 = await StorageService.base64(file);
     const res = await MenuService.update(id, base64);
     if (!res) {
-      alert('Something went wrong, please try again');
+      this.alertError();
     }
     this.props.handleRefresh();
   }
 
+  /**
+   * Handles service deletion
+   * @param id - service id
+   */
   protected async handleDelete(id: string): Promise<void> {
     const res = await MenuService.delete(id);
     if (!res) {
-      alert('Something went wrong, please try again');
+      this.alertError();
+    }
+    this.props.handleRefresh();
+  }
+
+  /**
+   * Handles service re-ordering
+   * @param id - service id
+   * @param direction - direction of travel
+   */
+  protected async handleOrder(id: string, direction: 'up' | 'down'): Promise<void> {
+    const res = await MenuService.order(id, direction);
+    if (!res) {
+      this.alertError();
     }
     this.props.handleRefresh();
   }
@@ -140,6 +166,7 @@ export default class Settings extends React.Component<IProps, IState> {
             key={`service-setting-${v.id}`}
             handleUpload={this.handleUpload}
             handleDelete={this.handleDelete}
+            handleOrder={this.handleOrder}
           />
         ))}
 
