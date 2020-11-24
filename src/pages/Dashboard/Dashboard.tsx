@@ -4,8 +4,10 @@ import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import { IMenuItem, IWebView } from '../../typings/d';
+import { IMenuItem, IPresetSetting, ISetting, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
+import { SettingsService } from '../../services/settings';
+import { PresetService } from '../../services/preset';
 import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
@@ -20,6 +22,8 @@ export default class Dashboard extends React.Component<{}, IState> {
   /**
    * Local properties
    */
+  protected userSettings: ISetting[] = [];
+  protected presetSettings: IPresetSetting[] = [];
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
 
@@ -51,6 +55,8 @@ export default class Dashboard extends React.Component<{}, IState> {
   protected async handleRefreshMenu(): Promise<void> {
     this.setState({ isLoading: true });
     this.menuItems = await MenuService.fetchList();
+    this.userSettings = await SettingsService.fetchList();
+    this.presetSettings = await PresetService.fetchList();
 
     // set the active item
     if (this.menuItems.length) {
@@ -95,6 +101,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                 page={this.state.page}
                 items={this.menuItems}
                 focusedItem={this.state.focusedItem}
+                userSettings={this.userSettings}
                 handleClick={this.handleMenuItemClicked}
               />
             </div>
@@ -118,6 +125,8 @@ export default class Dashboard extends React.Component<{}, IState> {
               {this.state.page === 'settings' && <div className="dashboard-container d-flex justify-content-center">
                 <Settings
                   items={this.menuItems}
+                  userSettings={this.userSettings}
+                  presetSettings={this.presetSettings}
                   handleRefresh={this.handleRefreshMenu}
                 />
               </div>}

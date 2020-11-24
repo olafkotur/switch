@@ -1,11 +1,17 @@
-import { defaultSettings } from '../imports/settings';
-import { ISetting, IStoredSettings } from '../typings/d';
+import { ISetting, IStoredData } from '../typings/d';
 import { StorageService } from './storage';
 
 export const SettingsService = {
+  getDefault: (): ISetting[] => {
+    return [
+      { name: 'startUpLaunch', value: 'false' },
+      { name: 'showBetaStatus', value: 'true' },
+    ];
+  },
+
   fetchList: async (): Promise<ISetting[]> => {
-    const res: IStoredSettings | null = await StorageService.get('userSettings') as IStoredSettings | null;
-    return res && res.data ? res.data : defaultSettings;
+    const res: IStoredData<ISetting> | null = await StorageService.get('userSettings') as IStoredData<ISetting> | null;
+    return res && res.data ? res.data : SettingsService.getDefault();
   },
 
   update: async (name: string, value: string): Promise<boolean> => {
@@ -13,7 +19,7 @@ export const SettingsService = {
 
     // update setting by name
     const updatedData: ISetting[] = previousData.map(v => name === v.name ? { ...v, value  } : { ...v });
-    const saveData: IStoredSettings = { data: [...updatedData] };
+    const saveData: IStoredData<ISetting> = { data: [...updatedData] };
 
     return await StorageService.set('userSettings', saveData);
   },

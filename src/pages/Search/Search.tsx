@@ -1,11 +1,10 @@
 import React from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar';
-import SearchResult from '../../components/SearchResult/SearchResult';
-import { IMenuItem, IServiceDetails } from '../../typings/d';
+import Suggestion from '../../components/Suggestion/Suggestion';
+import { Icon, IMenuItem } from '../../typings/d';
 import { SearchService } from '../../services/search';
-import './search.css';
-import { Button } from '@material-ui/core';
 import { MenuService } from '../../services/menu';
+import './search.css';
 
 interface IProps {
   items: IMenuItem[];
@@ -15,6 +14,7 @@ interface IProps {
 interface IState {
   search: string;
   isValid: boolean;
+  isLoading: boolean;
 }
 
 export default class Search extends React.Component<IProps, IState> {
@@ -33,15 +33,30 @@ export default class Search extends React.Component<IProps, IState> {
     this.state = {
       search: '',
       isValid: false,
+      isLoading: true,
     };
 
     // scope binding
     this.handleUpdateSearch = this.handleUpdateSearch.bind(this);
     this.handleConfirm = this.handleConfirm.bind(this);
+    this.handleSuggestion = this.handleSuggestion.bind(this);
     this.generateSuggestions = this.generateSuggestions.bind(this);
+  }
 
-    const suggestions = SearchService.getSearchSuggestions();
+  /**
+   * Alert error
+   */
+  protected alertError() {
+    alert('Something went wrong, please try again');
+  }
+
+  /**
+   * Component mounting
+   */
+  public async componentDidMount(): Promise<void> {
+    const suggestions = await SearchService.getSuggestions();
     this.suggestComponents = this.generateSuggestions(suggestions);
+    this.setState({ isLoading: false });
   }
 
   /**
@@ -59,7 +74,20 @@ export default class Search extends React.Component<IProps, IState> {
   protected async handleConfirm(): Promise<void> {
     const success = await MenuService.save(this.state.search);
     if (!success) {
-      alert('Something went wrong whilst adding the service, please try again');
+      this.alertError();
+    }
+    this.props.handleRefresh(); // do not await
+  }
+
+  /**
+   * Handles confirm
+   * @param url - service url
+   * @param icon - service icon
+   */
+  protected async handleSuggestion(url: string, name: string, icon: Icon): Promise<void> {
+    const success = await MenuService.save(url, name, icon);
+    if (!success) {
+      this.alertError();
     }
     this.props.handleRefresh(); // do not await
   }
@@ -68,11 +96,12 @@ export default class Search extends React.Component<IProps, IState> {
    * Generates result components
    * @param data - details required to build component
    */
-  protected generateSuggestions(data: IServiceDetails[]): React.ReactElement[] {
+  protected generateSuggestions(data: IMenuItem[]): React.ReactElement[] {
     return data.map((v) => {
-      return <SearchResult
-        key={v.url}
-        data={v}
+      return <Suggestion
+        {...v}
+        key={`suggestion-${v.name}`}
+        handleSuggestion={this.handleSuggestion}
       />;
     });
   }
@@ -86,11 +115,13 @@ export default class Search extends React.Component<IProps, IState> {
           handleUpdate={this.handleUpdateSearch}
           handleConfirm={this.handleConfirm}
         />
-        <p className="text-muted align-self-center">enter the full url address of the website you wish to add</p>
+        <p className="text-muted align-self-center text-center">
+          enter the full url address of the website you wish to add
+        </p>
 
         <h3 className="primary mt-5">Suggestions</h3>
-        <div className="d-flex flex-row overflow-auto">
-          {this.suggestComponents}
+        <div className="d-flex flex-row row justify-content-center">
+          {!this.state.isLoading && this.suggestComponents}
         </div>
       </div>
     );

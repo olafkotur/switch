@@ -24,7 +24,7 @@ export const StorageService = {
   },
 
   base64: async (file: File): Promise<string> => {
-    return await new Promise((resolve, reject) => {
+    return await new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);

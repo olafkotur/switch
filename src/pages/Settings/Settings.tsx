@@ -1,15 +1,17 @@
 import React from 'react';
-import Setting from '../../components/Setting/Setting';
-import { IMenuItem, IServiceSettingConfig, ISettingConfig } from '../../typings/d';
+import GeneralSetting from '../../components/Setting/GeneralSetting';
+import PresetSetting from '../../components/Setting/PresetSetting';
+import ServiceSetting from '../../components/Setting/ServiceSetting';
+import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting, IWindowSize } from '../../typings/d';
+import { SettingsService } from '../../services/settings';
+import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
 import './settings.css';
-import ServiceSetting from '../../components/ServiceSetting/ServiceSetting';
-import { StorageService } from '../../services/storage';
-import { MenuService } from '../../services/menu';
-import { SettingsService } from '../../services/settings';
 
 interface IProps {
   items: IMenuItem[];
+  userSettings: ISetting[];
+  presetSettings: IPresetSetting[];
   handleRefresh: () => Promise<void>;
 }
 
@@ -21,9 +23,10 @@ export default class Settings extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
+  protected windowSize: IWindowSize;
   protected general: ISettingConfig[];
-  protected beta: ISettingConfig[];
-  protected services: IServiceSettingConfig[];
+  protected presets: IPresetSetting[];
+  protected services: IServiceSetting[];
 
   /**
    * Settings constructor
@@ -32,28 +35,23 @@ export default class Settings extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {
-      isLoading: 'true',
-    };
+    // state
+    this.state = Object.assign({}, ...this.props.userSettings.map(v => ({ [v.name]: v.value })));
 
     // local properties
+    this.windowSize = UtilService.getWindowSize();
     this.general = [
       {
         name: 'startUpLaunch',
-        value: this.state['startUpLaunch'],
         label: 'Launch on Start-up',
         type: 'switch',
-        defaultValue: 'true',
+        value: this.state['startUpLaunch'],
       },
-    ];
-
-    this.beta = [
       {
         name: 'showBetaStatus',
         value: this.state['showBetaStatus'],
         label: 'Show Beta Status',
         type: 'switch',
-        defaultValue: 'true',
       },
       {
         name: 'featureRequest',
@@ -71,34 +69,11 @@ export default class Settings extends React.Component<IProps, IState> {
       },
     ];
 
-    this.services = this.props.items.map(v => ({
-      id: v.id,
-      label: v.url.split('://')[1],
-      icon: v.icon,
-    }));
-
-    // assign default state values
-    const config: ISettingConfig[] = [...this.general, ...this.beta];
-    this.state = Object.assign({ ...this.state }, ...config.map(v => ({ [v.name]: v.defaultValue || '' })));
+    this.presets = [...this.props.presetSettings];
+    this.services = this.props.items.map(v => ({ ...v }));
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  /**
-   * Component mounting
-   */
-  public async componentDidMount() {
-    const userSettings = await SettingsService.fetchList();
-    const state: IState = { ...this.state };
-
-    // update each setting
-    for (const setting of userSettings) {
-      state[setting.name] = setting.value;
-    }
-    this.setState({ ...state, isLoading: 'false' });
   }
 
   /**
@@ -107,46 +82,25 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param value - setting value
    */
   protected async handleUpdate(name: string, value?: string): Promise<void> {
+    const shouldRefresh = ['showBetaStatus'].includes(name);
     if (value) {
       this.setState({ [name]: value });
       const res = await SettingsService.update(name, value);
       if (!res) {
-        alert('Something went wrong, please try again');
+        return UtilService.error();
       }
     }
-  }
-
-  /**
-   * Handles file upload
-   * @param id - service id
-   * @param file - file
-   */
-  protected async handleUpload(id: string, file: File): Promise<void> {
-    const base64 = await StorageService.base64(file);
-    const res = await MenuService.update(id, base64);
-    if (!res) {
-      alert('Something went wrong, please try again');
-    }
-    this.props.handleRefresh();
-  }
-
-  protected async handleDelete(id: string): Promise<void> {
-    const res = await MenuService.delete(id);
-    if (!res) {
-      alert('Something went wrong, please try again');
-    }
-    this.props.handleRefresh();
+    shouldRefresh && this.props.handleRefresh(); // do not await
   }
 
   render() {
     return (
       <div className="settings-container">
-
-      {this.state['isLoading'] === 'false' && <>
+        {/* general settings */}
         <h3 className="primary font-weight-bold">General</h3>
         <hr />
         {this.general.map(v => (
-          <Setting
+          <GeneralSetting
             {...v}
             key={`general-setting-${v.name}`}
             value={this.state[v.name]}
@@ -154,28 +108,30 @@ export default class Settings extends React.Component<IProps, IState> {
           />
         ))}
 
-        <h3 className="primary font-weight-bold mt-5 ">Beta</h3>
+        {/* window preset settings */}
+        <h3 className="primary font-weight-bold mt-5">Window Presets</h3>
         <hr />
-        {this.beta.map(v => (
-          <Setting
+        {this.presets.map(v => (
+          <PresetSetting
             {...v}
-            key={`beta-setting-${v.name}`}
-            value={this.state[v.name]}
-            handleUpdate={this.handleUpdate}
+            key={`preset-setting-${v.id}`}
+            active={this.windowSize.width === v.width && this.windowSize.height === v.height}
+            handleRefresh={this.props.handleRefresh}
           />
         ))}
 
+        {/* service settings */}
         <h3 className="primary font-weight-bold mt-5 ">Services</h3>
         <hr />
         {this.services.map(v => (
           <ServiceSetting
             {...v}
             key={`service-setting-${v.id}`}
-            handleUpload={this.handleUpload}
-            handleDelete={this.handleDelete}
+            handleRefresh={this.props.handleRefresh}
           />
         ))}
 
+        {/* footer */}
         <div className="d-flex justify-content-center my-5">
           <a
             className="text-muted"
@@ -185,8 +141,6 @@ export default class Settings extends React.Component<IProps, IState> {
             what's new?
           </a>
         </div>
-      </>}
-
       </div>
     );
   }

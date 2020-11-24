@@ -1,14 +1,13 @@
 import React from 'react';
 import { ISettingConfig } from '../../typings/d';
-import { Button, IconButton, Switch, Tooltip } from '@material-ui/core';
-import { ImageSearch, DeleteOutline } from '@material-ui/icons';
+import { Button, Switch } from '@material-ui/core';
 import './setting.css';
 
 interface IProps extends ISettingConfig {
   handleUpdate: (name: string, value?: string) => void;
 }
 
-export default class Setting extends React.Component<IProps> {
+export default class GeneralSetting extends React.Component<IProps> {
 
   protected renderType(): React.ReactElement {
     switch (this.props.type) {
@@ -23,6 +22,7 @@ export default class Setting extends React.Component<IProps> {
           disableElevation
           variant="contained"
           className="setting-button"
+          color="primary"
           onClick={() => this.props.handleUpdate(this.props.name)}
         >
           <span className="primary setting-button-text">{this.props.action || 'change'}</span>

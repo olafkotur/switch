@@ -1,6 +1,6 @@
 import React from 'react';
 import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
-import { IMenuItem } from '../../typings/d';
+import { IMenuItem, ISetting } from '../../typings/d';
 import { ButtonBase, Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { remote } from 'electron';
@@ -10,14 +10,11 @@ interface IProps {
   page: TPages;
   items: IMenuItem[];
   focusedItem: IMenuItem | null;
+  userSettings: ISetting[];
   handleClick: (action: TPages, item?: IMenuItem) => void;
 }
 
 export default class Menu extends React.Component<IProps> {
-  /**
-   * Local properties
-   */
-
   /**
    * Generates menu items
    */
@@ -39,16 +36,17 @@ export default class Menu extends React.Component<IProps> {
   }
 
   render() {
+    const showBetaStatus = (this.props.userSettings.find(v => v.name === 'showBetaStatus')?.value || '') === 'true';
     return (
       <div className="vh-100">
         <div className="menu-top">
-          <div className="d-flex justify-content-center pt-2">
+          {showBetaStatus && <div className="d-flex justify-content-center pt-2">
             <Chip
               label="beta"
               size="small"
               className="menu-beta"
             />
-          </div>
+          </div>}
           <div className="d-flex flex-column justify-content-center align-items-center mt-2">
             {this.generateItems()}
           </div>
