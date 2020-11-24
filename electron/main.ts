@@ -43,6 +43,7 @@ const createWindow = (): void => {
     if (newScreenSize.width !== screenSize.width || screenSize.height !== screenSize.height) {
       screenSize = { ...newScreenSize };
       mainWindow.setSize(screenSize.width, screenSize.height);
+      mainWindow.reload();
     }
 
     // set visibility
