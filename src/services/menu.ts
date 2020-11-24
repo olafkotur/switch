@@ -10,9 +10,10 @@ export const MenuService = {
   },
 
   save: async (url: string, name?: string, icon?: Icon): Promise<boolean> => {
+    const formattedUrl = url.includes('http://') || url.includes('https://') ? url : `https://${url}`;
     const newData: IMenuItem = {
-      url,
-      name: name || url.split('://')[1],
+      url: formattedUrl,
+      name: name || formattedUrl.split('://')[1],
       id: UtilService.generateId(url),
       icon: icon || '',
     };
