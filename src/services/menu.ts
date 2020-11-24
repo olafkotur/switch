@@ -17,10 +17,10 @@ export const MenuService = {
     return res && res.data ? res.data : [];
   },
 
-  save: async (url: string, icon?: Icon): Promise<boolean> => {
+  save: async (url: string, name?: string, icon?: Icon): Promise<boolean> => {
     const newData: IMenuItem = {
       url,
-      name: url.split('://')[1],
+      name: name || url.split('://')[1],
       id: MenuService.generateId(url),
       icon: icon || '',
     };
