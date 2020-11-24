@@ -115,8 +115,8 @@ export default class Settings extends React.Component<IProps, IState> {
           />
         ))}
 
-        {/* window preset settings */}
-        <h3 className="primary font-weight-bold mt-5">Window Presets</h3>
+        {/* preset settings */}
+        <h3 className="primary font-weight-bold mt-5">Presets</h3>
         <hr />
         {this.presets.map(v => (
           <PresetSetting
