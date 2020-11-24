@@ -1,18 +1,14 @@
 import { app, screen, BrowserWindow, globalShortcut } from 'electron';
+import { UtilService } from '../src/services/util';
 import * as path from 'path';
 import * as url from 'url';
 const open = require('open');
 
-const getWindowSize = (): { width: number, height: number } => {
-  const screenSize = screen.getPrimaryDisplay().workAreaSize;
-  return { width: screenSize.width - 50, height: screenSize.height - 25 };
-};
-
 const createWindow = (): void => {
-  let windowSize = getWindowSize();
+  let screenSize = UtilService.getScreenSize();
   let mainWindow: BrowserWindow | null = new BrowserWindow({
-    width: windowSize.width,
-    height: windowSize.height,
+    width: screenSize.width,
+    height: screenSize.height,
     minHeight: 480,
     minWidth: 720,
     frame: false,
@@ -38,11 +34,11 @@ const createWindow = (): void => {
       return;
     }
 
-    // check if window size has changed - happens if user switches displays
-    const newWindowSize = getWindowSize();
-    if (newWindowSize.width !== windowSize.width || newWindowSize.height !== windowSize.height) {
-      windowSize = { ...newWindowSize };
-      mainWindow.setSize(windowSize.width, windowSize.height);
+    // check if screen size has changed - happens if user switches displays
+    const newScreenSize = UtilService.getScreenSize();
+    if (newScreenSize.width !== screenSize.width || screenSize.height !== screenSize.height) {
+      screenSize = { ...newScreenSize };
+      mainWindow.setSize(screenSize.width, screenSize.height);
     }
 
     // set visibility
