@@ -1,7 +1,9 @@
-import { app, BrowserWindow, globalShortcut, screen } from 'electron';
+import { app, BrowserWindow, globalShortcut, screen, Menu } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+
 const open = require('open');
+const electronLocalshortcut = require('electron-localshortcut');
 
 const getScreenSize = (): { width: number, height: number } => {
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -10,7 +12,7 @@ const getScreenSize = (): { width: number, height: number } => {
 
 const createWindow = (): void => {
   let screenSize = getScreenSize();
-  let mainWindow: BrowserWindow | null = new BrowserWindow({
+  let mainWindow: BrowserWindow = new BrowserWindow({
     width: screenSize.width,
     height: screenSize.height,
     minHeight: 480,
@@ -34,10 +36,6 @@ const createWindow = (): void => {
 
   // register global shortcuts
   globalShortcut.register('CommandOrControl+Esc', (): void => {
-    if (!mainWindow) {
-      return;
-    }
-
     // check if screen size has changed - happens if user switches displays
     const newScreenSize = getScreenSize();
     if (newScreenSize.width !== screenSize.width || screenSize.height !== screenSize.height) {
@@ -50,6 +48,10 @@ const createWindow = (): void => {
     const isVisible = mainWindow.isVisible();
     isVisible ? mainWindow.hide() : mainWindow.show();
   });
+
+  // prevent window realods
+  Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
+  mainWindow.removeMenu(); // windows
 
   // web content handlers
   mainWindow.webContents.on('new-window', async (event, url) => {
@@ -71,6 +73,7 @@ const createWindow = (): void => {
   }
 
   mainWindow.on('closed', () => {
+    // @ts-ignore
     mainWindow = null;
   });
 };
