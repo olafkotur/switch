@@ -1,11 +1,11 @@
 import React from 'react';
-import { IMenuItem } from '../../typings/d';
+import { IMenuItem, IServiceSetting } from '../../typings/d';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { ImageSearch, DeleteOutline, ArrowDropDown, ArrowDropUp, Done, Clear } from '@material-ui/icons';
 import * as _ from 'lodash';
 import './setting.css';
 
-interface IProps extends IMenuItem {
+interface IProps extends IServiceSetting {
   handleUpdate: (data: IMenuItem) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
   handleOrder: (id: string, direction: 'up' | 'down') => Promise<void>;

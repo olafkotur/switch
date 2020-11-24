@@ -1,7 +1,7 @@
 import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
 import ServiceSetting from '../../components/Setting/ServiceSetting';
-import { IMenuItem, ISetting, ISettingConfig } from '../../typings/d';
+import { IMenuItem, ISetting, ISettingConfig, IServiceSetting } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import * as _ from 'lodash';
@@ -22,7 +22,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * Local properties
    */
   protected general: ISettingConfig[];
-  protected services: IMenuItem[];
+  protected services: IServiceSetting[];
 
   /**
    * Settings constructor

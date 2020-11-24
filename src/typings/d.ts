@@ -21,6 +21,9 @@ export interface ISettingConfig extends ISetting {
   action?: string;
 }
 
+export interface IServiceSetting extends IMenuItem {
+}
+
 export interface IStoredMenuItems {
   data: IMenuItem[];
 }
