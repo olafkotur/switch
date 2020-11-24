@@ -74,18 +74,7 @@ export default class Settings extends React.Component<IProps, IState> {
     this.services = this.props.items.map(v => ({ ...v }));
 
     // scope binding
-    this.alertError = this.alertError.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleOrder = this.handleOrder.bind(this);
-    this.handleUpdateItem = this.handleUpdateItem.bind(this);
-  }
-
-  /**
-   * Shows an error alert
-   */
-  protected alertError(): void {
-    alert('Something went wrong, please try again');
   }
 
   /**
@@ -99,47 +88,10 @@ export default class Settings extends React.Component<IProps, IState> {
       this.setState({ [name]: value });
       const res = await SettingsService.update(name, value);
       if (!res) {
-        this.alertError();
+        return UtilService.error();
       }
     }
     shouldRefresh && this.props.handleRefresh(); // do not await
-  }
-
-  /**
-   * Handles service name edit
-   * @param data - menu item data
-   */
-  protected async handleUpdateItem(data: IMenuItem): Promise<void> {
-    const res = await MenuService.update(data);
-    if (!res) {
-      this.alertError();
-    }
-    this.props.handleRefresh(); // do not await
-  }
-
-  /**
-   * Handles service deletion
-   * @param id - service id
-   */
-  protected async handleDelete(id: string): Promise<void> {
-    const res = await MenuService.delete(id);
-    if (!res) {
-      this.alertError();
-    }
-    this.props.handleRefresh(); // do not await
-  }
-
-  /**
-   * Handles service re-ordering
-   * @param id - service id
-   * @param direction - direction of travel
-   */
-  protected async handleOrder(id: string, direction: 'up' | 'down'): Promise<void> {
-    const res = await MenuService.order(id, direction);
-    if (!res) {
-      this.alertError();
-    }
-    this.props.handleRefresh(); // do not await
   }
 
   render() {
@@ -176,9 +128,7 @@ export default class Settings extends React.Component<IProps, IState> {
           <ServiceSetting
             {...v}
             key={`service-setting-${v.id}`}
-            handleUpdate={this.handleUpdateItem}
-            handleDelete={this.handleDelete}
-            handleOrder={this.handleOrder}
+            handleRefresh={this.props.handleRefresh}
           />
         ))}
 

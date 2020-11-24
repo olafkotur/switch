@@ -4,11 +4,11 @@ import { IconButton, Tooltip } from '@material-ui/core';
 import { ImageSearch, DeleteOutline, ArrowDropDown, ArrowDropUp, Done, Clear } from '@material-ui/icons';
 import * as _ from 'lodash';
 import './setting.css';
+import { MenuService } from '../../services/menu';
+import { UtilService } from '../../services/util';
 
 interface IProps extends IMenuItem {
-  handleUpdate: (data: IMenuItem) => Promise<void>;
-  handleDelete: (id: string) => Promise<void>;
-  handleOrder: (id: string, direction: 'up' | 'down') => Promise<void>;
+  handleRefresh: () => Promise<void>;
 }
 
 interface IState {
@@ -32,6 +32,9 @@ export default class ServiceSetting extends React.Component<IProps, IState> {
     };
 
     // scope binding
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleOrder = this.handleOrder.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
   }
 
@@ -46,12 +49,49 @@ export default class ServiceSetting extends React.Component<IProps, IState> {
   }
 
   /**
+   * Handles service name edit
+   * @param data - menu item data
+   */
+  protected async handleUpdate(data: IMenuItem): Promise<void> {
+    const res = await MenuService.update(data);
+    if (!res) {
+      return UtilService.error();
+    }
+    this.props.handleRefresh(); // do not await
+  }
+
+  /**
+   * Handles service deletion
+   * @param id - service id
+   */
+  protected async handleDelete(): Promise<void> {
+    const res = await MenuService.delete(this.props.id);
+    if (!res) {
+      return UtilService.error();
+    }
+    this.props.handleRefresh(); // do not await
+  }
+
+  /**
+   * Handles service re-ordering
+   * @param id - service id
+   * @param direction - direction of travel
+   */
+  protected async handleOrder(id: string, direction: 'up' | 'down'): Promise<void> {
+    const res = await MenuService.order(id, direction);
+    if (!res) {
+      return UtilService.error();
+    }
+    this.props.handleRefresh(); // do not await
+  }
+
+   /**
    * Handles upload
    * @param event - html input event
    */
   protected async handleUpload(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     if (event.target.files) {
-      await this.props.handleUpdate({
+      await this.handleUpdate({
         id: this.props.id,
         url: this.props.url,
         name: this.props.name,
@@ -99,7 +139,7 @@ export default class ServiceSetting extends React.Component<IProps, IState> {
               ? <>
                 <Tooltip title="Confirm" enterDelay={750} className="p-1 setting-confirm-edit" >
                   <IconButton
-                    onClick={() => this.props.handleUpdate({
+                    onClick={() => this.handleUpdate({
                       id: this.props.id,
                       url: this.props.url,
                       name: this.state.label,
@@ -120,14 +160,14 @@ export default class ServiceSetting extends React.Component<IProps, IState> {
               : <>
                 <Tooltip title="Move upwards" enterDelay={750} className="p-1">
                   <IconButton
-                    onClick={async () => await this.props.handleOrder(this.props.id, 'up')}
+                    onClick={async () => await this.handleOrder(this.props.id, 'up')}
                   >
                     <ArrowDropUp color="secondary" />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Move downwards" enterDelay={750} className="p-1">
                   <IconButton
-                    onClick={async () => await this.props.handleOrder(this.props.id, 'down')}
+                    onClick={async () => await this.handleOrder(this.props.id, 'down')}
                   >
                     <ArrowDropDown color="secondary" />
                   </IconButton>
@@ -137,7 +177,7 @@ export default class ServiceSetting extends React.Component<IProps, IState> {
 
           <Tooltip title="Delete service" enterDelay={750} className="align-self-center">
             <IconButton
-              onClick={async () => await this.props.handleDelete(this.props.id)}
+              onClick={this.handleDelete}
             >
               <DeleteOutline color="error" />
             </IconButton>
