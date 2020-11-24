@@ -6,8 +6,8 @@ import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
 import { IMenuItem, ISetting, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
-import './dashboard.css';
 import { SettingsService } from '../../services/settings';
+import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
 

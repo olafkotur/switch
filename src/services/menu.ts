@@ -20,6 +20,7 @@ export const MenuService = {
   save: async (url: string, icon?: Icon): Promise<boolean> => {
     const newData: IMenuItem = {
       url,
+      name: url.split('://')[1],
       id: MenuService.generateId(url),
       icon: icon || '',
     };
@@ -31,11 +32,14 @@ export const MenuService = {
     return await StorageService.set('menuItems', saveData);
   },
 
-  update: async (id: string, icon: string): Promise<boolean> => {
+  update: async (data: IMenuItem): Promise<boolean> => {
     const previousData = await MenuService.fetchList();
+    const icon = data.icon && typeof data.icon !== 'string' ? await StorageService.base64(data.icon) : '';
 
     // update icon by id
-    const updatedData: IMenuItem[] = previousData.map(v => id === v.id ? { ...v, icon } : { ...v });
+    const updatedData: IMenuItem[] = previousData.map(v => (
+      data.id === v.id ? { ...v, icon: icon || v.icon, name: data.name || v.name || v.url } : { ...v }
+    ));
     const saveData: IStoredMenuItems = { data: [...updatedData] };
 
     return await StorageService.set('menuItems', saveData);

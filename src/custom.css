@@ -13,6 +13,10 @@ button:focus {
   background: transparent;
 }
 
+input:focus {
+  outline:none!important;
+}
+
 /********* Colors *********/
 .bg-primary {
   background: #303136 !important;

@@ -1,17 +1,22 @@
 import React from 'react';
-import { IServiceSettingConfig } from '../../typings/d';
+import { IMenuItem } from '../../typings/d';
 import { IconButton, Tooltip } from '@material-ui/core';
-import { ImageSearch, DeleteOutline, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import { ImageSearch, DeleteOutline, ArrowDropDown, ArrowDropUp, Done, Clear } from '@material-ui/icons';
 import * as _ from 'lodash';
 import './setting.css';
 
-interface IProps extends IServiceSettingConfig {
-  handleUpload: (id: string, file: File) => Promise<void>;
+interface IProps extends IMenuItem {
+  handleUpdate: (data: IMenuItem) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
   handleOrder: (id: string, direction: 'up' | 'down') => Promise<void>;
 }
 
-export default class ServiceSetting extends React.Component<IProps> {
+interface IState {
+  isEditing: boolean;
+  label: string;
+}
+
+export default class ServiceSetting extends React.Component<IProps, IState> {
 
   /**
    * ServiceSetting constructor
@@ -20,8 +25,24 @@ export default class ServiceSetting extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
 
+    // state
+    this.state = {
+      isEditing: false,
+      label: this.props.name,
+    };
+
     // scope binding
     this.handleUpload = this.handleUpload.bind(this);
+  }
+
+  /**
+   * Component update
+   */
+  public componentDidUpdate() {
+    // hide editing confirmation
+    if (this.state.label === this.props.name && this.state.isEditing) {
+      this.setState({ isEditing: false });
+    }
   }
 
   /**
@@ -30,7 +51,12 @@ export default class ServiceSetting extends React.Component<IProps> {
    */
   protected async handleUpload(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     if (event.target.files) {
-      await this.props.handleUpload(this.props.id, event.target.files[0]);
+      await this.props.handleUpdate({
+        id: this.props.id,
+        url: this.props.url,
+        name: this.props.name,
+        icon: event.target.files[0],
+      });
     }
   }
 
@@ -60,26 +86,54 @@ export default class ServiceSetting extends React.Component<IProps> {
               </label>
             </Tooltip>
           </IconButton>
-          <h5 className="primary setting-label">{this.props.label}</h5>
+          <input
+            className="primary setting-editable-label"
+            type="text"
+            value={this.state.label}
+            onChange={e => this.setState({ isEditing: true, label: e.target.value })}
+          />
         </div>
         <div className="d-flex flex-row pl-4">
           {/* re-order */}
           <div className="d-flex flex-row">
-            <Tooltip title="Move upwards" enterDelay={750} className="p-1">
-              <IconButton
-                onClick={async () => await this.props.handleOrder(this.props.id, 'up')}
-              >
-                <ArrowDropUp color="secondary" />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Move downwards" enterDelay={750} className="p-1">
-              <IconButton
-                onClick={async () => await this.props.handleOrder(this.props.id, 'down')}
-              >
-                <ArrowDropDown color="secondary" />
-              </IconButton>
-            </Tooltip>
+            {this.state.isEditing
+              ? <>
+                <Tooltip title="Confirm" enterDelay={750} className="p-1 setting-confirm-edit" >
+                  <IconButton
+                    onClick={() => this.props.handleUpdate({
+                      id: this.props.id,
+                      url: this.props.url,
+                      name: this.state.label,
+                      icon: this.props.icon,
+                    })}
+                  >
+                    <Done color="secondary" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Cancel" enterDelay={750} className="p-1 setting-confirm-edit" >
+                  <IconButton
+                    onClick={() => this.setState({ isEditing: false, label: this.props.name })}
+                  >
+                    <Clear color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              </>
+              : <>
+                <Tooltip title="Move upwards" enterDelay={750} className="p-1">
+                  <IconButton
+                    onClick={async () => await this.props.handleOrder(this.props.id, 'up')}
+                  >
+                    <ArrowDropUp color="secondary" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Move downwards" enterDelay={750} className="p-1">
+                  <IconButton
+                    onClick={async () => await this.props.handleOrder(this.props.id, 'down')}
+                  >
+                    <ArrowDropDown color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              </>}
           </div>
 
           {/* delete */}

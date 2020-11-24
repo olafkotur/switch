@@ -1,8 +1,7 @@
 import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
 import ServiceSetting from '../../components/Setting/ServiceSetting';
-import { IMenuItem, IServiceSettingConfig, ISetting, ISettingConfig } from '../../typings/d';
-import { StorageService } from '../../services/storage';
+import { IMenuItem, ISetting, ISettingConfig } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import * as _ from 'lodash';
@@ -23,7 +22,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * Local properties
    */
   protected general: ISettingConfig[];
-  protected services: IServiceSettingConfig[];
+  protected services: IMenuItem[];
 
   /**
    * Settings constructor
@@ -65,18 +64,14 @@ export default class Settings extends React.Component<IProps, IState> {
       },
     ];
 
-    this.services = this.props.items.map(v => ({
-      id: v.id,
-      label: v.url.split('://')[1],
-      icon: v.icon,
-    }));
+    this.services = this.props.items.map(v => ({ ...v }));
 
     // scope binding
     this.alertError = this.alertError.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleOrder = this.handleOrder.bind(this);
+    this.handleUpdateItem = this.handleUpdateItem.bind(this);
   }
 
   /**
@@ -100,21 +95,19 @@ export default class Settings extends React.Component<IProps, IState> {
         this.alertError();
       }
     }
-    shouldRefresh && this.props.handleRefresh();
+    shouldRefresh && this.props.handleRefresh(); // do not await
   }
 
   /**
-   * Handles file upload
-   * @param id - service id
-   * @param file - file
+   * Handles service name edit
+   * @param data - menu item data
    */
-  protected async handleUpload(id: string, file: File): Promise<void> {
-    const base64 = await StorageService.base64(file);
-    const res = await MenuService.update(id, base64);
+  protected async handleUpdateItem(data: IMenuItem): Promise<void> {
+    const res = await MenuService.update(data);
     if (!res) {
       this.alertError();
     }
-    this.props.handleRefresh();
+    this.props.handleRefresh(); // do not await
   }
 
   /**
@@ -126,7 +119,7 @@ export default class Settings extends React.Component<IProps, IState> {
     if (!res) {
       this.alertError();
     }
-    this.props.handleRefresh();
+    this.props.handleRefresh(); // do not await
   }
 
   /**
@@ -139,7 +132,7 @@ export default class Settings extends React.Component<IProps, IState> {
     if (!res) {
       this.alertError();
     }
-    this.props.handleRefresh();
+    this.props.handleRefresh(); // do not await
   }
 
   render() {
@@ -164,7 +157,7 @@ export default class Settings extends React.Component<IProps, IState> {
           <ServiceSetting
             {...v}
             key={`service-setting-${v.id}`}
-            handleUpload={this.handleUpload}
+            handleUpdate={this.handleUpdateItem}
             handleDelete={this.handleDelete}
             handleOrder={this.handleOrder}
           />

@@ -14,9 +14,15 @@
 }
 
 .setting-label {
-  max-width: 45vw;
   margin: 15px 0 0 0;
   overflow-x: scroll;
+}
+
+.setting-editable-label {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  width: 45vw;
 }
 
 .setting-image {

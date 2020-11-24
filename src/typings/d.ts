@@ -1,6 +1,7 @@
 export interface IMenuItem {
   id: string;
   url: string;
+  name: string;
   icon: Icon;
 }
 
@@ -18,12 +19,6 @@ export interface ISettingConfig extends ISetting {
   label: string;
   type: 'switch' | 'button';
   action?: string;
-}
-
-export interface IServiceSettingConfig {
-  id: string;
-  label: string;
-  icon: Icon;
 }
 
 export interface IStoredMenuItems {
