@@ -2,15 +2,17 @@ import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
 import PresetSetting from '../../components/Setting/PresetSetting';
 import ServiceSetting from '../../components/Setting/ServiceSetting';
-import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting } from '../../typings/d';
+import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting, IWindowSize } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import * as _ from 'lodash';
 import './settings.css';
+import { UtilService } from '../../services/util';
 
 interface IProps {
   items: IMenuItem[];
   userSettings: ISetting[];
+  presetSettings: IPresetSetting[];
   handleRefresh: () => Promise<void>;
 }
 
@@ -22,6 +24,7 @@ export default class Settings extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
+  protected windowSize: IWindowSize;
   protected general: ISettingConfig[];
   protected presets: IPresetSetting[];
   protected services: IServiceSetting[];
@@ -37,6 +40,7 @@ export default class Settings extends React.Component<IProps, IState> {
     this.state = Object.assign({}, ...this.props.userSettings.map(v => ({ [v.name]: v.value })));
 
     // local properties
+    this.windowSize = UtilService.getWindowSize();
     this.general = [
       {
         name: 'startUpLaunch',
@@ -66,9 +70,7 @@ export default class Settings extends React.Component<IProps, IState> {
       },
     ];
 
-    this.presets = [
-      { id: '', name: 'Hello world hello world hello world hello world hello world hello world', width: 720, height: 480 },
-    ];
+    this.presets = [...this.props.presetSettings];
     this.services = this.props.items.map(v => ({ ...v }));
 
     // scope binding
@@ -162,6 +164,7 @@ export default class Settings extends React.Component<IProps, IState> {
           <PresetSetting
             {...v}
             key={`preset-setting-${v.id}`}
+            active={this.windowSize.width === v.width && this.windowSize.height === v.height}
             handleRefresh={this.props.handleRefresh}
           />
         ))}

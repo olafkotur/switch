@@ -4,10 +4,11 @@ import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import { IMenuItem, ISetting, IWebView } from '../../typings/d';
+import { IMenuItem, IPresetSetting, ISetting, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import './dashboard.css';
+import { PresetService } from '../../services/preset';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -22,6 +23,7 @@ export default class Dashboard extends React.Component<{}, IState> {
    * Local properties
    */
   protected userSettings: ISetting[] = [];
+  protected presetSettings: IPresetSetting[] = [];
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
 
@@ -54,6 +56,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.setState({ isLoading: true });
     this.menuItems = await MenuService.fetchList();
     this.userSettings = await SettingsService.fetchList();
+    this.presetSettings = await PresetService.fetchList();
 
     // set the active item
     if (this.menuItems.length) {
@@ -123,6 +126,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                 <Settings
                   items={this.menuItems}
                   userSettings={this.userSettings}
+                  presetSettings={this.presetSettings}
                   handleRefresh={this.handleRefreshMenu}
                 />
               </div>}

@@ -7,13 +7,12 @@ import { DeleteOutline, RadioButtonChecked, RadioButtonUnchecked } from '@materi
 import './setting.css';
 
 interface IProps extends IPresetSetting {
-  active?: boolean;
+  active: boolean;
   handleRefresh: () => Promise<void>;
 }
 
 interface IState {
-  label: string;
-  isEditing: boolean;
+  active: boolean;
 }
 
 export default class PresetSetting extends React.Component<IProps, IState> {
@@ -25,8 +24,7 @@ export default class PresetSetting extends React.Component<IProps, IState> {
 
     // state
     this.state = {
-      label: this.props.name,
-      isEditing: false,
+      active: this.props.active,
     };
 
     // scope binding
@@ -36,20 +34,11 @@ export default class PresetSetting extends React.Component<IProps, IState> {
   }
 
   /**
-   * Component update
-   */
-  public componentDidUpdate() {
-    // hide editing confirmation
-    if (this.state.label === this.props.name && this.state.isEditing) {
-      this.setState({ isEditing: false });
-    }
-  }
-
-  /**
    * Handles set active preset
    */
   protected async handleActive(): Promise<void> {
-    console.log('active');
+    PresetService.active(this.props.width, this.props.height, this.props.xPosition, this.props.yPosition);
+    this.setState({ active: true });
   }
 
   /**
@@ -58,10 +47,10 @@ export default class PresetSetting extends React.Component<IProps, IState> {
    * @param width - preset width
    * @param height - preset height
    */
-  protected async handleSave(name: string, width: number, height: number): Promise<void> {
-    const res = await PresetService.save(name, width, height);
+  protected async handleSave(name: string, width: number, height: number, xPosition: number, yPosition: number): Promise<void> {
+    const res = await PresetService.save(name, width, height, xPosition, yPosition);
     if (!res) {
-      UtilService.error();
+      return UtilService.error();
     }
     this.props.handleRefresh(); // do not await
   }
@@ -70,7 +59,11 @@ export default class PresetSetting extends React.Component<IProps, IState> {
    * Handles delete
    */
   protected async handleDelete(): Promise<void> {
-    console.log('delete');
+    const res = await PresetService.delete(this.props.id);
+    if (!res) {
+      return UtilService.error();
+    }
+    this.props.handleRefresh(); // do not await
   }
 
   render() {
@@ -80,27 +73,27 @@ export default class PresetSetting extends React.Component<IProps, IState> {
           disabled
           className="primary setting-editable-label"
           type="text"
-          value={this.state.label}
+          value={this.props.name}
         />
         <div className="d-flex flex-row">
           <Tooltip title={`${this.props.height} * ${this.props.width}`} enterDelay={750} className="p-1">
             <IconButton
               onClick={this.handleActive}
             >
-              {this.props.active
+              {this.state.active
                 ? <RadioButtonChecked color="secondary" fontSize="small" />
                 : <RadioButtonUnchecked color="secondary" fontSize="small"/>
               }
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Delete service" enterDelay={750} className="align-self-center">
+          {false && <Tooltip title="Delete service" enterDelay={750} className="align-self-center">
             <IconButton
               onClick={this.handleDelete}
             >
               <DeleteOutline color="error" />
             </IconButton>
-          </Tooltip>
+          </Tooltip>}
         </div>
       </div>
     );

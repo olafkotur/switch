@@ -21,6 +21,8 @@ export interface IPresetSetting {
   name: string;
   width: number;
   height: number;
+  xPosition: number;
+  yPosition: number;
 }
 
 export interface IServiceSetting extends IMenuItem {
@@ -36,4 +38,9 @@ export interface IMenuItem {
 export interface IWebView {
   id: string;
   view: React.ReactElement;
+}
+
+export interface IWindowSize {
+  width: number;
+  height: number;
 }
