@@ -1,4 +1,4 @@
-import { app, screen, BrowserWindow, globalShortcut } from 'electron';
+import { app, BrowserWindow, globalShortcut } from 'electron';
 import { UtilService } from '../src/services/util';
 import * as path from 'path';
 import * as url from 'url';
