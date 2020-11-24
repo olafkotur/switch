@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 
 const open = require('open');
-const electronLocalshortcut = require('electron-localshortcut');
+require('dotenv').config();
 
 const getScreenSize = (): { width: number, height: number } => {
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -49,9 +49,11 @@ const createWindow = (): void => {
     isVisible ? mainWindow.hide() : mainWindow.show();
   });
 
-  // prevent window realods
-  Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
-  mainWindow.removeMenu(); // windows
+  // prevent window reloads and block devtools
+  if (process.env.ENV !== 'development') {
+    Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
+    mainWindow.removeMenu(); // windows
+  }
 
   // web content handlers
   mainWindow.webContents.on('new-window', async (event, url) => {
