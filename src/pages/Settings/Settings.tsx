@@ -3,11 +3,10 @@ import GeneralSetting from '../../components/Setting/GeneralSetting';
 import PresetSetting from '../../components/Setting/PresetSetting';
 import ServiceSetting from '../../components/Setting/ServiceSetting';
 import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting, IWindowSize } from '../../typings/d';
-import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
+import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
 import './settings.css';
-import { UtilService } from '../../services/util';
 
 interface IProps {
   items: IMenuItem[];

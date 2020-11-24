@@ -7,8 +7,8 @@ import Settings from '../Settings/Settings';
 import { IMenuItem, IPresetSetting, ISetting, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
-import './dashboard.css';
 import { PresetService } from '../../services/preset';
+import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
 

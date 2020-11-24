@@ -1,7 +1,7 @@
 import { IPresetSetting, IStoredData } from '../typings/d';
 import { StorageService } from './storage';
-import { remote } from 'electron';
 import { UtilService } from './util';
+import { remote } from 'electron';
 
 const STORAGE_KEY = 'windowPresets';
 

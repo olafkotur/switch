@@ -1,11 +1,11 @@
 import React from 'react';
-import { IMenuItem, IServiceSetting } from '../../typings/d';
+import { IMenuItem } from '../../typings/d';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { ImageSearch, DeleteOutline, ArrowDropDown, ArrowDropUp, Done, Clear } from '@material-ui/icons';
-import * as _ from 'lodash';
-import './setting.css';
 import { MenuService } from '../../services/menu';
 import { UtilService } from '../../services/util';
+import * as _ from 'lodash';
+import './setting.css';
 
 interface IProps extends IMenuItem {
   handleRefresh: () => Promise<void>;
