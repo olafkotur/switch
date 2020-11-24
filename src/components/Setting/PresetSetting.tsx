@@ -1,5 +1,5 @@
 import React from 'react';
-import { IPresetSetting } from '../../typings/d';
+import { IPresetSetting, IWindowInfo } from '../../typings/d';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
 import { UtilService } from '../../services/util';
@@ -7,7 +7,7 @@ import { DeleteOutline, RadioButtonChecked, RadioButtonUnchecked } from '@materi
 import './setting.css';
 
 interface IProps extends IPresetSetting {
-  active: boolean;
+  animate: boolean;
   handleRefresh: () => Promise<void>;
 }
 
@@ -24,21 +24,50 @@ export default class PresetSetting extends React.Component<IProps, IState> {
 
     // state
     this.state = {
-      active: this.props.active,
+      active: this.isActive(),
     };
 
     // scope binding
+    this.isActive = this.isActive.bind(this);
     this.handleActive = this.handleActive.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   /**
+   * Component mount
+   */
+  public componentDidMount() {
+    window.addEventListener('resize', () => this.setState({ active: this.isActive() }));
+  }
+
+  /**
+   * Determine if the preset is active
+   */
+  protected isActive(): boolean {
+    const windowInfo = UtilService.getWindowInfo();
+    if (windowInfo.width === this.props.width
+      && windowInfo.height === this.props.height
+      && windowInfo.xPosition === this.props.xPosition
+      && windowInfo.yPosition === this.props.yPosition
+      ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Handles set active preset
    */
   protected async handleActive(): Promise<void> {
-    PresetService.active(this.props.width, this.props.height, this.props.xPosition, this.props.yPosition);
-    this.setState({ active: true });
+    await PresetService.active(
+      this.props.width,
+      this.props.height,
+      this.props.xPosition,
+      this.props.yPosition,
+      this.props.animate,
+    );
+    this.setState({ active: this.isActive() });
   }
 
   /**

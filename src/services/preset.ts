@@ -9,9 +9,9 @@ export const PresetService = {
   getDefault: (): IPresetSetting[] => {
     const screenSize = UtilService.getScreenSize();
     return [
-      { id: 'default-fullscreen', name: 'Full Screen', width: screenSize.width, height: screenSize.height, xPosition: 25, yPosition: 12.5 },
-      { id: 'default-left-side', name: 'Left side', width: screenSize.width / 2, height: screenSize.height, xPosition: 25, yPosition: 12.5 },
-      { id: 'default-right-side', name: 'Right side', width: screenSize.width / 2, height: screenSize.height, xPosition: screenSize.width / 2 + 25, yPosition: 12.5 },
+      { id: 'default-fullscreen', name: 'Full Screen', width: screenSize.width, height: screenSize.height, xPosition: 24, yPosition: 25 },
+      { id: 'default-left-side', name: 'Left side', width: screenSize.width / 2, height: screenSize.height, xPosition: 26, yPosition: 25 },
+      { id: 'default-right-side', name: 'Right side', width: screenSize.width / 2, height: screenSize.height, xPosition: screenSize.width / 2 + 25, yPosition: 25 },
     ];
   },
 
@@ -20,9 +20,12 @@ export const PresetService = {
     return res && res.data && res.data.length ? res.data : PresetService.getDefault();
   },
 
-  active: (width: number, height: number, xPosition: number, yPosition: number): void => {
-    remote.getCurrentWindow().setPosition(Math.round(xPosition), Math.round(yPosition));
-    remote.getCurrentWindow().setSize(width, height);
+  active: async (width: number, height: number, xPosition: number, yPosition: number, animate: boolean): Promise<void> => {
+    return new Promise((resolve) => {
+      remote.getCurrentWindow().setPosition(Math.round(xPosition), Math.round(yPosition), animate);
+      remote.getCurrentWindow().setSize(width, height, animate);
+      resolve();
+    });
   },
 
   save: async (name: string, width: number, height: number, xPosition: number, yPosition: number): Promise<boolean> => {

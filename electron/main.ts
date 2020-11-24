@@ -1,11 +1,15 @@
-import { app, BrowserWindow, globalShortcut } from 'electron';
-import { UtilService } from '../src/services/util';
+import { app, BrowserWindow, globalShortcut, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 const open = require('open');
 
+const getScreenSize = (): { width: number, height: number } => {
+  const screenSize = screen.getPrimaryDisplay().workAreaSize;
+  return { width: screenSize.width - 50, height: screenSize.height - 25 };
+};
+
 const createWindow = (): void => {
-  let screenSize = UtilService.getScreenSize();
+  let screenSize = getScreenSize();
   let mainWindow: BrowserWindow | null = new BrowserWindow({
     width: screenSize.width,
     height: screenSize.height,
@@ -35,7 +39,7 @@ const createWindow = (): void => {
     }
 
     // check if screen size has changed - happens if user switches displays
-    const newScreenSize = UtilService.getScreenSize();
+    const newScreenSize = getScreenSize();
     if (newScreenSize.width !== screenSize.width || screenSize.height !== screenSize.height) {
       screenSize = { ...newScreenSize };
       mainWindow.setSize(screenSize.width, screenSize.height);

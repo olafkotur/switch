@@ -2,7 +2,7 @@ import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
 import PresetSetting from '../../components/Setting/PresetSetting';
 import ServiceSetting from '../../components/Setting/ServiceSetting';
-import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting, IWindowSize } from '../../typings/d';
+import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting, IWindowInfo } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
@@ -23,7 +23,6 @@ export default class Settings extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
-  protected windowSize: IWindowSize;
   protected general: ISettingConfig[];
   protected presets: IPresetSetting[];
   protected services: IServiceSetting[];
@@ -36,16 +35,24 @@ export default class Settings extends React.Component<IProps, IState> {
     super(props);
 
     // state
-    this.state = Object.assign({}, ...this.props.userSettings.map(v => ({ [v.name]: v.value })));
+    this.state = Object.assign(
+      {},
+      ...this.props.userSettings.map(v => ({ [v.name]: v.value })),
+    );
 
     // local properties
-    this.windowSize = UtilService.getWindowSize();
     this.general = [
       {
         name: 'startUpLaunch',
         label: 'Launch on Start-up',
         type: 'switch',
         value: this.state['startUpLaunch'],
+      },
+      {
+        name: 'animateResize',
+        label: 'Animate Resize',
+        type: 'switch',
+        value: this.state['animateResize'],
       },
       {
         name: 'showBetaStatus',
@@ -115,7 +122,7 @@ export default class Settings extends React.Component<IProps, IState> {
           <PresetSetting
             {...v}
             key={`preset-setting-${v.id}`}
-            active={this.windowSize.width === v.width && this.windowSize.height === v.height}
+            animate={this.state.animateResize === 'true'}
             handleRefresh={this.props.handleRefresh}
           />
         ))}

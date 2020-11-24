@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import moment from 'moment';
 import { remote } from 'electron';
-import { IWindowSize } from '../typings/d';
+import { IScreenInfo, IWindowInfo } from '../typings/d';
 
 export const UtilService = {
   error: (message?: string) => {
@@ -15,12 +15,13 @@ export const UtilService = {
     return hash;
   },
 
-  getWindowSize: (): IWindowSize => {
-    const window = remote.getCurrentWindow().getSize();
-    return { width: window[0], height: window[1] };
+  getWindowInfo: (): IWindowInfo => {
+    const size = remote.getCurrentWindow().getSize();
+    const position = remote.getCurrentWindow().getPosition();
+    return { width: size[0], height: size[1], xPosition: position[0], yPosition: position[1] };
   },
 
-  getScreenSize: (): IWindowSize => {
+  getScreenSize: (): IScreenInfo => {
     const screen = remote.screen.getPrimaryDisplay().workAreaSize;
     return { width: screen.width - 50, height: screen.height - 25 };
   },

@@ -1,11 +1,13 @@
 import { ISetting, IStoredData } from '../typings/d';
 import { StorageService } from './storage';
+import * as _ from 'lodash';
 
 export const SettingsService = {
   getDefault: (): ISetting[] => {
     return [
       { name: 'startUpLaunch', value: 'false' },
       { name: 'showBetaStatus', value: 'true' },
+      { name: 'animateResize', value: 'true' },
     ];
   },
 
@@ -19,6 +21,11 @@ export const SettingsService = {
 
     // update setting by name
     const updatedData: ISetting[] = previousData.map(v => name === v.name ? { ...v, value  } : { ...v });
+    const exists = !!updatedData.find(v => v.name === name);
+    if (!exists) {
+      updatedData.push({ name, value });
+    }
+
     const saveData: IStoredData<ISetting> = { data: [...updatedData] };
 
     return await StorageService.set('userSettings', saveData);
