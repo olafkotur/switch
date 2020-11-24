@@ -1,13 +1,8 @@
-export interface IMenuItem {
-  id: string;
-  url: string;
-  name: string;
-  icon: Icon;
-}
+// tslint:disable-next-line: no-any
+export type Icon = any;
 
-export interface IWebView {
-  id: string;
-  view: React.ReactElement;
+export interface IStoredData<T> {
+  data: T[];
 }
 
 export interface ISetting {
@@ -21,16 +16,24 @@ export interface ISettingConfig extends ISetting {
   action?: string;
 }
 
+export interface IPresetSetting {
+  id: string;
+  name: string;
+  width: number;
+  height: number;
+}
+
 export interface IServiceSetting extends IMenuItem {
 }
 
-export interface IStoredMenuItems {
-  data: IMenuItem[];
+export interface IMenuItem {
+  id: string;
+  url: string;
+  name: string;
+  icon: Icon;
 }
 
-export interface IStoredSettings {
-  data: ISetting[];
+export interface IWebView {
+  id: string;
+  view: React.ReactElement;
 }
-
-// tslint:disable-next-line: no-any
-export type Icon = any;

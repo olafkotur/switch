@@ -1,19 +1,11 @@
-import moment from 'moment';
-import { Icon, IMenuItem, IStoredMenuItems } from '../typings/d';
+import { Icon, IMenuItem, IStoredData } from '../typings/d';
 import { StorageService } from './storage';
-import crypto from 'crypto';
+import { UtilService } from './util';
 import * as _ from 'lodash';
 
 export const MenuService = {
-  generateId: (value: string): string => {
-    const input = `${value}-${moment().milliseconds()}-${Math.random()}`;
-    const algorithm = crypto.createHash('sha256');
-    const hash = algorithm.update(input).digest('hex').toString();
-    return hash;
-  },
-
   fetchList: async (): Promise<IMenuItem[]> => {
-    const res: IStoredMenuItems | null = await StorageService.get('menuItems') as IStoredMenuItems | null;
+    const res: IStoredData<IMenuItem> | null = await StorageService.get('menuItems') as IStoredData<IMenuItem> | null;
     return res && res.data ? res.data : [];
   },
 
@@ -21,13 +13,13 @@ export const MenuService = {
     const newData: IMenuItem = {
       url,
       name: name || url.split('://')[1],
-      id: MenuService.generateId(url),
+      id: UtilService.generateId(url),
       icon: icon || '',
     };
 
     // append new data to previous
     const previousData = await MenuService.fetchList();
-    const saveData: IStoredMenuItems = { data: [...previousData, newData] };
+    const saveData: IStoredData<IMenuItem> = { data: [...previousData, newData] };
 
     return await StorageService.set('menuItems', saveData);
   },
@@ -40,7 +32,7 @@ export const MenuService = {
     const updatedData: IMenuItem[] = previousData.map(v => (
       data.id === v.id ? { ...v, icon: icon || v.icon, name: data.name || v.name || v.url } : { ...v }
     ));
-    const saveData: IStoredMenuItems = { data: [...updatedData] };
+    const saveData: IStoredData<IMenuItem> = { data: [...updatedData] };
 
     return await StorageService.set('menuItems', saveData);
   },
@@ -50,7 +42,7 @@ export const MenuService = {
 
     // remove deleted item
     const updatedData: IMenuItem[] = previousData.filter(v => id !== v.id);
-    const saveData: IStoredMenuItems = { data: [...updatedData] };
+    const saveData: IStoredData<IMenuItem> = { data: [...updatedData] };
 
     return await StorageService.set('menuItems', saveData);
   },
@@ -75,7 +67,7 @@ export const MenuService = {
     });
     newIndex > updatedData.length - 1 && updatedData.push(previousData[oldIndex]);
 
-    const saveData: IStoredMenuItems = { data: [...updatedData] };
+    const saveData: IStoredData<IMenuItem> = { data: [...updatedData] };
     return await StorageService.set('menuItems', saveData);
   },
 };

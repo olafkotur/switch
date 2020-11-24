@@ -22,6 +22,7 @@ export default class GeneralSetting extends React.Component<IProps> {
           disableElevation
           variant="contained"
           className="setting-button"
+          color="primary"
           onClick={() => this.props.handleUpdate(this.props.name)}
         >
           <span className="primary setting-button-text">{this.props.action || 'change'}</span>

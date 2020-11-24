@@ -1,7 +1,8 @@
 import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
+import PresetSetting from '../../components/Setting/PresetSetting';
 import ServiceSetting from '../../components/Setting/ServiceSetting';
-import { IMenuItem, ISetting, ISettingConfig, IServiceSetting } from '../../typings/d';
+import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import * as _ from 'lodash';
@@ -22,6 +23,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * Local properties
    */
   protected general: ISettingConfig[];
+  protected presets: IPresetSetting[];
   protected services: IServiceSetting[];
 
   /**
@@ -64,6 +66,9 @@ export default class Settings extends React.Component<IProps, IState> {
       },
     ];
 
+    this.presets = [
+      { id: '', name: 'Hello world hello world hello world hello world hello world hello world', width: 720, height: 480 },
+    ];
     this.services = this.props.items.map(v => ({ ...v }));
 
     // scope binding
@@ -147,6 +152,17 @@ export default class Settings extends React.Component<IProps, IState> {
             key={`general-setting-${v.name}`}
             value={this.state[v.name]}
             handleUpdate={this.handleUpdate}
+          />
+        ))}
+
+        {/* window preset settings */}
+        <h3 className="primary font-weight-bold mt-5">Window Presets</h3>
+        <hr />
+        {this.presets.map(v => (
+          <PresetSetting
+            {...v}
+            key={`preset-setting-${v.id}`}
+            handleRefresh={this.props.handleRefresh}
           />
         ))}
 

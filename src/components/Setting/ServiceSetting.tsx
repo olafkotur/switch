@@ -5,7 +5,7 @@ import { ImageSearch, DeleteOutline, ArrowDropDown, ArrowDropUp, Done, Clear } f
 import * as _ from 'lodash';
 import './setting.css';
 
-interface IProps extends IServiceSetting {
+interface IProps extends IMenuItem {
   handleUpdate: (data: IMenuItem) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
   handleOrder: (id: string, direction: 'up' | 'down') => Promise<void>;
@@ -94,7 +94,6 @@ export default class ServiceSetting extends React.Component<IProps, IState> {
           />
         </div>
         <div className="d-flex flex-row pl-4">
-          {/* re-order */}
           <div className="d-flex flex-row">
             {this.state.isEditing
               ? <>
@@ -136,7 +135,6 @@ export default class ServiceSetting extends React.Component<IProps, IState> {
               </>}
           </div>
 
-          {/* delete */}
           <Tooltip title="Delete service" enterDelay={750} className="align-self-center">
             <IconButton
               onClick={async () => await this.props.handleDelete(this.props.id)}

@@ -4,7 +4,6 @@
 }
 
 .setting-button {
-  background-color: #777171 !important;
   align-self: center;
 }
 
@@ -14,7 +13,7 @@
 }
 
 .setting-label {
-  margin: 15px 0 0 0;
+  width: 40vw;
   overflow-x: scroll;
 }
 
@@ -28,4 +27,9 @@
 .setting-image {
   width: 30px;
   height: 30px;
+}
+
+.setting-description {
+  font-size: 12px;
+  margin-top: 4px;
 }
