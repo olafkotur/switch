@@ -19,7 +19,6 @@ export default class GeneralSetting extends React.Component<IProps> {
         />;
       case 'button':
         return <Button
-          disableElevation
           variant="contained"
           className="setting-button"
           color="primary"
