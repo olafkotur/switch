@@ -1,20 +1,16 @@
-import { app, BrowserWindow, globalShortcut, screen, Menu } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
+import { ElectronService } from '../src/services/electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as _ from 'lodash';
 
-const open = require('open');
 require('dotenv').config();
 
-const getScreenSize = (): { width: number, height: number } => {
-  const screenSize = screen.getPrimaryDisplay().workAreaSize;
-  return { width: screenSize.width - 50, height: screenSize.height - 25 };
-};
-
 const createWindow = (): void => {
-  let screenSize = getScreenSize();
+  let screenInfo = ElectronService.getScreenInfo();
   let mainWindow: BrowserWindow = new BrowserWindow({
-    width: screenSize.width,
-    height: screenSize.height,
+    width: screenInfo.width,
+    height: screenInfo.height,
     minHeight: 480,
     minWidth: 720,
     frame: false,
@@ -34,37 +30,18 @@ const createWindow = (): void => {
   mainWindow.setFullScreenable(false);
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
 
-  // register global shortcuts
-  globalShortcut.register('CommandOrControl+Esc', (): void => {
-    // check if screen size has changed - happens if user switches displays
-    const newScreenSize = getScreenSize();
-    if (newScreenSize.width !== screenSize.width || screenSize.height !== screenSize.height) {
-      screenSize = { ...newScreenSize };
-      mainWindow.setSize(screenSize.width, screenSize.height);
-      mainWindow.reload();
-    }
-
-    // set visibility
-    const isVisible = mainWindow.isVisible();
-    isVisible ? mainWindow.hide() : mainWindow.show();
-  });
-
-  // prevent window reloads and block devtools
-  if (process.env.ENV !== 'development') {
-    Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
-    mainWindow.removeMenu(); // windows
-  }
-
-  // web content handlers
-  mainWindow.webContents.on('new-window', async (event, url) => {
-    event.preventDefault();
-    await open(url);
-  });
+  screenInfo = ElectronService.setGlobalShortcuts(mainWindow, screenInfo);
+  ElectronService.setDefaultWindow(mainWindow);
+  ElectronService.setWindowListeners(mainWindow);
 
   // render config
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:4000');
   } else {
+    // prevent window reloads and block devtools
+    Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
+    mainWindow.removeMenu(); // windows
+
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, 'renderer/index.html'),
