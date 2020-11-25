@@ -26,6 +26,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   protected presetSettings: IPresetSetting[] = [];
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
+  protected useModifiedAgent: boolean = false;
 
   /**
    * Dashboard constructor
@@ -57,6 +58,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.menuItems = await MenuService.fetchList();
     this.userSettings = await SettingsService.fetchList();
     this.presetSettings = await PresetService.fetchList();
+    this.useModifiedAgent = this.userSettings.find(v => v.name === 'useModifiedAgent')?.value === 'true';
 
     // set the active item
     if (this.menuItems.length) {
@@ -86,7 +88,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.webViews = this.menuItems.map((v) => {
       return {
         id: v.id,
-        view: <WebView url={v.url} />,
+        view: <WebView url={v.url} useModifiedAgent={this.useModifiedAgent} />,
       };
     });
   }

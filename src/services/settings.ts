@@ -8,6 +8,7 @@ export const SettingsService = {
       { name: 'startUpLaunch', value: 'false' },
       { name: 'showBetaStatus', value: 'true' },
       { name: 'animateResize', value: 'true' },
+      { name: 'useModifiedAgent', value: 'false' },
     ];
   },
 

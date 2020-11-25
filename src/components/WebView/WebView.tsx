@@ -1,18 +1,34 @@
-import { BrowserView } from 'electron';
 import React from 'react';
+import { UtilService } from '../../services/util';
 
 interface IProps {
   url: string;
+  useModifiedAgent: boolean;
 }
 
 export default class WebView extends React.Component<IProps> {
+  /**
+   * Local properties
+   */
+  protected userAgent: string;
+
+  /**
+   * WebView constructor
+   * @param props - component prosp
+   */
+  constructor(props: IProps) {
+    super(props);
+
+    // local properties
+    this.userAgent = UtilService.getUserAgent();
+  }
+
   render() {
     return (
       <webview
-        // DANGER: ideally this shouldn't have to be case but here we are
-        useragent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36"
         className="vh-100"
         src={this.props.url}
+        useragent={this.props.useModifiedAgent ? this.userAgent : undefined}
       />
     );
   }

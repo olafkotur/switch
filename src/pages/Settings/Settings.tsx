@@ -61,6 +61,13 @@ export default class Settings extends React.Component<IProps, IState> {
         type: 'switch',
       },
       {
+        name: 'useModifiedAgent',
+        value: this.state['useModifiedAgent'],
+        label: 'Modified user agent',
+        type: 'switch',
+        hover: 'Experimental feature, may cause some websites to break. Use this if you have issues acessing websites due to an old chrome version',
+      },
+      {
         name: 'featureRequest',
         value: this.state['featureRequest'],
         label: 'Feature Request',
@@ -89,7 +96,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param value - setting value
    */
   protected async handleUpdate(name: string, value?: string): Promise<void> {
-    const shouldRefresh = ['showBetaStatus'].includes(name);
+    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent'].includes(name);
     if (value) {
       this.setState({ [name]: value });
       const res = await SettingsService.update(name, value);

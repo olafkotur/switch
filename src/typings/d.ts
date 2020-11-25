@@ -14,6 +14,7 @@ export interface ISettingConfig extends ISetting {
   label: string;
   type: 'switch' | 'button';
   action?: string;
+  hover?: string;
 }
 
 export interface IWindowInfo {
