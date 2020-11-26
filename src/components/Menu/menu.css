@@ -4,21 +4,6 @@
   position: sticky;
 }
 
-.menu-item {
-  width: 40px;
-  height: 40px;
-}
-
-.menu-image {
-  width: 30px;
-  height: 30px;
-}
-
-.menu-selected {
-  background-color: #56585C !important;
-  border-radius: 10px !important;
-}
-
 .menu-top {
   height: 85%;
   overflow-y: scroll;

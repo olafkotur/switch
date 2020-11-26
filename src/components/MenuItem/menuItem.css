@@ -1,0 +1,14 @@
+.menu-item {
+  width: 40px;
+  height: 40px;
+}
+
+.menu-item-image {
+  width: 30px;
+  height: 30px;
+}
+
+.menu-item-selected {
+  background-color: #56585C !important;
+  border-radius: 10px !important;
+}

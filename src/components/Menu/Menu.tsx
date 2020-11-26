@@ -1,4 +1,5 @@
 import React from 'react';
+import MenuItem from '../MenuItem/MenuItem';
 import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
 import { IMenuItem, ISetting } from '../../typings/d';
 import { ButtonBase, Chip, IconButton, Tooltip } from '@material-ui/core';
@@ -21,16 +22,13 @@ export default class Menu extends React.Component<IProps> {
   protected generateItems() {
     return this.props.items.map((v, i) => {
       return (
-        <ButtonBase
+        <MenuItem
           key={`menu-item-${i}`}
-          className={`menu-item mt-2 ${this.props.page === 'web' && this.props.focusedItem && this.props.focusedItem.id === v.id ? 'menu-selected' : ''}`}
-          onClick={() => this.props.handleClick('web', v)}
-        >
-          {v.icon
-            ? <img className="menu-image" src={v.icon} />
-            : <Image className="menu-image" color="secondary" />
-          }
-        </ButtonBase>
+          data={v}
+          page={this.props.page}
+          focused={this.props.focusedItem && this.props.focusedItem.id === v.id ? true : false}
+          handleClick={this.props.handleClick}
+        />
       );
     });
   }
