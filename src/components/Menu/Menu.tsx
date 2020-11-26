@@ -3,7 +3,7 @@ import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
 import { IMenuItem, ISetting } from '../../typings/d';
 import { ButtonBase, Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
-import { remote } from 'electron';
+import { ElectronService } from '../../services/electron';
 import './menu.css';
 
 interface IProps {
@@ -57,7 +57,7 @@ export default class Menu extends React.Component<IProps> {
             <Tooltip title="Hide window" enterDelay={750}>
               <IconButton
                 className="menu-item flex-column"
-                onClick={() => remote.getCurrentWindow().hide()}
+                onClick={() => ElectronService.toggleVisibility()}
               >
                 <VisibilityOff className="primary" fontSize="small" />
               </IconButton>

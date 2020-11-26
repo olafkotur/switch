@@ -1,7 +1,7 @@
 import { IPresetSetting, IStoredData } from '../typings/d';
+import { ElectronService } from './electron';
 import { StorageService } from './storage';
 import { UtilService } from './util';
-import { remote } from 'electron';
 
 const STORAGE_KEY = 'windowPresets';
 
@@ -22,8 +22,11 @@ export const PresetService = {
 
   active: async (width: number, height: number, xPosition: number, yPosition: number, animate: boolean): Promise<void> => {
     return new Promise((resolve) => {
-      remote.getCurrentWindow().setPosition(Math.round(xPosition), Math.round(yPosition), animate);
-      remote.getCurrentWindow().setSize(width, height, animate);
+      ElectronService.setWindowInfo(
+        undefined,
+        { width, height, xPosition, yPosition },
+        animate,
+      );
       resolve();
     });
   },

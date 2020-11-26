@@ -2,7 +2,6 @@ import { app, BrowserWindow, Menu } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import * as path from 'path';
 import * as url from 'url';
-import * as _ from 'lodash';
 
 require('dotenv').config();
 
@@ -13,8 +12,8 @@ const createWindow = (): void => {
     height: screenInfo.height,
     minHeight: 480,
     minWidth: 720,
-    frame: false,
     center: true,
+    frame: false,
     transparent: true,
     backgroundColor: '#1F2225',
     webPreferences: {
@@ -24,15 +23,12 @@ const createWindow = (): void => {
     },
   });
 
-  // extra configuration required for windows to float above full screen apps
+  // window configuration
   app.dock.hide();
-  mainWindow.setVisibleOnAllWorkspaces(true);
-  mainWindow.setFullScreenable(false);
-  mainWindow.setAlwaysOnTop(true, 'screen-saver');
-
-  screenInfo = ElectronService.setGlobalShortcuts(mainWindow, screenInfo);
-  ElectronService.setDefaultWindow(mainWindow);
+  ElectronService.setWindowMode(true, mainWindow);
+  ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
+  screenInfo = ElectronService.setGlobalShortcuts(mainWindow, screenInfo);
 
   // render config
   if (process.env.NODE_ENV === 'development') {

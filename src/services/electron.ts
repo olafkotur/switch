@@ -1,4 +1,4 @@
-import { BrowserWindow, globalShortcut, screen } from 'electron';
+import { BrowserWindow, globalShortcut, remote, screen } from 'electron';
 import { StorageService } from './storage';
 import { IScreenInfo, IWindowInfo } from '../typings/d';
 import open from 'open';
@@ -15,11 +15,12 @@ export const ElectronService = {
     return { width: size[0], height: size[1], xPosition: position[0], yPosition: position[1] };
   },
 
-  setDefaultWindow: async (window: BrowserWindow): Promise<void> => {
-    const windowInfo = await StorageService.get('currentWindowInfo') as IWindowInfo | null;
+  setWindowInfo: async (win?: BrowserWindow, winInfo?: IWindowInfo, animate?: boolean): Promise<void> => {
+    const window = win || remote.getCurrentWindow();
+    const windowInfo = winInfo || await StorageService.get('currentWindowInfo') as IWindowInfo | null;
     if (windowInfo) {
-      window.setSize(windowInfo.width, windowInfo.height);
-      window.setPosition(windowInfo.xPosition, windowInfo.yPosition);
+      window.setSize(windowInfo.width, windowInfo.height, animate);
+      window.setPosition(windowInfo.xPosition, windowInfo.yPosition, animate);
     }
   },
 
@@ -32,11 +33,7 @@ export const ElectronService = {
         window.setSize(screenInfo.width, screenInfo.height);
         window.reload();
       }
-
-      // set visibility
-      const isVisible = window.isVisible();
-      isVisible ? window.hide() : window.show();
-
+      ElectronService.toggleVisibility(window);
     });
     return newScreenSize;
   },
@@ -53,5 +50,28 @@ export const ElectronService = {
       event.preventDefault();
       await open(url);
     });
-  }
+  },
+
+  setWindowMode: (overlay: boolean, win?: BrowserWindow): void => {
+    const window = win || remote.getCurrentWindow();
+    const options = { visible: true, fullScreen: false, alwaysTop: true, menu: false }; // assume overlay
+    if (!overlay) {
+      options.visible = false;
+      options.fullScreen = true;
+      options.alwaysTop = false;
+      options.menu = true;
+    }
+    window.setVisibleOnAllWorkspaces(options.visible);
+    window.setFullScreenable(options.fullScreen);
+    window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'screen-saver' : undefined);
+  },
+
+  toggleVisibility: (win?: BrowserWindow): void => {
+    const window = win || remote.getCurrentWindow();
+    const visible = window.isVisible();
+    if (visible) {
+      return window.hide();
+    }
+    return window.show();
+  },
 };

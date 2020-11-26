@@ -5,9 +5,9 @@ import * as _ from 'lodash';
 export const SettingsService = {
   getDefault: (): ISetting[] => {
     return [
-      { name: 'startUpLaunch', value: 'false' },
-      { name: 'showBetaStatus', value: 'true' },
+      { name: 'overlayMode', value: 'true' },
       { name: 'animateResize', value: 'true' },
+      { name: 'showBetaStatus', value: 'true' },
       { name: 'useModifiedAgent', value: 'false' },
     ];
   },

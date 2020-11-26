@@ -8,6 +8,7 @@ import { IMenuItem, IPresetSetting, ISetting, IWebView } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import { PresetService } from '../../services/preset';
+import { ElectronService } from '../../services/electron';
 import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
@@ -58,7 +59,15 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.menuItems = await MenuService.fetchList();
     this.userSettings = await SettingsService.fetchList();
     this.presetSettings = await PresetService.fetchList();
-    this.useModifiedAgent = this.userSettings.find(v => v.name === 'useModifiedAgent')?.value === 'true';
+
+    // apply settings
+    this.userSettings.forEach((v) => {
+      if (v.name === 'useModifiedAgent') {
+        this.useModifiedAgent = v.value === 'true';
+      } else if (v.name === 'overlayMode') {
+        ElectronService.setWindowMode(v.value === 'true');
+      }
+    });
 
     // set the active item
     if (this.menuItems.length) {

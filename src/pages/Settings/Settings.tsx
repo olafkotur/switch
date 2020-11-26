@@ -43,10 +43,10 @@ export default class Settings extends React.Component<IProps, IState> {
     // local properties
     this.general = [
       {
-        name: 'startUpLaunch',
-        label: 'Launch on Start-up',
+        name: 'overlayMode',
+        label: 'Overlay mode',
         type: 'switch',
-        value: this.state['startUpLaunch'],
+        value: this.state['overlayMode'],
       },
       {
         name: 'animateResize',
@@ -56,30 +56,16 @@ export default class Settings extends React.Component<IProps, IState> {
       },
       {
         name: 'showBetaStatus',
-        value: this.state['showBetaStatus'],
         label: 'Show Beta Status',
         type: 'switch',
+        value: this.state['showBetaStatus'],
       },
       {
         name: 'useModifiedAgent',
-        value: this.state['useModifiedAgent'],
         label: 'Modified user agent',
         type: 'switch',
         hover: 'Experimental feature, may cause some websites to break. Use this if you have issues acessing websites due to an old chrome version',
-      },
-      {
-        name: 'featureRequest',
-        value: this.state['featureRequest'],
-        label: 'Feature Request',
-        type: 'button',
-        action: 'send',
-      },
-      {
-        name: 'bugReport',
-        value: this.state['bugReport'],
-        label: 'Bug Report',
-        type: 'button',
-        action: 'send',
+        value: this.state['useModifiedAgent'],
       },
     ];
 
@@ -96,7 +82,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param value - setting value
    */
   protected async handleUpdate(name: string, value?: string): Promise<void> {
-    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent'].includes(name);
+    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'overlayMode'].includes(name);
     if (value) {
       this.setState({ [name]: value });
       const res = await SettingsService.update(name, value);
