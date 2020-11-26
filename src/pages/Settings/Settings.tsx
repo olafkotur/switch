@@ -1,8 +1,7 @@
 import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
 import PresetSetting from '../../components/Setting/PresetSetting';
-import ServiceSetting from '../../components/Setting/ServiceSetting';
-import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting, IWindowInfo } from '../../typings/d';
+import { IMenuItem, ISetting, ISettingConfig, IPresetSetting } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
@@ -25,7 +24,6 @@ export default class Settings extends React.Component<IProps, IState> {
    */
   protected general: ISettingConfig[];
   protected presets: IPresetSetting[];
-  protected services: IServiceSetting[];
 
   /**
    * Settings constructor
@@ -70,7 +68,6 @@ export default class Settings extends React.Component<IProps, IState> {
     ];
 
     this.presets = [...this.props.presetSettings];
-    this.services = this.props.items.map(v => ({ ...v }));
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -116,17 +113,6 @@ export default class Settings extends React.Component<IProps, IState> {
             {...v}
             key={`preset-setting-${v.id}`}
             animate={this.state.animateResize === 'true'}
-            handleRefresh={this.props.handleRefresh}
-          />
-        ))}
-
-        {/* service settings */}
-        <h3 className="primary font-weight-bold mt-5 ">Services</h3>
-        <hr />
-        {this.services.map(v => (
-          <ServiceSetting
-            {...v}
-            key={`service-setting-${v.id}`}
             handleRefresh={this.props.handleRefresh}
           />
         ))}

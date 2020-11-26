@@ -1,9 +1,10 @@
 import React from 'react';
 import { ButtonBase, IconButton, Paper, Slide } from '@material-ui/core';
-import { Image, Refresh, Home, ArrowBack, ArrowForward } from '@material-ui/icons';
+import { Image, Refresh, Home, ArrowBack, ArrowForward, Delete } from '@material-ui/icons';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { IMenuItem } from '../../typings/d';
 import './menuItem.css';
+import { MenuService } from '../../services/menu';
 
 interface IProps {
   data: IMenuItem;
@@ -29,7 +30,6 @@ export default class MenuItem extends React.Component<IProps, IState> {
   }
 
   protected handleContextMenu() {
-    console.log('hello');
     this.setState({ contextMenu: !this.state.contextMenu });
   }
 
@@ -72,6 +72,10 @@ export default class MenuItem extends React.Component<IProps, IState> {
 
               <IconButton onClick={this.handleContextMenu}>
                 <ArrowForward fontSize="small" className="text-white-50" />
+              </IconButton>
+
+              <IconButton onClick={async () => await MenuService.delete(this.props.data.id)}>
+                <Delete fontSize="small" color="error" />
               </IconButton>
 
             </Paper>
