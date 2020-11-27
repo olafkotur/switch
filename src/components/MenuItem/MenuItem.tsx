@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { ButtonBase, IconButton, Paper, Slide } from '@material-ui/core';
-import { Image, Refresh, Home, ArrowBack, ArrowForward, Delete } from '@material-ui/icons';
+import React from 'react';
+import { ButtonBase, IconButton, Paper, Slide, Tooltip } from '@material-ui/core';
+import { Image, Refresh, Home, ArrowBack, ArrowForward, Delete, ImageSearch, Publish } from '@material-ui/icons';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { IMenuItem } from '../../typings/d';
-import './menuItem.css';
 import { MenuService } from '../../services/menu';
 import { UtilService } from '../../services/util';
+import './menuItem.css';
 
 interface IProps {
   data: IMenuItem;
@@ -60,12 +60,41 @@ export default class MenuItem extends React.Component<IProps, IState> {
     console.log('willNavigate', target);
   }
 
+  /**
+   * Handles service deletion
+   * @param id - service id
+   */
   protected async handleDelete(): Promise<void> {
     const res = await MenuService.delete(this.props.data.id);
     if (!res) {
-      UtilService.error();
+      return UtilService.error();
     }
     this.props.handleRefresh(); // do not await
+  }
+
+  /**
+   * Handles service name edit
+   * @param data - menu item data
+   */
+  protected async handleUpdate(data: IMenuItem): Promise<void> {
+    const res = await MenuService.update(data);
+    if (!res) {
+      return UtilService.error();
+    }
+    this.props.handleRefresh(); // do not await
+  }
+
+   /**
+   * Handles upload
+   * @param event - html input event
+   */
+  protected async handleUpload(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+    if (event.target.files) {
+      await this.handleUpdate({
+        ...this.props.data,
+        icon: event.target.files[0],
+      });
+    }
   }
 
   render() {
@@ -87,13 +116,29 @@ export default class MenuItem extends React.Component<IProps, IState> {
             ref={this.ref}
           >
             <Paper className="d-flex flex-row position-absolute mt-1 bg-primary" elevation={10}>
-              {this.props.data.icon
-                ? <img className="menu-item-image align-self-center ml-1" src={this.props.data.icon} />
-                : <Image className="menu-item-image align-self-center ml-1" color="secondary" />
-              }
+              <IconButton className="menu-item-image align-self-center">
+                <Tooltip title="Upload a custom image" className="menu-item-image-upload-hover">
+                  <label
+                    htmlFor={`file-upload-${this.props.data.id}`}
+                    className="position-absolute"
+                  >
+                    <input
+                      id={`file-upload-${this.props.data.id}`}
+                      className="d-none"
+                      accept="image/*"
+                      type="file"
+                      onChange={this.handleUpload}
+                    />
+                    {this.props.data.icon
+                      ? <img src={this.props.data.icon} className="menu-item-image-upload" />
+                      : <Publish color="secondary" className="menu-item-image-upload" />
+                    }
+                  </label>
+                </Tooltip>
+              </IconButton>
 
               <IconButton onClick={() => this.handleNavigate('home')}>
-                <Home fontSize="small" className="text-white-50" />
+                <Home fontSize="small" className="ml-2 text-white-50" />
               </IconButton>
 
               <IconButton onClick={() => this.handleNavigate('refresh')}>

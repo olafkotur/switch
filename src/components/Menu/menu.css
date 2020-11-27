@@ -2,7 +2,7 @@
   width: 50px;
   height: 100vh;
   position: sticky;
-  z-index: 100000;
+  z-index: 10;
 }
 
 .menu-top {
