@@ -1,6 +1,8 @@
 // tslint:disable-next-line: no-any
 export type Icon = any;
 
+export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
+
 export interface IStoredData<T> {
   data: T[];
 }
@@ -47,4 +49,9 @@ export interface IMenuItem {
 export interface IWebView {
   id: string;
   view: React.ReactElement;
+}
+
+export interface IActionRequest {
+  id: string;
+  action: WebViewAction;
 }

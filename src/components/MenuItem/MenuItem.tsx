@@ -1,8 +1,8 @@
 import React from 'react';
 import { ButtonBase, IconButton, Paper, Slide, Tooltip } from '@material-ui/core';
-import { Image, Refresh, Home, ArrowBack, ArrowForward, Delete, ImageSearch, Publish } from '@material-ui/icons';
+import { Image, Refresh, ArrowBack, ArrowForward, Delete, Publish } from '@material-ui/icons';
 import { TPages } from '../../pages/Dashboard/Dashboard';
-import { IMenuItem } from '../../typings/d';
+import { IMenuItem, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { UtilService } from '../../services/util';
 import './menuItem.css';
@@ -13,6 +13,7 @@ interface IProps {
   focused: boolean;
   handleClick: (action: TPages, item?: IMenuItem) => void;
   handleRefresh: () => Promise<void>;
+  handleActionRequest: (id: string, action: WebViewAction) => void;
 }
 
 interface IState {
@@ -42,6 +43,9 @@ export default class MenuItem extends React.Component<IProps, IState> {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
+  /**
+   * Component mounting
+   */
   componentDidMount() {
     document.addEventListener('mousedown', (e) => {
       if (this.state.contextMenu && this.ref.current
@@ -52,12 +56,19 @@ export default class MenuItem extends React.Component<IProps, IState> {
     });
   }
 
+  /**
+   * Handles context menu
+   */
   protected handleContextMenu() {
     this.setState({ contextMenu: !this.state.contextMenu });
   }
 
-  protected handleNavigate(target: 'home' | 'refresh' | 'back' | 'forward') {
-    console.log('willNavigate', target);
+  /**
+   * Handles navigation actions
+   * @param action - action request type
+   */
+  protected handleNavigate(action: WebViewAction) {
+    this.props.handleActionRequest(this.props.data.id, action);
   }
 
   /**
@@ -135,10 +146,6 @@ export default class MenuItem extends React.Component<IProps, IState> {
                     }
                   </label>
                 </Tooltip>
-              </IconButton>
-
-              <IconButton onClick={() => this.handleNavigate('home')}>
-                <Home fontSize="small" className="ml-2 text-white-50" />
               </IconButton>
 
               <IconButton onClick={() => this.handleNavigate('refresh')}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
-import { IMenuItem, ISetting } from '../../typings/d';
+import { IMenuItem, ISetting, WebViewAction } from '../../typings/d';
 import { Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { ElectronService } from '../../services/electron';
@@ -14,6 +14,7 @@ interface IProps {
   userSettings: ISetting[];
   handleClick: (action: TPages, item?: IMenuItem) => void;
   handleRefresh: () => Promise<void>;
+  handleActionRequest: (id: string, action: WebViewAction) => void;
 }
 
 export default class Menu extends React.Component<IProps> {
@@ -30,6 +31,7 @@ export default class Menu extends React.Component<IProps> {
           focused={this.props.focusedItem && this.props.focusedItem.id === v.id ? true : false}
           handleClick={this.props.handleClick}
           handleRefresh={this.props.handleRefresh}
+          handleActionRequest={this.props.handleActionRequest}
         />
       );
     });
