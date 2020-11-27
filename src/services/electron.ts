@@ -57,7 +57,7 @@ export const ElectronService = {
     const options = { visible: true, fullScreen: false, alwaysTop: true, menu: false }; // assume overlay
     if (!overlay) {
       options.visible = false;
-      options.fullScreen = false;
+      options.fullScreen = true;
       options.alwaysTop = false;
     }
     window.setVisibleOnAllWorkspaces(options.visible);

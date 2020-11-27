@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, TouchBar } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import * as path from 'path';
 import * as url from 'url';

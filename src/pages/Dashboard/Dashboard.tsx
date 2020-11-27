@@ -63,16 +63,16 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.presetSettings = await PresetService.fetchList();
 
     // apply settings
-    await new Promise((resolve) => {
-      this.userSettings.forEach((v) => {
-        if (v.name === 'useModifiedAgent') {
+    for (const v of this.userSettings) {
+      switch (v.name) {
+        case 'useModifiedAgent':
           this.useModifiedAgent = v.value === 'true';
-        } else if (v.name === 'overlayMode') {
+          break;
+        case 'overlayMode':
           ElectronService.setWindowMode(v.value === 'true');
-        }
-      });
-      resolve();
-    });
+          break;
+      }
+    }
 
     // set the active item
     if (firstLoad && this.menuItems.length) {
