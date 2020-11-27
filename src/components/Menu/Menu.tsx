@@ -2,7 +2,7 @@ import React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
 import { IMenuItem, ISetting } from '../../typings/d';
-import { ButtonBase, Chip, IconButton, Tooltip } from '@material-ui/core';
+import { Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { ElectronService } from '../../services/electron';
 import './menu.css';
@@ -13,6 +13,7 @@ interface IProps {
   focusedItem: IMenuItem | null;
   userSettings: ISetting[];
   handleClick: (action: TPages, item?: IMenuItem) => void;
+  handleRefresh: () => Promise<void>;
 }
 
 export default class Menu extends React.Component<IProps> {
@@ -28,6 +29,7 @@ export default class Menu extends React.Component<IProps> {
           page={this.props.page}
           focused={this.props.focusedItem && this.props.focusedItem.id === v.id ? true : false}
           handleClick={this.props.handleClick}
+          handleRefresh={this.props.handleRefresh}
         />
       );
     });

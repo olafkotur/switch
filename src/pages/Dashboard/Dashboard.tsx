@@ -42,31 +42,34 @@ export default class Dashboard extends React.Component<{}, IState> {
     };
 
     // scope binding
-    this.handleRefreshMenu = this.handleRefreshMenu.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
     this.generateWebViews = this.generateWebViews.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
-    await this.handleRefreshMenu();
+    await this.handleRefresh();
   }
 
    /**
-   * Handles menu refresh request
+   * Handles refresh request
    */
-  protected async handleRefreshMenu(): Promise<void> {
+  protected async handleRefresh(): Promise<void> {
     this.setState({ isLoading: true });
     this.menuItems = await MenuService.fetchList();
     this.userSettings = await SettingsService.fetchList();
     this.presetSettings = await PresetService.fetchList();
 
     // apply settings
-    this.userSettings.forEach((v) => {
-      if (v.name === 'useModifiedAgent') {
-        this.useModifiedAgent = v.value === 'true';
-      } else if (v.name === 'overlayMode') {
-        ElectronService.setWindowMode(v.value === 'true');
-      }
+    await new Promise((resolve) => {
+      this.userSettings.forEach((v) => {
+        if (v.name === 'useModifiedAgent') {
+          this.useModifiedAgent = v.value === 'true';
+        } else if (v.name === 'overlayMode') {
+          ElectronService.setWindowMode(v.value === 'true');
+        }
+      });
+      resolve();
     });
 
     // set the active item
@@ -114,6 +117,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                 focusedItem={this.state.focusedItem}
                 userSettings={this.userSettings}
                 handleClick={this.handleMenuItemClicked}
+                handleRefresh={this.handleRefresh}
               />
             </div>
             <div className="col p-0">
@@ -129,7 +133,7 @@ export default class Dashboard extends React.Component<{}, IState> {
               {this.state.page === 'search' && <div className="dashboard-container d-flex justify-content-center">
                 <Search
                   items={this.menuItems}
-                  handleRefresh={this.handleRefreshMenu}
+                  handleRefresh={this.handleRefresh}
                 />
               </div>}
 
@@ -138,7 +142,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                   items={this.menuItems}
                   userSettings={this.userSettings}
                   presetSettings={this.presetSettings}
-                  handleRefresh={this.handleRefreshMenu}
+                  handleRefresh={this.handleRefresh}
                 />
               </div>}
             </div>
