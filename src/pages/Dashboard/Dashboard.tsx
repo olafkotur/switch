@@ -37,7 +37,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'settings',
+      page: 'search',
       isLoading: true,
       focusedItem: null,
       actionRequest: { id: '', action: '' },
@@ -46,18 +46,17 @@ export default class Dashboard extends React.Component<{}, IState> {
     // scope binding
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
-    // this.generateWebViews = this.generateWebViews.bind(this);
     this.handleActionRequest = this.handleActionRequest.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
-    await this.handleRefresh();
+    await this.handleRefresh(true);
   }
 
    /**
    * Handles refresh request
    */
-  protected async handleRefresh(): Promise<void> {
+  protected async handleRefresh(firstLoad?: boolean): Promise<void> {
     this.setState({ isLoading: true });
     this.menuItems = await MenuService.fetchList();
     this.userSettings = await SettingsService.fetchList();
@@ -76,7 +75,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     });
 
     // set the active item
-    if (this.menuItems.length) {
+    if (firstLoad && this.menuItems.length) {
       this.handleMenuItemClicked('web', this.menuItems[0]);
     }
     this.setState({ isLoading: false });

@@ -45,6 +45,7 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Overlay mode',
         type: 'switch',
         value: this.state['overlayMode'],
+        hover: 'Allow Switch to be shown on top of full screen applications',
       },
       {
         name: 'animateResize',
@@ -53,17 +54,17 @@ export default class Settings extends React.Component<IProps, IState> {
         value: this.state['animateResize'],
       },
       {
-        name: 'showBetaStatus',
-        label: 'Show Beta Status',
-        type: 'switch',
-        value: this.state['showBetaStatus'],
-      },
-      {
         name: 'useModifiedAgent',
         label: 'Modified user agent',
         type: 'switch',
         hover: 'Experimental feature, may cause some websites to break. Use this if you have issues acessing websites due to an old chrome version',
         value: this.state['useModifiedAgent'],
+      },
+      {
+        name: 'showBetaStatus',
+        label: 'Show Beta Status',
+        type: 'switch',
+        value: this.state['showBetaStatus'],
       },
     ];
 
