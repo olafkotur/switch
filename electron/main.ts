@@ -20,6 +20,7 @@ const createWindow = (): void => {
       nodeIntegration: true,
       webviewTag: true,
       enableRemoteModule: true,
+      allowRunningInsecureContent: true,
     },
   });
 

@@ -45,7 +45,7 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Overlay mode',
         type: 'switch',
         value: this.state['overlayMode'],
-        hover: 'Allow Switch to be shown on top of full screen applications',
+        hover: 'Allow Switch to be shown on top of other windows including full screen applications',
       },
       {
         name: 'animateResize',

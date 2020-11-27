@@ -43,7 +43,8 @@ export default class WebView extends React.Component<IProps, IState> {
    */
   componentDidMount() {
     this.webView = document.getElementById(`webview-${this.props.id}`);
-    this.webView && this.webView.addEventListener('dom-ready', () => {
+    // enable page controls
+    this.webView.addEventListener('dom-ready', () => {
       this.setState({ allowControls: true });
     });
   }
