@@ -148,15 +148,15 @@ export default class MenuItem extends React.Component<IProps, IState> {
                 </Tooltip>
               </IconButton>
 
-              <IconButton onClick={() => this.handleNavigate('refresh')}>
+              <IconButton onClick={() => this.handleNavigate('refresh')} className="ml-2 px-2">
                 <Refresh fontSize="small" className="text-white-50" />
               </IconButton>
 
-              <IconButton onClick={() => this.handleNavigate('back')}>
+              <IconButton onClick={() => this.handleNavigate('back')} className="px-2">
                 <ArrowBack fontSize="small" className="text-white-50" />
               </IconButton>
 
-              <IconButton onClick={() => this.handleNavigate('forward')}>
+              <IconButton onClick={() => this.handleNavigate('forward')} className="px-2">
                 <ArrowForward fontSize="small" className="text-white-50" />
               </IconButton>
 
