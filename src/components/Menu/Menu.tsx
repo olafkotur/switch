@@ -1,9 +1,10 @@
 import React from 'react';
+import MenuItem from '../MenuItem/MenuItem';
 import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
-import { IMenuItem, ISetting } from '../../typings/d';
-import { ButtonBase, Chip, IconButton, Tooltip } from '@material-ui/core';
+import { IMenuItem, ISetting, WebViewAction } from '../../typings/d';
+import { Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
-import { remote } from 'electron';
+import { ElectronService } from '../../services/electron';
 import './menu.css';
 
 interface IProps {
@@ -12,6 +13,8 @@ interface IProps {
   focusedItem: IMenuItem | null;
   userSettings: ISetting[];
   handleClick: (action: TPages, item?: IMenuItem) => void;
+  handleRefresh: () => Promise<void>;
+  handleActionRequest: (id: string, action: WebViewAction) => void;
 }
 
 export default class Menu extends React.Component<IProps> {
@@ -21,16 +24,15 @@ export default class Menu extends React.Component<IProps> {
   protected generateItems() {
     return this.props.items.map((v, i) => {
       return (
-        <ButtonBase
+        <MenuItem
           key={`menu-item-${i}`}
-          className={`menu-item mt-2 ${this.props.page === 'web' && this.props.focusedItem && this.props.focusedItem.id === v.id ? 'menu-selected' : ''}`}
-          onClick={() => this.props.handleClick('web', v)}
-        >
-          {v.icon
-            ? <img className="menu-image" src={v.icon} />
-            : <Image className="menu-image" color="secondary" />
-          }
-        </ButtonBase>
+          data={v}
+          page={this.props.page}
+          focused={this.props.focusedItem && this.props.focusedItem.id === v.id ? true : false}
+          handleClick={this.props.handleClick}
+          handleRefresh={this.props.handleRefresh}
+          handleActionRequest={this.props.handleActionRequest}
+        />
       );
     });
   }
@@ -57,7 +59,7 @@ export default class Menu extends React.Component<IProps> {
             <Tooltip title="Hide window" enterDelay={750}>
               <IconButton
                 className="menu-item flex-column"
-                onClick={() => remote.getCurrentWindow().hide()}
+                onClick={() => ElectronService.toggleVisibility()}
               >
                 <VisibilityOff className="primary" fontSize="small" />
               </IconButton>

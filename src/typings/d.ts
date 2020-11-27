@@ -1,6 +1,8 @@
 // tslint:disable-next-line: no-any
 export type Icon = any;
 
+export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
+
 export interface IStoredData<T> {
   data: T[];
 }
@@ -14,15 +16,24 @@ export interface ISettingConfig extends ISetting {
   label: string;
   type: 'switch' | 'button';
   action?: string;
+  hover?: string;
 }
 
-export interface IPresetSetting {
-  id: string;
-  name: string;
+export interface IWindowInfo {
   width: number;
   height: number;
   xPosition: number;
   yPosition: number;
+}
+
+export interface IScreenInfo {
+  width: number;
+  height: number;
+}
+
+export interface IPresetSetting extends IWindowInfo {
+  id: string;
+  name: string;
 }
 
 export interface IServiceSetting extends IMenuItem {
@@ -40,7 +51,7 @@ export interface IWebView {
   view: React.ReactElement;
 }
 
-export interface IWindowSize {
-  width: number;
-  height: number;
+export interface IActionRequest {
+  id: string;
+  action: WebViewAction;
 }

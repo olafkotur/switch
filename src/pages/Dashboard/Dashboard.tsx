@@ -4,10 +4,11 @@ import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import { IMenuItem, IPresetSetting, ISetting, IWebView } from '../../typings/d';
+import { IActionRequest, IMenuItem, IPresetSetting, ISetting, IWebView, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import { PresetService } from '../../services/preset';
+import { ElectronService } from '../../services/electron';
 import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
@@ -16,6 +17,7 @@ interface IState {
   page: TPages;
   isLoading: boolean;
   focusedItem: IMenuItem | null;
+  actionRequest: IActionRequest;
 }
 
 export default class Dashboard extends React.Component<{}, IState> {
@@ -26,6 +28,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   protected presetSettings: IPresetSetting[] = [];
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
+  protected useModifiedAgent: boolean = false;
 
   /**
    * Dashboard constructor
@@ -37,32 +40,45 @@ export default class Dashboard extends React.Component<{}, IState> {
       page: 'settings',
       isLoading: true,
       focusedItem: null,
+      actionRequest: { id: '', action: '' },
     };
 
     // scope binding
-    this.handleRefreshMenu = this.handleRefreshMenu.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
-    this.generateWebViews = this.generateWebViews.bind(this);
+    // this.generateWebViews = this.generateWebViews.bind(this);
+    this.handleActionRequest = this.handleActionRequest.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
-    await this.handleRefreshMenu();
+    await this.handleRefresh();
   }
 
    /**
-   * Handles menu refresh request
+   * Handles refresh request
    */
-  protected async handleRefreshMenu(): Promise<void> {
+  protected async handleRefresh(): Promise<void> {
     this.setState({ isLoading: true });
     this.menuItems = await MenuService.fetchList();
     this.userSettings = await SettingsService.fetchList();
     this.presetSettings = await PresetService.fetchList();
 
+    // apply settings
+    await new Promise((resolve) => {
+      this.userSettings.forEach((v) => {
+        if (v.name === 'useModifiedAgent') {
+          this.useModifiedAgent = v.value === 'true';
+        } else if (v.name === 'overlayMode') {
+          ElectronService.setWindowMode(v.value === 'true');
+        }
+      });
+      resolve();
+    });
+
     // set the active item
     if (this.menuItems.length) {
-      // this.handleMenuItemClicked('web', this.menuItems[0]);
+      this.handleMenuItemClicked('web', this.menuItems[0]);
     }
-    this.generateWebViews();
     this.setState({ isLoading: false });
   }
 
@@ -80,15 +96,12 @@ export default class Dashboard extends React.Component<{}, IState> {
   }
 
   /**
-   * Generates web views components
+   * Handles action request
+   * @param id - menu item id
+   * @param action - web view action
    */
-  protected generateWebViews() {
-    this.webViews = this.menuItems.map((v) => {
-      return {
-        id: v.id,
-        view: <WebView url={v.url} />,
-      };
-    });
+  protected handleActionRequest(id: string, action: WebViewAction) {
+    this.setState({ actionRequest: { id, action } });
   }
 
   render() {
@@ -103,14 +116,23 @@ export default class Dashboard extends React.Component<{}, IState> {
                 focusedItem={this.state.focusedItem}
                 userSettings={this.userSettings}
                 handleClick={this.handleMenuItemClicked}
+                handleRefresh={this.handleRefresh}
+                handleActionRequest={this.handleActionRequest}
               />
             </div>
             <div className="col p-0">
               {/* these must stay as hidden elements to avoid re-rendering */}
               <div className={`${this.state.page !== 'web' ? 'd-none' : ''}`}>
                 {this.menuItems.map((v) => {
-                  return <div key={v.id} className={`${this.state.focusedItem && this.state.focusedItem.id !== v.id ? 'd-none' : ''}`}>
-                    {this.webViews.find(i => i.id === v.id)?.view}
+                  const hidden = !(this.state.focusedItem && this.state.focusedItem.id === v.id);
+                  return <div key={v.id} className={`${hidden ? 'd-none' : ''}`}>
+                    <WebView
+                      id={v.id}
+                      url={v.url}
+                      hidden={hidden}
+                      useModifiedAgent={this.useModifiedAgent}
+                      actionRequest={this.state.actionRequest}
+                    />
                   </div>;
                 })}
               </div>
@@ -118,7 +140,7 @@ export default class Dashboard extends React.Component<{}, IState> {
               {this.state.page === 'search' && <div className="dashboard-container d-flex justify-content-center">
                 <Search
                   items={this.menuItems}
-                  handleRefresh={this.handleRefreshMenu}
+                  handleRefresh={this.handleRefresh}
                 />
               </div>}
 
@@ -127,7 +149,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                   items={this.menuItems}
                   userSettings={this.userSettings}
                   presetSettings={this.presetSettings}
-                  handleRefresh={this.handleRefreshMenu}
+                  handleRefresh={this.handleRefresh}
                 />
               </div>}
             </div>

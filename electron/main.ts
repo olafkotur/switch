@@ -1,22 +1,19 @@
-import { app, screen, BrowserWindow, globalShortcut } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
+import { ElectronService } from '../src/services/electron';
 import * as path from 'path';
 import * as url from 'url';
-const open = require('open');
 
-const getWindowSize = (): { width: number, height: number } => {
-  const screenSize = screen.getPrimaryDisplay().workAreaSize;
-  return { width: screenSize.width - 50, height: screenSize.height - 25 };
-};
+require('dotenv').config();
 
 const createWindow = (): void => {
-  let windowSize = getWindowSize();
-  let mainWindow: BrowserWindow | null = new BrowserWindow({
-    width: windowSize.width,
-    height: windowSize.height,
+  let screenInfo = ElectronService.getScreenInfo();
+  let mainWindow: BrowserWindow = new BrowserWindow({
+    width: screenInfo.width,
+    height: screenInfo.height,
     minHeight: 480,
     minWidth: 720,
-    frame: false,
     center: true,
+    frame: false,
     transparent: true,
     backgroundColor: '#1F2225',
     webPreferences: {
@@ -26,40 +23,21 @@ const createWindow = (): void => {
     },
   });
 
-  // extra configuration required for windows to float above full screen apps
+  // window configuration
   app.dock.hide();
-  mainWindow.setVisibleOnAllWorkspaces(true);
-  mainWindow.setFullScreenable(false);
-  mainWindow.setAlwaysOnTop(true, 'screen-saver');
-
-  // register global shortcuts
-  globalShortcut.register('CommandOrControl+Esc', (): void => {
-    if (!mainWindow) {
-      return;
-    }
-
-    // check if window size has changed - happens if user switches displays
-    const newWindowSize = getWindowSize();
-    if (newWindowSize.width !== windowSize.width || newWindowSize.height !== windowSize.height) {
-      windowSize = { ...newWindowSize };
-      mainWindow.setSize(windowSize.width, windowSize.height);
-    }
-
-    // set visibility
-    const isVisible = mainWindow.isVisible();
-    isVisible ? mainWindow.hide() : mainWindow.show();
-  });
-
-  // web content handlers
-  mainWindow.webContents.on('new-window', async (event, url) => {
-    event.preventDefault();
-    await open(url);
-  });
+  ElectronService.setWindowMode(true, mainWindow);
+  ElectronService.setWindowInfo(mainWindow);
+  ElectronService.setWindowListeners(mainWindow);
+  screenInfo = ElectronService.setGlobalShortcuts(mainWindow, screenInfo);
 
   // render config
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:4000');
   } else {
+    // prevent window reloads and block devtools
+    Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
+    mainWindow.removeMenu(); // windows
+
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, 'renderer/index.html'),
@@ -70,6 +48,7 @@ const createWindow = (): void => {
   }
 
   mainWindow.on('closed', () => {
+    // @ts-ignore
     mainWindow = null;
   });
 };

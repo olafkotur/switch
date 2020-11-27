@@ -1,0 +1,24 @@
+.menu-item {
+  width: 40px;
+  height: 40px;
+}
+
+.menu-item-image {
+  width: 30px;
+  height: 30px;
+}
+
+.menu-item-image-upload {
+  width: 30px;
+  height: 30px;
+  margin-left: 0.5em;
+}
+
+.menu-item-image-upload-hover {
+  z-index: 100;
+}
+
+.menu-item-selected {
+  background-color: #56585C !important;
+  border-radius: 10px !important;
+}

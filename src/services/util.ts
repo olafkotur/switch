@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import moment from 'moment';
 import { remote } from 'electron';
-import { IWindowSize } from '../typings/d';
+import { IScreenInfo, IWindowInfo } from '../typings/d';
 
 export const UtilService = {
   error: (message?: string) => {
@@ -15,13 +15,32 @@ export const UtilService = {
     return hash;
   },
 
-  getWindowSize: (): IWindowSize => {
-    const window = remote.getCurrentWindow().getSize();
-    return { width: window[0], height: window[1] };
+  getWindowInfo: (): IWindowInfo => {
+    const size = remote.getCurrentWindow().getSize();
+    const position = remote.getCurrentWindow().getPosition();
+    return { width: size[0], height: size[1], xPosition: position[0], yPosition: position[1] };
   },
 
-  getScreenSize: (): IWindowSize => {
+  getScreenSize: (): IScreenInfo => {
     const screen = remote.screen.getPrimaryDisplay().workAreaSize;
     return { width: screen.width - 50, height: screen.height - 25 };
+  },
+
+  getUserAgent: (): string => {
+    const userAgent = navigator.userAgent;
+    const versions = {
+      chromium: '87.0.4280.67',
+      safari: '537.36',
+    };
+
+    // fall back in case matching fails
+    let fragments = ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_0) AppleWebKit/537.36 (KHTML, like Gecko) '];
+    if (userAgent.includes('switch/')) {
+      fragments = userAgent.split(/switch\/\d+([^\s]+)/g);
+    } else if (userAgent.includes('Chrome/')) {
+      fragments = userAgent.split(/Chrome\/\d+([^\s]+)/g);
+    }
+    const newUserAgent = `${fragments[0]}Chrome/${versions.chromium} Safari/${versions.safari}`;
+    return newUserAgent;
   },
 };

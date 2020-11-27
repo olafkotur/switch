@@ -1,8 +1,7 @@
 import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
 import PresetSetting from '../../components/Setting/PresetSetting';
-import ServiceSetting from '../../components/Setting/ServiceSetting';
-import { IMenuItem, ISetting, ISettingConfig, IServiceSetting, IPresetSetting, IWindowSize } from '../../typings/d';
+import { IMenuItem, ISetting, ISettingConfig, IPresetSetting } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
@@ -23,10 +22,8 @@ export default class Settings extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
-  protected windowSize: IWindowSize;
   protected general: ISettingConfig[];
   protected presets: IPresetSetting[];
-  protected services: IServiceSetting[];
 
   /**
    * Settings constructor
@@ -36,41 +33,41 @@ export default class Settings extends React.Component<IProps, IState> {
     super(props);
 
     // state
-    this.state = Object.assign({}, ...this.props.userSettings.map(v => ({ [v.name]: v.value })));
+    this.state = Object.assign(
+      {},
+      ...this.props.userSettings.map(v => ({ [v.name]: v.value })),
+    );
 
     // local properties
-    this.windowSize = UtilService.getWindowSize();
     this.general = [
       {
-        name: 'startUpLaunch',
-        label: 'Launch on Start-up',
+        name: 'overlayMode',
+        label: 'Overlay mode',
         type: 'switch',
-        value: this.state['startUpLaunch'],
+        value: this.state['overlayMode'],
+      },
+      {
+        name: 'animateResize',
+        label: 'Animate Resize',
+        type: 'switch',
+        value: this.state['animateResize'],
       },
       {
         name: 'showBetaStatus',
-        value: this.state['showBetaStatus'],
         label: 'Show Beta Status',
         type: 'switch',
+        value: this.state['showBetaStatus'],
       },
       {
-        name: 'featureRequest',
-        value: this.state['featureRequest'],
-        label: 'Feature Request',
-        type: 'button',
-        action: 'send',
-      },
-      {
-        name: 'bugReport',
-        value: this.state['bugReport'],
-        label: 'Bug Report',
-        type: 'button',
-        action: 'send',
+        name: 'useModifiedAgent',
+        label: 'Modified user agent',
+        type: 'switch',
+        hover: 'Experimental feature, may cause some websites to break. Use this if you have issues acessing websites due to an old chrome version',
+        value: this.state['useModifiedAgent'],
       },
     ];
 
     this.presets = [...this.props.presetSettings];
-    this.services = this.props.items.map(v => ({ ...v }));
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -82,7 +79,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param value - setting value
    */
   protected async handleUpdate(name: string, value?: string): Promise<void> {
-    const shouldRefresh = ['showBetaStatus'].includes(name);
+    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'overlayMode'].includes(name);
     if (value) {
       this.setState({ [name]: value });
       const res = await SettingsService.update(name, value);
@@ -108,25 +105,14 @@ export default class Settings extends React.Component<IProps, IState> {
           />
         ))}
 
-        {/* window preset settings */}
-        <h3 className="primary font-weight-bold mt-5">Window Presets</h3>
+        {/* preset settings */}
+        <h3 className="primary font-weight-bold mt-5">Presets</h3>
         <hr />
         {this.presets.map(v => (
           <PresetSetting
             {...v}
             key={`preset-setting-${v.id}`}
-            active={this.windowSize.width === v.width && this.windowSize.height === v.height}
-            handleRefresh={this.props.handleRefresh}
-          />
-        ))}
-
-        {/* service settings */}
-        <h3 className="primary font-weight-bold mt-5 ">Services</h3>
-        <hr />
-        {this.services.map(v => (
-          <ServiceSetting
-            {...v}
-            key={`service-setting-${v.id}`}
+            animate={this.state.animateResize === 'true'}
             handleRefresh={this.props.handleRefresh}
           />
         ))}

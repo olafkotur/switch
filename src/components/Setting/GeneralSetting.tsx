@@ -1,6 +1,6 @@
 import React from 'react';
 import { ISettingConfig } from '../../typings/d';
-import { Button, Switch } from '@material-ui/core';
+import { Button, Switch, Tooltip } from '@material-ui/core';
 import './setting.css';
 
 interface IProps extends ISettingConfig {
@@ -19,7 +19,6 @@ export default class GeneralSetting extends React.Component<IProps> {
         />;
       case 'button':
         return <Button
-          disableElevation
           variant="contained"
           className="setting-button"
           color="primary"
@@ -36,7 +35,9 @@ export default class GeneralSetting extends React.Component<IProps> {
     return (
       <div className="d-flex flex-row justify-content-between mt-2">
         <h5 className="primary">{this.props.label}</h5>
-        { this.renderType() }
+        <Tooltip title={this.props.hover || ''}>
+          { this.renderType() }
+        </Tooltip>
       </div>
     );
   }
