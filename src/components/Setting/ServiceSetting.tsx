@@ -15,7 +15,9 @@ interface IState {
   isEditing: boolean;
   label: string;
 }
-
+/**
+ * @deprecated - this is implemented as an overlay in the menu item
+ */
 export default class ServiceSetting extends React.Component<IProps, IState> {
 
   /**

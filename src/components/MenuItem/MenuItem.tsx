@@ -41,6 +41,8 @@ export default class MenuItem extends React.Component<IProps, IState> {
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNavigate = this.handleNavigate.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   /**
@@ -84,7 +86,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
   }
 
   /**
-   * Handles service name edit
+   * Handles service data update
    * @param data - menu item data
    */
   protected async handleUpdate(data: IMenuItem): Promise<void> {

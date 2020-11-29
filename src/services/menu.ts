@@ -9,32 +9,41 @@ export const MenuService = {
     return res && res.data ? res.data : [];
   },
 
-  save: async (url: string, name?: string, icon?: Icon): Promise<boolean> => {
+  save: async (url: string, icon?: Icon): Promise<boolean> => {
+    const previousData = await MenuService.fetchList();
+
+    // create menu item
     const formattedUrl = url.includes('http://') || url.includes('https://') ? url : `https://${url}`;
     const newData: IMenuItem = {
       url: formattedUrl,
-      name: name || formattedUrl.split('://')[1],
       id: UtilService.generateId(url),
+      order: previousData.length,
       icon: icon || '',
     };
 
     // append new data to previous
-    const previousData = await MenuService.fetchList();
     const saveData: IStoredData<IMenuItem> = { data: [...previousData, newData] };
 
     return await StorageService.set('menuItems', saveData);
   },
 
   update: async (data: IMenuItem): Promise<boolean> => {
+    // find item to update
     const previousData = await MenuService.fetchList();
+    const toUpdate = previousData.find(v => v.id === data.id);
+    if (!toUpdate) {
+      return false;
+    }
+
+    // update data
     const icon = data.icon && typeof data.icon !== 'string' ? await StorageService.base64(data.icon) : '';
+    const updatedData: IMenuItem[] = previousData.filter(v => v.id !== data.id).concat([{
+      ...toUpdate,
+      icon: icon || toUpdate.icon,
+      order: data.order || toUpdate.order,
+    }]);
 
-    // update icon by id
-    const updatedData: IMenuItem[] = previousData.map(v => (
-      data.id === v.id ? { ...v, icon: icon || v.icon, name: data.name || v.name || v.url } : { ...v }
-    ));
     const saveData: IStoredData<IMenuItem> = { data: [...updatedData] };
-
     return await StorageService.set('menuItems', saveData);
   },
 
@@ -48,6 +57,31 @@ export const MenuService = {
     return await StorageService.set('menuItems', saveData);
   },
 
+  reorder: async (id: string, position: number): Promise<IMenuItem[]> => {
+    // fetch previous data
+    const previousData = await MenuService.fetchList();
+
+    // separate target from the group
+    const excludedData = previousData.filter(v => v.id !== id);
+    const toUpdate = previousData.find(v => v.id === id) as IMenuItem;
+
+    // order and update
+    const reorderedData: IMenuItem[] = [];
+    _.sortBy(excludedData, 'order').forEach((v, i) => {
+      i === position ? reorderedData.push(toUpdate, v) : reorderedData.push(v);
+    });
+    position > excludedData.length - 1 && reorderedData.push(toUpdate);
+    return reorderedData.map((v, i) => ({ ...v, order: i }));
+  },
+
+  confirmReorder: async (items: IMenuItem[]): Promise<boolean> => {
+    const saveData: IStoredData<IMenuItem> = { data: [...items] };
+    return await StorageService.set('menuItems', saveData);
+  },
+
+  /**
+   * @deprecated - use reorder instead
+   */
   order: async (id: string, direction: 'up' | 'down'): Promise<boolean> => {
     const previousData = await MenuService.fetchList();
 

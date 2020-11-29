@@ -84,8 +84,8 @@ export default class Search extends React.Component<IProps, IState> {
    * @param url - service url
    * @param icon - service icon
    */
-  protected async handleSuggestion(url: string, name: string, icon: Icon): Promise<void> {
-    const success = await MenuService.save(url, name, icon);
+  protected async handleSuggestion(url: string, icon: Icon): Promise<void> {
+    const success = await MenuService.save(url, icon);
     if (!success) {
       this.alertError();
     }
@@ -97,10 +97,10 @@ export default class Search extends React.Component<IProps, IState> {
    * @param data - details required to build component
    */
   protected generateSuggestions(data: IMenuItem[]): React.ReactElement[] {
-    return data.map((v) => {
+    return data.map((v, i) => {
       return <Suggestion
         {...v}
-        key={`suggestion-${v.name}`}
+        key={`suggestion-${i}`}
         handleSuggestion={this.handleSuggestion}
       />;
     });

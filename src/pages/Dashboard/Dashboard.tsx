@@ -9,6 +9,7 @@ import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import { PresetService } from '../../services/preset';
 import { ElectronService } from '../../services/electron';
+import * as _ from 'lodash';
 import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';

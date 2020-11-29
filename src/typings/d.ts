@@ -42,7 +42,7 @@ export interface IServiceSetting extends IMenuItem {
 export interface IMenuItem {
   id: string;
   url: string;
-  name: string;
+  order: number;
   icon: Icon;
 }
 
