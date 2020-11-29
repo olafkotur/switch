@@ -38,7 +38,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'search',
+      page: 'settings',
       isLoading: true,
       focusedItem: null,
       actionRequest: { id: '', action: '' },
@@ -77,7 +77,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // set the active item
     if (firstLoad && this.menuItems.length) {
-      this.handleMenuItemClicked('web', this.menuItems[0]);
+      // this.handleMenuItemClicked('web', this.menuItems[0]);
     }
     this.setState({ isLoading: false });
   }

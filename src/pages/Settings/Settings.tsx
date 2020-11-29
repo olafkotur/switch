@@ -6,6 +6,7 @@ import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
 import './settings.css';
+import Preset from '../../components/Preset/Preset';
 
 interface IProps {
   items: IMenuItem[];
