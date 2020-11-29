@@ -78,31 +78,4 @@ export const MenuService = {
     const saveData: IStoredData<IMenuItem> = { data: [...items] };
     return await StorageService.set('menuItems', saveData);
   },
-
-  /**
-   * @deprecated - use reorder instead
-   */
-  order: async (id: string, direction: 'up' | 'down'): Promise<boolean> => {
-    const previousData = await MenuService.fetchList();
-
-    // determine indexes
-    const oldIndex = previousData.findIndex(v => v.id === id);
-    const newIndex = direction === 'up' ? oldIndex - 1 : oldIndex + 1;
-
-    // safeguard against illegal moves
-    if (newIndex < 0 || newIndex > previousData.length - 1) {
-      return true;
-    }
-
-    // re-order
-    const updatedData: IMenuItem[] = [];
-    _.without(previousData, previousData[oldIndex]).forEach((v, i) => {
-      i === newIndex && updatedData.push(previousData[oldIndex]);
-      updatedData.push(v);
-    });
-    newIndex > updatedData.length - 1 && updatedData.push(previousData[oldIndex]);
-
-    const saveData: IStoredData<IMenuItem> = { data: [...updatedData] };
-    return await StorageService.set('menuItems', saveData);
-  },
 };
