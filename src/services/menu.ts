@@ -4,11 +4,19 @@ import { UtilService } from './util';
 import * as _ from 'lodash';
 
 export const MenuService = {
+  /**
+   * Fetches list of menu items
+   */
   fetchList: async (): Promise<IMenuItem[]> => {
     const res: IStoredData<IMenuItem> | null = await StorageService.get('menuItems') as IStoredData<IMenuItem> | null;
     return res && res.data ? res.data : [];
   },
 
+  /**
+   * Appends new menu items to the existing data
+   * @param url - menu item url
+   * @param icon - menu item icon
+   */
   save: async (url: string, icon?: Icon): Promise<boolean> => {
     const previousData = await MenuService.fetchList();
 
@@ -27,6 +35,10 @@ export const MenuService = {
     return await StorageService.set('menuItems', saveData);
   },
 
+  /**
+   * Updates existing menu item data
+   * @param data - update data
+   */
   update: async (data: IMenuItem): Promise<boolean> => {
     // find item to update
     const previousData = await MenuService.fetchList();
@@ -47,6 +59,10 @@ export const MenuService = {
     return await StorageService.set('menuItems', saveData);
   },
 
+  /**
+   * Deletes menu item by id
+   * @param id - menu item id
+   */
   delete: async (id: string): Promise<boolean> => {
     const previousData = await MenuService.fetchList();
 
@@ -57,6 +73,11 @@ export const MenuService = {
     return await StorageService.set('menuItems', saveData);
   },
 
+  /**
+   * Handles re-ordering logic of menu items, does not update in db
+   * @param id - menu item id
+   * @param position - new menu item position
+   */
   reorder: async (id: string, position: number): Promise<IMenuItem[]> => {
     // fetch previous data
     const previousData = await MenuService.fetchList();
@@ -74,6 +95,10 @@ export const MenuService = {
     return reorderedData.map((v, i) => ({ ...v, order: i }));
   },
 
+  /**
+   * Saves the provided order of menu items in db
+   * @param items - ordered menu items
+   */
   confirmReorder: async (items: IMenuItem[]): Promise<boolean> => {
     const saveData: IStoredData<IMenuItem> = { data: [...items] };
     return await StorageService.set('menuItems', saveData);
