@@ -62,6 +62,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
    * Handles context menu
    */
   protected handleContextMenu() {
+    this.props.handleClick('web', this.props.data);
     this.setState({ contextMenu: !this.state.contextMenu });
   }
 
