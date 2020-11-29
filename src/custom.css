@@ -8,13 +8,17 @@ button:focus {
   outline: none;
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+div:focus {
+  outline: none;
 }
 
 input:focus {
   outline:none!important;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
 }
 
 /********* Colors *********/
