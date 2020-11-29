@@ -1,6 +1,9 @@
 import { IMenuItem } from '../typings/d';
 
 export const SearchService = {
+  /**
+   * Returns service suggestions
+   */
   getSuggestions: async (): Promise<IMenuItem[]> => {
     return [
       { id: '', url: 'https://notion.so', icon: require('../../assets/notion.png'), order: -1 },
@@ -27,6 +30,10 @@ export const SearchService = {
     ];
   },
 
+  /**
+   * Validates a URL
+   * @param url - url to be validated
+   */
   validateUrl: (url: string): boolean => {
     return new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:[\.|\:][\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm).test(url);
   },

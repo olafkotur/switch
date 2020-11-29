@@ -6,8 +6,11 @@ import { UtilService } from './util';
 const STORAGE_KEY = 'windowPresets';
 
 export const PresetService = {
+  /**
+   * Returns the default preset settings
+   */
   getDefault: (): IPresetSetting[] => {
-    const screenSize = UtilService.getScreenSize();
+    const screenSize = UtilService.getScreenInfo();
     return [
       { id: 'default-fullscreen', name: 'Full Screen', width: screenSize.width, height: screenSize.height, xPosition: 25, yPosition: 25 },
       { id: 'default-left-side', name: 'Left Side', width: screenSize.width / 2, height: screenSize.height, xPosition: 25, yPosition: 25 },
@@ -15,6 +18,9 @@ export const PresetService = {
     ];
   },
 
+  /**
+   * Fetches list of stored presets
+   */
   fetchList: async (): Promise<IPresetSetting[]> => {
     const res: IStoredData<IPresetSetting> | null = await StorageService.get(STORAGE_KEY) as IStoredData<IPresetSetting> | null;
     return res && res.data && res.data.length ? res.data : PresetService.getDefault();
@@ -31,6 +37,14 @@ export const PresetService = {
     });
   },
 
+  /**
+   * Saves new preset in the db
+   * @param name - name
+   * @param width - width
+   * @param height - height
+   * @param xPosition - x coordinate position
+   * @param yPosition - y coordinate position
+   */
   save: async (name: string, width: number, height: number, xPosition: number, yPosition: number): Promise<boolean> => {
     const newData: IPresetSetting = {
       name,
@@ -48,6 +62,10 @@ export const PresetService = {
     return await StorageService.set(STORAGE_KEY, saveData);
   },
 
+  /**
+   * Deletes preset by id
+   * @param id - preset id
+   */
   delete: async (id: string): Promise<boolean> => {
     const previousData = await PresetService.fetchList();
 

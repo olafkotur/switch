@@ -4,17 +4,29 @@ import { IScreenInfo, IWindowInfo } from '../typings/d';
 import open from 'open';
 
 export const ElectronService = {
+  /**
+   * Fetches current screen info (before remote window intialisation)
+   */
   getScreenInfo: (): IScreenInfo => {
     const screenSize = screen.getPrimaryDisplay().workAreaSize;
     return { width: screenSize.width - 50, height: screenSize.height - 25 };
   },
 
+  /**
+   * Fetches current window info (before remote window intialisation)
+   */
   getWindowInfo: (window: BrowserWindow): IWindowInfo => {
     const size = window.getSize();
     const position = window.getPosition();
     return { width: size[0], height: size[1], xPosition: position[0], yPosition: position[1] };
   },
 
+  /**
+   * Sets window size and position
+   * @param win - browser window
+   * @param winInfo - window info
+   * @param animate - true to animate repositioning
+   */
   setWindowInfo: async (win?: BrowserWindow, winInfo?: IWindowInfo, animate?: boolean): Promise<void> => {
     const window = win || remote.getCurrentWindow();
     const windowInfo = winInfo || await StorageService.get('currentWindowInfo') as IWindowInfo | null;
@@ -24,6 +36,11 @@ export const ElectronService = {
     }
   },
 
+  /**
+   * Set global shortut listeners
+   * @param window - browser window
+   * @param screenInfo - screen info
+   */
   setGlobalShortcuts: (window: BrowserWindow, screenInfo: IScreenInfo): IScreenInfo => {
     let newScreenSize = { ...screenInfo };
     globalShortcut.register('CommandOrControl+Esc', (): void => {
@@ -38,6 +55,10 @@ export const ElectronService = {
     return newScreenSize;
   },
 
+  /**
+   * Set window listener events
+   * @param window - browser window
+   */
   setWindowListeners: (window: BrowserWindow): void => {
     // resize event
     window.on('resize', async () => {
@@ -52,6 +73,11 @@ export const ElectronService = {
     });
   },
 
+  /**
+   * Sets the window mode
+   * @param overlay - true to allow application to be seen over other windows, including full screen
+   * @param win - browser window
+   */
   setWindowMode: (overlay: boolean, win?: BrowserWindow): void => {
     const window = win || remote.getCurrentWindow();
     const options = { visible: true, fullScreen: false, alwaysTop: true, menu: false }; // assume overlay
@@ -65,6 +91,10 @@ export const ElectronService = {
     window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'screen-saver' : undefined);
   },
 
+  /**
+   * Toggle the visibility of the window
+   * @param win - browser window
+   */
   toggleVisibility: (win?: BrowserWindow): void => {
     const window = win || remote.getCurrentWindow();
     const visible = window.isVisible();

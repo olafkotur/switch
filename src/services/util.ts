@@ -4,10 +4,18 @@ import { remote } from 'electron';
 import { IScreenInfo, IWindowInfo } from '../typings/d';
 
 export const UtilService = {
+  /**
+   * Throws an error in the form of a window alert
+   * @param message - custom error message
+   */
   error: (message?: string) => {
     alert(message || 'Something went wrong, please try again');
   },
 
+  /**
+   * Generates a unique id
+   * @param salt - generator salt, safety to ensure unique result
+   */
   generateId: (salt: string): string => {
     const input = `${salt}-${moment().milliseconds()}-${Math.random()}`;
     const algorithm = crypto.createHash('sha256');
@@ -15,17 +23,26 @@ export const UtilService = {
     return hash;
   },
 
+  /**
+   * Fetches current window info
+   */
   getWindowInfo: (): IWindowInfo => {
     const size = remote.getCurrentWindow().getSize();
     const position = remote.getCurrentWindow().getPosition();
     return { width: size[0], height: size[1], xPosition: position[0], yPosition: position[1] };
   },
 
-  getScreenSize: (): IScreenInfo => {
+  /**
+   * Fetches current screen info (monitor)
+   */
+  getScreenInfo: (): IScreenInfo => {
     const screen = remote.screen.getPrimaryDisplay().workAreaSize;
     return { width: screen.width - 50, height: screen.height - 25 };
   },
 
+  /**
+   * Fetches a modified user agent (fakes an update to the latest Chromium and Safari versions)
+   */
   getUserAgent: (): string => {
     const userAgent = navigator.userAgent;
     const versions = {

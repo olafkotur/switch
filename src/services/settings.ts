@@ -3,6 +3,9 @@ import { StorageService } from './storage';
 import * as _ from 'lodash';
 
 export const SettingsService = {
+  /**
+   * Returns default settings
+   */
   getDefault: (): ISetting[] => {
     return [
       { name: 'overlayMode', value: 'true' },
@@ -12,11 +15,19 @@ export const SettingsService = {
     ];
   },
 
+  /**
+   * Fetches list of stored settings
+   */
   fetchList: async (): Promise<ISetting[]> => {
     const res: IStoredData<ISetting> | null = await StorageService.get('userSettings') as IStoredData<ISetting> | null;
     return res && res.data ? res.data : SettingsService.getDefault();
   },
 
+  /**
+   * Updates a setting by name
+   * @param name - setting name
+   * @param value - setting value
+   */
   update: async (name: string, value: string): Promise<boolean> => {
     const previousData = await SettingsService.fetchList();
 
