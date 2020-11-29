@@ -125,7 +125,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
           direction="right"
           ref={this.ref}
         >
-          <Paper className="d-flex flex-row position-absolute mt-1 bg-primary" elevation={10}>
+          <Paper className="d-flex flex-row position-absolute  bg-primary" elevation={10}>
             <IconButton className="menu-item-image align-self-center">
               <Tooltip title="Upload a custom image" className="menu-item-image-upload-hover">
                 <label
