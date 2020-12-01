@@ -1,6 +1,6 @@
 import React from 'react';
 import { SettingsService } from '../../services/settings';
-import { Button } from '@material-ui/core';
+import { Button, Tooltip } from '@material-ui/core';
 
 interface IProps {
   keybind: string;
@@ -9,6 +9,7 @@ interface IProps {
 
 interface IState {
   recording: boolean;
+  changed: boolean;
   keyBinds: string[];
 }
 
@@ -23,6 +24,7 @@ export default class KeybindButton extends React.Component<IProps, IState> {
 
     this.state = {
       recording: false,
+      changed: false,
       keyBinds: [],
     };
 
@@ -70,8 +72,8 @@ export default class KeybindButton extends React.Component<IProps, IState> {
 
     // stop recording after 2 keys
     if (this.state.keyBinds.length >= 2) {
-      this.setState({ recording: false });
-      await this.props.handleUpdate('visibilityKeybind', this.formatKeybinds(), true);
+      this.props.handleUpdate('visibilityKeybind', this.formatKeybinds(), true);
+      this.setState({ recording: false, changed: true });
     }
   }
 
@@ -93,9 +95,11 @@ export default class KeybindButton extends React.Component<IProps, IState> {
         color="primary"
         onClick={this.handleClick}
       >
-        <span className="setting-button-text" >
-          {this.state.keyBinds.length ? this.formatKeybinds() : this.props.keybind || 'record' }
-        </span>
+        <Tooltip title={`Currently set to ${this.state.changed ? this.formatKeybinds() : this.props.keybind}`}>
+          <span className="setting-button-text" >
+            {this.state.recording || this.state.changed ? this.formatKeybinds() : 'change' }
+          </span>
+        </Tooltip>
       </Button>
     );
   }
