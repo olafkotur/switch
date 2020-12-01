@@ -13,8 +13,10 @@ export const PresetService = {
     const screenSize = UtilService.getScreenInfo();
     return [
       { id: 'default-fullscreen', name: 'Full Screen', width: screenSize.width, height: screenSize.height, xPosition: 25, yPosition: 25 },
-      { id: 'default-left-side', name: 'Left Side', width: screenSize.width / 2, height: screenSize.height, xPosition: 25, yPosition: 25 },
-      { id: 'default-right-side', name: 'Right Side', width: screenSize.width / 2, height: screenSize.height, xPosition: screenSize.width / 2 + 25, yPosition: 25 },
+      { id: 'default-left-side', name: 'Left Side', width: screenSize.width * 0.5, height: screenSize.height, xPosition: 25, yPosition: 25 },
+      { id: 'default-right-side', name: 'Right Side', width: screenSize.width * 0.5, height: screenSize.height, xPosition: screenSize.width * 0.5 + 25, yPosition: 25 },
+      { id: 'default-two-thirds-left', name: 'Two Thirds (left)', width: screenSize.width * 0.66, height: screenSize.height, xPosition: 25, yPosition: 25 },
+      { id: 'default-two-thirds-right', name: 'Two Thirds (right)', width: screenSize.width * 0.66, height: screenSize.height, xPosition: screenSize.width * 0.33 + 50, yPosition: 25 },
     ];
   },
 
@@ -27,12 +29,14 @@ export const PresetService = {
   },
 
   active: async (width: number, height: number, xPosition: number, yPosition: number, animate: boolean): Promise<void> => {
+    const windowInfo = {
+      width: Math.round(width),
+      height: Math.round(height),
+      xPosition: Math.round(xPosition),
+      yPosition: Math.round(yPosition),
+    };
     return new Promise((resolve) => {
-      ElectronService.setWindowInfo(
-        undefined,
-        { width, height, xPosition, yPosition },
-        animate,
-      );
+      ElectronService.setWindowInfo(undefined, windowInfo, animate);
       resolve();
     });
   },
