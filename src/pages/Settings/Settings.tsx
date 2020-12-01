@@ -1,12 +1,13 @@
 import React from 'react';
 import GeneralSetting from '../../components/Setting/GeneralSetting';
 import PresetSetting from '../../components/Setting/PresetSetting';
+import KeybindButton from '../../components/KeybindButton/KeybindButton';
 import { IMenuItem, ISetting, ISettingConfig, IPresetSetting } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
 import './settings.css';
-import Preset from '../../components/Preset/Preset';
+import { Paper } from '@material-ui/core';
 
 interface IProps {
   items: IMenuItem[];
@@ -17,6 +18,7 @@ interface IProps {
 
 interface IState {
   [name: string]: string;
+  shouldRestart: 'true' | 'false';
 }
 
 export default class Settings extends React.Component<IProps, IState> {
@@ -35,9 +37,13 @@ export default class Settings extends React.Component<IProps, IState> {
 
     // state
     this.state = Object.assign(
-      {},
-      ...this.props.userSettings.map(v => ({ [v.name]: v.value })),
+      { shouldRestart: 'false' },
+      ...this.props.userSettings.map(v => ({ [v.name]: v.value })), // map user settings to state
     );
+
+    // scope binding
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     // local properties
     this.general = [
@@ -46,7 +52,8 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Overlay mode',
         type: 'switch',
         value: this.state['overlayMode'],
-        hover: 'Allow Switch to be shown on top of other windows including full screen applications',
+        hover: 'Turn this off to use Switch as a normal application, overlay and toggle visbility features will be disabled',
+        restart: true,
       },
       {
         name: 'animateResize',
@@ -67,12 +74,20 @@ export default class Settings extends React.Component<IProps, IState> {
         type: 'switch',
         value: this.state['showBetaStatus'],
       },
+      {
+        name: 'visibilityKeybind',
+        label: 'Toggle Show/Hide',
+        type: 'custom',
+        value: '',
+        restart: true,
+        custom: <KeybindButton
+          keybind={this.state['visibilityKeybind']}
+          handleUpdate={this.handleUpdate}
+        />,
+      },
     ];
 
     this.presets = [...this.props.presetSettings];
-
-    // scope binding
-    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   /**
@@ -80,21 +95,35 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param name - setting name
    * @param value - setting value
    */
-  protected async handleUpdate(name: string, value?: string): Promise<void> {
-    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'overlayMode'].includes(name);
-    if (value) {
-      this.setState({ [name]: value });
-      const res = await SettingsService.update(name, value);
-      if (!res) {
-        return UtilService.error();
-      }
+  protected async handleUpdate(name: string, value: string, restart?: boolean): Promise<void> {
+    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent'].includes(name);
+    // tslint:disable-next-line: no-any
+    this.setState({ [name]: value as any });
+    const res = await SettingsService.update(name, value);
+    if (!res) {
+      return UtilService.error();
     }
+    restart && this.setState({ shouldRestart: 'true' });
     shouldRefresh && this.props.handleRefresh(); // do not await
+  }
+
+   /**
+   * Handles click events
+   * @param name - setting name
+   */
+  protected async handleClick(name: string): Promise<void> {
+    return;
   }
 
   render() {
     return (
       <div className="settings-container">
+        {this.state.shouldRestart === 'true' &&
+          <Paper className="d-flex flex-row justify-content-center mb-4 py-3 bg-secondary">
+            <span className="text-danger text-center p-1">Some changes require the application to restart to take effect</span>
+          </Paper>
+        }
+
         {/* general settings */}
         <h3 className="primary font-weight-bold">General</h3>
         <hr />
@@ -102,8 +131,9 @@ export default class Settings extends React.Component<IProps, IState> {
           <GeneralSetting
             {...v}
             key={`general-setting-${v.name}`}
-            value={this.state[v.name]}
+            value={this.state[v.name] as string}
             handleUpdate={this.handleUpdate}
+            handleClick={this.handleClick}
           />
         ))}
 

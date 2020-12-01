@@ -30,6 +30,10 @@ input:focus {
   background: #1F2225 !important;
 }
 
+.bg-error {
+  background: #B33939 !important;
+}
+
 .bg-red {
   background:red !important;
 }

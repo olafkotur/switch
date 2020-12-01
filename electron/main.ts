@@ -1,20 +1,36 @@
+import storage from 'electron-json-storage';
 import { app, BrowserWindow, Menu } from 'electron';
 import { ElectronService } from '../src/services/electron';
-import * as path from 'path';
+import { SettingsService } from '../src/services/settings';
 import * as url from 'url';
+import * as path from 'path';
 
+// dotenv setup
 require('dotenv').config();
 
-const createWindow = (): void => {
+// storage setup
+const dataPath = storage.getDataPath();
+storage.setDataPath(dataPath);
+
+// window
+let mainWindow: BrowserWindow;
+
+const createWindow = async (): Promise<void> => {
+  // fetch user settings
+  const userSettings = await SettingsService.fetchList();
+  const visibilityKeybind = userSettings.find(v => v.name === 'visibilityKeybind');
+  const overlayModeSetting = userSettings.find(v => v.name === 'overlayMode');
+  const overlayMode = !!(overlayModeSetting && overlayModeSetting.value === 'true');
+
   let screenInfo = ElectronService.getScreenInfo();
-  let mainWindow: BrowserWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: screenInfo.width,
     height: screenInfo.height,
     minHeight: 480,
     minWidth: 720,
     center: true,
-    frame: false,
-    transparent: true,
+    frame: !overlayMode,
+    transparent: overlayMode,
     backgroundColor: '#1F2225',
     webPreferences: {
       nodeIntegration: true,
@@ -26,10 +42,15 @@ const createWindow = (): void => {
 
   // window configuration
   app.dock.hide();
-  ElectronService.setWindowMode(true, mainWindow);
+  ElectronService.setWindowMode(overlayMode, mainWindow);
   ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
-  screenInfo = ElectronService.setGlobalShortcuts(mainWindow, screenInfo);
+  screenInfo = ElectronService.setGlobalShortcuts(
+    mainWindow,
+    screenInfo,
+    visibilityKeybind ? visibilityKeybind.value : '',
+    overlayMode,
+  );
 
   // render config
   if (process.env.NODE_ENV === 'development') {
@@ -55,5 +76,5 @@ const createWindow = (): void => {
 };
 
 // launch window
-app.on('ready', createWindow).whenReady();
+app.on('ready', () => createWindow().catch());
 app.allowRendererProcessReuse = true;

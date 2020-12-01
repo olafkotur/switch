@@ -40,17 +40,18 @@ export const ElectronService = {
    * Set global shortut listeners
    * @param window - browser window
    * @param screenInfo - screen info
+   * @param overlayMode - overlay mode flag
    */
-  setGlobalShortcuts: (window: BrowserWindow, screenInfo: IScreenInfo): IScreenInfo => {
+  setGlobalShortcuts: (window: BrowserWindow, screenInfo: IScreenInfo, keybind: string, overlayMode: boolean): IScreenInfo => {
     let newScreenSize = { ...screenInfo };
-    globalShortcut.register('CommandOrControl+Esc', (): void => {
+    globalShortcut.register(keybind.replace(/\ /g, '') || 'CommandOrControl+Esc', (): void => {
       // check if screen size has changed - happens if user switches displays
       newScreenSize = { ...ElectronService.getScreenInfo() };
       if (newScreenSize.width !== screenInfo.width || screenInfo.height !== screenInfo.height) {
         window.setSize(screenInfo.width, screenInfo.height);
         window.reload();
       }
-      ElectronService.toggleVisibility(window);
+      overlayMode && ElectronService.toggleVisibility(window);
     });
     return newScreenSize;
   },

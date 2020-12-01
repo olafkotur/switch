@@ -71,7 +71,6 @@ export default class Dashboard extends React.Component<{}, IState> {
           break;
         case 'overlayMode':
           ElectronService.setWindowMode(v.value === 'true');
-          break;
       }
     }
 
@@ -79,7 +78,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     if (firstLoad && this.menuItems.length) {
       // this.handleMenuItemClicked('web', this.menuItems[0]);
     }
-    this.setState({ isLoading: false });
+    setTimeout(() => this.setState({ isLoading: false }), 500);
   }
 
   /**
