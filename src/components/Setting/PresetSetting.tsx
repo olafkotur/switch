@@ -72,7 +72,7 @@ export default class PresetSetting extends React.Component<IProps> {
           value={this.props.name}
         />
         <div className="d-flex flex-row">
-          <Tooltip title={`${this.props.width} * ${this.props.height}`} enterDelay={750} >
+          <Tooltip title={`${Math.round(this.props.width)} * ${Math.round(this.props.height)}`} enterDelay={750} >
             <Button
               variant="contained"
               className="setting-button"
