@@ -30,6 +30,7 @@ const createWindow = async (): Promise<void> => {
     minWidth: 720,
     center: true,
     darkTheme: true,
+    title: 'Switch',
     frame: !overlayMode,
     transparent: overlayMode,
     backgroundColor: '#1F2225',
@@ -42,7 +43,7 @@ const createWindow = async (): Promise<void> => {
   });
 
   // window configuration
-  app.dock.hide();
+  overlayMode && app.dock.hide();
   ElectronService.setWindowMode(overlayMode, mainWindow);
   ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
