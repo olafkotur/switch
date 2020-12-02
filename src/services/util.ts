@@ -33,14 +33,6 @@ export const UtilService = {
   },
 
   /**
-   * Fetches current screen info (monitor)
-   */
-  getScreenInfo: (): IScreenInfo => {
-    const screen = remote.screen.getPrimaryDisplay().workAreaSize;
-    return { width: screen.width - 50, height: screen.height - 25 };
-  },
-
-  /**
    * Fetches a modified user agent (fakes an update to the latest Chromium and Safari versions)
    */
   getUserAgent: (): string => {

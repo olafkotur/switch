@@ -1,0 +1,11 @@
+.preset-outer {
+  width: 20vh;
+  height: 100px;
+}
+
+.preset-inner {
+  border-color: #303136;
+  border-width: 5px;
+  border-style: dotted;
+}
+

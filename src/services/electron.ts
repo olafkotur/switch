@@ -2,13 +2,16 @@ import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
 import { IScreenInfo, IWindowInfo } from '../typings/d';
 
+let previousScreenInfo: IScreenInfo | null = null;
+
 export const ElectronService = {
   /**
-   * Fetches current screen info (before remote window intialisation)
+   * Fetches current screen info
+   * @param useRemote - flag to user remote
    */
-  getScreenInfo: (): IScreenInfo => {
-    const screenSize = screen.getPrimaryDisplay().workAreaSize;
-    return { width: screenSize.width - 50, height: screenSize.height - 25 };
+  getScreenInfo: (useRemote?: boolean): IScreenInfo => {
+    const screenSize = (useRemote ? remote.screen : screen).getPrimaryDisplay().workAreaSize;
+    return { width: screenSize.width, height: screenSize.height };
   },
 
   /**
@@ -38,21 +41,23 @@ export const ElectronService = {
   /**
    * Set global shortut listeners
    * @param window - browser window
-   * @param screenInfo - screen info
+   * @param keybind - visibility keybind
    * @param overlayMode - overlay mode flag
    */
-  setGlobalShortcuts: (window: BrowserWindow, screenInfo: IScreenInfo, keybind: string, overlayMode: boolean): IScreenInfo => {
-    let newScreenSize = { ...screenInfo };
+  setGlobalShortcuts: (window: BrowserWindow, keybind: string, overlayMode: boolean): void => {
+    const newScreenInfo = ElectronService.getScreenInfo();
+    previousScreenInfo = previousScreenInfo ? previousScreenInfo : { ...newScreenInfo };
+
+    // register shortcuts
     globalShortcut.register(keybind.replace(/\ /g, '') || 'CommandOrControl+Esc', (): void => {
       // check if screen size has changed - happens if user switches displays
-      newScreenSize = { ...ElectronService.getScreenInfo() };
-      if (newScreenSize.width !== screenInfo.width || screenInfo.height !== screenInfo.height) {
-        window.setSize(screenInfo.width, screenInfo.height);
+      if (newScreenInfo.width !== previousScreenInfo!.width || previousScreenInfo!.height !== previousScreenInfo!.height) {
+        previousScreenInfo = { ...newScreenInfo };
+        window.setSize(newScreenInfo.width, newScreenInfo.height);
         window.reload();
       }
       overlayMode && ElectronService.toggleVisibility(window);
     });
-    return newScreenSize;
   },
 
   /**

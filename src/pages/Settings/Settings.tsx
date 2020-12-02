@@ -1,13 +1,13 @@
 import React from 'react';
-import GeneralSetting from '../../components/Setting/GeneralSetting';
-import PresetSetting from '../../components/Setting/PresetSetting';
 import KeybindButton from '../../components/KeybindButton/KeybindButton';
+import Preset from '../../components/Preset/Preset';
+import Setting from '../../components/Setting/Setting';
 import { IMenuItem, ISetting, ISettingConfig, IPresetSetting } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
+import { Paper } from '@material-ui/core';
 import * as _ from 'lodash';
 import './settings.css';
-import { Paper } from '@material-ui/core';
 
 interface IProps {
   items: IMenuItem[];
@@ -26,6 +26,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * Local properties
    */
   protected general: ISettingConfig[];
+  protected appearance: ISettingConfig[];
   protected presets: IPresetSetting[];
 
   /**
@@ -56,23 +57,11 @@ export default class Settings extends React.Component<IProps, IState> {
         restart: true,
       },
       {
-        name: 'animateResize',
-        label: 'Animate Resize',
-        type: 'switch',
-        value: this.state['animateResize'],
-      },
-      {
         name: 'useModifiedAgent',
         label: 'Modified user agent',
         type: 'switch',
         hover: 'Experimental feature, may cause some websites to break. Use this if you have issues acessing websites due to an old chrome version',
         value: this.state['useModifiedAgent'],
-      },
-      {
-        name: 'showBetaStatus',
-        label: 'Show Beta Status',
-        type: 'switch',
-        value: this.state['showBetaStatus'],
       },
       {
         name: 'visibilityKeybind',
@@ -84,6 +73,21 @@ export default class Settings extends React.Component<IProps, IState> {
           keybind={this.state['visibilityKeybind']}
           handleUpdate={this.handleUpdate}
         />,
+      },
+    ];
+
+    this.appearance = [
+      {
+        name: 'animateResize',
+        label: 'Animate Resize',
+        type: 'switch',
+        value: this.state['animateResize'],
+      },
+      {
+        name: 'showBetaStatus',
+        label: 'Show Beta Status',
+        type: 'switch',
+        value: this.state['showBetaStatus'],
       },
     ];
 
@@ -128,9 +132,22 @@ export default class Settings extends React.Component<IProps, IState> {
         <h3 className="primary font-weight-bold">General</h3>
         <hr />
         {this.general.map(v => (
-          <GeneralSetting
+          <Setting
             {...v}
             key={`general-setting-${v.name}`}
+            value={this.state[v.name] as string}
+            handleUpdate={this.handleUpdate}
+            handleClick={this.handleClick}
+          />
+        ))}
+
+        {/* appearance settings */}
+        <h3 className="primary font-weight-bold mt-5">Appearance</h3>
+        <hr />
+        {this.appearance.map(v => (
+          <Setting
+            {...v}
+            key={`appearance-setting-${v.name}`}
             value={this.state[v.name] as string}
             handleUpdate={this.handleUpdate}
             handleClick={this.handleClick}
@@ -140,14 +157,16 @@ export default class Settings extends React.Component<IProps, IState> {
         {/* preset settings */}
         <h3 className="primary font-weight-bold mt-5">Presets</h3>
         <hr />
-        {this.presets.map(v => (
-          <PresetSetting
-            {...v}
-            key={`preset-setting-${v.id}`}
-            animate={this.state.animateResize === 'true'}
-            handleRefresh={this.props.handleRefresh}
-          />
-        ))}
+        <div className="d-flex flex-row row">
+          {this.presets.map(v => (
+            <Preset
+              {...v}
+              key={`preset-setting-${v.id}`}
+              animate={this.state.animateResize === 'true'}
+              handleRefresh={this.props.handleRefresh}
+            />
+          ))}
+        </div>
 
         {/* footer */}
         <div className="d-flex justify-content-center my-5">
