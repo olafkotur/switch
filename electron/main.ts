@@ -29,6 +29,7 @@ const createWindow = async (): Promise<void> => {
     minHeight: 480,
     minWidth: 720,
     center: true,
+    darkTheme: true,
     frame: !overlayMode,
     transparent: overlayMode,
     backgroundColor: '#1F2225',

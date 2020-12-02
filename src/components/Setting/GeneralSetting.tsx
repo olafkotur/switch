@@ -8,7 +8,7 @@ interface IProps extends ISettingConfig {
   handleClick: (name: string) => Promise<void>;
 }
 
-export default class GeneralSetting extends React.Component<IProps, IState> {
+export default class GeneralSetting extends React.Component<IProps> {
   protected renderType(): React.ReactElement {
     switch (this.props.type) {
       case 'switch':

@@ -76,7 +76,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // set the active item
     if (firstLoad && this.menuItems.length) {
-      // this.handleMenuItemClicked('web', this.menuItems[0]);
+      this.handleMenuItemClicked('web', this.menuItems[0]);
     }
     setTimeout(() => this.setState({ isLoading: false }), 500);
   }

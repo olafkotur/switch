@@ -1,7 +1,6 @@
-import { BrowserWindow, globalShortcut, remote, screen } from 'electron';
+import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
 import { IScreenInfo, IWindowInfo } from '../typings/d';
-import open from 'open';
 
 export const ElectronService = {
   /**
@@ -70,7 +69,7 @@ export const ElectronService = {
     // new-window event
     window.webContents.on('new-window', async (event, url) => {
       event.preventDefault();
-      await open(url);
+      await shell.openExternal(url);
     });
   },
 
@@ -103,5 +102,41 @@ export const ElectronService = {
       return window.hide();
     }
     return window.show();
+  },
+
+  /**
+   * Opens a child window
+   * @param url - url
+   */
+  openWindow: (url: string): void => {
+    // disable always on top for main window
+    const mainWindow = remote.getCurrentWindow();
+    const isAlwaysOnTop = mainWindow.isAlwaysOnTop();
+    mainWindow.setAlwaysOnTop(false);
+
+    // create child window
+    let childWindow: BrowserWindow = new remote.BrowserWindow({
+      width: 800,
+      height: 600,
+      modal: true,
+      show: false,
+      darkTheme: true,
+      titleBarStyle: 'hidden',
+      webPreferences: {
+        nodeIntegration: false,
+        webviewTag: true,
+      },
+    });
+
+    // load the url and show the window
+    childWindow.loadURL(url);
+    childWindow.show();
+
+    // clear child window and set parent to what it was
+    childWindow.on('closed', () => {
+      // @ts-ignore
+      childWindow = null;
+      mainWindow.setAlwaysOnTop(isAlwaysOnTop);
+    });
   },
 };

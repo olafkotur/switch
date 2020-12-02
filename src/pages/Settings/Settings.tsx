@@ -76,7 +76,7 @@ export default class Settings extends React.Component<IProps, IState> {
       },
       {
         name: 'visibilityKeybind',
-        label: 'Toggle Show/Hide',
+        label: 'Toggle Show/Hide Keybind',
         type: 'custom',
         value: '',
         restart: true,
