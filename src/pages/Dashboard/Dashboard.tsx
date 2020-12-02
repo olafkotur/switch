@@ -16,6 +16,7 @@ export type TPages = 'web' | 'search' | 'settings';
 
 interface IState {
   page: TPages;
+  firstLoad: boolean;
   isLoading: boolean;
   focusedItem: IMenuItem | null;
   actionRequest: IActionRequest;
@@ -39,6 +40,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     this.state = {
       page: 'settings',
+      firstLoad: true,
       isLoading: true,
       focusedItem: null,
       actionRequest: { id: '', action: '' },
@@ -51,13 +53,14 @@ export default class Dashboard extends React.Component<{}, IState> {
   }
 
   public async componentDidMount(): Promise<void> {
-    await this.handleRefresh(true);
+    await this.handleRefresh();
+    this.setState({ firstLoad: false });
   }
 
    /**
    * Handles refresh request
    */
-  protected async handleRefresh(firstLoad?: boolean): Promise<void> {
+  protected async handleRefresh(): Promise<void> {
     this.setState({ isLoading: true });
     this.menuItems = await MenuService.fetchList();
     this.userSettings = await SettingsService.fetchList();
@@ -75,10 +78,10 @@ export default class Dashboard extends React.Component<{}, IState> {
     }
 
     // set the active item
-    if (firstLoad && this.menuItems.length) {
+    if (this.state.firstLoad && this.menuItems.length) {
       this.handleMenuItemClicked('web', this.menuItems[0]);
     }
-    setTimeout(() => this.setState({ isLoading: false }), 500);
+    setTimeout(() => this.setState({ isLoading: false }), this.state.firstLoad ? 1500 : 500);
   }
 
   /**
@@ -154,7 +157,7 @@ export default class Dashboard extends React.Component<{}, IState> {
             </div>
           </div>
         </div>
-      : <Loader />
+      : <Loader shortLoader={!this.state.firstLoad} />
     );
   }
 
