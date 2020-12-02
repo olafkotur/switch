@@ -22,6 +22,7 @@ const createWindow = async (): Promise<void> => {
   const overlayModeSetting = userSettings.find(v => v.name === 'overlayMode');
   const overlayMode = !!(overlayModeSetting && overlayModeSetting.value === 'true');
 
+  // create main window
   const screenInfo = ElectronService.getScreenInfo();
   mainWindow = new BrowserWindow({
     width: screenInfo.width,
@@ -30,9 +31,9 @@ const createWindow = async (): Promise<void> => {
     minWidth: 720,
     center: true,
     darkTheme: true,
-    title: 'Switch',
     frame: !overlayMode,
     transparent: overlayMode,
+    title: 'Switch',
     backgroundColor: '#1F2225',
     webPreferences: {
       nodeIntegration: true,
@@ -42,8 +43,13 @@ const createWindow = async (): Promise<void> => {
     },
   });
 
-  // window configuration
+  // app configuration
+  const image = path.join(__dirname, '../assets/switch-icon.png');
+  app.dock.setIcon(image);
+  app.setName('Switch');
   overlayMode && app.dock.hide();
+
+  // window configuration
   ElectronService.setWindowMode(overlayMode, mainWindow);
   ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
