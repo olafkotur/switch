@@ -80,9 +80,9 @@
     "webpack-dev-server": "^3.10.3"
   },
   "build": {
-    "appId": "your.id",
+    "appId": "com.electron.switch",
     "mac": {
-      "category": "public.app-category.video"
+      "icon": "assets/switch-icon.png"
     },
     "directories": {
       "output": "packages"
