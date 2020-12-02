@@ -22,7 +22,7 @@ const createWindow = async (): Promise<void> => {
   const overlayModeSetting = userSettings.find(v => v.name === 'overlayMode');
   const overlayMode = !!(overlayModeSetting && overlayModeSetting.value === 'true');
 
-  let screenInfo = ElectronService.getScreenInfo();
+  const screenInfo = ElectronService.getScreenInfo();
   mainWindow = new BrowserWindow({
     width: screenInfo.width,
     height: screenInfo.height,
