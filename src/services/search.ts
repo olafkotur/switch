@@ -1,32 +1,39 @@
 import { IMenuItem } from '../typings/d';
 
 export const SearchService = {
+  /**
+   * Returns service suggestions
+   */
   getSuggestions: async (): Promise<IMenuItem[]> => {
     return [
-      { id: '', name: 'Notion', url: 'https://notion.so', icon: require('../../assets/notion.png') },
-      { id: '', name: 'Gmail', url: 'https://mail.google.com', icon: require('../../assets/gmail.png') },
-      { id: '', name: 'Google Calendar', url: 'https://calendar.google.com', icon: require('../../assets/calendar.png') },
-      { id: '', name: 'Google Drive', url: 'https://drive.google.com', icon: require('../../assets/drive.png') },
-      { id: '', name: 'Slack', url: 'https://slack.com', icon: require('../../assets/slack.png') },
-      { id: '', name: 'Whatsapp', url: 'https://web.whatsapp.com', icon: require('../../assets/whatsapp.png') },
-      { id: '', name: 'Messenger', url: 'https://messenger.com', icon: require('../../assets/messenger.png') },
-      { id: '', name: 'Discord', url: 'https://discord.com/app', icon: require('../../assets/discord.png') },
-      { id: '', name: 'Github', url: 'https://github.com', icon: require('../../assets/github.png') },
-      { id: '', name: 'Airtable', url: 'https://airtable.com', icon: require('../../assets/airtable.png') },
-      { id: '', name: 'Jira', url: 'https://atlassian.com/software/jira', icon: require('../../assets/jira.png') },
-      { id: '', name: 'Asana', url: 'https://asana.com', icon: require('../../assets/asana.png') },
-      { id: '', name: 'YouTube', url: 'https://youtube.com', icon: require('../../assets/youtube.png') },
-      { id: '', name: 'Netflix', url: 'https://netflix.com', icon: require('../../assets/netflix.png') },
-      { id: '', name: 'Disney Plus', url: 'https://disneyplus.com', icon: require('../../assets/disneyplus.png') },
-      { id: '', name: 'Audible', url: 'https://audible.com', icon: require('../../assets/audible.png') },
-      { id: '', name: 'Spotify', url: 'https://spotify.com', icon: require('../../assets/spotify.png') },
-      { id: '', name: 'Facebook', url: 'https://facebook.com', icon: require('../../assets/facebook.png') },
-      { id: '', name: 'Twitter', url: 'https://twitter.com', icon: require('../../assets/twitter.png') },
-      { id: '', name: 'Instagram', url: 'https://instagram.com', icon: require('../../assets/instagram.png') },
-      { id: '', name: 'Reddit', url: 'https://reddit.com', icon: require('../../assets/reddit.png') },
+      { id: '', url: 'https://notion.so', icon: require('../../assets/notion.png'), order: -1 },
+      { id: '', url: 'https://mail.google.com', icon: require('../../assets/gmail.png'), order: -1 },
+      { id: '', url: 'https://calendar.google.com', icon: require('../../assets/calendar.png') , order: -1 },
+      { id: '', url: 'https://drive.google.com', icon: require('../../assets/drive.png'), order: -1 },
+      { id: '', url: 'https://slack.com', icon: require('../../assets/slack.png'), order: -1 },
+      { id: '', url: 'https://web.whatsapp.com', icon: require('../../assets/whatsapp.png'), order: -1 },
+      { id: '', url: 'https://messenger.com', icon: require('../../assets/messenger.png') , order: -1 },
+      { id: '', url: 'https://discord.com/app', icon: require('../../assets/discord.png'), order: -1 },
+      { id: '', url: 'https://github.com', icon: require('../../assets/github.png'), order: -1 },
+      { id: '', url: 'https://airtable.com', icon: require('../../assets/airtable.png'), order: -1 },
+      { id: '', url: 'https://atlassian.com/software/jira', icon: require('../../assets/jira.png'), order: -1 },
+      { id: '', url: 'https://asana.com', icon: require('../../assets/asana.png'), order: -1 },
+      { id: '', url: 'https://youtube.com', icon: require('../../assets/youtube.png'), order: -1 },
+      { id: '', url: 'https://netflix.com', icon: require('../../assets/netflix.png'), order: -1 },
+      { id: '', url: 'https://disneyplus.com', icon: require('../../assets/disneyplus.png'), order: -1 },
+      { id: '', url: 'https://audible.com', icon: require('../../assets/audible.png'), order: -1 },
+      { id: '', url: 'https://spotify.com', icon: require('../../assets/spotify.png') , order: -1 },
+      { id: '', url: 'https://facebook.com', icon: require('../../assets/facebook.png'), order: -1 },
+      { id: '', url: 'https://twitter.com', icon: require('../../assets/twitter.png'), order: -1 },
+      { id: '', url: 'https://instagram.com', icon: require('../../assets/instagram.png'), order: -1 },
+      { id: '', url: 'https://reddit.com', icon: require('../../assets/reddit.png'), order: -1 },
     ];
   },
 
+  /**
+   * Validates a URL
+   * @param url - url to be validated
+   */
   validateUrl: (url: string): boolean => {
     return new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:[\.|\:][\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm).test(url);
   },

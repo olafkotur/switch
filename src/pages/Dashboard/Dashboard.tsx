@@ -9,12 +9,14 @@ import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import { PresetService } from '../../services/preset';
 import { ElectronService } from '../../services/electron';
+import * as _ from 'lodash';
 import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
 
 interface IState {
   page: TPages;
+  firstLoad: boolean;
   isLoading: boolean;
   focusedItem: IMenuItem | null;
   actionRequest: IActionRequest;
@@ -38,6 +40,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     this.state = {
       page: 'settings',
+      firstLoad: true,
       isLoading: true,
       focusedItem: null,
       actionRequest: { id: '', action: '' },
@@ -46,12 +49,12 @@ export default class Dashboard extends React.Component<{}, IState> {
     // scope binding
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
-    // this.generateWebViews = this.generateWebViews.bind(this);
     this.handleActionRequest = this.handleActionRequest.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
     await this.handleRefresh();
+    this.setState({ firstLoad: false });
   }
 
    /**
@@ -64,22 +67,21 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.presetSettings = await PresetService.fetchList();
 
     // apply settings
-    await new Promise((resolve) => {
-      this.userSettings.forEach((v) => {
-        if (v.name === 'useModifiedAgent') {
+    for (const v of this.userSettings) {
+      switch (v.name) {
+        case 'useModifiedAgent':
           this.useModifiedAgent = v.value === 'true';
-        } else if (v.name === 'overlayMode') {
+          break;
+        case 'overlayMode':
           ElectronService.setWindowMode(v.value === 'true');
-        }
-      });
-      resolve();
-    });
+      }
+    }
 
     // set the active item
-    if (this.menuItems.length) {
+    if (this.state.firstLoad && this.menuItems.length) {
       this.handleMenuItemClicked('web', this.menuItems[0]);
     }
-    this.setState({ isLoading: false });
+    setTimeout(() => this.setState({ isLoading: false }), this.state.firstLoad ? 1500 : 500);
   }
 
   /**
@@ -155,7 +157,7 @@ export default class Dashboard extends React.Component<{}, IState> {
             </div>
           </div>
         </div>
-      : <Loader />
+      : <Loader shortLoader={!this.state.firstLoad} />
     );
   }
 

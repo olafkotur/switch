@@ -10,13 +10,15 @@ export interface IStoredData<T> {
 export interface ISetting {
   name: string;
   value: string;
+  restart?: boolean;
 }
 
 export interface ISettingConfig extends ISetting {
   label: string;
-  type: 'switch' | 'button';
+  type: 'switch' | 'button' | 'custom';
   action?: string;
   hover?: string;
+  custom?: React.ReactElement;
 }
 
 export interface IWindowInfo {
@@ -42,7 +44,7 @@ export interface IServiceSetting extends IMenuItem {
 export interface IMenuItem {
   id: string;
   url: string;
-  name: string;
+  order: number;
   icon: Icon;
 }
 
@@ -54,4 +56,9 @@ export interface IWebView {
 export interface IActionRequest {
   id: string;
   action: WebViewAction;
+}
+
+export interface IKey {
+  name: string;
+  value: string;
 }

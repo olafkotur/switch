@@ -1,6 +1,9 @@
 import React from 'react';
+import open from 'open';
 import { UtilService } from '../../services/util';
 import { IActionRequest } from '../../typings/d';
+import { remote, shell, BrowserWindow } from 'electron';
+import { ElectronService } from '../../services/electron';
 
 interface IProps {
   id: string;
@@ -43,8 +46,22 @@ export default class WebView extends React.Component<IProps, IState> {
    */
   componentDidMount() {
     this.webView = document.getElementById(`webview-${this.props.id}`);
-    this.webView && this.webView.addEventListener('dom-ready', () => {
+
+    // enable page controls
+    this.webView.addEventListener('dom-ready', () => {
       this.setState({ allowControls: true });
+    });
+
+    // handle new windows
+    // tslint:disable-next-line: no-any
+    this.webView.addEventListener('new-window', (e: any): void => {
+      if (e.url) {
+        const isWindow = e.disposition && e.disposition === 'new-window';
+        if (isWindow) {
+          return ElectronService.openWindow(e.url);
+        }
+        shell.openExternal(e.url);
+      }
     });
   }
 

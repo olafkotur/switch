@@ -1,10 +1,13 @@
 import React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
-import { VisibilityOff, Search, Settings, Image } from '@material-ui/icons';
+import { VisibilityOff, Search, Settings } from '@material-ui/icons';
 import { IMenuItem, ISetting, WebViewAction } from '../../typings/d';
 import { Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { ElectronService } from '../../services/electron';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { MenuService } from '../../services/menu';
+import { UtilService } from '../../services/util';
 import './menu.css';
 
 interface IProps {
@@ -17,24 +20,51 @@ interface IProps {
   handleActionRequest: (id: string, action: WebViewAction) => void;
 }
 
-export default class Menu extends React.Component<IProps> {
+interface IState {
+  items: IMenuItem[];
+}
+
+export default class Menu extends React.Component<IProps, IState> {
   /**
-   * Generates menu items
+   * Local properties
    */
-  protected generateItems() {
-    return this.props.items.map((v, i) => {
-      return (
-        <MenuItem
-          key={`menu-item-${i}`}
-          data={v}
-          page={this.props.page}
-          focused={this.props.focusedItem && this.props.focusedItem.id === v.id ? true : false}
-          handleClick={this.props.handleClick}
-          handleRefresh={this.props.handleRefresh}
-          handleActionRequest={this.props.handleActionRequest}
-        />
-      );
-    });
+  protected temporaryItems: IMenuItem[] = [];
+
+  /**
+   * Menu constructor
+   * @param props - component properties
+   */
+  constructor(props: IProps) {
+    super(props);
+
+    this.state = {
+      items: [...this.props.items],
+    };
+
+    // scope binding
+    this.handleDragUpdate = this.handleDragUpdate.bind(this);
+    this.handleDragEnd = this.handleDragEnd.bind(this);
+  }
+
+  /**
+   * Handles drag update
+   * @param result - droppable result
+   */
+  protected async handleDragUpdate(result: DropResult): Promise<void> {
+    if (result.destination) {
+      this.temporaryItems = await MenuService.reorder(result.draggableId, result.destination.index);
+    }
+  }
+
+  /**
+   * Handles drag end
+   */
+  protected async handleDragEnd(): Promise<void> {
+    this.setState({ items: [...this.temporaryItems] });
+    const res = await MenuService.confirmReorder(this.temporaryItems);
+    if (!res) {
+      UtilService.error();
+    }
   }
 
   render() {
@@ -42,15 +72,47 @@ export default class Menu extends React.Component<IProps> {
     return (
       <div className="vh-100">
         <div className="menu-top">
-          {showBetaStatus && <div className="d-flex justify-content-center pt-2">
+          {showBetaStatus && <div className="d-flex justify-content-center mt-2">
             <Chip
               label="beta"
               size="small"
               className="menu-beta"
             />
           </div>}
-          <div className="d-flex flex-column justify-content-center align-items-center mt-2">
-            {this.generateItems()}
+          <div className="d-flex flex-column justify-content-center align-items-center">
+            <DragDropContext
+              onDragUpdate={this.handleDragUpdate}
+              onDragEnd={this.handleDragEnd}
+            >
+              <Droppable droppableId="menu-droppable" >
+                {provided => (
+                  <div ref={provided.innerRef}>
+                    {this.state.items.map((v, i) => (
+                      <Draggable key={v.id} draggableId={v.id} index={i}>
+                        {provided => (
+                          <div
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            <MenuItem
+                              data={v}
+                              page={this.props.page}
+                              focused={this.props.focusedItem && this.props.focusedItem.id === v.id ? true : false}
+                              handleClick={this.props.handleClick}
+                              handleRefresh={this.props.handleRefresh}
+                              handleActionRequest={this.props.handleActionRequest}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+
+            </DragDropContext>
           </div>
         </div>
 

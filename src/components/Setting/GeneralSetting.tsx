@@ -4,28 +4,30 @@ import { Button, Switch, Tooltip } from '@material-ui/core';
 import './setting.css';
 
 interface IProps extends ISettingConfig {
-  handleUpdate: (name: string, value?: string) => void;
+  handleUpdate: (name: string, value: string, restart?: boolean) => Promise<void>;
+  handleClick: (name: string) => Promise<void>;
 }
 
 export default class GeneralSetting extends React.Component<IProps> {
-
   protected renderType(): React.ReactElement {
     switch (this.props.type) {
       case 'switch':
         return <Switch
           color="primary"
           checked={this.props.value === 'true'}
-          onChange={(_e, checked) => this.props.handleUpdate(this.props.name, checked ? 'true' : 'false')}
+          onChange={(_e, checked) => this.props.handleUpdate(this.props.name, checked ? 'true' : 'false', this.props.restart)}
         />;
       case 'button':
         return <Button
           variant="contained"
           className="setting-button"
           color="primary"
-          onClick={() => this.props.handleUpdate(this.props.name)}
+          onClick={() => this.props.handleClick(this.props.name)}
         >
           <span className="primary setting-button-text">{this.props.action || 'change'}</span>
         </Button>;
+      case 'custom':
+        return this.props.custom || <></>;
       default:
         return <></>;
     }

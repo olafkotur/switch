@@ -41,6 +41,8 @@ export default class MenuItem extends React.Component<IProps, IState> {
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNavigate = this.handleNavigate.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   /**
@@ -60,6 +62,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
    * Handles context menu
    */
   protected handleContextMenu() {
+    this.props.handleClick('web', this.props.data);
     this.setState({ contextMenu: !this.state.contextMenu });
   }
 
@@ -84,7 +87,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
   }
 
   /**
-   * Handles service name edit
+   * Handles service data update
    * @param data - menu item data
    */
   protected async handleUpdate(data: IMenuItem): Promise<void> {
@@ -110,9 +113,8 @@ export default class MenuItem extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="row">
+      <div className={`menu-item mt-2 ${this.props.page === 'web' && this.props.focused ? 'menu-item-selected' : ''}`} >
         <ButtonBase
-          className={`menu-item mt-2 ${this.props.page === 'web' && this.props.focused ? 'menu-item-selected' : ''}`}
           onClick={() => this.props.handleClick('web', this.props.data)}
           onContextMenu={this.handleContextMenu}
         >
@@ -121,51 +123,51 @@ export default class MenuItem extends React.Component<IProps, IState> {
             : <Image className="menu-item-image" color="secondary" />
           }
         </ButtonBase>
-          <Slide
-            in={this.state.contextMenu}
-            direction="right"
-            ref={this.ref}
-          >
-            <Paper className="d-flex flex-row position-absolute mt-1 bg-primary" elevation={10}>
-              <IconButton className="menu-item-image align-self-center">
-                <Tooltip title="Upload a custom image" className="menu-item-image-upload-hover">
-                  <label
-                    htmlFor={`file-upload-${this.props.data.id}`}
-                    className="position-absolute"
-                  >
-                    <input
-                      id={`file-upload-${this.props.data.id}`}
-                      className="d-none"
-                      accept="image/*"
-                      type="file"
-                      onChange={this.handleUpload}
-                    />
-                    {this.props.data.icon
-                      ? <img src={this.props.data.icon} className="menu-item-image-upload" />
-                      : <Publish color="secondary" className="menu-item-image-upload" />
-                    }
-                  </label>
-                </Tooltip>
-              </IconButton>
+        <Slide
+          in={this.state.contextMenu}
+          direction="right"
+          ref={this.ref}
+        >
+          <Paper className="d-flex flex-row position-absolute  bg-primary" elevation={10}>
+            <IconButton className="menu-item-image align-self-center">
+              <Tooltip title="Upload a custom image" className="menu-item-image-upload-hover">
+                <label
+                  htmlFor={`file-upload-${this.props.data.id}`}
+                  className="position-absolute"
+                >
+                  <input
+                    id={`file-upload-${this.props.data.id}`}
+                    className="d-none"
+                    accept="image/*"
+                    type="file"
+                    onChange={this.handleUpload}
+                  />
+                  {this.props.data.icon
+                    ? <img src={this.props.data.icon} className="menu-item-image-upload" />
+                    : <Publish color="secondary" className="menu-item-image-upload" />
+                  }
+                </label>
+              </Tooltip>
+            </IconButton>
 
-              <IconButton onClick={() => this.handleNavigate('refresh')}>
-                <Refresh fontSize="small" className="text-white-50" />
-              </IconButton>
+            <IconButton onClick={() => this.handleNavigate('refresh')} className="ml-2 px-2">
+              <Refresh fontSize="small" className="text-white-50" />
+            </IconButton>
 
-              <IconButton onClick={() => this.handleNavigate('back')}>
-                <ArrowBack fontSize="small" className="text-white-50" />
-              </IconButton>
+            <IconButton onClick={() => this.handleNavigate('back')} className="px-2">
+              <ArrowBack fontSize="small" className="text-white-50" />
+            </IconButton>
 
-              <IconButton onClick={() => this.handleNavigate('forward')}>
-                <ArrowForward fontSize="small" className="text-white-50" />
-              </IconButton>
+            <IconButton onClick={() => this.handleNavigate('forward')} className="px-2">
+              <ArrowForward fontSize="small" className="text-white-50" />
+            </IconButton>
 
-              <IconButton onClick={this.handleDelete}>
-                <Delete fontSize="small" color="error" />
-              </IconButton>
+            <IconButton onClick={this.handleDelete}>
+              <Delete fontSize="small" color="error" />
+            </IconButton>
 
-            </Paper>
-          </Slide>
+          </Paper>
+        </Slide>
       </div>
     );
   }

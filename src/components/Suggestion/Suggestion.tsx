@@ -4,7 +4,7 @@ import { IMenuItem, Icon } from '../../typings/d';
 import './suggestion.css';
 
 interface IProps extends IMenuItem {
-  handleSuggestion: (url: string, name: string, icon: Icon) => Promise<void>;
+  handleSuggestion: (url: string, icon: Icon) => Promise<void>;
 }
 
 export default class Suggestion extends React.Component<IProps> {
@@ -12,7 +12,7 @@ export default class Suggestion extends React.Component<IProps> {
     return (
       <Button
         className="p-3"
-        onClick={() => this.props.handleSuggestion(this.props.url, this.props.name, this.props.icon)}
+        onClick={() => this.props.handleSuggestion(this.props.url, this.props.icon)}
       >
         <img
           src={this.props.icon}
