@@ -10,13 +10,53 @@ export const PresetService = {
    * Returns the default preset settings
    */
   getDefault: (): IPresetSetting[] => {
-    const screenSize = UtilService.getScreenInfo();
+    const screenSize = ElectronService.getScreenInfo(true);
     return [
-      { id: 'default-fullscreen', name: 'Full Screen', width: screenSize.width, height: screenSize.height, xPosition: 25, yPosition: 25 },
-      { id: 'default-left-side', name: 'Left Side', width: screenSize.width * 0.5, height: screenSize.height, xPosition: 25, yPosition: 25 },
-      { id: 'default-right-side', name: 'Right Side', width: screenSize.width * 0.5, height: screenSize.height, xPosition: screenSize.width * 0.5 + 25, yPosition: 25 },
-      { id: 'default-two-thirds-left', name: 'Two Thirds (left)', width: screenSize.width * 0.66, height: screenSize.height, xPosition: 25, yPosition: 25 },
-      { id: 'default-two-thirds-right', name: 'Two Thirds (right)', width: screenSize.width * 0.66, height: screenSize.height, xPosition: screenSize.width * 0.33 + 50, yPosition: 25 },
+      {
+        id: 'default-fullscreen',
+        name: 'Full Screen',
+        width: screenSize.width,
+        height: screenSize.height,
+        xPosition: 0,
+        yPosition: 0,
+        preview: { width: 100, height: 100, xOffset: 0, yOffset: 0 },
+      },
+      {
+        id: 'default-left-side',
+        name: 'Left Side',
+        width: screenSize.width * 0.5,
+        height: screenSize.height,
+        xPosition: 0,
+        yPosition: 0,
+        preview: { width: 50, height: 100, xOffset: 0, yOffset: 0 },
+      },
+      {
+        id: 'default-right-side',
+        name: 'Right Side',
+        width: screenSize.width * 0.5,
+        height: screenSize.height,
+        xPosition: screenSize.width * 0.5,
+        yPosition: 0,
+        preview: { width: 50, height: 100, xOffset: 50, yOffset: 0 },
+      },
+      {
+        id: 'default-two-thirds-left',
+        name: 'Two Thirds (left)',
+        width: screenSize.width * 0.65,
+        height: screenSize.height,
+        xPosition: 0,
+        yPosition: 0,
+        preview: { width: 66.66, height: 100, xOffset: 0, yOffset: 0 },
+      },
+      {
+        id: 'default-two-thirds-right',
+        name: 'Two Thirds (right)',
+        width: screenSize.width * 0.65,
+        height: screenSize.height,
+        xPosition: screenSize.width * 0.35,
+        yPosition: 0,
+        preview: { width: 66.66, height: 100, xOffset: 33.33, yOffset: 0 },
+      },
     ];
   },
 
@@ -56,6 +96,7 @@ export const PresetService = {
       height,
       xPosition,
       yPosition,
+      preview: { width: 100, height: 100, xOffset: 0, yOffset: 0 },
       id: UtilService.generateId(name),
     };
 

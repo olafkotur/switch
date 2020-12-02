@@ -36,6 +36,7 @@ export interface IScreenInfo {
 export interface IPresetSetting extends IWindowInfo {
   id: string;
   name: string;
+  preview: IPresetPreview;
 }
 
 export interface IServiceSetting extends IMenuItem {
@@ -61,4 +62,11 @@ export interface IActionRequest {
 export interface IKey {
   name: string;
   value: string;
+}
+
+export interface IPresetPreview {
+  width: number;
+  height: number;
+  xOffset: number;
+  yOffset: number;
 }

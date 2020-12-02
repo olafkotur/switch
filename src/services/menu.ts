@@ -3,12 +3,14 @@ import { StorageService } from './storage';
 import { UtilService } from './util';
 import * as _ from 'lodash';
 
+const STORAGE_KEY = 'menuItems';
+
 export const MenuService = {
   /**
    * Fetches list of menu items
    */
   fetchList: async (): Promise<IMenuItem[]> => {
-    const res: IStoredData<IMenuItem> | null = await StorageService.get('menuItems') as IStoredData<IMenuItem> | null;
+    const res: IStoredData<IMenuItem> | null = await StorageService.get(STORAGE_KEY) as IStoredData<IMenuItem> | null;
     return res && res.data ? res.data : [];
   },
 
@@ -32,7 +34,7 @@ export const MenuService = {
     // append new data to previous
     const saveData: IStoredData<IMenuItem> = { data: [...previousData, newData] };
 
-    return await StorageService.set('menuItems', saveData);
+    return await StorageService.set(STORAGE_KEY, saveData);
   },
 
   /**
@@ -56,7 +58,7 @@ export const MenuService = {
     }]);
 
     const saveData: IStoredData<IMenuItem> = { data: [...updatedData] };
-    return await StorageService.set('menuItems', saveData);
+    return await StorageService.set(STORAGE_KEY, saveData);
   },
 
   /**
@@ -70,7 +72,7 @@ export const MenuService = {
     const updatedData: IMenuItem[] = previousData.filter(v => id !== v.id);
     const saveData: IStoredData<IMenuItem> = { data: [...updatedData] };
 
-    return await StorageService.set('menuItems', saveData);
+    return await StorageService.set(STORAGE_KEY, saveData);
   },
 
   /**
@@ -101,6 +103,6 @@ export const MenuService = {
    */
   confirmReorder: async (items: IMenuItem[]): Promise<boolean> => {
     const saveData: IStoredData<IMenuItem> = { data: [...items] };
-    return await StorageService.set('menuItems', saveData);
+    return await StorageService.set(STORAGE_KEY, saveData);
   },
 };

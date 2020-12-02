@@ -8,6 +8,7 @@ import { UtilService } from '../../services/util';
 import * as _ from 'lodash';
 import './settings.css';
 import { Paper } from '@material-ui/core';
+import Preset from '../../components/Preset/Preset';
 
 interface IProps {
   items: IMenuItem[];
@@ -140,14 +141,16 @@ export default class Settings extends React.Component<IProps, IState> {
         {/* preset settings */}
         <h3 className="primary font-weight-bold mt-5">Presets</h3>
         <hr />
-        {this.presets.map(v => (
-          <PresetSetting
-            {...v}
-            key={`preset-setting-${v.id}`}
-            animate={this.state.animateResize === 'true'}
-            handleRefresh={this.props.handleRefresh}
-          />
-        ))}
+        <div className="d-flex flex-row row">
+          {this.presets.map(v => (
+            <Preset
+              {...v}
+              key={`preset-setting-${v.id}`}
+              animate={this.state.animateResize === 'true'}
+              handleRefresh={this.props.handleRefresh}
+            />
+          ))}
+        </div>
 
         {/* footer */}
         <div className="d-flex justify-content-center my-5">
