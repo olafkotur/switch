@@ -9,6 +9,7 @@ import './custom.css';
 const mainElement = document.createElement('div');
 mainElement.setAttribute('id', 'root');
 document.body.appendChild(mainElement);
+
 export default class App extends React.Component {
   /**
    * Local properties
