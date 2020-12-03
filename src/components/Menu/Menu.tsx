@@ -15,6 +15,7 @@ interface IProps {
   items: IMenuItem[];
   focusedItem: IMenuItem | null;
   userSettings: ISetting[];
+  overlayMode: boolean;
   handleClick: (action: TPages, item?: IMenuItem) => void;
   handleRefresh: () => Promise<void>;
   handleActionRequest: (id: string, action: WebViewAction) => void;
@@ -72,7 +73,8 @@ export default class Menu extends React.Component<IProps, IState> {
     return (
       <div className="vh-100">
         <div className="menu-top">
-          {showBetaStatus && <div className="d-flex justify-content-center mt-2">
+          {!this.props.overlayMode && <div className="mb-4" />}
+          {showBetaStatus && <div className={`d-flex justify-content-center ${this.props.overlayMode ? 'pt-2' : 'pt-1'}`}>
             <Chip
               label="beta"
               size="small"
@@ -117,15 +119,15 @@ export default class Menu extends React.Component<IProps, IState> {
         </div>
 
         <div className="menu-bottom">
-          <div className="menu-actions d-flex flex-column justify-content-center align-items-center">
-            <Tooltip title="Hide window" enterDelay={750}>
+          <div className="menu-actions d-flex flex-column justify-content-center align-items-center" >
+            {this.props.overlayMode && <Tooltip title="Hide window" enterDelay={750}>
               <IconButton
                 className="menu-item flex-column"
                 onClick={() => ElectronService.toggleVisibility()}
               >
                 <VisibilityOff className="primary" fontSize="small" />
               </IconButton>
-            </Tooltip>
+            </Tooltip>}
 
             <Tooltip title="Add new services" enterDelay={750}>
               <IconButton
