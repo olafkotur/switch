@@ -7,6 +7,7 @@ import * as path from 'path';
 
 // dotenv setup
 require('dotenv').config();
+const DEVELOPMENT = process.env.NODE_ENV === 'development';
 
 // storage setup
 const dataPath = storage.getDataPath();
@@ -32,20 +33,19 @@ const createWindow = async (): Promise<void> => {
     center: true,
     darkTheme: true,
     frame: !overlayMode,
+    titleBarStyle: overlayMode ? 'default' : 'hidden',
     transparent: overlayMode,
-    title: 'Switch',
     backgroundColor: '#1F2225',
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
       enableRemoteModule: true,
       allowRunningInsecureContent: true,
+      devTools: DEVELOPMENT,
     },
   });
 
   // app configuration
-  const image = path.join(__dirname, '../assets/switch-icon.png');
-  app.dock.setIcon(image);
   app.setName('Switch');
   overlayMode && app.dock.hide();
 
@@ -59,14 +59,10 @@ const createWindow = async (): Promise<void> => {
     overlayMode,
   );
 
-  // render config
-  if (process.env.NODE_ENV === 'development') {
+  // render
+  if (DEVELOPMENT) {
     mainWindow.loadURL('http://localhost:4000');
   } else {
-    // prevent window reloads and block devtools
-    Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
-    mainWindow.removeMenu(); // windows
-
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, 'renderer/index.html'),

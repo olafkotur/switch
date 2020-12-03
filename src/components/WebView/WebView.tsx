@@ -1,8 +1,7 @@
 import React from 'react';
-import open from 'open';
 import { UtilService } from '../../services/util';
 import { IActionRequest } from '../../typings/d';
-import { remote, shell, BrowserWindow } from 'electron';
+import { shell } from 'electron';
 import { ElectronService } from '../../services/electron';
 
 interface IProps {

@@ -31,6 +31,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
   protected useModifiedAgent: boolean = false;
+  protected overlayMode: boolean = true;
 
   /**
    * Dashboard constructor
@@ -73,6 +74,7 @@ export default class Dashboard extends React.Component<{}, IState> {
           this.useModifiedAgent = v.value === 'true';
           break;
         case 'overlayMode':
+          this.overlayMode = v.value === 'true';
           ElectronService.setWindowMode(v.value === 'true');
       }
     }
@@ -111,12 +113,13 @@ export default class Dashboard extends React.Component<{}, IState> {
       !this.state.isLoading ?
         <div className="container-fluid">
           <div className="row">
-            <div className="menu bg-secondary">
+            <div className="menu bg-secondary" style={!this.overlayMode ? { width: 65 } : {}}>
               <Menu
                 page={this.state.page}
                 items={this.menuItems}
                 focusedItem={this.state.focusedItem}
                 userSettings={this.userSettings}
+                overlayMode={this.overlayMode}
                 handleClick={this.handleMenuItemClicked}
                 handleRefresh={this.handleRefresh}
                 handleActionRequest={this.handleActionRequest}
