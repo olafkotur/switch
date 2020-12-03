@@ -1,6 +1,6 @@
 {
   "name": "switch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./dist/main.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "package:dist": "electron-builder"
   },
   "keywords": [],
-  "author": "Diego Fernandes <diego.schell.f@gmail.com>",
+  "author": "Olaf Kotur <olafkotur97@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5",
@@ -33,11 +33,9 @@
     "css-loader": "^5.0.1",
     "dotenv": "^8.2.0",
     "electron-json-storage": "^4.3.0",
-    "electron-localshortcut": "^3.2.1",
     "file-loader": "^6.2.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
-    "open": "^7.3.0",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",

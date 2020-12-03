@@ -38,7 +38,7 @@ export const UtilService = {
   getUserAgent: (): string => {
     const userAgent = navigator.userAgent;
     const versions = {
-      chromium: '87.0.4280.67',
+      chromium: '87.0.4280.88',
       safari: '537.36',
     };
 

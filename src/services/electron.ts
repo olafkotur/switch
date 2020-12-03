@@ -1,4 +1,3 @@
-import localShortcut from 'electron-localshortcut';
 import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
 import { IScreenInfo, IWindowInfo } from '../typings/d';
@@ -58,16 +57,6 @@ export const ElectronService = {
         window.reload();
       }
       overlayMode && ElectronService.toggleVisibility(window);
-    });
-  },
-
-  /**
-   * Sets local shortcuts
-   * @param window - browser window
-   */
-  setLocalShortcuts: (window: BrowserWindow): void => {
-    localShortcut.register(window, 'CommandOrControl+R', () => {
-      ElectronService.reloadWindow(window);
     });
   },
 
@@ -155,13 +144,4 @@ export const ElectronService = {
       mainWindow.setAlwaysOnTop(isAlwaysOnTop);
     });
   },
-
-  /**
-   * Reloads current window
-   * @param win - browser window
-   */
-  reloadWindow: (win?: BrowserWindow): void => {
-    const window = win || remote.getCurrentWindow();
-    window.reload();
-  }
 };

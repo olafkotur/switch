@@ -7,6 +7,7 @@ import * as path from 'path';
 
 // dotenv setup
 require('dotenv').config();
+const DEVELOPMENT = process.env.NODE_ENV === 'development';
 
 // storage setup
 const dataPath = storage.getDataPath();
@@ -32,14 +33,15 @@ const createWindow = async (): Promise<void> => {
     center: true,
     darkTheme: true,
     frame: !overlayMode,
+    titleBarStyle: 'hidden',
     transparent: overlayMode,
-    title: 'Switch',
     backgroundColor: '#1F2225',
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
       enableRemoteModule: true,
       allowRunningInsecureContent: true,
+      devTools: DEVELOPMENT,
     },
   });
 
@@ -51,21 +53,16 @@ const createWindow = async (): Promise<void> => {
   ElectronService.setWindowMode(overlayMode, mainWindow);
   ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
-  ElectronService.setLocalShortcuts(mainWindow);
   ElectronService.setGlobalShortcuts(
     mainWindow,
     visibilityKeybind ? visibilityKeybind.value : '',
     overlayMode,
   );
 
-  // render config
-  if (process.env.NODE_ENV === 'development') {
+  // render
+  if (DEVELOPMENT) {
     mainWindow.loadURL('http://localhost:4000');
   } else {
-    // prevent window reloads and block devtools
-    Menu.setApplicationMenu(Menu.buildFromTemplate([])); // macOS
-    mainWindow.removeMenu(); // windows
-
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, 'renderer/index.html'),
