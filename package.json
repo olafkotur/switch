@@ -14,7 +14,7 @@
     "build:electron": "webpack --config webpack/electron.webpack.js",
     "build:react": "webpack --config webpack/react.webpack.js",
     "package": "npm-run-all build package:dist",
-    "package:dist": "electron-builder --dir"
+    "package:dist": "electron-builder"
   },
   "keywords": [],
   "author": "Diego Fernandes <diego.schell.f@gmail.com>",
@@ -81,6 +81,7 @@
   },
   "build": {
     "appId": "com.electron.switch",
+    "productName": "Switch",
     "mac": {
       "icon": "assets/switch-icon.png"
     },

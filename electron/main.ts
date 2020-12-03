@@ -44,8 +44,6 @@ const createWindow = async (): Promise<void> => {
   });
 
   // app configuration
-  const image = path.join(__dirname, '../assets/switch-icon.png');
-  app.dock.setIcon(image);
   app.setName('Switch');
   overlayMode && app.dock.hide();
 
