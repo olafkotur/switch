@@ -33,7 +33,7 @@ const createWindow = async (): Promise<void> => {
     center: true,
     darkTheme: true,
     frame: !overlayMode,
-    titleBarStyle: 'hidden',
+    titleBarStyle: overlayMode ? 'default' : 'hidden',
     transparent: overlayMode,
     backgroundColor: '#1F2225',
     webPreferences: {
