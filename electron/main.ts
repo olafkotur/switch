@@ -51,6 +51,7 @@ const createWindow = async (): Promise<void> => {
   ElectronService.setWindowMode(overlayMode, mainWindow);
   ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
+  ElectronService.setLocalShortcuts(mainWindow);
   ElectronService.setGlobalShortcuts(
     mainWindow,
     visibilityKeybind ? visibilityKeybind.value : '',
