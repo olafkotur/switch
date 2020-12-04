@@ -93,7 +93,7 @@ export const ElectronService = {
     }
     window.setVisibleOnAllWorkspaces(options.visible);
     window.setFullScreenable(options.fullScreen);
-    window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'screen-saver' : undefined);
+    window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'torn-off-menu' : undefined);
   },
 
   /**
