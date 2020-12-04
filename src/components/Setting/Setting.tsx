@@ -28,7 +28,7 @@ export default class Setting extends React.Component<IProps> {
           color="primary"
           onClick={() => this.props.handleClick(this.props.name)}
         >
-          <span className="primary setting-button-text">{this.props.action || 'change'}</span>
+          <span className="primary">{this.props.action || 'change'}</span>
         </Button>;
       case 'custom':
         return this.props.custom || <></>;

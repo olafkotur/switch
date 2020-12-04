@@ -37,6 +37,14 @@ export default class App extends React.Component {
         secondary: { main: '#fff' },
         error: { main: '#b33939' },
       },
+      overrides: {
+        MuiButton: {
+          label: {
+            textTransform: 'lowercase',
+            fontSize: 10,
+          },
+        },
+      },
     });
 
     // storage setup

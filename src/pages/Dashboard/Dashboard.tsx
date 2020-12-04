@@ -11,6 +11,7 @@ import { PresetService } from '../../services/preset';
 import { ElectronService } from '../../services/electron';
 import * as _ from 'lodash';
 import './dashboard.css';
+import Dialog from '../../components/Dialog/Dialog';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -83,7 +84,8 @@ export default class Dashboard extends React.Component<{}, IState> {
     if (this.state.firstLoad && this.menuItems.length) {
       // this.handleMenuItemClicked('web', this.menuItems[0]);
     }
-    setTimeout(() => this.setState({ isLoading: false }), this.state.firstLoad ? 1500 : 500);
+    // setTimeout(() => this.setState({ isLoading: false }), this.state.firstLoad ? 1500 : 500);
+    this.setState({ isLoading: false });
   }
 
   /**
@@ -159,6 +161,16 @@ export default class Dashboard extends React.Component<{}, IState> {
               </div>}
             </div>
           </div>
+
+          <Dialog
+            open
+            title="Test title"
+            content="test content"
+            handlePrimary={() => console.log('primary')}
+            handleSecondary={() => console.log('secondary')}
+            handleClose={() => console.log('close')}
+          />
+
         </div>
       : <Loader shortLoader={!this.state.firstLoad} />
     );

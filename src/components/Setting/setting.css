@@ -7,11 +7,6 @@
   align-self: center;
 }
 
-.setting-button-text {
-  font-size: 10px;
-  text-transform: lowercase;
-}
-
 .setting-label {
   width: 40vw;
   overflow-x: scroll;
