@@ -11,6 +11,10 @@ interface IProps extends IPresetSetting {
   handleRefresh: () => Promise<void>;
 }
 
+/**
+ * @deprecated - no longer used in the application, replaced by the <Preset /> component
+ * Not yet deleted as it contains logic that is not yet implemented in the above component
+ */
 export default class PresetSetting extends React.Component<IProps> {
   /**
    * PresetSetting constructor

@@ -15,6 +15,7 @@ export const SettingsService = {
       { name: 'useModifiedAgent', value: 'false' },
       { name: 'visibilityKeybind', value: 'CommandOrControl + Esc' },
       { name: 'displayWarningMessages', value: 'true' },
+      { name: 'defaultWindowBehaviour', value: 'external' },
     ];
   },
 

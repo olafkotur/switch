@@ -27,3 +27,11 @@
 .setting-description {
   font-size: 10px;
 }
+
+.MuiSelect-select:focus {
+  background: transparent !important;
+}
+
+.MuiSelect-select.MuiSelect-select {
+  padding-right: 0 !important;
+}

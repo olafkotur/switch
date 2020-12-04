@@ -72,7 +72,7 @@ export default class Settings extends React.Component<IProps, IState> {
       },
       {
         name: 'visibilityKeybind',
-        label: 'Toggle Show/Hide Keybind',
+        label: 'Toggle show/hide keybind',
         type: 'custom',
         value: '',
         restart: true,
@@ -80,6 +80,17 @@ export default class Settings extends React.Component<IProps, IState> {
           keybind={this.state['visibilityKeybind']}
           handleUpdate={this.handleUpdate}
         />,
+      },
+      {
+        name: 'defaultWindowBehaviour',
+        label: 'Hyperlink behaviour',
+        type: 'select',
+        values: [
+          { value: 'window', label: 'New Window' },
+          { value: 'within', label: 'Within Switch' },
+          { value: 'external', label: 'Default Browser' },
+        ],
+        value: this.state['defaultWindowBehaviour'],
       },
     ];
 
@@ -105,6 +116,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * Handles setting update
    * @param name - setting name
    * @param value - setting value
+   * @param restart - display restart app message
    */
   protected async handleUpdate(name: string, value: string, restart?: boolean): Promise<void> {
     const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'displayWarningMessages'].includes(name);
