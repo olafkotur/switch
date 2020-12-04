@@ -41,7 +41,7 @@ export default class App extends React.Component {
         MuiButton: {
           label: {
             textTransform: 'lowercase',
-            fontSize: 10,
+            fontSize: 12,
           },
         },
       },

@@ -4,6 +4,7 @@ import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
+import Dialog, { IProps as IDialog } from '../../components/Dialog/Dialog';
 import { IActionRequest, IMenuItem, IPresetSetting, ISetting, IWebView, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
@@ -11,7 +12,6 @@ import { PresetService } from '../../services/preset';
 import { ElectronService } from '../../services/electron';
 import * as _ from 'lodash';
 import './dashboard.css';
-import Dialog from '../../components/Dialog/Dialog';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -21,6 +21,7 @@ interface IState {
   isLoading: boolean;
   focusedItem: IMenuItem | null;
   actionRequest: IActionRequest;
+  dialog: IDialog | null;
 }
 
 export default class Dashboard extends React.Component<{}, IState> {
@@ -46,12 +47,15 @@ export default class Dashboard extends React.Component<{}, IState> {
       isLoading: true,
       focusedItem: null,
       actionRequest: { id: '', action: '' },
+      dialog: null,
     };
 
     // scope binding
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
     this.handleActionRequest = this.handleActionRequest.bind(this);
+    this.handleDialog = this.handleDialog.bind(this);
+    this.handleDialogClose = this.handleDialogClose.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
@@ -110,6 +114,21 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.setState({ actionRequest: { id, action } });
   }
 
+  /**
+   * Handles dialog
+   * @param data - dialog data
+   */
+  protected handleDialog(data: IDialog): void {
+    this.setState({ dialog: data });
+  }
+
+  /**
+   * Handles dialog close
+   */
+  protected handleDialogClose(): void {
+    this.setState({ dialog: null });
+  }
+
   render() {
     return (
       !this.state.isLoading ?
@@ -125,6 +144,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                 handleClick={this.handleMenuItemClicked}
                 handleRefresh={this.handleRefresh}
                 handleActionRequest={this.handleActionRequest}
+                handleDialog={this.handleDialog}
               />
             </div>
             <div className="col p-0">
@@ -162,14 +182,13 @@ export default class Dashboard extends React.Component<{}, IState> {
             </div>
           </div>
 
-          <Dialog
-            open
-            title="Test title"
-            content="test content"
-            handlePrimary={() => console.log('primary')}
-            handleSecondary={() => console.log('secondary')}
-            handleClose={() => console.log('close')}
-          />
+          {/* show dialog across the entire app */}
+          {this.state.dialog &&
+            <Dialog
+              {...this.state.dialog}
+              handleClose={this.handleDialogClose}
+            />
+          }
 
         </div>
       : <Loader shortLoader={!this.state.firstLoad} />

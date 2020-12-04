@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
 
-interface IProps {
+export interface IProps {
   open: boolean;
   title: string;
   content: React.ReactElement |  string;
@@ -10,10 +10,39 @@ interface IProps {
   secondaryLabel?: string;
   handlePrimary: () => void;
   handleSecondary: () => void;
-  handleClose: () => void;
+  handleClose?: () => void;
 }
 
 export default class Dialog extends React.Component<IProps> {
+
+  /**
+   * Dialog constructor
+   * @param props - component properties
+   */
+  constructor(props: IProps) {
+    super(props);
+
+    // scope binding
+    this.handlePrimary = this.handlePrimary.bind(this);
+    this.handleSecondary = this.handleSecondary.bind(this);
+  }
+
+  /**
+   * Wrapper for dialog primary action
+   */
+  protected handlePrimary(): void {
+    this.props.handlePrimary();
+    this.props.handleClose && this.props.handleClose();
+  }
+
+  /**
+   * Wrapper for dialog secondary action
+   */
+  protected handleSecondary(): void {
+    this.props.handleSecondary();
+    this.props.handleClose && this.props.handleClose();
+  }
+
   render() {
     return (
       <div>
@@ -36,7 +65,7 @@ export default class Dialog extends React.Component<IProps> {
               className="mr-1"
               color="primary"
               variant="contained"
-              onClick={this.props.handleSecondary}
+              onClick={this.handleSecondary}
             >
               {this.props.secondaryLabel || 'Cancel'}
             </Button>
@@ -45,7 +74,7 @@ export default class Dialog extends React.Component<IProps> {
               className="ml-1"
               color="primary"
               variant="contained"
-              onClick={this.props.handlePrimary}
+              onClick={this.handlePrimary}
             >
               {this.props.primaryLabel || 'Proceed'}
             </Button>
