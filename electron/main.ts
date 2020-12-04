@@ -42,6 +42,7 @@ const createWindow = async (): Promise<void> => {
       enableRemoteModule: true,
       allowRunningInsecureContent: true,
       devTools: DEVELOPMENT,
+      plugins: true,
     },
   });
 
@@ -58,6 +59,8 @@ const createWindow = async (): Promise<void> => {
     visibilityKeybind ? visibilityKeybind.value : '',
     overlayMode,
   );
+  
+
 
   // render
   if (DEVELOPMENT) {
