@@ -107,7 +107,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param value - setting value
    */
   protected async handleUpdate(name: string, value: string, restart?: boolean): Promise<void> {
-    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent'].includes(name);
+    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'displayWarningMessages'].includes(name);
     // tslint:disable-next-line: no-any
     this.setState({ [name]: value as any });
     const res = await SettingsService.update(name, value);

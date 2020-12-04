@@ -75,6 +75,11 @@ export default class Menu extends React.Component<IProps, IState> {
    * Handles visibility toggle
    */
   protected handleToggleVisibility(): void {
+    const displayWarningMessages = this.props.userSettings.find(v => v.name === 'displayWarningMessages');
+    if (!displayWarningMessages || displayWarningMessages.value === 'false') {
+      return ElectronService.toggleVisibility();
+    }
+
     const keybind = this.props.userSettings.find(v => v.name === 'visibilityKeybind');
     this.props.handleDialog({
       open: true,
