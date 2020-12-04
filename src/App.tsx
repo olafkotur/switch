@@ -40,8 +40,14 @@ export default class App extends React.Component {
       overrides: {
         MuiButton: {
           label: {
-            textTransform: 'lowercase',
             fontSize: 12,
+            textTransform: 'lowercase',
+          },
+        },
+        MuiChip: {
+          label: {
+            fontSize: 12,
+            textTransform: 'lowercase',
           },
         },
       },

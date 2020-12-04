@@ -3,6 +3,8 @@ export type Icon = any;
 
 export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
 
+export type DefaultWindowBehaviour = 'window' | 'within' | 'external';
+
 export interface IStoredData<T> {
   data: T[];
 }

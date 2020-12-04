@@ -1,6 +1,6 @@
 import React from 'react';
 import { UtilService } from '../../services/util';
-import { IActionRequest } from '../../typings/d';
+import { DefaultWindowBehaviour, IActionRequest } from '../../typings/d';
 import { shell } from 'electron';
 import { ElectronService } from '../../services/electron';
 
@@ -10,6 +10,8 @@ interface IProps {
   hidden: boolean;
   actionRequest: IActionRequest;
   useModifiedAgent: boolean;
+  defaultWindowBehaviour: DefaultWindowBehaviour;
+  handleRefresh: () => Promise<void>;
 }
 
 interface IState {
@@ -53,13 +55,12 @@ export default class WebView extends React.Component<IProps, IState> {
 
     // handle new windows
     // tslint:disable-next-line: no-any
-    this.webView.addEventListener('new-window', (e: any): void => {
+    this.webView.addEventListener('new-window', async (e: any): Promise<void> => {
       if (e.url) {
+        // override to open as 'window' in special cases
         const isWindow = e.disposition && e.disposition === 'new-window';
-        if (isWindow) {
-          return ElectronService.openWindow(e.url);
-        }
-        shell.openExternal(e.url);
+        const shouldRefresh = await ElectronService.openHyperlink(e.url, isWindow ? 'window' : this.props.defaultWindowBehaviour);
+        shouldRefresh && this.props.handleRefresh();
       }
     });
   }

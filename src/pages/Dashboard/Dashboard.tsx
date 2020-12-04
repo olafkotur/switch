@@ -5,7 +5,7 @@ import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
 import Dialog, { IProps as IDialog } from '../../components/Dialog/Dialog';
-import { IActionRequest, IMenuItem, IPresetSetting, ISetting, IWebView, WebViewAction } from '../../typings/d';
+import { DefaultWindowBehaviour, IActionRequest, IMenuItem, IPresetSetting, ISetting, IWebView, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import { PresetService } from '../../services/preset';
@@ -33,6 +33,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
   protected useModifiedAgent: boolean = false;
+  protected defaultWindowBehaviour: DefaultWindowBehaviour = 'external';
   protected overlayMode: boolean = true;
 
   /**
@@ -42,7 +43,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'settings',
+      page: 'search',
       firstLoad: true,
       isLoading: true,
       focusedItem: null,
@@ -78,6 +79,9 @@ export default class Dashboard extends React.Component<{}, IState> {
         case 'useModifiedAgent':
           this.useModifiedAgent = v.value === 'true';
           break;
+        case 'defaultWindowBehaviour':
+          this.defaultWindowBehaviour = v.value as DefaultWindowBehaviour;
+          break;
         case 'overlayMode':
           this.overlayMode = v.value === 'true';
           ElectronService.setWindowMode(v.value === 'true');
@@ -86,10 +90,9 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // set the active item
     if (this.state.firstLoad && this.menuItems.length) {
-      // this.handleMenuItemClicked('web', this.menuItems[0]);
+      this.handleMenuItemClicked('web', this.menuItems[0]);
     }
-    // setTimeout(() => this.setState({ isLoading: false }), this.state.firstLoad ? 1500 : 500);
-    this.setState({ isLoading: false });
+    setTimeout(() => this.setState({ isLoading: false }), this.state.firstLoad ? 1500 : 500);
   }
 
   /**
@@ -158,7 +161,9 @@ export default class Dashboard extends React.Component<{}, IState> {
                       url={v.url}
                       hidden={hidden}
                       useModifiedAgent={this.useModifiedAgent}
+                      defaultWindowBehaviour={this.defaultWindowBehaviour}
                       actionRequest={this.state.actionRequest}
+                      handleRefresh={this.handleRefresh}
                     />
                   </div>;
                 })}

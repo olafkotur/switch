@@ -1,6 +1,7 @@
 import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
-import { IScreenInfo, IWindowInfo } from '../typings/d';
+import { DefaultWindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
+import { MenuService } from './menu';
 
 let previousScreenInfo: IScreenInfo | null = null;
 
@@ -74,7 +75,7 @@ export const ElectronService = {
     // new-window event
     window.webContents.on('new-window', async (event, url) => {
       event.preventDefault();
-      await shell.openExternal(url);
+      await ElectronService.openHyperlink(url, 'external');
     });
   },
 
@@ -143,5 +144,26 @@ export const ElectronService = {
       childWindow = null;
       mainWindow.setAlwaysOnTop(isAlwaysOnTop);
     });
+  },
+
+  /**
+   * Opens hyperlink based on user chosen action
+   * @param url - url to be opened
+   * @param behaviour - default window behaviour
+   */
+  openHyperlink: async (url: string, behaviour: DefaultWindowBehaviour): Promise<boolean> => {
+    let shouldRefresh = false;
+    switch (behaviour) {
+      case 'window':
+        ElectronService.openWindow(url);
+        break;
+      case 'within':
+        shouldRefresh = true;
+        await MenuService.save(url);
+        break;
+      default:
+        shell.openExternal(url);
+    }
+    return shouldRefresh;
   },
 };
