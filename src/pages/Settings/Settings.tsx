@@ -64,6 +64,13 @@ export default class Settings extends React.Component<IProps, IState> {
         value: this.state['useModifiedAgent'],
       },
       {
+        name: 'displayWarningMessages',
+        label: 'Warning messages',
+        type: 'switch',
+        hover: 'Display a warning message when hiding the window via the hide menu button',
+        value: this.state['displayWarningMessages'],
+      },
+      {
         name: 'visibilityKeybind',
         label: 'Toggle Show/Hide Keybind',
         type: 'custom',

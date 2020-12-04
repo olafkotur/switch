@@ -40,7 +40,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      page: 'search',
+      page: 'settings',
       firstLoad: true,
       isLoading: true,
       focusedItem: null,
@@ -81,7 +81,7 @@ export default class Dashboard extends React.Component<{}, IState> {
 
     // set the active item
     if (this.state.firstLoad && this.menuItems.length) {
-      this.handleMenuItemClicked('web', this.menuItems[0]);
+      // this.handleMenuItemClicked('web', this.menuItems[0]);
     }
     setTimeout(() => this.setState({ isLoading: false }), this.state.firstLoad ? 1500 : 500);
   }
