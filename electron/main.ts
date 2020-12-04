@@ -1,5 +1,5 @@
 import storage from 'electron-json-storage';
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
 import * as url from 'url';
@@ -42,6 +42,7 @@ const createWindow = async (): Promise<void> => {
       enableRemoteModule: true,
       allowRunningInsecureContent: true,
       devTools: DEVELOPMENT,
+      plugins: true,
     },
   });
 

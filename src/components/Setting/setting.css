@@ -7,11 +7,6 @@
   align-self: center;
 }
 
-.setting-button-text {
-  font-size: 10px;
-  text-transform: lowercase;
-}
-
 .setting-label {
   width: 40vw;
   overflow-x: scroll;
@@ -31,4 +26,12 @@
 
 .setting-description {
   font-size: 10px;
+}
+
+.MuiSelect-select:focus {
+  background: transparent !important;
+}
+
+.MuiSelect-select.MuiSelect-select {
+  padding-right: 0 !important;
 }

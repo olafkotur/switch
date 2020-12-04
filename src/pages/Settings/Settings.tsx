@@ -64,8 +64,15 @@ export default class Settings extends React.Component<IProps, IState> {
         value: this.state['useModifiedAgent'],
       },
       {
+        name: 'displayWarningMessages',
+        label: 'Warning messages',
+        type: 'switch',
+        hover: 'Display a warning message when hiding the window via the hide menu button',
+        value: this.state['displayWarningMessages'],
+      },
+      {
         name: 'visibilityKeybind',
-        label: 'Toggle Show/Hide Keybind',
+        label: 'Toggle show/hide keybind',
         type: 'custom',
         value: '',
         restart: true,
@@ -73,6 +80,17 @@ export default class Settings extends React.Component<IProps, IState> {
           keybind={this.state['visibilityKeybind']}
           handleUpdate={this.handleUpdate}
         />,
+      },
+      {
+        name: 'defaultWindowBehaviour',
+        label: 'Hyperlink behaviour',
+        type: 'select',
+        values: [
+          { value: 'window', label: 'New Window' },
+          { value: 'within', label: 'Within Switch' },
+          { value: 'external', label: 'Default Browser' },
+        ],
+        value: this.state['defaultWindowBehaviour'],
       },
     ];
 
@@ -98,9 +116,10 @@ export default class Settings extends React.Component<IProps, IState> {
    * Handles setting update
    * @param name - setting name
    * @param value - setting value
+   * @param restart - display restart app message
    */
   protected async handleUpdate(name: string, value: string, restart?: boolean): Promise<void> {
-    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent'].includes(name);
+    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'displayWarningMessages', 'defaultWindowBehaviour'].includes(name);
     // tslint:disable-next-line: no-any
     this.setState({ [name]: value as any });
     const res = await SettingsService.update(name, value);

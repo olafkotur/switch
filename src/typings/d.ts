@@ -3,6 +3,8 @@ export type Icon = any;
 
 export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
 
+export type DefaultWindowBehaviour = 'window' | 'within' | 'external';
+
 export interface IStoredData<T> {
   data: T[];
 }
@@ -15,12 +17,17 @@ export interface ISetting {
 
 export interface ISettingConfig extends ISetting {
   label: string;
-  type: 'switch' | 'button' | 'custom';
+  type: 'switch' | 'button' | 'select' | 'custom';
   action?: string;
   hover?: string;
+  values?: ISelectOption[];
   custom?: React.ReactElement;
 }
 
+export interface ISelectOption {
+  value: string;
+  label: string;
+}
 export interface IWindowInfo {
   width: number;
   height: number;

@@ -1,5 +1,6 @@
 import React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
+import { IProps as IDialog } from '../Dialog/Dialog';
 import { VisibilityOff, Search, Settings } from '@material-ui/icons';
 import { IMenuItem, ISetting, WebViewAction } from '../../typings/d';
 import { Chip, IconButton, Tooltip } from '@material-ui/core';
@@ -19,6 +20,7 @@ interface IProps {
   handleClick: (action: TPages, item?: IMenuItem) => void;
   handleRefresh: () => Promise<void>;
   handleActionRequest: (id: string, action: WebViewAction) => void;
+  handleDialog: (data: IDialog) => void;
 }
 
 interface IState {
@@ -45,6 +47,7 @@ export default class Menu extends React.Component<IProps, IState> {
     // scope binding
     this.handleDragUpdate = this.handleDragUpdate.bind(this);
     this.handleDragEnd = this.handleDragEnd.bind(this);
+    this.handleToggleVisibility = this.handleToggleVisibility.bind(this);
   }
 
   /**
@@ -66,6 +69,31 @@ export default class Menu extends React.Component<IProps, IState> {
     if (!res) {
       UtilService.error();
     }
+  }
+
+  /**
+   * Handles visibility toggle
+   */
+  protected handleToggleVisibility(): void {
+    const displayWarningMessages = this.props.userSettings.find(v => v.name === 'displayWarningMessages');
+    if (!displayWarningMessages || displayWarningMessages.value === 'false') {
+      return ElectronService.toggleVisibility();
+    }
+
+    const keybind = this.props.userSettings.find(v => v.name === 'visibilityKeybind');
+    this.props.handleDialog({
+      open: true,
+      title: 'Hold on a second...',
+      content: <div>
+        <span>You are about to hide Switch from your desktop, you can bring the window back at anytime using the </span>
+        <code>{`${keybind ? keybind.value : 'CommandOrControl + Esc'}`}</code>
+        <span> key combination.</span>
+        <br/><br/>
+        <span>Feel free to disable this message from the settings page.</span>
+      </div>,
+      handlePrimary: () => ElectronService.toggleVisibility(),
+      handleSecondary: () => {},
+    });
   }
 
   render() {
@@ -123,7 +151,7 @@ export default class Menu extends React.Component<IProps, IState> {
             {this.props.overlayMode && <Tooltip title="Hide window" enterDelay={750}>
               <IconButton
                 className="menu-item flex-column"
-                onClick={() => ElectronService.toggleVisibility()}
+                onClick={this.handleToggleVisibility}
               >
                 <VisibilityOff className="primary" fontSize="small" />
               </IconButton>

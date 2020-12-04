@@ -1,6 +1,6 @@
 import React from 'react';
-import { ISettingConfig } from '../../typings/d';
-import { Button, Switch, Tooltip } from '@material-ui/core';
+import { ISelectOption, ISettingConfig } from '../../typings/d';
+import { Button, Chip, MenuItem, Select, Switch, Tooltip } from '@material-ui/core';
 import './setting.css';
 
 interface IProps extends ISettingConfig {
@@ -8,7 +8,32 @@ interface IProps extends ISettingConfig {
   handleClick: (name: string) => Promise<void>;
 }
 
-export default class Setting extends React.Component<IProps> {
+interface IState {
+  selectedOption: ISelectOption | null;
+}
+
+export default class Setting extends React.Component<IProps, IState> {
+
+  /**
+   * Setting constructor
+   * @param props - component properties
+   */
+  constructor(props: IProps) {
+    super(props);
+
+    this.state = {
+      selectedOption: null,
+    };
+  }
+
+  /**
+   * Handles select change
+   * @param option - select option
+   */
+  protected handleSelectChange(option: ISelectOption) {
+    this.props.handleUpdate(this.props.name, option.value);
+    this.setState({ selectedOption: option });
+  }
 
   /**
    * Renders setting type
@@ -28,19 +53,37 @@ export default class Setting extends React.Component<IProps> {
           color="primary"
           onClick={() => this.props.handleClick(this.props.name)}
         >
-          <span className="primary setting-button-text">{this.props.action || 'change'}</span>
+          <span className="primary">{this.props.action || 'change'}</span>
         </Button>;
-      case 'custom':
-        return this.props.custom || <></>;
+      case 'select':
+        return <Select
+          disableUnderline
+          value={this.props.value}
+          className="setting-select"
+          MenuProps={{ MenuListProps: { style: { background: '#1F2225' } } } }
+          onChange={e => this.handleSelectChange({ value: e.target.value as string || '', label: e.target.name as string || '' })}
+          renderValue={selected => <Chip label={this.props.values?.find(v => v.value === selected)?.label} color="primary" />}
+          IconComponent={() => <></>}
+        >
+          {this.props.values && this.props.values.map((v, i) => (
+            <MenuItem
+              value={v.value}
+              key={`setting-select-${i}`}
+              className="bg-secondary primary"
+            >
+              <span className="primary">{v.label}</span>
+            </MenuItem>
+          ))}
+        </Select>;
       default:
-        return <></>;
+        return this.props.custom || <Select></Select>;
     }
   }
 
   render() {
     return (
       <div className="d-flex flex-row justify-content-between mt-2">
-        <h5 className="primary">{this.props.label}</h5>
+        <h5 className="primary align-self-center">{this.props.label}</h5>
         <Tooltip title={this.props.hover || ''}>
           { this.renderType() }
         </Tooltip>

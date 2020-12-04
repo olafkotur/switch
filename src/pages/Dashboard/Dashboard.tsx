@@ -4,7 +4,8 @@ import Menu from '../../components/Menu/Menu';
 import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import { IActionRequest, IMenuItem, IPresetSetting, ISetting, IWebView, WebViewAction } from '../../typings/d';
+import Dialog, { IProps as IDialog } from '../../components/Dialog/Dialog';
+import { DefaultWindowBehaviour, IActionRequest, IMenuItem, IPresetSetting, ISetting, IWebView, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
 import { PresetService } from '../../services/preset';
@@ -20,6 +21,7 @@ interface IState {
   isLoading: boolean;
   focusedItem: IMenuItem | null;
   actionRequest: IActionRequest;
+  dialog: IDialog | null;
 }
 
 export default class Dashboard extends React.Component<{}, IState> {
@@ -31,6 +33,7 @@ export default class Dashboard extends React.Component<{}, IState> {
   protected menuItems: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
   protected useModifiedAgent: boolean = false;
+  protected defaultWindowBehaviour: DefaultWindowBehaviour = 'external';
   protected overlayMode: boolean = true;
 
   /**
@@ -45,12 +48,15 @@ export default class Dashboard extends React.Component<{}, IState> {
       isLoading: true,
       focusedItem: null,
       actionRequest: { id: '', action: '' },
+      dialog: null,
     };
 
     // scope binding
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
     this.handleActionRequest = this.handleActionRequest.bind(this);
+    this.handleDialog = this.handleDialog.bind(this);
+    this.handleDialogClose = this.handleDialogClose.bind(this);
   }
 
   public async componentDidMount(): Promise<void> {
@@ -72,6 +78,9 @@ export default class Dashboard extends React.Component<{}, IState> {
       switch (v.name) {
         case 'useModifiedAgent':
           this.useModifiedAgent = v.value === 'true';
+          break;
+        case 'defaultWindowBehaviour':
+          this.defaultWindowBehaviour = v.value as DefaultWindowBehaviour;
           break;
         case 'overlayMode':
           this.overlayMode = v.value === 'true';
@@ -108,6 +117,21 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.setState({ actionRequest: { id, action } });
   }
 
+  /**
+   * Handles dialog
+   * @param data - dialog data
+   */
+  protected handleDialog(data: IDialog): void {
+    this.setState({ dialog: data });
+  }
+
+  /**
+   * Handles dialog close
+   */
+  protected handleDialogClose(): void {
+    this.setState({ dialog: null });
+  }
+
   render() {
     return (
       !this.state.isLoading ?
@@ -123,6 +147,7 @@ export default class Dashboard extends React.Component<{}, IState> {
                 handleClick={this.handleMenuItemClicked}
                 handleRefresh={this.handleRefresh}
                 handleActionRequest={this.handleActionRequest}
+                handleDialog={this.handleDialog}
               />
             </div>
             <div className="col p-0">
@@ -136,7 +161,9 @@ export default class Dashboard extends React.Component<{}, IState> {
                       url={v.url}
                       hidden={hidden}
                       useModifiedAgent={this.useModifiedAgent}
+                      defaultWindowBehaviour={this.defaultWindowBehaviour}
                       actionRequest={this.state.actionRequest}
+                      handleRefresh={this.handleRefresh}
                     />
                   </div>;
                 })}
@@ -159,6 +186,15 @@ export default class Dashboard extends React.Component<{}, IState> {
               </div>}
             </div>
           </div>
+
+          {/* show dialog across the entire app */}
+          {this.state.dialog &&
+            <Dialog
+              {...this.state.dialog}
+              handleClose={this.handleDialogClose}
+            />
+          }
+
         </div>
       : <Loader shortLoader={!this.state.firstLoad} />
     );
