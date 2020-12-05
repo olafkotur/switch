@@ -1,8 +1,8 @@
 import React from 'react';
 import { UtilService } from '../../services/util';
 import { DefaultWindowBehaviour, IActionRequest } from '../../typings/d';
-import { shell } from 'electron';
 import { ElectronService } from '../../services/electron';
+import { WebviewTag } from 'electron';
 
 interface IProps {
   id: string;
@@ -22,9 +22,7 @@ export default class WebView extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
-  // many of the functions for the webview do not exist on type Element hence the any type declaration
-  // tslint:disable-next-line: no-any
-  protected webView: any | null = null;
+  protected webView!: WebviewTag;
   protected userAgent: string;
 
   /**
@@ -45,8 +43,8 @@ export default class WebView extends React.Component<IProps, IState> {
   /**
    * Component mounting
    */
-  componentDidMount() {
-    this.webView = document.getElementById(`webview-${this.props.id}`);
+  componentDidMount(): void {
+    this.webView = document.getElementById(`webview-${this.props.id}`) as WebviewTag;
 
     // enable page controls
     this.webView.addEventListener('dom-ready', () => {
@@ -54,8 +52,7 @@ export default class WebView extends React.Component<IProps, IState> {
     });
 
     // handle new windows
-    // tslint:disable-next-line: no-any
-    this.webView.addEventListener('new-window', async (e: any): Promise<void> => {
+    this.webView.addEventListener('new-window', async (e): Promise<void> => {
       if (e.url) {
         // override to open as 'window' in special cases
         const isWindow = e.disposition && e.disposition === 'new-window';

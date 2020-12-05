@@ -62,7 +62,6 @@ const createMainWindow = async (): Promise<void> => {
       nodeIntegration: true,
       webviewTag: true,
       enableRemoteModule: true,
-      allowRunningInsecureContent: true,
       devTools: DEVELOPMENT,
       plugins: true,
     },
