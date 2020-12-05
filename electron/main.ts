@@ -114,7 +114,7 @@ const sendStatusToWindow = (status: string): void => {
 app.on('ready', async () => {
   await createMainWindow();
   setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 5000); // initial check
-  setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 1 * 60 * 1000); // keep checking every hour
+  setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 60 * 60 * 1000); // keep checking every hour
 });
 app.on('window-all-closed', () => {
   app.quit();
