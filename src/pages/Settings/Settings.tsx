@@ -191,10 +191,10 @@ export default class Settings extends React.Component<IProps, IState> {
         <div className="d-flex justify-content-center my-5">
           <a
             className="text-muted"
-            href="https://www.notion.so/olafkotur/What-s-New-87a42395e92d44f4866d895fcd91d0ac"
+            href="https://www.notion.so/olafkotur/News-Updates-97fc4e6c87724db2b8c32acfbe8f7ae0"
             target="_blank"
           >
-            what's new?
+            &#128227; News & Updates
           </a>
         </div>
       </div>
