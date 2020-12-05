@@ -1,6 +1,6 @@
 {
   "name": "switch",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./dist/main.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "build:electron": "webpack --config webpack/electron.webpack.js",
     "build:react": "webpack --config webpack/react.webpack.js",
     "package": "npm-run-all build package:dist",
-    "package:dist": "electron-builder"
+    "package:dist": "electron-builder -p always"
   },
   "keywords": [],
   "author": "Olaf Kotur <olafkotur97@gmail.com>",
@@ -31,7 +31,6 @@
     "@types/react-router-dom": "^5.1.6",
     "bootstrap": "^4.5.3",
     "css-loader": "^5.0.1",
-    "dotenv": "^8.2.0",
     "electron-json-storage": "^4.3.0",
     "electron-log": "^4.3.0",
     "electron-updater": "^4.3.5",
@@ -82,6 +81,10 @@
   "build": {
     "appId": "com.electron.switch",
     "productName": "Switch",
+    "mac": {
+      "icon": "assets/switch-icon.png",
+      "target": "dmg"
+    },
     "publish": [
       {
         "provider": "github",
@@ -89,9 +92,6 @@
         "repo": "switch"
       }
     ],
-    "mac": {
-      "icon": "assets/switch-icon.png"
-    },
     "directories": {
       "output": "packages"
     },

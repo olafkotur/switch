@@ -7,9 +7,6 @@ import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
 
-// dotenv setup
-require('dotenv').config();
-
 // global variables
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 let mainWindow: BrowserWindow;
