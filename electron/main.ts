@@ -1,5 +1,5 @@
 import storage from 'electron-json-storage';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, autoUpdater } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
 import * as url from 'url';
@@ -7,16 +7,24 @@ import * as path from 'path';
 
 // dotenv setup
 require('dotenv').config();
+
+// global variables
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
+let mainWindow: BrowserWindow;
 
 // storage setup
 const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
 
-// window
-let mainWindow: BrowserWindow;
+// check for updates
+autoUpdater.on('update-downloaded', () => {
+  sendStatusToWindow('updateReady');
+});
 
-const createWindow = async (): Promise<void> => {
+/**
+ * Creates the main window
+ */
+const createMainWindow = async (): Promise<void> => {
   // fetch user settings
   const userSettings = await SettingsService.fetchList();
   const visibilityKeybind = userSettings.find(v => v.name === 'visibilityKeybind');
@@ -79,6 +87,21 @@ const createWindow = async (): Promise<void> => {
   });
 };
 
+/**
+ * Sends a status message to the main window
+ * @param status - message to be sent
+ * @param window - target browser window
+ */
+const sendStatusToWindow = (status: string): void => {
+  mainWindow.webContents.send('message', status);
+};
+
 // launch window
-app.on('ready', () => createWindow().catch());
+app.on('ready', async () => {
+  await createMainWindow();
+  setTimeout(() => autoUpdater.checkForUpdates(), 5000);
+});
+app.on('window-all-closed', () => {
+  app.quit();
+});
 app.allowRendererProcessReuse = true;

@@ -36,6 +36,9 @@ export default class Loader extends React.Component<IProps, IState> {
     this.color = availableColors[random - 1];
   }
 
+  /**
+   * Component mounting
+   */
   public componentDidMount() {
     if (!this.props.shortLoader) {
       setTimeout(() => this.setState({ showText: false, showLoader: true }), 750);

@@ -166,4 +166,11 @@ export const ElectronService = {
     }
     return shouldRefresh;
   },
+
+  /**
+   * Quits the application (used to apply updates)
+   */
+  quit: (): void => {
+    return remote.app.quit();
+  },
 };
