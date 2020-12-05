@@ -5,6 +5,7 @@ import Loader from '../../components/Loader/Loader';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
 import Dialog, { IProps as IDialog } from '../../components/Dialog/Dialog';
+import { ipcRenderer } from 'electron';
 import { DefaultWindowBehaviour, IActionRequest, IMenuItem, IPresetSetting, ISetting, IWebView, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { SettingsService } from '../../services/settings';
@@ -52,6 +53,7 @@ export default class Dashboard extends React.Component<{}, IState> {
     };
 
     // scope binding
+    this.handleCheckForUpdates = this.handleCheckForUpdates.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
     this.handleActionRequest = this.handleActionRequest.bind(this);
@@ -59,9 +61,37 @@ export default class Dashboard extends React.Component<{}, IState> {
     this.handleDialogClose = this.handleDialogClose.bind(this);
   }
 
+  /**
+   * Component mounting
+   */
   public async componentDidMount(): Promise<void> {
     await this.handleRefresh();
+    await this.handleCheckForUpdates();
     this.setState({ firstLoad: false });
+  }
+
+  /**
+   * Checks for updates
+   */
+  protected async handleCheckForUpdates(): Promise<void> {
+    ipcRenderer.on('message', (_event, text) => {
+      if (text === 'updateReady') {
+        this.handleDialog({
+          open: true,
+          title: 'Oh hey, it\'s that time again...',
+          content: <div>
+            <span>We've downloaded an update for you in the background, it's ready to <code>install</code> whenever you're ready.</span>
+            <br/><br/>
+            <span>Please <code>re-launch</code> the application after clicking install.</span>
+            <br/><br/>
+            <span>You can choose to ignore it, it will simply be applied the next time you re-launch the application.</span>
+          </div>,
+          primaryLabel: 'Install',
+          handlePrimary: () => ElectronService.quit(),
+          handleSecondary: () => {},
+        });
+      }
+    });
   }
 
    /**
