@@ -80,6 +80,11 @@
   "build": {
     "appId": "com.electron.switch",
     "productName": "Switch",
+    "publish": [{
+      "provider": "github",
+      "owner": "olafkotur",
+      "repo": "switch"
+    }],
     "mac": {
       "icon": "assets/switch-icon.png"
     },

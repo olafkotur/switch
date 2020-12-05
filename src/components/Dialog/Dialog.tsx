@@ -63,7 +63,6 @@ export default class Dialog extends React.Component<IProps> {
           <DialogActions>
             <Button
               className="mr-1"
-              color="primary"
               variant="contained"
               onClick={this.handleSecondary}
             >
