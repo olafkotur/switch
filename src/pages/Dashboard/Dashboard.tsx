@@ -80,7 +80,7 @@ export default class Dashboard extends React.Component<{}, IState> {
           open: true,
           title: 'Oh hey, it\'s that time again...',
           content: <div>
-            <span>We've downloaded an update for you in the background, it's ready to <code>install</code> whenever you're ready.</span>
+            <span>We've downloaded an update for you in the background, it's available to <code>install</code> whenever you're ready.</span>
             <br/><br/>
             <span>Please <code>re-launch</code> the application after clicking install.</span>
             <br/><br/>
