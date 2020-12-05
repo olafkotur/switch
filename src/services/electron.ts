@@ -1,4 +1,4 @@
-import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
+import { autoUpdater, BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
 import { DefaultWindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
 import { MenuService } from './menu';
