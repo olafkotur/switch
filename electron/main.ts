@@ -7,6 +7,9 @@ import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
 
+// env variables
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
 // global variables
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 let mainWindow: BrowserWindow;
@@ -20,6 +23,12 @@ autoUpdater.logger = log;
 // @ts-ignore - dodgy casting from Logger to ElectronLog
 autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.setFeedURL({
+  provider: 'github',
+  owner: 'olafkotur',
+  repo: 'switch',
+  token: process.env.GH_TOKEN,
+});
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('updateReady');
 });
