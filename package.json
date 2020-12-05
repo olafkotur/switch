@@ -1,6 +1,6 @@
 {
   "name": "switch",
-  "version": "1.2.6",
+  "version": "1.2.10",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./dist/main.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "@types/react-router-dom": "^5.1.6",
     "bootstrap": "^4.5.3",
     "css-loader": "^5.0.1",
+    "dotenv": "^8.2.0",
     "electron-json-storage": "^4.3.0",
     "electron-log": "^4.3.0",
     "electron-updater": "^4.3.5",
@@ -85,18 +86,12 @@
       "icon": "assets/switch-icon.png",
       "target": "dmg"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "olafkotur",
-        "repo": "switch"
-      }
-    ],
     "directories": {
       "output": "packages"
     },
     "files": [
       "package.json",
+      ".env",
       "dist/**"
     ]
   },
