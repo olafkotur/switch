@@ -1,7 +1,8 @@
 import storage from 'electron-json-storage';
-import { app, BrowserWindow, autoUpdater } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
+import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
 
@@ -17,6 +18,7 @@ const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
 
 // check for updates
+autoUpdater.autoInstallOnAppQuit = true;
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('updateReady');
 });
@@ -99,7 +101,8 @@ const sendStatusToWindow = (status: string): void => {
 // launch window
 app.on('ready', async () => {
   await createMainWindow();
-  setTimeout(() => autoUpdater.checkForUpdates(), 5000);
+  setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 5000); // initial check
+  setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 1 * 60 * 1000); // keep checking every hour
 });
 app.on('window-all-closed', () => {
   app.quit();
