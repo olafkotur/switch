@@ -1,4 +1,5 @@
 import storage from 'electron-json-storage';
+import log from 'electron-log';
 import { app, BrowserWindow } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
@@ -18,10 +19,15 @@ const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
 
 // check for updates
+autoUpdater.logger = log;
+// @ts-ignore - dodgy casting from Logger to ElectronLog
+autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoInstallOnAppQuit = true;
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('updateReady');
 });
+
+log.info('App starting...');
 
 /**
  * Creates the main window
