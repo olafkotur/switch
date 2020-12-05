@@ -1,6 +1,6 @@
 {
   "name": "switch",
-  "version": "1.2.11",
+  "version": "1.2.12",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./dist/main.js",
   "scripts": {
@@ -83,8 +83,7 @@
     "appId": "com.electron.switch",
     "productName": "Switch",
     "mac": {
-      "icon": "assets/switch-icon.png",
-      "target": "dmg"
+      "icon": "assets/switch-icon.png"
     },
     "directories": {
       "output": "packages"
