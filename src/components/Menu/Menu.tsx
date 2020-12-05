@@ -85,7 +85,7 @@ export default class Menu extends React.Component<IProps, IState> {
       open: true,
       title: 'Hold on a second...',
       content: <div>
-        <span>You are about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{`${keybind ? keybind.value : 'CommandOrControl + Esc'}`}</code> combination.</span>
+        <span>You're about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{`${keybind ? keybind.value : 'CommandOrControl + Esc'}`}</code> combination.</span>
         <br/><br/>
         <span>Feel free to disable this message from the settings page.</span>
       </div>,
