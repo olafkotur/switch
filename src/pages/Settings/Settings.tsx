@@ -188,9 +188,16 @@ export default class Settings extends React.Component<IProps, IState> {
         </div>
 
         {/* footer */}
-        <div className="d-flex justify-content-center my-5">
+        <div className="d-flex flex-row justify-content-center my-5">
           <a
-            className="text-muted"
+            className="primary mx-3"
+            href="https://www.notion.so/olafkotur/Tutorial-a77509d0ed234ab985f0e0d7c88c01e2"
+            target="_blank"
+          >
+            &#129355; Tutorial
+          </a>
+          <a
+            className="primary mx-3"
             href="https://www.notion.so/olafkotur/News-Updates-97fc4e6c87724db2b8c32acfbe8f7ae0"
             target="_blank"
           >
