@@ -46,7 +46,24 @@ export default class Settings extends React.Component<IProps, IState> {
 
     // local properties
     this.presets = PresetService.fetch();
+
     this.general = [
+      {
+        name: 'visiblityKeybind',
+        value: this.state.visiblityKeybind,
+        label: 'Visiblity Keybind',
+        description: 'combination used to toggle the window’s visibility',
+        type: 'pop-up',
+        restart: true,
+      },
+      {
+        name: 'windowBehaviour',
+        value: this.state.windowBehaviour,
+        label: 'Hyperlink Behaviour',
+        description: 'choose what happens when you open a hyperlink within Switch',
+        type: 'pop-up',
+        restart: true,
+      },
       {
         name: 'overlayMode',
         value: this.state.overlayMode,
@@ -73,6 +90,14 @@ export default class Settings extends React.Component<IProps, IState> {
 
     this.appearance = [
       {
+        name: 'accentColor',
+        value: this.state.accentColor,
+        label: 'Accent Color',
+        description: 'change the accent colour of the application',
+        type: 'pop-up',
+        restart: true,
+      },
+      {
         name: 'darkMode',
         value: this.state.darkMode,
         label: 'Dark Mode',
@@ -80,7 +105,7 @@ export default class Settings extends React.Component<IProps, IState> {
         type: 'switch',
       },
       {
-        name: 'animateResize',
+        name: 'animatePresets',
         value: this.state.animatePresets,
         label: 'Animate Presets',
         description: 'shows an animation when resizing windows with a preset',

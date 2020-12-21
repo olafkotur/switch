@@ -5,7 +5,7 @@ import { Edit } from '@material-ui/icons';
 import './setting.css';
 
 interface IProps extends ISettingConfig {
-  handleUpdate: (name: string, value: string, restart?: boolean) => Promise<void>;
+  handleUpdate: (name: string, value: string | boolean, restart?: boolean) => Promise<void>;
 }
 
 interface IState {
@@ -43,11 +43,11 @@ export default class Setting extends React.Component<IProps, IState> {
       case 'switch':
         return <Switch
           color="primary"
-          checked={this.props.value === 'true'}
-          onChange={(_e, checked) => this.props.handleUpdate(this.props.name, checked ? 'true' : 'false', this.props.restart)}
+          checked={!!this.props.value}
+          onChange={(_e, checked) => this.props.handleUpdate(this.props.name, checked, this.props.restart)}
         />;
       case 'pop-up':
-        return <IconButton>
+        return <IconButton className="bg-primary mr-2 p-2" color="primary" >
           <Edit className="primary" fontSize="small" />
         </IconButton>;
       default:
@@ -62,7 +62,7 @@ export default class Setting extends React.Component<IProps, IState> {
           <h6 className="primary align-self-center m-0">{this.props.label}</h6>
           <p className="text-muted">{this.props.description}</p>
         </div>
-        <div>
+        <div className="d-flex flex-row justify-content-center align-items-center">
           {this.renderAction()}
         </div>
       </div>

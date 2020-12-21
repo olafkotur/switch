@@ -11,6 +11,7 @@ const defaultSettings: IUserSettings = {
   visiblityKeybind: 'CommandOrControl + Esc',
   warningMessages: true,
   windowBehaviour: 'external',
+  accentColor: '#227093',
   animatePresets: true,
   darkMode: true,
 };

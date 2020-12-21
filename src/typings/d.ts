@@ -15,6 +15,7 @@ export interface IUserSettings {
   visiblityKeybind: string;
   warningMessages: boolean;
   windowBehaviour: WindowBehaviour;
+  accentColor: string;
   animatePresets: boolean;
   darkMode: boolean;
 }
