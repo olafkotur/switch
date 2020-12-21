@@ -1,13 +1,13 @@
 import React from 'react';
 import Dashboard from './pages/Dashboard/Dashboard';
 import storage from 'electron-json-storage';
+import Loader from './components/Loader/Loader';
 import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
 import { render } from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.css';
-import './custom.css';
 import { IUserSettings } from './typings/d';
 import { SettingsService } from './services/settings';
-import Loader from './components/Loader/Loader';
+import 'bootstrap/dist/css/bootstrap.css';
+import './custom.css';
 
 const mainElement = document.createElement('div');
 mainElement.setAttribute('id', 'root');

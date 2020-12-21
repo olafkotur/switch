@@ -45,11 +45,11 @@ const createMainWindow = async (): Promise<void> => {
   // @ts-ignore - only used in v1.3.0 release
   if (userSettings && userSettings.data) {
     const res = await StorageService.remove('userSettings');
+    log.info('Deleted old userSettings object.');
     if (res) {
       userSettings = await SettingsService.fetch();
     }
   }
-  console.log(userSettings);
 
   // create main window
   const screenInfo = ElectronService.getScreenInfo();
