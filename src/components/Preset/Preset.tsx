@@ -57,12 +57,12 @@ export default class Preset extends React.Component<IProps, IState> {
   render() {
     return (
       <ButtonBase
-        className="m-2"
+        className="col-xl-3 col-lg-4 col-md-6 p-2"
         onClick={this.handleActive}
         onMouseEnter={() => this.setState({ focused: true })}
         onMouseLeave={() => this.setState({ focused: false })}
       >
-        <Paper className="d-flex preset-outer p-1 bg-secondary align-items-center" >
+        <Paper className="d-flex preset-outer p-1 bg-primary align-items-center w-100" >
           {this.state.focused && <p className="primary position-absolute w-100 text-center">{this.props.name}</p>}
           <div
             className="position-static preset-inner"

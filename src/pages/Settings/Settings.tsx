@@ -8,6 +8,7 @@ import { Paper } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
 import * as _ from 'lodash';
 import './settings.css';
+import Setting from '../../components/Setting/Setting';
 
 interface IProps {
   items: IMenuItem[];
@@ -42,63 +43,48 @@ export default class Settings extends React.Component<IProps, IState> {
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleClick = this.handleClick.bind(this);
 
     // local properties
     this.presets = PresetService.fetch();
     this.general = [
       {
         name: 'overlayMode',
-        label: 'Overlay mode',
-        type: 'switch',
         value: this.state.overlayMode,
-        hover: 'Turn this off to use Switch as a normal application, overlay and toggle visbility features will be disabled',
+        label: 'Overlay mode',
+        description: 'switch will display over other applications',
+        type: 'switch',
         restart: true,
       },
       {
         name: 'useModifiedAgent',
+        value: this.state.modifiedAgent,
+        description: 'fixes issues with chrome version compatibility on some applications',
         label: 'Modified user agent',
         type: 'switch',
-        hover: 'Experimental feature, may cause some websites to break. Use this if you have issues acessing websites due to an old chrome version',
-        value: this.state.modifiedAgent,
       },
       {
         name: 'displayWarningMessages',
-        label: 'Warning messages',
-        type: 'switch',
-        hover: 'Display a warning message when hiding the window via the hide menu button',
         value: this.state.warningMessages,
-      },
-      {
-        name: 'visibilityKeybind',
-        label: 'Toggle show/hide keybind',
-        type: 'custom',
-        value: '',
-        restart: true,
-        custom: <KeybindButton
-          keybind={this.state.visiblityKeybind}
-          handleUpdate={this.handleUpdate}
-        />,
-      },
-      {
-        name: 'defaultWindowBehaviour',
-        label: 'Hyperlink behaviour',
-        type: 'select',
-        values: [
-          { value: 'window', label: 'New Window' },
-          { value: 'within', label: 'Within Switch' },
-          { value: 'external', label: 'Default Browser' },
-        ],
-        value: this.state.windowBehaviour,
+        label: 'Warning messages',
+        description: 'display helpful messages when performing some actions',
+        type: 'switch',
       },
     ];
 
     this.appearance = [
       {
-        name: 'animateResize',
-        label: 'Animate Resize',
+        name: 'darkMode',
+        value: this.state.darkMode,
+        label: 'Dark Mode',
+        description: 'toggle between light and dark themes',
         type: 'switch',
-        value: this.state['animateResize'],
+      },
+      {
+        name: 'animateResize',
+        value: this.state.animatePresets,
+        label: 'Animate Presets',
+        description: 'shows an animation when resizing windows with a preset',
+        type: 'switch',
       },
     ];
 
@@ -122,14 +108,6 @@ export default class Settings extends React.Component<IProps, IState> {
     shouldRefresh && this.props.handleRefresh(); // do not await
   }
 
-   /**
-   * Handles click events
-   * @param name - setting name
-   */
-  protected async handleClick(name: string): Promise<void> {
-    return;
-  }
-
   render() {
     return (
       <div className="settings-container">
@@ -139,18 +117,41 @@ export default class Settings extends React.Component<IProps, IState> {
           </Paper>
         }
 
-        {/* preset settings */}
-        <h3 className="primary font-weight-bold mt-5">Presets</h3>
-        <hr />
-        <div className="d-flex flex-row row">
-          {this.presets.map(v => (
-            <Preset
+        <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;General</h4>
+        <div className="setting-group bg-secondary">
+          {this.general.map(v => (
+            <Setting
               {...v}
-              key={`preset-setting-${v.name}`}
-              animate={this.state.animateResize}
-              handleRefresh={this.props.handleRefresh}
+              value={this.state[v.name as keyof IState]}
+              handleUpdate={this.handleUpdate}
             />
           ))}
+        </div>
+
+        <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Appearance</h4>
+        <div className="setting-group bg-secondary">
+          {this.appearance.map(v => (
+            <Setting
+              {...v}
+              value={this.state[v.name as keyof IState]}
+              handleUpdate={this.handleUpdate}
+            />
+          ))}
+        </div>
+
+        {/* preset settings */}
+        <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Presets</h4>
+        <div className="setting-group bg-secondary">
+          <div className="d-flex flex-row row">
+            {this.presets.map(v => (
+              <Preset
+                {...v}
+                key={`preset-setting-${v.name}`}
+                animate={this.state.animatePresets}
+                handleRefresh={this.props.handleRefresh}
+              />
+            ))}
+          </div>
         </div>
 
         {/* footer */}

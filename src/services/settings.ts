@@ -7,11 +7,12 @@ const STORAGE_KEY = 'userSettings';
 
 const defaultSettings: IUserSettings = {
   overlayMode: true,
-  animateResize: true,
   modifiedAgent: false,
   visiblityKeybind: 'CommandOrControl + Esc',
   warningMessages: true,
   windowBehaviour: 'external',
+  animatePresets: true,
+  darkMode: true,
 };
 
 export const SettingsService = {

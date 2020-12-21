@@ -11,11 +11,12 @@ export interface IStoredData<T> {
 
 export interface IUserSettings {
   overlayMode: boolean;
-  animateResize: boolean;
   modifiedAgent: boolean;
   visiblityKeybind: string;
   warningMessages: boolean;
   windowBehaviour: WindowBehaviour;
+  animatePresets: boolean;
+  darkMode: boolean;
 }
 
 export interface ISetting {
@@ -25,12 +26,9 @@ export interface ISetting {
 }
 
 export interface ISettingConfig extends ISetting {
+  type: 'switch' | 'pop-up';
   label: string;
-  type: 'switch' | 'button' | 'select' | 'custom';
-  action?: string;
-  hover?: string;
-  values?: ISelectOption[];
-  custom?: React.ReactElement;
+  description: string;
 }
 
 export interface ISelectOption {
