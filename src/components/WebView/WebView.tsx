@@ -1,6 +1,6 @@
 import React from 'react';
 import { UtilService } from '../../services/util';
-import { DefaultWindowBehaviour, IActionRequest } from '../../typings/d';
+import { WindowBehaviour, IActionRequest } from '../../typings/d';
 import { ElectronService } from '../../services/electron';
 import { WebviewTag } from 'electron';
 
@@ -10,7 +10,7 @@ interface IProps {
   hidden: boolean;
   actionRequest: IActionRequest;
   useModifiedAgent: boolean;
-  defaultWindowBehaviour: DefaultWindowBehaviour;
+  defaultWindowBehaviour: WindowBehaviour;
   handleRefresh: () => Promise<void>;
 }
 

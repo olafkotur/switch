@@ -3,15 +3,24 @@ export type Icon = any;
 
 export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
 
-export type DefaultWindowBehaviour = 'window' | 'within' | 'external';
+export type WindowBehaviour = 'window' | 'within' | 'external';
 
 export interface IStoredData<T> {
   data: T[];
 }
 
+export interface IUserSettings {
+  overlayMode: boolean;
+  animateResize: boolean;
+  modifiedAgent: boolean;
+  visiblityKeybind: string;
+  warningMessages: boolean;
+  windowBehaviour: WindowBehaviour;
+}
+
 export interface ISetting {
   name: string;
-  value: string;
+  value: string | boolean;
   restart?: boolean;
 }
 
@@ -40,10 +49,20 @@ export interface IScreenInfo {
   height: number;
 }
 
-export interface IPresetSetting extends IWindowInfo {
-  id: string;
+export interface IPreset {
   name: string;
+  width: number;
+  height: number;
+  xPosition: number;
+  yPosition: number;
   preview: IPresetPreview;
+}
+
+export interface IPresetPreview {
+  width: number;
+  height: number;
+  xOffset: number;
+  yOffset: number;
 }
 
 export interface IServiceSetting extends IMenuItem {
@@ -69,11 +88,4 @@ export interface IActionRequest {
 export interface IKey {
   name: string;
   value: string;
-}
-
-export interface IPresetPreview {
-  width: number;
-  height: number;
-  xOffset: number;
-  yOffset: number;
 }

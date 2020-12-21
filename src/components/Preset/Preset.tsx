@@ -1,11 +1,10 @@
-import { Box, ButtonBase, Paper } from '@material-ui/core';
+import { ButtonBase, Paper } from '@material-ui/core';
 import React from 'react';
 import { PresetService } from '../../services/preset';
-import { UtilService } from '../../services/util';
-import { IPresetSetting } from '../../typings/d';
+import { IPreset } from '../../typings/d';
 import './preset.css';
 
-interface IProps extends IPresetSetting {
+interface IProps extends IPreset {
   animate: boolean;
   handleRefresh: () => Promise<void>;
 }
@@ -40,8 +39,6 @@ export default class Preset extends React.Component<IProps, IState> {
 
     // scope binding
     this.handleActive = this.handleActive.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
   }
 
   /**
@@ -55,31 +52,6 @@ export default class Preset extends React.Component<IProps, IState> {
       this.props.yPosition,
       this.props.animate,
     );
-  }
-
-  /**
-   * Handles preset save
-   * @param name - preset name
-   * @param width - preset width
-   * @param height - preset height
-   */
-  protected async handleSave(name: string, width: number, height: number, xPosition: number, yPosition: number): Promise<void> {
-    const res = await PresetService.save(name, width, height, xPosition, yPosition);
-    if (!res) {
-      return UtilService.error();
-    }
-    this.props.handleRefresh(); // do not await
-  }
-
-  /**
-   * Handles delete
-   */
-  protected async handleDelete(): Promise<void> {
-    const res = await PresetService.delete(this.props.id);
-    if (!res) {
-      return UtilService.error();
-    }
-    this.props.handleRefresh(); // do not await
   }
 
   render() {

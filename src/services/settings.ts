@@ -1,50 +1,38 @@
-import { ISetting, IStoredData } from '../typings/d';
+import { IUserSettings } from '../typings/d';
 import { StorageService } from './storage';
 import { modifiers, alphabetic, numeric, special } from '../imports/keys';
 import * as _ from 'lodash';
 
+const STORAGE_KEY = 'userSettings';
+
+const defaultSettings: IUserSettings = {
+  overlayMode: true,
+  animateResize: true,
+  modifiedAgent: false,
+  visiblityKeybind: 'CommandOrControl + Esc',
+  warningMessages: true,
+  windowBehaviour: 'external',
+};
+
 export const SettingsService = {
   /**
-   * Returns default settings
+   * Fetches user settings
    */
-  getDefault: (): ISetting[] => {
-    return [
-      { name: 'overlayMode', value: 'true' },
-      { name: 'animateResize', value: 'true' },
-      { name: 'showBetaStatus', value: 'true' },
-      { name: 'useModifiedAgent', value: 'false' },
-      { name: 'visibilityKeybind', value: 'CommandOrControl + Esc' },
-      { name: 'displayWarningMessages', value: 'true' },
-      { name: 'defaultWindowBehaviour', value: 'external' },
-    ];
+  fetch: async (): Promise<IUserSettings> => {
+    const res = await StorageService.get(STORAGE_KEY) as IUserSettings;
+    return _.isEmpty(res) ? defaultSettings : res;
   },
 
   /**
-   * Fetches list of stored settings
+   * Updates provided user settings
    */
-  fetchList: async (): Promise<ISetting[]> => {
-    const res: IStoredData<ISetting> | null = await StorageService.get('userSettings') as IStoredData<ISetting> | null;
-    return res && res.data ? res.data : SettingsService.getDefault();
-  },
-
-  /**
-   * Updates a setting by name
-   * @param name - setting name
-   * @param value - setting value
-   */
-  update: async (name: string, value: string): Promise<boolean> => {
-    const previousData = await SettingsService.fetchList();
-
-    // update setting by name
-    const updatedData: ISetting[] = previousData.map(v => name === v.name ? { ...v, value  } : { ...v });
-    const exists = !!updatedData.find(v => v.name === name);
-    if (!exists) {
-      updatedData.push({ name, value });
-    }
-
-    const saveData: IStoredData<ISetting> = { data: [...updatedData] };
-
-    return await StorageService.set('userSettings', saveData);
+  update: async (toUpdate: Partial<IUserSettings>): Promise<boolean> => {
+    const previous = await SettingsService.fetch();
+    const data: IUserSettings = {
+      ...previous,
+      ...toUpdate,
+    };
+    return await StorageService.set(STORAGE_KEY, data);
   },
 
   /**

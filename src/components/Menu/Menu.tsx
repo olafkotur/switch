@@ -2,7 +2,7 @@ import React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import { IProps as IDialog } from '../Dialog/Dialog';
 import { VisibilityOff, Search, Settings } from '@material-ui/icons';
-import { IMenuItem, ISetting, WebViewAction } from '../../typings/d';
+import { IMenuItem, ISetting, IUserSettings, WebViewAction } from '../../typings/d';
 import { Chip, IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { ElectronService } from '../../services/electron';
@@ -15,7 +15,7 @@ interface IProps {
   page: TPages;
   items: IMenuItem[];
   focusedItem: IMenuItem | null;
-  userSettings: ISetting[];
+  userSettings: IUserSettings;
   overlayMode: boolean;
   handleClick: (action: TPages, item?: IMenuItem) => void;
   handleRefresh: () => Promise<void>;
@@ -75,17 +75,15 @@ export default class Menu extends React.Component<IProps, IState> {
    * Handles visibility toggle
    */
   protected handleToggleVisibility(): void {
-    const displayWarningMessages = this.props.userSettings.find(v => v.name === 'displayWarningMessages');
-    if (!displayWarningMessages || displayWarningMessages.value === 'false') {
+    if (!this.props.userSettings.warningMessages) {
       return ElectronService.toggleVisibility();
     }
 
-    const keybind = this.props.userSettings.find(v => v.name === 'visibilityKeybind');
     this.props.handleDialog({
       open: true,
       title: 'Hold on a second...',
       content: <div>
-        <span>You're about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{`${keybind ? keybind.value : 'CommandOrControl + Esc'}`}</code> combination.</span>
+        <span>You're about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{this.props.userSettings.visiblityKeybind}</code> combination.</span>
         <br/><br/>
         <span>Feel free to disable this message from the settings page.</span>
       </div>,
@@ -95,18 +93,10 @@ export default class Menu extends React.Component<IProps, IState> {
   }
 
   render() {
-    const showBetaStatus = (this.props.userSettings.find(v => v.name === 'showBetaStatus')?.value || '') === 'true';
     return (
       <div className="vh-100">
         <div className="menu-top">
           {!this.props.overlayMode && <div className="mb-4" />}
-          {showBetaStatus && <div className={`d-flex justify-content-center ${this.props.overlayMode ? 'pt-2' : 'pt-1'}`}>
-            <Chip
-              label="beta"
-              size="small"
-              className="menu-beta"
-            />
-          </div>}
           <div className="d-flex flex-column justify-content-center align-items-center">
             <DragDropContext
               onDragUpdate={this.handleDragUpdate}

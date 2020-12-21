@@ -1,6 +1,6 @@
-import { autoUpdater, BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
+import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
-import { DefaultWindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
+import { WindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
 import { MenuService } from './menu';
 
 let previousScreenInfo: IScreenInfo | null = null;
@@ -50,7 +50,7 @@ export const ElectronService = {
     previousScreenInfo = previousScreenInfo ? previousScreenInfo : { ...newScreenInfo };
 
     // register shortcuts
-    globalShortcut.register(keybind.replace(/\ /g, '') || 'CommandOrControl+Esc', (): void => {
+    globalShortcut.register(keybind ? keybind.replace(/\ /g, '') : 'CommandOrControl+Esc', (): void => {
       // check if screen size has changed - happens if user switches displays
       if (newScreenInfo.width !== previousScreenInfo!.width || previousScreenInfo!.height !== previousScreenInfo!.height) {
         previousScreenInfo = { ...newScreenInfo };
@@ -151,7 +151,7 @@ export const ElectronService = {
    * @param url - url to be opened
    * @param behaviour - default window behaviour
    */
-  openHyperlink: async (url: string, behaviour: DefaultWindowBehaviour): Promise<boolean> => {
+  openHyperlink: async (url: string, behaviour: WindowBehaviour): Promise<boolean> => {
     let shouldRefresh = false;
     switch (behaviour) {
       case 'window':
