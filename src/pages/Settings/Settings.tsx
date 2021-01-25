@@ -1,6 +1,6 @@
 import React from 'react';
-import KeybindButton from '../../components/KeybindButton/KeybindButton';
 import Preset from '../../components/Preset/Preset';
+import Setting from '../../components/Setting/Setting';
 import { IMenuItem, ISettingConfig, IPreset, IUserSettings } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
@@ -8,7 +8,6 @@ import { Paper } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
 import * as _ from 'lodash';
 import './settings.css';
-import Setting from '../../components/Setting/Setting';
 
 interface IProps {
   items: IMenuItem[];
@@ -147,6 +146,7 @@ export default class Settings extends React.Component<IProps, IState> {
           {this.general.map(v => (
             <Setting
               {...v}
+              key={`general-setting-${v.name}`}
               value={this.state[v.name as keyof IState]}
               handleUpdate={this.handleUpdate}
             />
@@ -158,6 +158,7 @@ export default class Settings extends React.Component<IProps, IState> {
           {this.appearance.map(v => (
             <Setting
               {...v}
+              key={`appearance-setting-${v.name}`}
               value={this.state[v.name as keyof IState]}
               handleUpdate={this.handleUpdate}
             />
