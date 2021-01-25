@@ -23,6 +23,7 @@ export interface IUserSettings {
 export interface ISetting {
   name: string;
   value: string | boolean;
+  refresh?: boolean;
   restart?: boolean;
 }
 

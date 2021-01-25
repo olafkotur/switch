@@ -26,11 +26,6 @@ export default class Settings extends React.Component<IProps, IState> {
   protected general: ISettingConfig[];
   protected appearance: ISettingConfig[];
   protected presets: IPreset[];
-  protected shouldRefreshSettings: string[] = [
-    'modifiedAgent',
-    'warningMessages',
-    'windowBehaviour',
-  ];
 
   /**
    * Settings constructor
@@ -67,6 +62,7 @@ export default class Settings extends React.Component<IProps, IState> {
         description: 'choose what happens when you open a hyperlink within Switch',
         type: 'pop-up',
         restart: true,
+        refresh: true,
       },
       {
         name: 'overlayMode',
@@ -82,6 +78,7 @@ export default class Settings extends React.Component<IProps, IState> {
         description: 'fixes issues with chrome version compatibility on some applications',
         label: 'Modified user agent',
         type: 'switch',
+        refresh: true,
       },
       {
         name: 'warningMessages',
@@ -89,6 +86,7 @@ export default class Settings extends React.Component<IProps, IState> {
         label: 'Warning messages',
         description: 'display helpful messages when performing some actions',
         type: 'switch',
+        refresh: true,
       },
     ];
 
@@ -123,17 +121,17 @@ export default class Settings extends React.Component<IProps, IState> {
    * Handles setting update
    * @param name - setting name
    * @param value - setting value
-   * @param restart - display restart app message
+   * @param shouldRefresh - refresh the current window
+   * @param shouldRestart - display restart app message
    */
-  protected async handleUpdate(name: string, value: boolean | string, restart?: boolean): Promise<void> {
-    const shouldRefresh = this.shouldRefreshSettings.includes(name);
+  protected async handleUpdate(name: string, value: boolean | string, shouldRefresh: boolean, shouldRestart: boolean): Promise<void> {
     // @ts-ignore
     this.setState({ [name]: value });
     const res = await SettingsService.update({ [name]: value });
     if (!res) {
       return UtilService.error();
     }
-    restart && this.setState({ shouldRestart: true });
+    shouldRestart && this.setState({ shouldRestart: true });
     shouldRefresh && this.props.handleRefresh(); // do not await
   }
 

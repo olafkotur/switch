@@ -10,6 +10,7 @@ import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautif
 import { MenuService } from '../../services/menu';
 import { UtilService } from '../../services/util';
 import './menu.css';
+import { hideWindowWarning } from '../Dialog/DialogContent';
 
 interface IProps {
   page: TPages;
@@ -82,11 +83,7 @@ export default class Menu extends React.Component<IProps, IState> {
     this.props.handleDialog({
       open: true,
       title: 'Hold on a second...',
-      content: <div>
-        <span>You're about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{this.props.userSettings.visiblityKeybind}</code> combination.</span>
-        <br/><br/>
-        <span>Feel free to disable this message from the settings page.</span>
-      </div>,
+      content: hideWindowWarning(this.props.userSettings.visiblityKeybind),
       handlePrimary: () => ElectronService.toggleVisibility(),
       handleSecondary: () => {},
     });

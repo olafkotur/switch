@@ -10,6 +10,7 @@ import { MenuService } from '../../services/menu';
 import { ElectronService } from '../../services/electron';
 import * as _ from 'lodash';
 import './dashboard.css';
+import { updateAvailable } from '../../components/Dialog/DialogContent';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -79,13 +80,7 @@ export default class Dashboard extends React.Component<IProps, IState> {
         this.handleDialog({
           open: true,
           title: 'Oh hey, it\'s that time again...',
-          content: <div>
-            <span>We've downloaded an update for you in the background, it's available to <code>install</code> whenever you're ready.</span>
-            <br/><br/>
-            <span>Please <code>re-launch</code> the application after clicking install.</span>
-            <br/><br/>
-            <span>You can choose to ignore it, it will simply be applied the next time you re-launch the application.</span>
-          </div>,
+          content: updateAvailable(),
           primaryLabel: 'Install',
           handlePrimary: () => ElectronService.quit(),
           handleSecondary: () => {},
