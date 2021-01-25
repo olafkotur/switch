@@ -26,6 +26,11 @@ export default class Settings extends React.Component<IProps, IState> {
   protected general: ISettingConfig[];
   protected appearance: ISettingConfig[];
   protected presets: IPreset[];
+  protected shouldRefreshSettings: string[] = [
+    'modifiedAgent',
+    'warningMessages',
+    'windowBehaviour',
+  ];
 
   /**
    * Settings constructor
@@ -72,14 +77,14 @@ export default class Settings extends React.Component<IProps, IState> {
         restart: true,
       },
       {
-        name: 'useModifiedAgent',
+        name: 'modifiedAgent',
         value: this.state.modifiedAgent,
         description: 'fixes issues with chrome version compatibility on some applications',
         label: 'Modified user agent',
         type: 'switch',
       },
       {
-        name: 'displayWarningMessages',
+        name: 'warningMessages',
         value: this.state.warningMessages,
         label: 'Warning messages',
         description: 'display helpful messages when performing some actions',
@@ -121,7 +126,7 @@ export default class Settings extends React.Component<IProps, IState> {
    * @param restart - display restart app message
    */
   protected async handleUpdate(name: string, value: boolean | string, restart?: boolean): Promise<void> {
-    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'displayWarningMessages', 'defaultWindowBehaviour'].includes(name);
+    const shouldRefresh = this.shouldRefreshSettings.includes(name);
     // @ts-ignore
     this.setState({ [name]: value });
     const res = await SettingsService.update({ [name]: value });
