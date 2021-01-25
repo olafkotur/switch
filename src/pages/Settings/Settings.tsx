@@ -1,6 +1,7 @@
 import React from 'react';
 import Preset from '../../components/Preset/Preset';
 import Setting from '../../components/Setting/Setting';
+import { IProps as IDialog } from '../../components/Dialog/Dialog';
 import { IMenuItem, ISettingConfig, IPreset, IUserSettings } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
@@ -8,11 +9,13 @@ import { Paper } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
 import * as _ from 'lodash';
 import './settings.css';
+import { accentColorSelect } from '../../components/Dialog/DialogContent';
 
 interface IProps {
   items: IMenuItem[];
   userSettings: IUserSettings;
   handleRefresh: () => Promise<void>;
+  handleDialog: (data: IDialog) => void;
 }
 
 interface IState extends IUserSettings {
@@ -98,6 +101,15 @@ export default class Settings extends React.Component<IProps, IState> {
         description: 'change the accent colour of the application',
         type: 'pop-up',
         restart: true,
+        handleChange: () => this.props.handleDialog({
+          open: true,
+          title: 'Accent Color',
+          content: accentColorSelect((v: string) => {
+            this.handleUpdate('accentColor', v, false, true);
+            this.props.handleDialog({ open: false, title: '', content: '' });
+          }),
+          hideButtons: true,
+        }),
       },
       {
         name: 'darkMode',

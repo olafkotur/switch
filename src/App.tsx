@@ -79,7 +79,7 @@ export default class App extends React.Component<{}, IState> {
    * Component mounting
    */
   public async componentDidMount() {
-    await  this.handleRefresh();
+    await this.handleRefresh();
   }
 
   /**

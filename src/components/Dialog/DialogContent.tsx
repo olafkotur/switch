@@ -1,4 +1,7 @@
 import React from 'react';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import { accentColors } from '../../imports/customUI';
+import './dialog.css';
 
 /**
  * Trigerred when there is an update available to download.
@@ -25,6 +28,27 @@ export const hideWindowWarning = (visiblityKeybind: string) => (
   </div>
 );
 
-export const windowBehaviourSelect = () => (
-  <div/>
+/**
+ * Triggered when user attempts to change the accent color.
+ * @param setAccentColor - handler for set accent color
+ */
+export const accentColorSelect = (setAccentColor: (color: string) => void) => (
+  <div>
+    <span>Please choose an <code>accent color</code> from the following options. You can also just click away to cancel.</span>
+    <br/>
+    <div className="d-flex flex-row row justify-content-center">
+      { accentColors.map(v => (
+        <ButtonBase
+          key={`dialog-accent-color-${v}`}
+          className="d-flex justify-content-center align-items-center dialog-accent-color"
+          style={{ backgroundColor: v }}
+          onClick={() => setAccentColor(v)}
+        >
+          <span>{v.toLowerCase()}</span>
+        </ButtonBase>
+      )) }
+    </div>
+    <br/>
+    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
+  </div>
 );

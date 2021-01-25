@@ -85,7 +85,6 @@ export default class Menu extends React.Component<IProps, IState> {
       title: 'Hold on a second...',
       content: hideWindowWarning(this.props.userSettings.visiblityKeybind),
       handlePrimary: () => ElectronService.toggleVisibility(),
-      handleSecondary: () => {},
     });
   }
 

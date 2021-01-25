@@ -8,8 +8,9 @@ export interface IProps {
   animate?: boolean;
   primaryLabel?: string;
   secondaryLabel?: string;
-  handlePrimary: () => void;
-  handleSecondary: () => void;
+  hideButtons?: boolean;
+  handlePrimary?: () => void;
+  handleSecondary?: () => void;
   handleClose?: () => void;
 }
 
@@ -31,7 +32,10 @@ export default class Dialog extends React.Component<IProps> {
    * Wrapper for dialog primary action
    */
   protected handlePrimary(): void {
-    this.props.handlePrimary();
+    // this is an optional function
+    if (this.props.handlePrimary) {
+      this.props.handlePrimary();
+    }
     this.props.handleClose && this.props.handleClose();
   }
 
@@ -39,7 +43,10 @@ export default class Dialog extends React.Component<IProps> {
    * Wrapper for dialog secondary action
    */
   protected handleSecondary(): void {
-    this.props.handleSecondary();
+    // this is an optional function
+    if (this.props.handleSecondary) {
+      this.props.handleSecondary();
+    }
     this.props.handleClose && this.props.handleClose();
   }
 
@@ -56,11 +63,11 @@ export default class Dialog extends React.Component<IProps> {
             <DialogTitle >{this.props.title}</DialogTitle>
           </div>
 
-          <div className="primary">
+          <div className="primary pb-2">
             <DialogContent>{this.props.content}</DialogContent>
           </div>
 
-          <DialogActions>
+          { !this.props.hideButtons && <DialogActions>
             <Button
               className="mr-1"
               variant="contained"
@@ -77,7 +84,7 @@ export default class Dialog extends React.Component<IProps> {
             >
               {this.props.primaryLabel || 'Proceed'}
             </Button>
-          </DialogActions>
+          </DialogActions>}
 
         </MuiDialog>
       </div>

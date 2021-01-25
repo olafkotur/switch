@@ -25,6 +25,7 @@ export interface ISetting {
   value: string | boolean;
   refresh?: boolean;
   restart?: boolean;
+  handleChange?: Function;
 }
 
 export interface ISettingConfig extends ISetting {

@@ -8,9 +8,9 @@ import { ipcRenderer } from 'electron';
 import { WindowBehaviour, IActionRequest, IMenuItem, IUserSettings, IWebView, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { ElectronService } from '../../services/electron';
+import { updateAvailable } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './dashboard.css';
-import { updateAvailable } from '../../components/Dialog/DialogContent';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -83,7 +83,6 @@ export default class Dashboard extends React.Component<IProps, IState> {
           content: updateAvailable(),
           primaryLabel: 'Install',
           handlePrimary: () => ElectronService.quit(),
-          handleSecondary: () => {},
         });
       }
     });
@@ -174,6 +173,7 @@ export default class Dashboard extends React.Component<IProps, IState> {
                 items={this.applications}
                 userSettings={this.props.userSettings}
                 handleRefresh={this.props.handleRefresh}
+                handleDialog={this.handleDialog}
               />
             </div>}
           </div>

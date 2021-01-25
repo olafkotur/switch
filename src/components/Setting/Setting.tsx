@@ -47,7 +47,10 @@ export default class Setting extends React.Component<IProps, IState> {
           onChange={(_e, checked) => this.props.handleUpdate(this.props.name, checked, this.props.refresh || false, this.props.restart || false)}
         />;
       case 'pop-up':
-        return <IconButton className="bg-primary mr-2 p-2" color="primary" >
+        return <IconButton
+          className="bg-primary mr-2 p-2" color="primary"
+          onClick={ () => this.props.handleChange ? this.props.handleChange() : {} }
+        >
           <Edit className="primary" fontSize="small" />
         </IconButton>;
       default:
