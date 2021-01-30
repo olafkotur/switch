@@ -1,6 +1,7 @@
 import React from 'react';
 import { SettingsService } from '../../services/settings';
 import { Button, Paper, Tooltip } from '@material-ui/core';
+import './keybindButton.css';
 
 interface IProps {
   keybind: string;
@@ -94,14 +95,13 @@ export default class KeybindButton extends React.Component<IProps, IState> {
       <div className="d-flex flex-row row justify-content-between mx-1">
         <Paper
           variant="outlined"
-          className="d-flex align-items-center px-2"
-          style={{ width: '72%' }}
+          className="d-flex align-items-center px-3 py-2 keybind-button-text"
         >
           {this.state.changed ? this.formatKeybinds() : this.props.keybind}
         </Paper>
         <Button
           variant="contained"
-          className={`setting-button ${this.state.recording ? 'bg-error' : 'primary'}`}
+          className={`setting-button ${this.state.recording ? 'bg-error' : 'primary'} py-2`}
           color="primary"
           onClick={this.handleClick}
         >

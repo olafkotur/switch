@@ -63,7 +63,7 @@ export const windowBehaviourSelect = (initialValue: WindowBehaviour, setWindowBe
       <FormControl variant="outlined" className="w-100">
         <Select
           id="window-behaviour-select"
-          className="primary"
+          className="dialog-window-behaviour"
           value={initialValue}
           onChange={e => setWindowBehaviour(e.target.value as WindowBehaviour)}
         >
