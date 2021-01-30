@@ -7,9 +7,9 @@ import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import { Paper } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
+import { accentColorSelect, windowBehaviourSelect } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './settings.css';
-import { accentColorSelect } from '../../components/Dialog/DialogContent';
 
 interface IProps {
   items: IMenuItem[];
@@ -66,6 +66,15 @@ export default class Settings extends React.Component<IProps, IState> {
         type: 'pop-up',
         restart: true,
         refresh: true,
+        handleChange: () => this.props.handleDialog({
+          open: true,
+          title: 'Hyperlink Behaviour',
+          content: windowBehaviourSelect(this.state.windowBehaviour, (v: string) => {
+            this.handleUpdate('windowBehaviour', v, true, true);
+            this.props.handleDialog({ open: false, hideButtons: true, title: '', content: '' });
+          }),
+          hideButtons: true,
+        }),
       },
       {
         name: 'overlayMode',
@@ -106,7 +115,7 @@ export default class Settings extends React.Component<IProps, IState> {
           title: 'Accent Color',
           content: accentColorSelect((v: string) => {
             this.handleUpdate('accentColor', v, false, true);
-            this.props.handleDialog({ open: false, title: '', content: '' });
+            this.props.handleDialog({ open: false, hideButtons: true, title: '', content: '' });
           }),
           hideButtons: true,
         }),

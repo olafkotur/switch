@@ -3,6 +3,11 @@ export type Icon = any;
 
 export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
 
+/**
+ * Window - open a new window
+ * Within - create a new menu item
+ * External - open in default browser
+ */
 export type WindowBehaviour = 'window' | 'within' | 'external';
 
 export interface IStoredData<T> {

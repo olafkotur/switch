@@ -1,6 +1,8 @@
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { accentColors } from '../../imports/customUI';
+import { WindowBehaviour } from '../../typings/d';
+import { FormControl, InputLabel, Select, MenuItem, Input } from '@material-ui/core';
 import './dialog.css';
 
 /**
@@ -29,8 +31,35 @@ export const hideWindowWarning = (visiblityKeybind: string) => (
 );
 
 /**
+ * Triggered when user attempts to change the window behaviour.
+ * @param initialValue - initial window behaviour value
+ * @param setWindowBehaviour - handler to set window behaviour
+ */
+export const windowBehaviourSelect = (initialValue: WindowBehaviour, setWindowBehaviour: (value: WindowBehaviour) => void) => (
+  <div>
+    <span>Please choose a <code>hyperlink behaviour</code> from the following options. You can also just click away to cancel.</span>
+    <br/>
+    <div className="my-3">
+      <FormControl variant="outlined" className="w-100">
+        <Select
+          id="window-behaviour-select"
+          className="primary"
+          value={initialValue}
+          onChange={e => setWindowBehaviour(e.target.value as WindowBehaviour)}
+        >
+          <MenuItem value="external">Open in default browser</MenuItem>
+          <MenuItem value="window">Open a new window</MenuItem>
+          <MenuItem value="within">Create a new Switch tab</MenuItem>
+        </Select>
+      </FormControl>
+    </div>
+    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
+  </div>
+);
+
+/**
  * Triggered when user attempts to change the accent color.
- * @param setAccentColor - handler for set accent color
+ * @param setAccentColor - handler to set accent color
  */
 export const accentColorSelect = (setAccentColor: (color: string) => void) => (
   <div>
