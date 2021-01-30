@@ -7,7 +7,7 @@ import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import { Paper } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
-import { accentColorSelect, windowBehaviourSelect } from '../../components/Dialog/DialogContent';
+import { visibilityKeybindSelect, windowBehaviourSelect, accentColorSelect } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './settings.css';
 
@@ -57,6 +57,17 @@ export default class Settings extends React.Component<IProps, IState> {
         description: 'combination used to toggle the window’s visibility',
         type: 'pop-up',
         restart: true,
+        handleChange: () => this.props.handleDialog({
+          open: true,
+          title: 'Visibility Keybind',
+          content: visibilityKeybindSelect(
+            this.state.visiblityKeybind,
+            (v: string) => this.handleUpdate('visiblityKeybind', v, false, true),
+          ),
+          hidePrimary: true,
+          disableEscKey: true,
+          secondaryLabel: 'dismiss',
+        }),
       },
       {
         name: 'windowBehaviour',

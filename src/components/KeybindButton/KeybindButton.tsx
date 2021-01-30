@@ -1,10 +1,10 @@
 import React from 'react';
 import { SettingsService } from '../../services/settings';
-import { Button, Tooltip } from '@material-ui/core';
+import { Button, Paper, Tooltip } from '@material-ui/core';
 
 interface IProps {
   keybind: string;
-  handleUpdate: (name: string, value: string, restart?: boolean) => Promise<void>;
+  handleUpdate: (value: string) => void;
 }
 
 interface IState {
@@ -61,6 +61,8 @@ export default class KeybindButton extends React.Component<IProps, IState> {
    * @param e - keyboard event
    */
   protected async handleRecord(e: KeyboardEvent): Promise<void> {
+    e.preventDefault();
+
     // validate key binding
     const value = SettingsService.validateKey(e.key);
     if (value) {
@@ -72,7 +74,7 @@ export default class KeybindButton extends React.Component<IProps, IState> {
 
     // stop recording after 2 keys
     if (this.state.keyBinds.length >= 2) {
-      this.props.handleUpdate('visibilityKeybind', this.formatKeybinds(), true);
+      this.props.handleUpdate(this.formatKeybinds());
       this.setState({ recording: false, changed: true });
     }
   }
@@ -89,18 +91,27 @@ export default class KeybindButton extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <Button
-        variant="contained"
-        className={`setting-button ${this.state.recording ? 'bg-error' : 'primary'}`}
-        color="primary"
-        onClick={this.handleClick}
-      >
-        <Tooltip title={`Currently set to ${this.state.changed ? this.formatKeybinds() : this.props.keybind}`}>
-          <span className="setting-button-text" >
-            {this.state.recording || this.state.changed ? this.formatKeybinds() : 'change' }
-          </span>
-        </Tooltip>
-      </Button>
+      <div className="d-flex flex-row row justify-content-between mx-1">
+        <Paper
+          variant="outlined"
+          className="d-flex align-items-center px-2"
+          style={{ width: '72%' }}
+        >
+          {this.state.changed ? this.formatKeybinds() : this.props.keybind}
+        </Paper>
+        <Button
+          variant="contained"
+          className={`setting-button ${this.state.recording ? 'bg-error' : 'primary'}`}
+          color="primary"
+          onClick={this.handleClick}
+        >
+          <Tooltip title={`Currently set to ${this.state.changed ? this.formatKeybinds() : this.props.keybind}`}>
+            <span className="setting-button-text" >
+              record keybind
+            </span>
+          </Tooltip>
+        </Button>
+      </div>
     );
   }
 }

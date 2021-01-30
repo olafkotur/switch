@@ -9,6 +9,9 @@ export interface IProps {
   primaryLabel?: string;
   secondaryLabel?: string;
   hideButtons?: boolean;
+  hidePrimary?: boolean;
+  hideSecondary?: boolean;
+  disableEscKey?: boolean;
   handlePrimary?: () => void;
   handleSecondary?: () => void;
   handleClose?: () => void;
@@ -56,6 +59,7 @@ export default class Dialog extends React.Component<IProps> {
         <MuiDialog
           fullWidth
           open={this.props.open}
+          disableEscapeKeyDown={this.props.disableEscKey}
           onClose={this.props.handleClose}
           PaperProps={{ style: { background: '#303136' } }}
         >
@@ -68,22 +72,22 @@ export default class Dialog extends React.Component<IProps> {
           </div>
 
           { !this.props.hideButtons && <DialogActions>
-            <Button
+            {!this.props.hideSecondary && <Button
               className="mr-1"
               variant="contained"
               onClick={this.handleSecondary}
             >
               {this.props.secondaryLabel || 'Cancel'}
-            </Button>
+            </Button>}
 
-            <Button
+            {!this.props.hidePrimary && <Button
               className="ml-1"
               color="primary"
               variant="contained"
               onClick={this.handlePrimary}
             >
               {this.props.primaryLabel || 'Proceed'}
-            </Button>
+            </Button>}
           </DialogActions>}
 
         </MuiDialog>

@@ -4,6 +4,7 @@ import { accentColors } from '../../imports/customUI';
 import { WindowBehaviour } from '../../typings/d';
 import { FormControl, InputLabel, Select, MenuItem, Input } from '@material-ui/core';
 import './dialog.css';
+import KeybindButton from '../KeybindButton/KeybindButton';
 
 /**
  * Trigerred when there is an update available to download.
@@ -27,6 +28,25 @@ export const hideWindowWarning = (visiblityKeybind: string) => (
     <span>You're about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{visiblityKeybind}</code> combination.</span>
     <br/><br/>
     <span>Feel free to disable this message from the settings page.</span>
+  </div>
+);
+
+/**
+ * Triggered when user attempts to change the visibility keybind.
+ * @param initialValue - initial visibility keybind value
+ * @param setVisibilityKeybind - handler to set visibility keybind
+ */
+export const visibilityKeybindSelect = (initialValue: string, setVisibilityKeybind: (value: string) => void) => (
+  <div>
+    <span>Please record a new <code>visibility keybind</code>, you must include <code>two</code> characters. You can also just click away to cancel.</span>
+    <br/>
+    <div className="my-3">
+      <KeybindButton
+        keybind={initialValue}
+        handleUpdate={v => setVisibilityKeybind(v)}
+      />
+    </div>
+    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
   </div>
 );
 
