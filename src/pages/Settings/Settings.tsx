@@ -111,6 +111,14 @@ export default class Settings extends React.Component<IProps, IState> {
         type: 'switch',
         refresh: true,
       },
+      {
+        name: 'autoLaunch',
+        value: this.state.warningMessages,
+        label: 'Auto Launch',
+        description: 'launch switch at login when your computer starts',
+        type: 'switch',
+        restart: true,
+      },
     ];
 
     this.appearance = [
@@ -146,6 +154,9 @@ export default class Settings extends React.Component<IProps, IState> {
         type: 'switch',
       },
     ];
+
+    // temporarily disable some appearance features
+    this.appearance = [this.appearance[2]];
 
   }
 

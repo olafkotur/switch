@@ -4,9 +4,9 @@ import { app, BrowserWindow } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
 import { autoUpdater } from 'electron-updater';
+import { StorageService } from '../src/services/storage';
 import * as url from 'url';
 import * as path from 'path';
-import { StorageService } from '../src/services/storage';
 
 // env variables
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
@@ -34,14 +34,13 @@ autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('updateReady');
 });
 
-log.info('App starting...');
-
 /**
  * Creates the main window
  */
 const createMainWindow = async (): Promise<void> => {
   // fetch user settings
   let userSettings = await SettingsService.fetch();
+
   // @ts-ignore - only used in v1.3.0 release
   if (userSettings && userSettings.data) {
     const res = await StorageService.remove('userSettings');
@@ -64,6 +63,7 @@ const createMainWindow = async (): Promise<void> => {
     titleBarStyle: userSettings.overlayMode ? 'default' : 'hidden',
     transparent: userSettings.overlayMode,
     backgroundColor: '#1F2225',
+    vibrancy: 'dark',
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
@@ -76,6 +76,7 @@ const createMainWindow = async (): Promise<void> => {
   // app configuration
   app.setName('Switch');
   userSettings.overlayMode && app.dock.hide();
+  ElectronService.setAutoLaunch(userSettings.autoLaunch);
 
   // window configuration
   ElectronService.setWindowMode(userSettings.overlayMode, mainWindow);
@@ -87,7 +88,7 @@ const createMainWindow = async (): Promise<void> => {
     userSettings.overlayMode,
   );
 
-  // render
+  // render main window
   if (DEVELOPMENT) {
     mainWindow.loadURL('http://localhost:4000');
   } else {

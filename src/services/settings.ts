@@ -14,6 +14,7 @@ const defaultSettings: IUserSettings = {
   accentColor: '#227093',
   animatePresets: true,
   darkMode: true,
+  autoLaunch: true,
 };
 
 export const SettingsService = {

@@ -23,6 +23,7 @@ export interface IUserSettings {
   accentColor: string;
   animatePresets: boolean;
   darkMode: boolean;
+  autoLaunch: boolean;
 }
 
 export interface ISetting {

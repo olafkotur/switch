@@ -1,10 +1,10 @@
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import KeybindButton from '../KeybindButton/KeybindButton';
 import { accentColors } from '../../imports/customUI';
 import { WindowBehaviour } from '../../typings/d';
-import { FormControl, InputLabel, Select, MenuItem, Input } from '@material-ui/core';
+import { FormControl, Select, MenuItem } from '@material-ui/core';
 import './dialog.css';
-import KeybindButton from '../KeybindButton/KeybindButton';
 
 /**
  * Trigerred when there is an update available to download.
