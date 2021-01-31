@@ -24,6 +24,7 @@ export interface IUserSettings {
   animatePresets: boolean;
   darkMode: boolean;
   autoLaunch: boolean;
+  windowPadding: boolean;
 }
 
 export interface ISetting {

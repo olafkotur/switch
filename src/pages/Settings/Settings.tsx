@@ -153,10 +153,17 @@ export default class Settings extends React.Component<IProps, IState> {
         description: 'shows an animation when resizing windows with a preset',
         type: 'switch',
       },
+      {
+        name: 'windowPadding',
+        value: this.state.windowPadding,
+        label: 'Window Padding',
+        description: 'experimental, gives the window extra padding on the sides',
+        type: 'switch',
+      },
     ];
 
     // temporarily disable some appearance features
-    this.appearance = [this.appearance[2]];
+    this.appearance = [this.appearance[2], this.appearance[3]];
 
   }
 
@@ -220,6 +227,7 @@ export default class Settings extends React.Component<IProps, IState> {
                 {...v}
                 key={`preset-setting-${v.name}`}
                 animate={this.state.animatePresets}
+                windowPadding={this.state.windowPadding}
                 handleRefresh={this.props.handleRefresh}
               />
             ))}

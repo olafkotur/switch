@@ -15,6 +15,7 @@ const defaultSettings: IUserSettings = {
   animatePresets: true,
   darkMode: true,
   autoLaunch: true,
+  windowPadding: false,
 };
 
 export const SettingsService = {

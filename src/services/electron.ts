@@ -30,13 +30,18 @@ export const ElectronService = {
    * @param win - browser window
    * @param winInfo - window info
    * @param animate - true to animate repositioning
+   * @param windowPadding - gives extra padding around the sides
    */
-  setWindowInfo: async (win?: BrowserWindow, winInfo?: IWindowInfo, animate?: boolean): Promise<void> => {
+  setWindowInfo: async (win?: BrowserWindow, winInfo?: IWindowInfo, animate?: boolean, windowPadding?: boolean): Promise<void> => {
     const window = win || remote.getCurrentWindow();
     const windowInfo = winInfo || await StorageService.get('currentWindowInfo') as IWindowInfo | null;
     if (windowInfo) {
-      window.setSize(windowInfo.width, windowInfo.height, animate);
-      window.setPosition(windowInfo.xPosition, windowInfo.yPosition, animate);
+      const width = windowPadding ? windowInfo.width - 50 : windowInfo.width;
+      const height = windowPadding ? windowInfo.height - 25 : windowInfo.height;
+      const xPos = windowPadding ? windowInfo.xPosition + 25 : windowInfo.xPosition;
+      const yPos = windowPadding ? windowInfo.yPosition + 25 : windowInfo.yPosition;
+      window.setSize(width, height, animate);
+      window.setPosition(xPos, yPos, animate);
     }
   },
 

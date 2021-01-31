@@ -6,6 +6,7 @@ import './preset.css';
 
 interface IProps extends IPreset {
   animate: boolean;
+  windowPadding: boolean;
   handleRefresh: () => Promise<void>;
 }
 
@@ -51,6 +52,7 @@ export default class Preset extends React.Component<IProps, IState> {
       this.props.xPosition,
       this.props.yPosition,
       this.props.animate,
+      this.props.windowPadding,
     );
   }
 
