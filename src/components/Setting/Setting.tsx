@@ -1,6 +1,6 @@
 import React from 'react';
 import { ISelectOption, ISettingConfig } from '../../typings/d';
-import { Button, Chip, IconButton, MenuItem, Select, Switch, Tooltip } from '@material-ui/core';
+import { IconButton, Switch } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import './setting.css';
 

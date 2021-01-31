@@ -65,7 +65,7 @@ export default class Dashboard extends React.Component<IProps, IState> {
   public async componentDidMount(): Promise<void> {
     this.applications = await MenuService.fetchList();
     if (this.applications.length) {
-      // this.handleMenuItemClicked('web', this.applications[0]);
+      this.handleMenuItemClicked('web', this.applications[0]);
     }
     await this.handleListenForUpdates();
     this.setState({ loading: false });
