@@ -33,9 +33,6 @@ export default class Dashboard extends React.Component<IProps, IState> {
    */
   protected applications: IMenuItem[] = [];
   protected webViews: IWebView[] = [];
-  protected useModifiedAgent: boolean = false;
-  protected defaultWindowBehaviour: WindowBehaviour = 'external';
-  protected overlayMode: boolean = true;
 
   /**
    * Dashboard constructor
@@ -129,13 +126,13 @@ export default class Dashboard extends React.Component<IProps, IState> {
     return (
       !this.state.loading && <div className="container-fluid">
         <div className="row">
-          <div className="menu bg-secondary" style={!this.overlayMode ? { width: 65 } : {}}>
+          <div className="menu bg-secondary" style={!this.props.userSettings.overlayMode ? { width: 65 } : {}}>
             <Menu
               page={this.state.page}
               items={this.applications}
               focusedItem={this.state.activeApplication}
               userSettings={this.props.userSettings}
-              overlayMode={this.overlayMode}
+              overlayMode={this.props.userSettings.overlayMode}
               handleClick={this.handleMenuItemClicked}
               handleRefresh={this.props.handleRefresh}
               handleActionRequest={this.handleActionRequest}
@@ -152,8 +149,8 @@ export default class Dashboard extends React.Component<IProps, IState> {
                     id={v.id}
                     url={v.url}
                     hidden={hidden}
-                    useModifiedAgent={this.useModifiedAgent}
-                    defaultWindowBehaviour={this.defaultWindowBehaviour}
+                    useModifiedAgent={this.props.userSettings.modifiedAgent}
+                    defaultWindowBehaviour={this.props.userSettings.windowBehaviour}
                     actionRequest={this.state.actionRequest}
                     handleRefresh={this.props.handleRefresh}
                   />

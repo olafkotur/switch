@@ -63,7 +63,6 @@ const createMainWindow = async (): Promise<void> => {
     titleBarStyle: userSettings.overlayMode ? 'default' : 'hidden',
     transparent: userSettings.overlayMode,
     backgroundColor: '#1F2225',
-    vibrancy: 'dark',
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true,
