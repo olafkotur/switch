@@ -8,8 +8,12 @@ export interface IProps {
   animate?: boolean;
   primaryLabel?: string;
   secondaryLabel?: string;
-  handlePrimary: () => void;
-  handleSecondary: () => void;
+  hideButtons?: boolean;
+  hidePrimary?: boolean;
+  hideSecondary?: boolean;
+  disableEscKey?: boolean;
+  handlePrimary?: () => void;
+  handleSecondary?: () => void;
   handleClose?: () => void;
 }
 
@@ -31,7 +35,10 @@ export default class Dialog extends React.Component<IProps> {
    * Wrapper for dialog primary action
    */
   protected handlePrimary(): void {
-    this.props.handlePrimary();
+    // this is an optional function
+    if (this.props.handlePrimary) {
+      this.props.handlePrimary();
+    }
     this.props.handleClose && this.props.handleClose();
   }
 
@@ -39,7 +46,10 @@ export default class Dialog extends React.Component<IProps> {
    * Wrapper for dialog secondary action
    */
   protected handleSecondary(): void {
-    this.props.handleSecondary();
+    // this is an optional function
+    if (this.props.handleSecondary) {
+      this.props.handleSecondary();
+    }
     this.props.handleClose && this.props.handleClose();
   }
 
@@ -49,6 +59,7 @@ export default class Dialog extends React.Component<IProps> {
         <MuiDialog
           fullWidth
           open={this.props.open}
+          disableEscapeKeyDown={this.props.disableEscKey}
           onClose={this.props.handleClose}
           PaperProps={{ style: { background: '#303136' } }}
         >
@@ -56,28 +67,28 @@ export default class Dialog extends React.Component<IProps> {
             <DialogTitle >{this.props.title}</DialogTitle>
           </div>
 
-          <div className="primary">
+          <div className="primary pb-2">
             <DialogContent>{this.props.content}</DialogContent>
           </div>
 
-          <DialogActions>
-            <Button
+          { !this.props.hideButtons && <DialogActions>
+            {!this.props.hideSecondary && <Button
               className="mr-1"
               variant="contained"
               onClick={this.handleSecondary}
             >
               {this.props.secondaryLabel || 'Cancel'}
-            </Button>
+            </Button>}
 
-            <Button
+            {!this.props.hidePrimary && <Button
               className="ml-1"
               color="primary"
               variant="contained"
               onClick={this.handlePrimary}
             >
               {this.props.primaryLabel || 'Proceed'}
-            </Button>
-          </DialogActions>
+            </Button>}
+          </DialogActions>}
 
         </MuiDialog>
       </div>

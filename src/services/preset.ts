@@ -1,19 +1,14 @@
-import { IPresetSetting, IStoredData } from '../typings/d';
+import { IPreset } from '../typings/d';
 import { ElectronService } from './electron';
-import { StorageService } from './storage';
-import { UtilService } from './util';
-
-const STORAGE_KEY = 'windowPresets';
 
 export const PresetService = {
   /**
    * Returns the default preset settings
    */
-  getDefault: (): IPresetSetting[] => {
+  fetch: (): IPreset[] => {
     const screenSize = ElectronService.getScreenInfo(true);
     return [
       {
-        id: 'default-fullscreen',
         name: 'Full Screen',
         width: screenSize.width,
         height: screenSize.height,
@@ -22,7 +17,6 @@ export const PresetService = {
         preview: { width: 100, height: 100, xOffset: 0, yOffset: 0 },
       },
       {
-        id: 'default-two-thirds-left',
         name: 'Two Thirds (left)',
         width: screenSize.width * 0.65,
         height: screenSize.height,
@@ -31,7 +25,6 @@ export const PresetService = {
         preview: { width: 66.66, height: 100, xOffset: 0, yOffset: 0 },
       },
       {
-        id: 'default-left-side',
         name: 'Left Side',
         width: screenSize.width * 0.5,
         height: screenSize.height,
@@ -40,7 +33,6 @@ export const PresetService = {
         preview: { width: 50, height: 100, xOffset: 0, yOffset: 0 },
       },
       {
-        id: 'default-two-thirds-right',
         name: 'Two Thirds (right)',
         width: screenSize.width * 0.65,
         height: screenSize.height,
@@ -49,7 +41,6 @@ export const PresetService = {
         preview: { width: 66.66, height: 100, xOffset: 33.33, yOffset: 0 },
       },
       {
-        id: 'default-right-side',
         name: 'Right Side',
         width: screenSize.width * 0.5,
         height: screenSize.height,
@@ -61,14 +52,15 @@ export const PresetService = {
   },
 
   /**
-   * Fetches list of stored presets
+   * Active preset setting.
+   * @param width - window width
+   * @param height - window height
+   * @param xPosition - window x position
+   * @param yPosition - window y position
+   * @param animate - true to animate the resposition
+   * @param windowPadding - true to add padding around the sides
    */
-  fetchList: async (): Promise<IPresetSetting[]> => {
-    const res: IStoredData<IPresetSetting> | null = await StorageService.get(STORAGE_KEY) as IStoredData<IPresetSetting> | null;
-    return res && res.data && res.data.length ? res.data : PresetService.getDefault();
-  },
-
-  active: async (width: number, height: number, xPosition: number, yPosition: number, animate: boolean): Promise<void> => {
+  active: async (width: number, height: number, xPosition: number, yPosition: number, animate: boolean, windowPadding: boolean): Promise<void> => {
     const windowInfo = {
       width: Math.round(width),
       height: Math.round(height),
@@ -76,48 +68,8 @@ export const PresetService = {
       yPosition: Math.round(yPosition),
     };
     return new Promise((resolve) => {
-      ElectronService.setWindowInfo(undefined, windowInfo, animate);
+      ElectronService.setWindowInfo(undefined, windowInfo, animate, windowPadding);
       resolve();
     });
-  },
-
-  /**
-   * Saves new preset in the db
-   * @param name - name
-   * @param width - width
-   * @param height - height
-   * @param xPosition - x coordinate position
-   * @param yPosition - y coordinate position
-   */
-  save: async (name: string, width: number, height: number, xPosition: number, yPosition: number): Promise<boolean> => {
-    const newData: IPresetSetting = {
-      name,
-      width,
-      height,
-      xPosition,
-      yPosition,
-      preview: { width: 100, height: 100, xOffset: 0, yOffset: 0 },
-      id: UtilService.generateId(name),
-    };
-
-    // append new data to previous
-    const previousData = await PresetService.fetchList();
-    const saveData: IStoredData<IPresetSetting> = { data: [...previousData, newData] };
-
-    return await StorageService.set(STORAGE_KEY, saveData);
-  },
-
-  /**
-   * Deletes preset by id
-   * @param id - preset id
-   */
-  delete: async (id: string): Promise<boolean> => {
-    const previousData = await PresetService.fetchList();
-
-    // remove deleted item
-    const updatedData: IPresetSetting[] = previousData.filter(v => id !== v.id);
-    const saveData: IStoredData<IPresetSetting> = { data: [...updatedData] };
-
-    return await StorageService.set(STORAGE_KEY, saveData);
   },
 };

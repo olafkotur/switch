@@ -33,6 +33,16 @@ export const StorageService = {
   },
 
   /**
+   * Removes object by name
+   * @param key - object key
+   */
+  remove: async (key: string): Promise<boolean> => {
+    return await new Promise((resolve) => {
+      storage.remove(key, () => resolve(true));
+    });
+  },
+
+  /**
    * Converts a File to base64 format
    * @param file - file
    */

@@ -1,12 +1,12 @@
-import { Box, ButtonBase, Paper } from '@material-ui/core';
+import { ButtonBase, Paper } from '@material-ui/core';
 import React from 'react';
 import { PresetService } from '../../services/preset';
-import { UtilService } from '../../services/util';
-import { IPresetSetting } from '../../typings/d';
+import { IPreset } from '../../typings/d';
 import './preset.css';
 
-interface IProps extends IPresetSetting {
+interface IProps extends IPreset {
   animate: boolean;
+  windowPadding: boolean;
   handleRefresh: () => Promise<void>;
 }
 
@@ -40,8 +40,6 @@ export default class Preset extends React.Component<IProps, IState> {
 
     // scope binding
     this.handleActive = this.handleActive.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
   }
 
   /**
@@ -54,43 +52,19 @@ export default class Preset extends React.Component<IProps, IState> {
       this.props.xPosition,
       this.props.yPosition,
       this.props.animate,
+      this.props.windowPadding,
     );
-  }
-
-  /**
-   * Handles preset save
-   * @param name - preset name
-   * @param width - preset width
-   * @param height - preset height
-   */
-  protected async handleSave(name: string, width: number, height: number, xPosition: number, yPosition: number): Promise<void> {
-    const res = await PresetService.save(name, width, height, xPosition, yPosition);
-    if (!res) {
-      return UtilService.error();
-    }
-    this.props.handleRefresh(); // do not await
-  }
-
-  /**
-   * Handles delete
-   */
-  protected async handleDelete(): Promise<void> {
-    const res = await PresetService.delete(this.props.id);
-    if (!res) {
-      return UtilService.error();
-    }
-    this.props.handleRefresh(); // do not await
   }
 
   render() {
     return (
       <ButtonBase
-        className="m-2"
+        className="col-xl-3 col-lg-4 col-md-6 p-2"
         onClick={this.handleActive}
         onMouseEnter={() => this.setState({ focused: true })}
         onMouseLeave={() => this.setState({ focused: false })}
       >
-        <Paper className="d-flex preset-outer p-1 bg-secondary align-items-center" >
+        <Paper className="d-flex preset-outer p-1 bg-primary align-items-center w-100" >
           {this.state.focused && <p className="primary position-absolute w-100 text-center">{this.props.name}</p>}
           <div
             className="position-static preset-inner"

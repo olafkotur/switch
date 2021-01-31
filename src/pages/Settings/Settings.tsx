@@ -1,24 +1,25 @@
 import React from 'react';
-import KeybindButton from '../../components/KeybindButton/KeybindButton';
 import Preset from '../../components/Preset/Preset';
 import Setting from '../../components/Setting/Setting';
-import { IMenuItem, ISetting, ISettingConfig, IPresetSetting } from '../../typings/d';
+import { IProps as IDialog } from '../../components/Dialog/Dialog';
+import { IMenuItem, ISettingConfig, IPreset, IUserSettings } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
 import { Paper } from '@material-ui/core';
+import { PresetService } from '../../services/preset';
+import { visibilityKeybindSelect, windowBehaviourSelect, accentColorSelect } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './settings.css';
 
 interface IProps {
   items: IMenuItem[];
-  userSettings: ISetting[];
-  presetSettings: IPresetSetting[];
+  userSettings: IUserSettings;
   handleRefresh: () => Promise<void>;
+  handleDialog: (data: IDialog) => void;
 }
 
-interface IState {
-  [name: string]: string;
-  shouldRestart: 'true' | 'false';
+interface IState extends IUserSettings {
+  shouldRestart: boolean;
 }
 
 export default class Settings extends React.Component<IProps, IState> {
@@ -27,7 +28,7 @@ export default class Settings extends React.Component<IProps, IState> {
    */
   protected general: ISettingConfig[];
   protected appearance: ISettingConfig[];
-  protected presets: IPresetSetting[];
+  protected presets: IPreset[];
 
   /**
    * Settings constructor
@@ -38,153 +39,199 @@ export default class Settings extends React.Component<IProps, IState> {
 
     // state
     this.state = Object.assign(
-      { shouldRestart: 'false' },
-      ...this.props.userSettings.map(v => ({ [v.name]: v.value })), // map user settings to state
+      { shouldRestart: false },
+      this.props.userSettings,
     );
 
     // scope binding
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleClick = this.handleClick.bind(this);
 
     // local properties
+    this.presets = PresetService.fetch();
+
     this.general = [
       {
+        name: 'visiblityKeybind',
+        value: this.state.visiblityKeybind,
+        label: 'Visiblity Keybind',
+        description: 'combination used to toggle the window’s visibility',
+        type: 'pop-up',
+        restart: true,
+        handleChange: () => this.props.handleDialog({
+          open: true,
+          title: 'Visibility Keybind',
+          content: visibilityKeybindSelect(
+            this.state.visiblityKeybind,
+            (v: string) => this.handleUpdate('visiblityKeybind', v, false, true),
+          ),
+          hidePrimary: true,
+          disableEscKey: true,
+          secondaryLabel: 'dismiss',
+        }),
+      },
+      {
+        name: 'windowBehaviour',
+        value: this.state.windowBehaviour,
+        label: 'Hyperlink Behaviour',
+        description: 'choose what happens when you open a hyperlink within Switch',
+        type: 'pop-up',
+        restart: true,
+        refresh: true,
+        handleChange: () => this.props.handleDialog({
+          open: true,
+          title: 'Hyperlink Behaviour',
+          content: windowBehaviourSelect(this.state.windowBehaviour, (v: string) => {
+            this.handleUpdate('windowBehaviour', v, true, true);
+            this.props.handleDialog({ open: false, hideButtons: true, title: '', content: '' });
+          }),
+          hideButtons: true,
+        }),
+      },
+      {
         name: 'overlayMode',
+        value: this.state.overlayMode,
         label: 'Overlay mode',
+        description: 'switch will display over other applications',
         type: 'switch',
-        value: this.state['overlayMode'],
-        hover: 'Turn this off to use Switch as a normal application, overlay and toggle visbility features will be disabled',
         restart: true,
       },
       {
-        name: 'useModifiedAgent',
+        name: 'modifiedAgent',
+        value: this.state.modifiedAgent,
+        description: 'fixes issues with chrome version compatibility on some applications',
         label: 'Modified user agent',
         type: 'switch',
-        hover: 'Experimental feature, may cause some websites to break. Use this if you have issues acessing websites due to an old chrome version',
-        value: this.state['useModifiedAgent'],
+        refresh: true,
       },
       {
-        name: 'displayWarningMessages',
+        name: 'warningMessages',
+        value: this.state.warningMessages,
         label: 'Warning messages',
+        description: 'display helpful messages when performing some actions',
         type: 'switch',
-        hover: 'Display a warning message when hiding the window via the hide menu button',
-        value: this.state['displayWarningMessages'],
+        refresh: true,
       },
       {
-        name: 'visibilityKeybind',
-        label: 'Toggle show/hide keybind',
-        type: 'custom',
-        value: '',
+        name: 'autoLaunch',
+        value: this.state.warningMessages,
+        label: 'Auto Launch',
+        description: 'launch switch at login when your computer starts',
+        type: 'switch',
         restart: true,
-        custom: <KeybindButton
-          keybind={this.state['visibilityKeybind']}
-          handleUpdate={this.handleUpdate}
-        />,
-      },
-      {
-        name: 'defaultWindowBehaviour',
-        label: 'Hyperlink behaviour',
-        type: 'select',
-        values: [
-          { value: 'window', label: 'New Window' },
-          { value: 'within', label: 'Within Switch' },
-          { value: 'external', label: 'Default Browser' },
-        ],
-        value: this.state['defaultWindowBehaviour'],
       },
     ];
 
     this.appearance = [
       {
-        name: 'animateResize',
-        label: 'Animate Resize',
-        type: 'switch',
-        value: this.state['animateResize'],
+        name: 'accentColor',
+        value: this.state.accentColor,
+        label: 'Accent Color',
+        description: 'change the accent colour of the application',
+        type: 'pop-up',
+        restart: true,
+        handleChange: () => this.props.handleDialog({
+          open: true,
+          title: 'Accent Color',
+          content: accentColorSelect((v: string) => {
+            this.handleUpdate('accentColor', v, false, true);
+            this.props.handleDialog({ open: false, hideButtons: true, title: '', content: '' });
+          }),
+          hideButtons: true,
+        }),
       },
       {
-        name: 'showBetaStatus',
-        label: 'Show Beta Status',
+        name: 'darkMode',
+        value: this.state.darkMode,
+        label: 'Dark Mode',
+        description: 'toggle between light and dark themes',
         type: 'switch',
-        value: this.state['showBetaStatus'],
+      },
+      {
+        name: 'animatePresets',
+        value: this.state.animatePresets,
+        label: 'Animate Presets',
+        description: 'shows an animation when resizing windows with a preset',
+        type: 'switch',
+      },
+      {
+        name: 'windowPadding',
+        value: this.state.windowPadding,
+        label: 'Window Padding',
+        description: 'experimental, gives the window extra padding on the sides',
+        type: 'switch',
       },
     ];
 
-    this.presets = [...this.props.presetSettings];
+    // temporarily disable some appearance features
+    this.appearance = [this.appearance[2], this.appearance[3]];
+
   }
 
   /**
    * Handles setting update
    * @param name - setting name
    * @param value - setting value
-   * @param restart - display restart app message
+   * @param shouldRefresh - refresh the current window
+   * @param shouldRestart - display restart app message
    */
-  protected async handleUpdate(name: string, value: string, restart?: boolean): Promise<void> {
-    const shouldRefresh = ['showBetaStatus', 'useModifiedAgent', 'displayWarningMessages', 'defaultWindowBehaviour'].includes(name);
-    // tslint:disable-next-line: no-any
-    this.setState({ [name]: value as any });
-    const res = await SettingsService.update(name, value);
+  protected async handleUpdate(name: string, value: boolean | string, shouldRefresh: boolean, shouldRestart: boolean): Promise<void> {
+    // @ts-ignore
+    this.setState({ [name]: value });
+    const res = await SettingsService.update({ [name]: value });
     if (!res) {
       return UtilService.error();
     }
-    restart && this.setState({ shouldRestart: 'true' });
+    shouldRestart && this.setState({ shouldRestart: true });
     shouldRefresh && this.props.handleRefresh(); // do not await
-  }
-
-   /**
-   * Handles click events
-   * @param name - setting name
-   */
-  protected async handleClick(name: string): Promise<void> {
-    return;
   }
 
   render() {
     return (
       <div className="settings-container">
-        {this.state.shouldRestart === 'true' &&
+        {this.state.shouldRestart &&
           <Paper className="d-flex flex-row justify-content-center mb-4 py-3 bg-secondary">
             <span className="text-danger text-center p-1">Some changes require the application to restart to take effect</span>
           </Paper>
         }
 
-        {/* general settings */}
-        <h3 className="primary font-weight-bold">General</h3>
-        <hr />
-        {this.general.map(v => (
-          <Setting
-            {...v}
-            key={`general-setting-${v.name}`}
-            value={this.state[v.name] as string}
-            handleUpdate={this.handleUpdate}
-            handleClick={this.handleClick}
-          />
-        ))}
-
-        {/* appearance settings */}
-        <h3 className="primary font-weight-bold mt-5">Appearance</h3>
-        <hr />
-        {this.appearance.map(v => (
-          <Setting
-            {...v}
-            key={`appearance-setting-${v.name}`}
-            value={this.state[v.name] as string}
-            handleUpdate={this.handleUpdate}
-            handleClick={this.handleClick}
-          />
-        ))}
-
-        {/* preset settings */}
-        <h3 className="primary font-weight-bold mt-5">Presets</h3>
-        <hr />
-        <div className="d-flex flex-row row">
-          {this.presets.map(v => (
-            <Preset
+        <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;General</h4>
+        <div className="setting-group bg-secondary">
+          {this.general.map(v => (
+            <Setting
               {...v}
-              key={`preset-setting-${v.id}`}
-              animate={this.state.animateResize === 'true'}
-              handleRefresh={this.props.handleRefresh}
+              key={`general-setting-${v.name}`}
+              value={this.state[v.name as keyof IState]}
+              handleUpdate={this.handleUpdate}
             />
           ))}
+        </div>
+
+        <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Appearance</h4>
+        <div className="setting-group bg-secondary">
+          {this.appearance.map(v => (
+            <Setting
+              {...v}
+              key={`appearance-setting-${v.name}`}
+              value={this.state[v.name as keyof IState]}
+              handleUpdate={this.handleUpdate}
+            />
+          ))}
+        </div>
+
+        {/* preset settings */}
+        <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Presets</h4>
+        <div className="setting-group bg-secondary">
+          <div className="d-flex flex-row row">
+            {this.presets.map(v => (
+              <Preset
+                {...v}
+                key={`preset-setting-${v.name}`}
+                animate={this.state.animatePresets}
+                windowPadding={this.state.windowPadding}
+                handleRefresh={this.props.handleRefresh}
+              />
+            ))}
+          </div>
         </div>
 
         {/* footer */}

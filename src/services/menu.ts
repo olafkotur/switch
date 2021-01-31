@@ -5,13 +5,22 @@ import * as _ from 'lodash';
 
 const STORAGE_KEY = 'menuItems';
 
+const defaultMenu: IMenuItem[] = [
+  {
+    id: 'default-switch-tutorial',
+    url: 'https://www.notion.so/Tutorial-a77509d0ed234ab985f0e0d7c88c01e2',
+    order: 0,
+    icon: require('../../assets/switch-icon.png'),
+  },
+];
+
 export const MenuService = {
   /**
    * Fetches list of menu items
    */
   fetchList: async (): Promise<IMenuItem[]> => {
     const res: IStoredData<IMenuItem> | null = await StorageService.get(STORAGE_KEY) as IStoredData<IMenuItem> | null;
-    return res && res.data ? res.data : [];
+    return res && res.data ? res.data : defaultMenu;
   },
 
   /**

@@ -1,0 +1,10 @@
+.dialog-accent-color {
+  width: 100px;
+  height: 100px;
+  margin: 5px !important;
+  border-radius: 10px !important;
+}
+
+.dialog-window-behaviour {
+  background: #fff;
+}

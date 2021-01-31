@@ -4,6 +4,7 @@ import { app, BrowserWindow } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
 import { autoUpdater } from 'electron-updater';
+import { StorageService } from '../src/services/storage';
 import * as url from 'url';
 import * as path from 'path';
 
@@ -33,17 +34,21 @@ autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('updateReady');
 });
 
-log.info('App starting...');
-
 /**
  * Creates the main window
  */
 const createMainWindow = async (): Promise<void> => {
   // fetch user settings
-  const userSettings = await SettingsService.fetchList();
-  const visibilityKeybind = userSettings.find(v => v.name === 'visibilityKeybind');
-  const overlayModeSetting = userSettings.find(v => v.name === 'overlayMode');
-  const overlayMode = !!(overlayModeSetting && overlayModeSetting.value === 'true');
+  let userSettings = await SettingsService.fetch();
+
+  // @ts-ignore - only used in v1.3.0 release
+  if (userSettings && userSettings.data) {
+    const res = await StorageService.remove('userSettings');
+    log.info('Deleted old userSettings object.');
+    if (res) {
+      userSettings = await SettingsService.fetch();
+    }
+  }
 
   // create main window
   const screenInfo = ElectronService.getScreenInfo();
@@ -54,9 +59,9 @@ const createMainWindow = async (): Promise<void> => {
     minWidth: 720,
     center: true,
     darkTheme: true,
-    frame: !overlayMode,
-    titleBarStyle: overlayMode ? 'default' : 'hidden',
-    transparent: overlayMode,
+    frame: !userSettings.overlayMode,
+    titleBarStyle: userSettings.overlayMode ? 'default' : 'hidden',
+    transparent: userSettings.overlayMode,
     backgroundColor: '#1F2225',
     webPreferences: {
       nodeIntegration: true,
@@ -69,19 +74,20 @@ const createMainWindow = async (): Promise<void> => {
 
   // app configuration
   app.setName('Switch');
-  overlayMode && app.dock.hide();
+  userSettings.overlayMode && app.dock.hide();
+  ElectronService.setAutoLaunch(userSettings.autoLaunch);
 
   // window configuration
-  ElectronService.setWindowMode(overlayMode, mainWindow);
+  ElectronService.setWindowMode(userSettings.overlayMode, mainWindow);
   ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
   ElectronService.setGlobalShortcuts(
     mainWindow,
-    visibilityKeybind ? visibilityKeybind.value : '',
-    overlayMode,
+    userSettings.visiblityKeybind,
+    userSettings.overlayMode,
   );
 
-  // render
+  // render main window
   if (DEVELOPMENT) {
     mainWindow.loadURL('http://localhost:4000');
   } else {
@@ -113,7 +119,7 @@ const sendStatusToWindow = (status: string): void => {
 app.on('ready', async () => {
   await createMainWindow();
   setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 5000); // initial check
-  setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 60 * 60 * 1000); // keep checking every hour
+  setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 4 * 60 * 60 * 1000); // keep checking every 4 hours
 });
 app.on('window-all-closed', () => {
   app.quit();
