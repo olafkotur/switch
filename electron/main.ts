@@ -75,7 +75,6 @@ const createMainWindow = async (): Promise<void> => {
   // app configuration
   app.setName('Switch');
   userSettings.overlayMode && app.dock.hide();
-  ElectronService.setAutoLaunch(userSettings.autoLaunch);
 
   // window configuration
   ElectronService.setWindowMode(userSettings.overlayMode, mainWindow);
