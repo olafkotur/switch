@@ -1,4 +1,3 @@
-import AutoLaunch from 'auto-launch';
 import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
 import { WindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
@@ -178,14 +177,5 @@ export const ElectronService = {
    */
   quit: (): void => {
     return remote.app.quit();
-  },
-
-  /**
-   * Set application auto launch.
-   * @param enable - flag to enable/disable auto launch
-   */
-  setAutoLaunch: (enable: boolean) => {
-    const autoLauncher = new AutoLaunch({ name: 'Switch' });
-    enable ? autoLauncher.enable() : autoLauncher.disable();
   },
 };
