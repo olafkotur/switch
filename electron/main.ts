@@ -90,17 +90,16 @@ const createMainWindow = async (): Promise<void> => {
 
   // setup tray items
   tray = new Tray(path.join(__dirname, 'tray@2x.png'));
-  // tslint:disable-next-line: no-any
-  const conditionalMenuItems: any[] = userSettings.overlayMode ? [
-    { label: 'Toggle Show / Hide', click: () => ElectronService.toggleVisibility(mainWindow) },
-    { type: 'separator' },
-  ] : [];
   const contextMenu = Menu.buildFromTemplate([
-    ...conditionalMenuItems,
+    {
+      label: 'Toggle Show / Hide',
+      visible: userSettings.overlayMode,
+      click: () => ElectronService.toggleVisibility(mainWindow),
+    },
+    { type: 'separator', visible: userSettings.overlayMode },
     { label: 'Reload', role: 'reload' },
     { label: 'Quit', role: 'quit' },
   ]);
-  tray.setToolTip('This is my application.');
   tray.setContextMenu(contextMenu);
 
   // render main window
