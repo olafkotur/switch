@@ -5,7 +5,7 @@ export const PresetService = {
   /**
    * Returns the default preset settings
    */
-  fetch: (sInfo: IScreenInfo): IPreset[] => {
+  fetch: (sInfo?: IScreenInfo): IPreset[] => {
     const screenSize = sInfo || ElectronService.getScreenInfo(true);
     return [
       {
