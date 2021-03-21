@@ -1,10 +1,11 @@
 import storage from 'electron-json-storage';
 import log from 'electron-log';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Tray, Menu } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
 import { autoUpdater } from 'electron-updater';
 import { StorageService } from '../src/services/storage';
+import { PresetService } from '../src/services/preset';
 import * as url from 'url';
 import * as path from 'path';
 
@@ -14,6 +15,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 // global variables
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 let mainWindow: BrowserWindow;
+let tray: Tray;
 
 // storage setup
 const dataPath = storage.getDataPath();
@@ -85,6 +87,20 @@ const createMainWindow = async (): Promise<void> => {
     userSettings.visiblityKeybind,
     userSettings.overlayMode,
   );
+
+  // setup tray items
+  tray = new Tray(path.join(__dirname, 'tray@2x.png'));
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Toggle Show / Hide',
+      visible: userSettings.overlayMode,
+      click: () => ElectronService.toggleVisibility(mainWindow),
+    },
+    { type: 'separator', visible: userSettings.overlayMode },
+    { label: 'Reload', role: 'reload' },
+    { label: 'Quit', role: 'quit' },
+  ]);
+  tray.setContextMenu(contextMenu);
 
   // render main window
   if (DEVELOPMENT) {

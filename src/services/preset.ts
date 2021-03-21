@@ -1,12 +1,12 @@
-import { IPreset } from '../typings/d';
+import { IPreset, IScreenInfo } from '../typings/d';
 import { ElectronService } from './electron';
 
 export const PresetService = {
   /**
    * Returns the default preset settings
    */
-  fetch: (): IPreset[] => {
-    const screenSize = ElectronService.getScreenInfo(true);
+  fetch: (sInfo?: IScreenInfo): IPreset[] => {
+    const screenSize = sInfo || ElectronService.getScreenInfo(true);
     return [
       {
         name: 'Full Screen',
