@@ -3,9 +3,7 @@ import log from 'electron-log';
 import { app, BrowserWindow, Tray, Menu } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
-import { autoUpdater } from 'electron-updater';
 import { StorageService } from '../src/services/storage';
-import { PresetService } from '../src/services/preset';
 import * as url from 'url';
 import * as path from 'path';
 
@@ -20,21 +18,6 @@ let tray: Tray;
 // storage setup
 const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
-
-// check for updates
-autoUpdater.logger = log;
-// @ts-ignore - dodgy casting from Logger to ElectronLog
-autoUpdater.logger.transports.file.level = 'info';
-autoUpdater.autoInstallOnAppQuit = true;
-autoUpdater.setFeedURL({
-  provider: 'github',
-  owner: 'olafkotur',
-  repo: 'switch',
-  token: process.env.GH_TOKEN,
-});
-autoUpdater.on('update-downloaded', () => {
-  sendStatusToWindow('updateReady');
-});
 
 /**
  * Creates the main window
@@ -133,8 +116,6 @@ const sendStatusToWindow = (status: string): void => {
 // launch window
 app.on('ready', async () => {
   await createMainWindow();
-  setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 5000); // initial check
-  setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 4 * 60 * 60 * 1000); // keep checking every 4 hours
 });
 app.on('window-all-closed', () => {
   app.quit();

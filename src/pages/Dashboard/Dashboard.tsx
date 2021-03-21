@@ -4,11 +4,8 @@ import Menu from '../../components/Menu/Menu';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
 import Dialog, { IProps as IDialog } from '../../components/Dialog/Dialog';
-import { ipcRenderer } from 'electron';
-import { WindowBehaviour, IActionRequest, IMenuItem, IUserSettings, IWebView, WebViewAction } from '../../typings/d';
+import { IActionRequest, IMenuItem, IUserSettings, IWebView, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
-import { ElectronService } from '../../services/electron';
-import { updateAvailable } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './dashboard.css';
 
@@ -49,7 +46,6 @@ export default class Dashboard extends React.Component<IProps, IState> {
     };
 
     // scope binding
-    this.handleListenForUpdates = this.handleListenForUpdates.bind(this);
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
     this.handleActionRequest = this.handleActionRequest.bind(this);
     this.handleDialog = this.handleDialog.bind(this);
@@ -64,25 +60,7 @@ export default class Dashboard extends React.Component<IProps, IState> {
     if (this.applications.length) {
       this.handleMenuItemClicked('web', this.applications[0]);
     }
-    await this.handleListenForUpdates();
     this.setState({ loading: false });
-  }
-
-  /**
-   * Checks for updates
-   */
-  protected async handleListenForUpdates(): Promise<void> {
-    ipcRenderer.on('message', (_event, text) => {
-      if (text === 'updateReady') {
-        this.handleDialog({
-          open: true,
-          title: 'Oh hey, it\'s that time again...',
-          content: updateAvailable(),
-          primaryLabel: 'Install',
-          handlePrimary: () => ElectronService.quit(),
-        });
-      }
-    });
   }
 
   /**
