@@ -1,6 +1,6 @@
 {
   "name": "switch",
-  "version": "1.5.5",
+  "version": "0.0.1",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./dist/main.js",
   "scripts": {
