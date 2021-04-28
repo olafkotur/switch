@@ -1,5 +1,6 @@
 import storage from 'electron-json-storage';
 import log from 'electron-log';
+import updater from 'electron-simple-updater';
 import { app, BrowserWindow, Tray, Menu } from 'electron';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
@@ -9,6 +10,13 @@ import * as path from 'path';
 
 // env variables
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+// auto-updates setup
+updater.init({
+  autoDownload: true,
+  checkUpdateOnStart: true,
+  url: process.env.UPDATE_URL || '',
+});
 
 // global variables
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
