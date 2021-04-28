@@ -13,8 +13,7 @@
     "build:run": "npm-run-all build start:electron",
     "build:electron": "webpack --config webpack/electron.webpack.js",
     "build:react": "webpack --config webpack/react.webpack.js",
-    "package": "npm-run-all build package:dist",
-    "package:dist": "electron-builder"
+    "package": "electron-builder"
   },
   "keywords": [],
   "author": "Olaf Kotur <olafkotur97@gmail.com>",
