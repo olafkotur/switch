@@ -8,14 +8,12 @@ import { StorageService } from '../src/services/storage';
 import * as url from 'url';
 import * as path from 'path';
 
-// env variables
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-
 // auto-updates setup
+log.info('App starting...');
 updater.init({
   autoDownload: true,
   checkUpdateOnStart: true,
-  url: process.env.UPDATE_URL || '',
+  url: 'https://raw.githubusercontent.com/olafkotur/switch-releases/master/updates.json',
 });
 
 // global variables
