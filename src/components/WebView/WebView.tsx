@@ -59,10 +59,12 @@ export default class WebView extends React.Component<IProps, IState> {
       async (e): Promise<void> => {
         if (e.url) {
           // override to open as 'window' in special cases
-          const isWindow = e.disposition && e.disposition === 'new-window';
+          const override = e.disposition === 'new-window';
+
+          // open hyperlink using set behaviour
           const shouldRefresh = await ElectronService.openHyperlink(
             e.url,
-            isWindow ? 'window' : this.props.defaultWindowBehaviour,
+            override ? 'window' : this.props.defaultWindowBehaviour,
           );
           shouldRefresh && this.props.handleRefresh();
         }

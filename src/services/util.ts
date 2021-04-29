@@ -60,6 +60,8 @@ export const UtilService = {
       userAgent = agents['chrome_ua'];
     } else if (url.includes('whatsapp.com')) {
       userAgent = agents['default_ua'];
+    } else if (url.includes('googlepopupredirect')) {
+      userAgent = agents['edge_ua'];
     }
 
     return userAgent;

@@ -2,6 +2,7 @@ import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
 import { WindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
 import { MenuService } from './menu';
+import { UtilService } from './util';
 
 let previousScreenInfo: IScreenInfo | null = null;
 
@@ -177,7 +178,7 @@ export const ElectronService = {
     });
 
     // load the url and show the window
-    childWindow.loadURL(url);
+    childWindow.loadURL(url, { userAgent: UtilService.getUserAgent(url) });
     childWindow.show();
 
     // clear child window and set parent to what it was
