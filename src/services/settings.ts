@@ -7,7 +7,7 @@ const STORAGE_KEY = 'userSettings';
 
 const defaultSettings: IUserSettings = {
   overlayMode: true,
-  modifiedAgent: false,
+  modifiedAgent: true,
   visiblityKeybind: 'CommandOrControl + Esc',
   warningMessages: true,
   windowBehaviour: 'external',

@@ -37,7 +37,7 @@ export default class WebView extends React.Component<IProps, IState> {
     };
 
     // local properties
-    this.userAgent = UtilService.getUserAgent();
+    this.userAgent = UtilService.getUserAgent(this.props.url);
   }
 
   /**

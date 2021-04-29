@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import moment from 'moment';
 import { remote } from 'electron';
-import { IScreenInfo, IWindowInfo } from '../typings/d';
+import { IWindowInfo } from '../typings/d';
 
 export const UtilService = {
   /**
@@ -35,21 +35,24 @@ export const UtilService = {
   /**
    * Fetches a modified user agent (fakes an update to the latest Chromium and Safari versions)
    */
-  getUserAgent: (): string => {
-    const userAgent = navigator.userAgent;
-    const versions = {
-      chromium: '90.0.4430.85',
-      safari: '537.36',
+  getUserAgent: (url: string): string => {
+    const agents = {
+      default_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36',
+      firefox_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7; rv:71.0) Gecko/20100101 Firefox/71.0',
+      chrome_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36',
+      edge_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 Edg/90.0.818.49',
     };
 
-    // fall back in case matching fails
-    let fragments = ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_0) AppleWebKit/537.36 (KHTML, like Gecko) '];
-    if (userAgent.includes('switch/')) {
-      fragments = userAgent.split(/switch\/\d+([^\s]+)/g);
-    } else if (userAgent.includes('Chrome/')) {
-      fragments = userAgent.split(/Chrome\/\d+([^\s]+)/g);
+    // apply custom user agent
+    let userAgent = navigator.userAgent;
+    if (url.includes('google.com')) {
+      userAgent = agents['edge_ua'];
+    } else if (url.includes('slack.com')) {
+      userAgent = agents['chrome_ua'];
+    } else if (url.includes('whatsapp.com')) {
+      userAgent = agents['default_ua'];
     }
-    const newUserAgent = `${fragments[0]}Chrome/${versions.chromium} Safari/${versions.safari}`;
-    return newUserAgent;
+
+    return userAgent;
   },
 };
