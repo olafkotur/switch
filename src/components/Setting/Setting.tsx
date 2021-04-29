@@ -5,7 +5,12 @@ import { Edit } from '@material-ui/icons';
 import './setting.css';
 
 interface IProps extends ISettingConfig {
-  handleUpdate: (name: string, value: string | boolean, shouldRefresh: boolean, shouldRestart: boolean) => Promise<void>;
+  handleUpdate: (
+    name: string,
+    value: string | boolean,
+    shouldRefresh: boolean,
+    shouldRestart: boolean,
+  ) => Promise<void>;
 }
 
 interface IState {
@@ -13,7 +18,6 @@ interface IState {
 }
 
 export default class Setting extends React.Component<IProps, IState> {
-
   /**
    * Setting constructor
    * @param props - component properties
@@ -31,7 +35,12 @@ export default class Setting extends React.Component<IProps, IState> {
    * @param option - select option
    */
   protected handleSelectChange(option: ISelectOption) {
-    this.props.handleUpdate(this.props.name, option.value, this.props.refresh || false, this.props.restart || false);
+    this.props.handleUpdate(
+      this.props.name,
+      option.value,
+      this.props.refresh || false,
+      this.props.restart || false,
+    );
     this.setState({ selectedOption: option });
   }
 
@@ -41,18 +50,32 @@ export default class Setting extends React.Component<IProps, IState> {
   protected renderAction(): React.ReactElement {
     switch (this.props.type) {
       case 'switch':
-        return <Switch
-          color="primary"
-          checked={!!this.props.value}
-          onChange={(_e, checked) => this.props.handleUpdate(this.props.name, checked, this.props.refresh || false, this.props.restart || false)}
-        />;
+        return (
+          <Switch
+            color="primary"
+            checked={!!this.props.value}
+            onChange={(_e, checked) =>
+              this.props.handleUpdate(
+                this.props.name,
+                checked,
+                this.props.refresh || false,
+                this.props.restart || false,
+              )
+            }
+          />
+        );
       case 'pop-up':
-        return <IconButton
-          className="bg-primary mr-2 p-2" color="primary"
-          onClick={ () => this.props.handleChange ? this.props.handleChange() : {} }
-        >
-          <Edit className="primary" fontSize="small" />
-        </IconButton>;
+        return (
+          <IconButton
+            className="bg-primary mr-2 p-2"
+            color="primary"
+            onClick={() =>
+              this.props.handleChange ? this.props.handleChange() : {}
+            }
+          >
+            <Edit className="primary" fontSize="small" />
+          </IconButton>
+        );
       default:
         return <></>;
     }

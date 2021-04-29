@@ -1,6 +1,19 @@
 import React from 'react';
-import { ButtonBase, IconButton, Paper, Slide, Tooltip } from '@material-ui/core';
-import { Image, Refresh, ArrowBack, ArrowForward, Delete, Publish } from '@material-ui/icons';
+import {
+  ButtonBase,
+  IconButton,
+  Paper,
+  Slide,
+  Tooltip,
+} from '@material-ui/core';
+import {
+  Image,
+  Refresh,
+  ArrowBack,
+  ArrowForward,
+  Delete,
+  Publish,
+} from '@material-ui/icons';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { IMenuItem, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
@@ -50,8 +63,10 @@ export default class MenuItem extends React.Component<IProps, IState> {
    */
   componentDidMount() {
     document.addEventListener('mousedown', (e) => {
-      if (this.state.contextMenu && this.ref.current
-        && !this.ref.current.contains(e.target as Node)
+      if (
+        this.state.contextMenu &&
+        this.ref.current &&
+        !this.ref.current.contains(e.target as Node)
       ) {
         this.setState({ contextMenu: false });
       }
@@ -98,11 +113,13 @@ export default class MenuItem extends React.Component<IProps, IState> {
     this.props.handleRefresh(); // do not await
   }
 
-   /**
+  /**
    * Handles upload
    * @param event - html input event
    */
-  protected async handleUpload(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+  protected async handleUpload(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> {
     if (event.target.files) {
       await this.handleUpdate({
         ...this.props.data,
@@ -113,24 +130,33 @@ export default class MenuItem extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className={`menu-item mt-2 ${this.props.page === 'web' && this.props.focused ? 'menu-item-selected' : ''}`} >
+      <div
+        className={`menu-item mt-2 ${
+          this.props.page === 'web' && this.props.focused
+            ? 'menu-item-selected'
+            : ''
+        }`}
+      >
         <ButtonBase
           onClick={() => this.props.handleClick('web', this.props.data)}
           onContextMenu={this.handleContextMenu}
         >
-          {this.props.data.icon
-            ? <img className="menu-item-image" src={this.props.data.icon} />
-            : <Image className="menu-item-image" color="secondary" />
-          }
+          {this.props.data.icon ? (
+            <img className="menu-item-image" src={this.props.data.icon} />
+          ) : (
+            <Image className="menu-item-image" color="secondary" />
+          )}
         </ButtonBase>
-        <Slide
-          in={this.state.contextMenu}
-          direction="right"
-          ref={this.ref}
-        >
-          <Paper className="d-flex flex-row position-absolute  bg-primary" elevation={10}>
+        <Slide in={this.state.contextMenu} direction="right" ref={this.ref}>
+          <Paper
+            className="d-flex flex-row position-absolute  bg-primary"
+            elevation={10}
+          >
             <IconButton className="menu-item-image align-self-center">
-              <Tooltip title="Upload a custom image" className="menu-item-image-upload-hover">
+              <Tooltip
+                title="Upload a custom image"
+                className="menu-item-image-upload-hover"
+              >
                 <label
                   htmlFor={`file-upload-${this.props.data.id}`}
                   className="position-absolute"
@@ -142,30 +168,45 @@ export default class MenuItem extends React.Component<IProps, IState> {
                     type="file"
                     onChange={this.handleUpload}
                   />
-                  {this.props.data.icon
-                    ? <img src={this.props.data.icon} className="menu-item-image-upload" />
-                    : <Publish color="secondary" className="menu-item-image-upload" />
-                  }
+                  {this.props.data.icon ? (
+                    <img
+                      src={this.props.data.icon}
+                      className="menu-item-image-upload"
+                    />
+                  ) : (
+                    <Publish
+                      color="secondary"
+                      className="menu-item-image-upload"
+                    />
+                  )}
                 </label>
               </Tooltip>
             </IconButton>
 
-            <IconButton onClick={() => this.handleNavigate('refresh')} className="ml-2 px-2">
+            <IconButton
+              onClick={() => this.handleNavigate('refresh')}
+              className="ml-2 px-2"
+            >
               <Refresh fontSize="small" className="text-white-50" />
             </IconButton>
 
-            <IconButton onClick={() => this.handleNavigate('back')} className="px-2">
+            <IconButton
+              onClick={() => this.handleNavigate('back')}
+              className="px-2"
+            >
               <ArrowBack fontSize="small" className="text-white-50" />
             </IconButton>
 
-            <IconButton onClick={() => this.handleNavigate('forward')} className="px-2">
+            <IconButton
+              onClick={() => this.handleNavigate('forward')}
+              className="px-2"
+            >
               <ArrowForward fontSize="small" className="text-white-50" />
             </IconButton>
 
             <IconButton onClick={this.handleDelete}>
               <Delete fontSize="small" color="error" />
             </IconButton>
-
           </Paper>
         </Slide>
       </div>

@@ -41,14 +41,17 @@ export default class Loader extends React.Component<IProps, IState> {
    */
   public componentDidMount() {
     if (!this.props.shortLoader) {
-      setTimeout(() => this.setState({ showText: false, showLoader: true }), 750);
+      setTimeout(
+        () => this.setState({ showText: false, showLoader: true }),
+        750,
+      );
     }
   }
 
   render() {
     return (
       <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
-        <Zoom in={this.state.showText} >
+        <Zoom in={this.state.showText}>
           <div className="d-flex flex-row position-absolute">
             <h1 className="secondary mr-2">s</h1>
             <h1 className="primary mr-2">w</h1>
@@ -58,7 +61,7 @@ export default class Loader extends React.Component<IProps, IState> {
             <h1 className="quaternary mr-2">h</h1>
           </div>
         </Zoom>
-        <Zoom in={this.state.showLoader} >
+        <Zoom in={this.state.showLoader}>
           <div>
             <Loading type="grid" width={80} height={80} fill={this.color} />
           </div>

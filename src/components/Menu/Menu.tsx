@@ -6,7 +6,12 @@ import { IMenuItem, IUserSettings, WebViewAction } from '../../typings/d';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { ElectronService } from '../../services/electron';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { MenuService } from '../../services/menu';
 import { UtilService } from '../../services/util';
 import './menu.css';
@@ -57,7 +62,10 @@ export default class Menu extends React.Component<IProps, IState> {
    */
   protected async handleDragUpdate(result: DropResult): Promise<void> {
     if (result.destination) {
-      this.temporaryItems = await MenuService.reorder(result.draggableId, result.destination.index);
+      this.temporaryItems = await MenuService.reorder(
+        result.draggableId,
+        result.destination.index,
+      );
     }
   }
 
@@ -98,12 +106,12 @@ export default class Menu extends React.Component<IProps, IState> {
               onDragUpdate={this.handleDragUpdate}
               onDragEnd={this.handleDragEnd}
             >
-              <Droppable droppableId="menu-droppable" >
-                {provided => (
+              <Droppable droppableId="menu-droppable">
+                {(provided) => (
                   <div ref={provided.innerRef}>
                     {this.state.items.map((v, i) => (
                       <Draggable key={v.id} draggableId={v.id} index={i}>
-                        {provided => (
+                        {(provided) => (
                           <div
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
@@ -112,10 +120,17 @@ export default class Menu extends React.Component<IProps, IState> {
                             <MenuItem
                               data={v}
                               page={this.props.page}
-                              focused={this.props.focusedItem && this.props.focusedItem.id === v.id ? true : false}
+                              focused={
+                                this.props.focusedItem &&
+                                this.props.focusedItem.id === v.id
+                                  ? true
+                                  : false
+                              }
                               handleClick={this.props.handleClick}
                               handleRefresh={this.props.handleRefresh}
-                              handleActionRequest={this.props.handleActionRequest}
+                              handleActionRequest={
+                                this.props.handleActionRequest
+                              }
                             />
                           </div>
                         )}
@@ -125,25 +140,28 @@ export default class Menu extends React.Component<IProps, IState> {
                   </div>
                 )}
               </Droppable>
-
             </DragDropContext>
           </div>
         </div>
 
         <div className="menu-bottom">
-          <div className="menu-actions d-flex flex-column justify-content-center align-items-center" >
-            {this.props.overlayMode && <Tooltip title="Hide window" enterDelay={750}>
-              <IconButton
-                className="menu-item flex-column"
-                onClick={this.handleToggleVisibility}
-              >
-                <VisibilityOff className="primary" fontSize="small" />
-              </IconButton>
-            </Tooltip>}
+          <div className="menu-actions d-flex flex-column justify-content-center align-items-center">
+            {this.props.overlayMode && (
+              <Tooltip title="Hide window" enterDelay={750}>
+                <IconButton
+                  className="menu-item flex-column"
+                  onClick={this.handleToggleVisibility}
+                >
+                  <VisibilityOff className="primary" fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
 
             <Tooltip title="Add new services" enterDelay={750}>
               <IconButton
-                className={`menu-item flex-column ${this.props.page === 'search' ? 'menu-selected' : ''}`}
+                className={`menu-item flex-column ${
+                  this.props.page === 'search' ? 'menu-selected' : ''
+                }`}
                 onClick={() => this.props.handleClick('search')}
               >
                 <Search className="primary" />
@@ -152,7 +170,9 @@ export default class Menu extends React.Component<IProps, IState> {
 
             <Tooltip title="Access settings page" enterDelay={750}>
               <IconButton
-                className={`menu-item flex-column ${this.props.page === 'settings' ? 'menu-selected' : ''}`}
+                className={`menu-item flex-column ${
+                  this.props.page === 'settings' ? 'menu-selected' : ''
+                }`}
                 onClick={() => this.props.handleClick('settings')}
               >
                 <Settings className="primary" />

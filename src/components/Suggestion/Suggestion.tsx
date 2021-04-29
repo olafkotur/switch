@@ -12,12 +12,11 @@ export default class Suggestion extends React.Component<IProps> {
     return (
       <Button
         className="p-3"
-        onClick={() => this.props.handleSuggestion(this.props.url, this.props.icon)}
+        onClick={() =>
+          this.props.handleSuggestion(this.props.url, this.props.icon)
+        }
       >
-        <img
-          src={this.props.icon}
-          className="suggestion-image"
-        />
+        <img src={this.props.icon} className="suggestion-image" />
       </Button>
     );
   }

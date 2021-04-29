@@ -98,11 +98,13 @@ export default class Search extends React.Component<IProps, IState> {
    */
   protected generateSuggestions(data: IMenuItem[]): React.ReactElement[] {
     return data.map((v, i) => {
-      return <Suggestion
-        {...v}
-        key={`suggestion-${i}`}
-        handleSuggestion={this.handleSuggestion}
-      />;
+      return (
+        <Suggestion
+          {...v}
+          key={`suggestion-${i}`}
+          handleSuggestion={this.handleSuggestion}
+        />
+      );
     });
   }
 

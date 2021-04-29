@@ -22,7 +22,7 @@ export const SettingsService = {
    * Fetches user settings
    */
   fetch: async (): Promise<IUserSettings> => {
-    const res = await StorageService.get(STORAGE_KEY) as IUserSettings;
+    const res = (await StorageService.get(STORAGE_KEY)) as IUserSettings;
     return _.isEmpty(res) ? defaultSettings : res;
   },
 
@@ -44,25 +44,25 @@ export const SettingsService = {
    */
   validateKey: (key: string): string | null => {
     // match modifier keys
-    const m = modifiers.find(v => v.name === key);
+    const m = modifiers.find((v) => v.name === key);
     if (m) {
       return m.value;
     }
 
     // match alphabetic keys
-    const a = alphabetic.find(v => v.name === key);
+    const a = alphabetic.find((v) => v.name === key);
     if (a) {
       return a.value;
     }
 
     // match numeric keys
-    const n = numeric.find(v => v.name === key);
+    const n = numeric.find((v) => v.name === key);
     if (n) {
       return n.value;
     }
 
     // match special keys
-    const s = special.find(v => v.name === key);
+    const s = special.find((v) => v.name === key);
     if (s) {
       return s.value;
     }

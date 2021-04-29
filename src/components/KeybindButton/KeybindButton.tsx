@@ -15,7 +15,6 @@ interface IState {
 }
 
 export default class KeybindButton extends React.Component<IProps, IState> {
-
   /**
    * KeybindButton constructor
    * @param props - component properties
@@ -86,7 +85,9 @@ export default class KeybindButton extends React.Component<IProps, IState> {
   protected formatKeybinds(): string {
     let formatted = '...';
     formatted = this.state.keyBinds[0] ? this.state.keyBinds[0] : formatted;
-    formatted = this.state.keyBinds[1] ? `${formatted} + ${this.state.keyBinds[1]}` : formatted;
+    formatted = this.state.keyBinds[1]
+      ? `${formatted} + ${this.state.keyBinds[1]}`
+      : formatted;
     return formatted;
   }
 
@@ -101,14 +102,18 @@ export default class KeybindButton extends React.Component<IProps, IState> {
         </Paper>
         <Button
           variant="contained"
-          className={`setting-button ${this.state.recording ? 'bg-error' : 'primary'} py-2`}
+          className={`setting-button ${
+            this.state.recording ? 'bg-error' : 'primary'
+          } py-2`}
           color="primary"
           onClick={this.handleClick}
         >
-          <Tooltip title={`Currently set to ${this.state.changed ? this.formatKeybinds() : this.props.keybind}`}>
-            <span className="setting-button-text" >
-              record keybind
-            </span>
+          <Tooltip
+            title={`Currently set to ${
+              this.state.changed ? this.formatKeybinds() : this.props.keybind
+            }`}
+          >
+            <span className="setting-button-text">record keybind</span>
           </Tooltip>
         </Button>
       </div>

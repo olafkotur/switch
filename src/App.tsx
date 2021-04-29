@@ -94,13 +94,14 @@ export default class App extends React.Component<{}, IState> {
   render() {
     return (
       <MuiThemeProvider theme={this.theme}>
-        {!this.state.loading ?
+        {!this.state.loading ? (
           <Dashboard
             userSettings={this.userSettings as IUserSettings}
             handleRefresh={this.handleRefresh}
           />
-          : <Loader shortLoader={!this.state.initialise} />
-        }
+        ) : (
+          <Loader shortLoader={!this.state.initialise} />
+        )}
       </MuiThemeProvider>
     );
   }

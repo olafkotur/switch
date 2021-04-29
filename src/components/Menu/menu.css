@@ -19,11 +19,11 @@
   bottom: 0;
   padding-bottom: 10px;
   position: absolute;
-  background-color: #1F2225;;
+  background-color: #1f2225;
 }
 
 .menu-beta {
-  background: #B33939 !important;
+  background: #b33939 !important;
   color: #fff !important;
   font-size: 10px !important;
   border-radius: 5px !important;
@@ -34,6 +34,6 @@
 }
 
 .menu-selected {
-  background-color: #56585C !important;
+  background-color: #56585c !important;
   border-radius: 10px !important;
 }

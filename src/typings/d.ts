@@ -72,8 +72,7 @@ export interface IPresetPreview {
   yOffset: number;
 }
 
-export interface IServiceSetting extends IMenuItem {
-}
+export interface IServiceSetting extends IMenuItem {}
 
 export interface IMenuItem {
   id: string;

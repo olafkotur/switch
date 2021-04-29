@@ -13,7 +13,8 @@ log.info('App starting...');
 updater.init({
   autoDownload: true,
   checkUpdateOnStart: true,
-  url: 'https://raw.githubusercontent.com/olafkotur/switch-releases/master/updates.json',
+  url:
+    'https://raw.githubusercontent.com/olafkotur/switch-releases/master/updates.json',
 });
 
 // global variables

@@ -12,8 +12,12 @@ import './dialog.css';
  */
 export const hideWindowWarning = (visiblityKeybind: string) => (
   <div>
-    <span>You're about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{visiblityKeybind}</code> combination.</span>
-    <br/><br/>
+    <span>
+      You're about to hide Switch from your desktop, you can bring the window
+      back at anytime using the key <code>{visiblityKeybind}</code> combination.
+    </span>
+    <br />
+    <br />
     <span>Feel free to disable this message from the settings page.</span>
   </div>
 );
@@ -23,17 +27,26 @@ export const hideWindowWarning = (visiblityKeybind: string) => (
  * @param initialValue - initial visibility keybind value
  * @param setVisibilityKeybind - handler to set visibility keybind
  */
-export const visibilityKeybindSelect = (initialValue: string, setVisibilityKeybind: (value: string) => void) => (
+export const visibilityKeybindSelect = (
+  initialValue: string,
+  setVisibilityKeybind: (value: string) => void,
+) => (
   <div>
-    <span>Please record a new <code>visibility keybind</code>, you must include <code>two</code> characters. You can also just click away to cancel.</span>
-    <br/>
+    <span>
+      Please record a new <code>visibility keybind</code>, you must include{' '}
+      <code>two</code> characters. You can also just click away to cancel.
+    </span>
+    <br />
     <div className="my-3">
       <KeybindButton
         keybind={initialValue}
-        handleUpdate={v => setVisibilityKeybind(v)}
+        handleUpdate={(v) => setVisibilityKeybind(v)}
       />
     </div>
-    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
+    <span>
+      Note that you will have to <code>restart</code> the application to see any
+      changes.
+    </span>
   </div>
 );
 
@@ -42,17 +55,25 @@ export const visibilityKeybindSelect = (initialValue: string, setVisibilityKeybi
  * @param initialValue - initial window behaviour value
  * @param setWindowBehaviour - handler to set window behaviour
  */
-export const windowBehaviourSelect = (initialValue: WindowBehaviour, setWindowBehaviour: (value: WindowBehaviour) => void) => (
+export const windowBehaviourSelect = (
+  initialValue: WindowBehaviour,
+  setWindowBehaviour: (value: WindowBehaviour) => void,
+) => (
   <div>
-    <span>Please choose a <code>hyperlink behaviour</code> from the following options. You can also just click away to cancel.</span>
-    <br/>
+    <span>
+      Please choose a <code>hyperlink behaviour</code> from the following
+      options. You can also just click away to cancel.
+    </span>
+    <br />
     <div className="my-3">
       <FormControl variant="outlined" className="w-100">
         <Select
           id="window-behaviour-select"
           className="dialog-window-behaviour"
           value={initialValue}
-          onChange={e => setWindowBehaviour(e.target.value as WindowBehaviour)}
+          onChange={(e) =>
+            setWindowBehaviour(e.target.value as WindowBehaviour)
+          }
         >
           <MenuItem value="external">Open in default browser</MenuItem>
           <MenuItem value="window">Open a new window</MenuItem>
@@ -60,7 +81,10 @@ export const windowBehaviourSelect = (initialValue: WindowBehaviour, setWindowBe
         </Select>
       </FormControl>
     </div>
-    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
+    <span>
+      Note that you will have to <code>restart</code> the application to see any
+      changes.
+    </span>
   </div>
 );
 
@@ -70,10 +94,13 @@ export const windowBehaviourSelect = (initialValue: WindowBehaviour, setWindowBe
  */
 export const accentColorSelect = (setAccentColor: (color: string) => void) => (
   <div>
-    <span>Please choose an <code>accent color</code> from the following options. You can also just click away to cancel.</span>
-    <br/>
+    <span>
+      Please choose an <code>accent color</code> from the following options. You
+      can also just click away to cancel.
+    </span>
+    <br />
     <div className="d-flex flex-row row justify-content-center">
-      { accentColors.map(v => (
+      {accentColors.map((v) => (
         <ButtonBase
           key={`dialog-accent-color-${v}`}
           className="d-flex justify-content-center align-items-center dialog-accent-color"
@@ -82,9 +109,12 @@ export const accentColorSelect = (setAccentColor: (color: string) => void) => (
         >
           <span>{v.toLowerCase()}</span>
         </ButtonBase>
-      )) }
+      ))}
     </div>
-    <br/>
-    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
+    <br />
+    <span>
+      Note that you will have to <code>restart</code> the application to see any
+      changes.
+    </span>
   </div>
 );

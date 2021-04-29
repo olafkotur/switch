@@ -29,7 +29,12 @@ export const UtilService = {
   getWindowInfo: (): IWindowInfo => {
     const size = remote.getCurrentWindow().getSize();
     const position = remote.getCurrentWindow().getPosition();
-    return { width: size[0], height: size[1], xPosition: position[0], yPosition: position[1] };
+    return {
+      width: size[0],
+      height: size[1],
+      xPosition: position[0],
+      yPosition: position[1],
+    };
   },
 
   /**
@@ -37,10 +42,14 @@ export const UtilService = {
    */
   getUserAgent: (url: string): string => {
     const agents = {
-      default_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36',
-      firefox_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7; rv:71.0) Gecko/20100101 Firefox/71.0',
-      chrome_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36',
-      edge_ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 Edg/90.0.818.49',
+      default_ua:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36',
+      firefox_ua:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7; rv:71.0) Gecko/20100101 Firefox/71.0',
+      chrome_ua:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36',
+      edge_ua:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 Edg/90.0.818.49',
     };
 
     // apply custom user agent

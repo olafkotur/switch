@@ -60,7 +60,14 @@ export const PresetService = {
    * @param animate - true to animate the resposition
    * @param windowPadding - true to add padding around the sides
    */
-  active: async (width: number, height: number, xPosition: number, yPosition: number, animate: boolean, windowPadding: boolean): Promise<void> => {
+  active: async (
+    width: number,
+    height: number,
+    xPosition: number,
+    yPosition: number,
+    animate: boolean,
+    windowPadding: boolean,
+  ): Promise<void> => {
     const windowInfo = {
       width: Math.round(width),
       height: Math.round(height),
@@ -68,7 +75,12 @@ export const PresetService = {
       yPosition: Math.round(yPosition),
     };
     return new Promise((resolve) => {
-      ElectronService.setWindowInfo(undefined, windowInfo, animate, windowPadding);
+      ElectronService.setWindowInfo(
+        undefined,
+        windowInfo,
+        animate,
+        windowPadding,
+      );
       resolve();
     });
   },

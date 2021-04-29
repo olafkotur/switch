@@ -1,10 +1,16 @@
 import React from 'react';
-import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
+import {
+  Dialog as MuiDialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from '@material-ui/core';
 
 export interface IProps {
   open: boolean;
   title: string;
-  content: React.ReactElement |  string;
+  content: React.ReactElement | string;
   animate?: boolean;
   primaryLabel?: string;
   secondaryLabel?: string;
@@ -18,7 +24,6 @@ export interface IProps {
 }
 
 export default class Dialog extends React.Component<IProps> {
-
   /**
    * Dialog constructor
    * @param props - component properties
@@ -64,32 +69,37 @@ export default class Dialog extends React.Component<IProps> {
           PaperProps={{ style: { background: '#303136' } }}
         >
           <div className="primary">
-            <DialogTitle >{this.props.title}</DialogTitle>
+            <DialogTitle>{this.props.title}</DialogTitle>
           </div>
 
           <div className="primary pb-2">
             <DialogContent>{this.props.content}</DialogContent>
           </div>
 
-          { !this.props.hideButtons && <DialogActions>
-            {!this.props.hideSecondary && <Button
-              className="mr-1"
-              variant="contained"
-              onClick={this.handleSecondary}
-            >
-              {this.props.secondaryLabel || 'Cancel'}
-            </Button>}
+          {!this.props.hideButtons && (
+            <DialogActions>
+              {!this.props.hideSecondary && (
+                <Button
+                  className="mr-1"
+                  variant="contained"
+                  onClick={this.handleSecondary}
+                >
+                  {this.props.secondaryLabel || 'Cancel'}
+                </Button>
+              )}
 
-            {!this.props.hidePrimary && <Button
-              className="ml-1"
-              color="primary"
-              variant="contained"
-              onClick={this.handlePrimary}
-            >
-              {this.props.primaryLabel || 'Proceed'}
-            </Button>}
-          </DialogActions>}
-
+              {!this.props.hidePrimary && (
+                <Button
+                  className="ml-1"
+                  color="primary"
+                  variant="contained"
+                  onClick={this.handlePrimary}
+                >
+                  {this.props.primaryLabel || 'Proceed'}
+                </Button>
+              )}
+            </DialogActions>
+          )}
         </MuiDialog>
       </div>
     );

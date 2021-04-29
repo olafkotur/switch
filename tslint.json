@@ -9,11 +9,14 @@
     "no-any": true,
     "variable-name": ["allow-pascal-case"],
     "space-in-parens": false,
-    "object-curly-spacing": [ true, "always" ],
+    "object-curly-spacing": [true, "always"],
     "brace-style": ["1tbs", { "allowSingleLine": true }],
     "indent": [true, "spaces", 2],
     "import-name": false,
     "semicolon": [true, "always", "ignore-bound-class-methods"],
-    "max-line-length": [true, {"limit": 120, "ignore-pattern": "//||console."}]
+    "max-line-length": [
+      true,
+      { "limit": 120, "ignore-pattern": "//||console." }
+    ]
   }
 }

@@ -4,7 +4,13 @@ import Menu from '../../components/Menu/Menu';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
 import Dialog, { IProps as IDialog } from '../../components/Dialog/Dialog';
-import { IActionRequest, IMenuItem, IUserSettings, IWebView, WebViewAction } from '../../typings/d';
+import {
+  IActionRequest,
+  IMenuItem,
+  IUserSettings,
+  IWebView,
+  WebViewAction,
+} from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import * as _ from 'lodash';
 import './dashboard.css';
@@ -68,7 +74,10 @@ export default class Dashboard extends React.Component<IProps, IState> {
    * @param action - target page
    * @param menuItem - focused item
    */
-  protected handleMenuItemClicked(action: TPages, menuItem: IMenuItem | null = null): void {
+  protected handleMenuItemClicked(
+    action: TPages,
+    menuItem: IMenuItem | null = null,
+  ): void {
     if (action === 'web') {
       this.setState({ page: action, activeApplication: menuItem });
     } else {
@@ -102,67 +111,82 @@ export default class Dashboard extends React.Component<IProps, IState> {
 
   render() {
     return (
-      !this.state.loading && <div className="container-fluid">
-        <div className="row">
-          <div className="menu bg-secondary" style={!this.props.userSettings.overlayMode ? { width: 65 } : {}}>
-            <Menu
-              page={this.state.page}
-              items={this.applications}
-              focusedItem={this.state.activeApplication}
-              userSettings={this.props.userSettings}
-              overlayMode={this.props.userSettings.overlayMode}
-              handleClick={this.handleMenuItemClicked}
-              handleRefresh={this.props.handleRefresh}
-              handleActionRequest={this.handleActionRequest}
-              handleDialog={this.handleDialog}
-            />
-          </div>
-          <div className="col p-0">
-            {/* these must stay as hidden elements to avoid re-rendering */}
-            <div className={`${this.state.page !== 'web' ? 'd-none' : ''}`}>
-              {this.applications.map((v) => {
-                const hidden = !(this.state.activeApplication && this.state.activeApplication.id === v.id);
-                return <div key={v.id} className={`${hidden ? 'd-none' : ''}`}>
-                  <WebView
-                    id={v.id}
-                    url={v.url}
-                    hidden={hidden}
-                    useModifiedAgent={this.props.userSettings.modifiedAgent}
-                    defaultWindowBehaviour={this.props.userSettings.windowBehaviour}
-                    actionRequest={this.state.actionRequest}
-                    handleRefresh={this.props.handleRefresh}
-                  />
-                </div>;
-              })}
-            </div>
-
-            {this.state.page === 'search' && <div className="dashboard-container d-flex justify-content-center">
-              <Search
+      !this.state.loading && (
+        <div className="container-fluid">
+          <div className="row">
+            <div
+              className="menu bg-secondary"
+              style={!this.props.userSettings.overlayMode ? { width: 65 } : {}}
+            >
+              <Menu
+                page={this.state.page}
                 items={this.applications}
-                handleRefresh={this.props.handleRefresh}
-              />
-            </div>}
-
-            {this.state.page === 'settings' && <div className="dashboard-container d-flex justify-content-center">
-              <Settings
-                items={this.applications}
+                focusedItem={this.state.activeApplication}
                 userSettings={this.props.userSettings}
+                overlayMode={this.props.userSettings.overlayMode}
+                handleClick={this.handleMenuItemClicked}
                 handleRefresh={this.props.handleRefresh}
+                handleActionRequest={this.handleActionRequest}
                 handleDialog={this.handleDialog}
               />
-            </div>}
-          </div>
-        </div>
+            </div>
+            <div className="col p-0">
+              {/* these must stay as hidden elements to avoid re-rendering */}
+              <div className={`${this.state.page !== 'web' ? 'd-none' : ''}`}>
+                {this.applications.map((v) => {
+                  const hidden = !(
+                    this.state.activeApplication &&
+                    this.state.activeApplication.id === v.id
+                  );
+                  return (
+                    <div key={v.id} className={`${hidden ? 'd-none' : ''}`}>
+                      <WebView
+                        id={v.id}
+                        url={v.url}
+                        hidden={hidden}
+                        useModifiedAgent={this.props.userSettings.modifiedAgent}
+                        defaultWindowBehaviour={
+                          this.props.userSettings.windowBehaviour
+                        }
+                        actionRequest={this.state.actionRequest}
+                        handleRefresh={this.props.handleRefresh}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
 
-        {/* show dialog across the entire app */}
-        {this.state.dialog &&
-          <Dialog
-            {...this.state.dialog}
-            handleClose={this.handleDialogClose}
-          />
-        }
-      </div>
+              {this.state.page === 'search' && (
+                <div className="dashboard-container d-flex justify-content-center">
+                  <Search
+                    items={this.applications}
+                    handleRefresh={this.props.handleRefresh}
+                  />
+                </div>
+              )}
+
+              {this.state.page === 'settings' && (
+                <div className="dashboard-container d-flex justify-content-center">
+                  <Settings
+                    items={this.applications}
+                    userSettings={this.props.userSettings}
+                    handleRefresh={this.props.handleRefresh}
+                    handleDialog={this.handleDialog}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* show dialog across the entire app */}
+          {this.state.dialog && (
+            <Dialog
+              {...this.state.dialog}
+              handleClose={this.handleDialogClose}
+            />
+          )}
+        </div>
+      )
     );
   }
-
 }
