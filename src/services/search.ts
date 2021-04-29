@@ -86,26 +86,8 @@ export const SearchService = {
       },
       {
         id: '',
-        url: 'https://netflix.com',
-        icon: require('../../assets/suggestions/netflix.png'),
-        order: -1,
-      },
-      {
-        id: '',
-        url: 'https://disneyplus.com',
-        icon: require('../../assets/suggestions/disneyplus.png'),
-        order: -1,
-      },
-      {
-        id: '',
         url: 'https://audible.com',
         icon: require('../../assets/suggestions/audible.png'),
-        order: -1,
-      },
-      {
-        id: '',
-        url: 'https://spotify.com',
-        icon: require('../../assets/suggestions/spotify.png'),
         order: -1,
       },
       {
