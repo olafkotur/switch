@@ -44,7 +44,7 @@ export default class Dashboard extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      page: 'settings',
+      page: 'search',
       loading: true,
       activeApplication: null,
       actionRequest: { id: '', action: '' },
@@ -64,7 +64,7 @@ export default class Dashboard extends React.Component<IProps, IState> {
   public async componentDidMount(): Promise<void> {
     this.applications = await MenuService.fetchList();
     if (this.applications.length) {
-      // this.handleMenuItemClicked('web', this.applications[0]);
+      this.handleMenuItemClicked('web', this.applications[0]);
     }
     this.setState({ loading: false });
   }

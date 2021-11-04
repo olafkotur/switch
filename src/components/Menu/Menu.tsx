@@ -157,7 +157,7 @@ export default class Menu extends React.Component<IProps, IState> {
               </Tooltip>
             )}
 
-            <Tooltip title="Add new services" enterDelay={750}>
+            <Tooltip title="Add new applications" enterDelay={750}>
               <IconButton
                 className={`menu-item flex-column ${
                   this.props.page === 'search' ? 'menu-selected' : ''

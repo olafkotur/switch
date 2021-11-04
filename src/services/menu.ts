@@ -7,10 +7,22 @@ const STORAGE_KEY = 'menuItems';
 
 const defaultMenu: IMenuItem[] = [
   {
-    id: 'default-switch-tutorial',
-    url: 'https://www.notion.so/Tutorial-a77509d0ed234ab985f0e0d7c88c01e2',
+    id: 'default-notion',
+    url: 'https://www.notion.so',
     order: 0,
-    icon: require('../../assets/switch-icon.png'),
+    icon: require('../../assets/suggestions/notion.png'),
+  },
+  {
+    id: 'default-messenger',
+    url: 'https://www.messenger.com',
+    order: 1,
+    icon: require('../../assets/suggestions/messenger.png'),
+  },
+  {
+    id: 'default-youtube',
+    url: 'https://www.youtube.com',
+    order: 2,
+    icon: require('../../assets/suggestions/youtube.png'),
   },
 ];
 
