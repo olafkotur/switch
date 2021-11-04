@@ -1,3 +1,5 @@
+import { SvgIconComponent } from '@material-ui/icons';
+
 // tslint:disable-next-line: no-any
 export type Icon = any;
 
@@ -45,6 +47,7 @@ export interface ISettingConfig extends ISetting {
   type: 'switch' | 'pop-up';
   label: string;
   description: string;
+  icon?: SvgIconComponent;
   experimental?: boolean;
 }
 

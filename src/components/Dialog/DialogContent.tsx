@@ -7,6 +7,11 @@ import { FormControl, Select, MenuItem } from '@material-ui/core';
 import './dialog.css';
 
 /**
+ * Tutorial content, triggered by the tutorial button and on first launch
+ */
+export const tutorial = () => <div></div>;
+
+/**
  * Trigerred when a user attempts to hide the window using the button in the UI.
  * @param visiblityKeybind - current keybind to recall window
  */
@@ -118,6 +123,11 @@ export const accentColorSelect = (setAccentColor: (color: string) => void) => (
   </div>
 );
 
+/**
+ * Triggerred when user attempts to change the font family.
+ * @param initialValue - initial font family value
+ * @param setFontFamily - handler to set font family
+ */
 export const fontFamilySelect = (
   initialValue: FontFamily,
   setFontFamily: (value: FontFamily) => void,

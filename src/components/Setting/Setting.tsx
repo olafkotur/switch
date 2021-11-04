@@ -65,6 +65,7 @@ export default class Setting extends React.Component<IProps, IState> {
           />
         );
       case 'pop-up':
+        const Icon = this.props.icon || Edit;
         return (
           <IconButton
             className="bg-primary mr-2 p-2"
@@ -73,7 +74,7 @@ export default class Setting extends React.Component<IProps, IState> {
               this.props.handleChange ? this.props.handleChange() : {}
             }
           >
-            <Edit className="primary" fontSize="small" />
+            <Icon className="primary" fontSize="small" />
           </IconButton>
         );
       default:

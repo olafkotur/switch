@@ -1,6 +1,7 @@
 import React from 'react';
 import Preset from '../../components/Preset/Preset';
 import Setting from '../../components/Setting/Setting';
+import { Info } from '@material-ui/icons';
 import { IProps as IDialog } from '../../components/Dialog/Dialog';
 import {
   IMenuItem,
@@ -18,6 +19,7 @@ import {
   windowBehaviourSelect,
   accentColorSelect,
   fontFamilySelect,
+  tutorial,
 } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './settings.css';
@@ -62,6 +64,21 @@ export default class Settings extends React.Component<IProps, IState> {
 
     this.general = [
       {
+        name: 'tutorial',
+        value: 'tutorial',
+        label: 'Tutorial',
+        description: 'view application tutorial',
+        type: 'pop-up',
+        icon: Info,
+        handleChange: () =>
+          this.props.handleDialog({
+            open: true,
+            title: 'Tutorial',
+            content: tutorial(),
+            hideButtons: true,
+          }),
+      },
+      {
         name: 'visiblityKeybind',
         value: this.state.visiblityKeybind,
         label: 'Visiblity Keybind',
@@ -77,7 +94,7 @@ export default class Settings extends React.Component<IProps, IState> {
               (v: string) =>
                 this.handleUpdate('visiblityKeybind', v, false, true),
             ),
-            hidePrimary: true,
+            hideButtons: true,
             disableEscKey: true,
             secondaryLabel: 'dismiss',
           }),
