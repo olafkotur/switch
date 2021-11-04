@@ -2,6 +2,7 @@ import React from 'react';
 import { Zoom } from '@material-ui/core';
 // @ts-ignore
 import Loading from 'react-loading-components';
+import './loader.css';
 
 interface IProps {
   shortLoader: boolean;
@@ -53,12 +54,12 @@ export default class Loader extends React.Component<IProps, IState> {
       <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
         <Zoom in={this.state.showText}>
           <div className="d-flex flex-row position-absolute">
-            <h1 className="secondary mr-2">s</h1>
-            <h1 className="primary mr-2">w</h1>
-            <h1 className="primary mr-2">i</h1>
-            <h1 className="primary mr-2">t</h1>
-            <h1 className="tertiary mr-2">c</h1>
-            <h1 className="quaternary mr-2">h</h1>
+            <h1 className="loader-text secondary mr-2">s</h1>
+            <h1 className="loader-text primary mr-2">w</h1>
+            <h1 className="loader-text primary mr-2">i</h1>
+            <h1 className="loader-text primary mr-2">t</h1>
+            <h1 className="loader-text tertiary mr-2">c</h1>
+            <h1 className="loader-text quaternary mr-2">h</h1>
           </div>
         </Zoom>
         <Zoom in={this.state.showLoader}>
