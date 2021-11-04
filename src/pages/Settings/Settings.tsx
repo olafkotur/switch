@@ -66,14 +66,14 @@ export default class Settings extends React.Component<IProps, IState> {
       {
         name: 'tutorial',
         value: 'tutorial',
-        label: 'Tutorial',
-        description: 'view application tutorial',
+        label: 'Tutorial Video',
+        description: 'watch the application tutorial video',
         type: 'pop-up',
         icon: Info,
         handleChange: () =>
           this.props.handleDialog({
             open: true,
-            title: 'Tutorial',
+            title: 'Tutorial Video',
             content: tutorial(),
             hideButtons: true,
           }),

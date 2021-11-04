@@ -7,9 +7,19 @@ import { FormControl, Select, MenuItem } from '@material-ui/core';
 import './dialog.css';
 
 /**
- * Tutorial content, triggered by the tutorial button and on first launch
+ * Tutorial content, triggered by the tutorial button.
  */
-export const tutorial = () => <div></div>;
+export const tutorial = () => (
+  <div>
+    <iframe
+      width="100%"
+      height="310px"
+      frameBorder="0"
+      src="https://www.youtube.com/embed/8UVNT4wvIGY?autoplay=1"
+      allow="autoplay"
+    />
+  </div>
+);
 
 /**
  * Trigerred when a user attempts to hide the window using the button in the UI.
