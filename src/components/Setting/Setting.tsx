@@ -85,7 +85,12 @@ export default class Setting extends React.Component<IProps, IState> {
     return (
       <div className="d-flex flex-row justify-content-between align-items-center ">
         <div>
-          <h6 className="primary align-self-center m-0">{this.props.label}</h6>
+          <span className="primary align-self-center">
+            {this.props.label}
+            {this.props.experimental && (
+              <span className="experimental-setting ml-1">experimental</span>
+            )}
+          </span>
           <p className="text-muted">{this.props.description}</p>
         </div>
         <div className="d-flex flex-row justify-content-center align-items-center">

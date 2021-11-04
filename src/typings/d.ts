@@ -45,6 +45,7 @@ export interface ISettingConfig extends ISetting {
   type: 'switch' | 'pop-up';
   label: string;
   description: string;
+  experimental?: boolean;
 }
 
 export interface ISelectOption {

@@ -198,23 +198,11 @@ export default class Settings extends React.Component<IProps, IState> {
         name: 'windowPadding',
         value: this.state.windowPadding,
         label: 'Window Padding',
-        description:
-          'experimental, gives the window extra padding on the sides',
+        description: 'gives the window extra padding around the sides',
         type: 'switch',
-      },
-      {
-        name: 'windowPadding',
-        value: this.state.windowPadding,
-        label: 'Window Padding',
-        description:
-          'experimental, gives the window extra padding on the sides',
-        type: 'switch',
+        experimental: true,
       },
     ];
-
-    // TODO: Figure out why this is needed
-    // temporarily disable some appearance features
-    // this.appearance = [this.appearance[2], this.appearance[3]];
   }
 
   /**

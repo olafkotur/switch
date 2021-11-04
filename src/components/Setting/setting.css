@@ -28,6 +28,14 @@
   font-size: 10px;
 }
 
+.experimental-setting {
+  background-color: #303136;
+  color: #eb4d4b;
+  font-size: 12px;
+  border-radius: 15px;
+  padding: 3px 8px;
+}
+
 .MuiSelect-select:focus {
   background: transparent !important;
 }
