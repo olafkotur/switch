@@ -7,6 +7,7 @@ import {
   ISettingConfig,
   IPreset,
   IUserSettings,
+  FontFamily,
 } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
@@ -16,6 +17,7 @@ import {
   visibilityKeybindSelect,
   windowBehaviourSelect,
   accentColorSelect,
+  fontFamilySelect,
 } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './settings.css';
@@ -137,18 +139,44 @@ export default class Settings extends React.Component<IProps, IState> {
 
     this.appearance = [
       {
+        name: 'fontFamily',
+        value: this.state.fontFamily,
+        label: 'Font Family',
+        description: 'change the font used for the application',
+        type: 'pop-up',
+        refresh: true,
+        handleChange: () =>
+          this.props.handleDialog({
+            open: true,
+            title: 'Font Family',
+            content: fontFamilySelect(
+              this.state.fontFamily,
+              (v: FontFamily) => {
+                this.handleUpdate('fontFamily', v, true, false);
+                this.props.handleDialog({
+                  open: false,
+                  hideButtons: true,
+                  title: '',
+                  content: '',
+                });
+              },
+            ),
+            hideButtons: true,
+          }),
+      },
+      {
         name: 'accentColor',
         value: this.state.accentColor,
         label: 'Accent Color',
         description: 'change the accent colour of the application',
         type: 'pop-up',
-        restart: true,
+        refresh: true,
         handleChange: () =>
           this.props.handleDialog({
             open: true,
             title: 'Accent Color',
             content: accentColorSelect((v: string) => {
-              this.handleUpdate('accentColor', v, false, true);
+              this.handleUpdate('accentColor', v, true, false);
               this.props.handleDialog({
                 open: false,
                 hideButtons: true,
@@ -158,13 +186,6 @@ export default class Settings extends React.Component<IProps, IState> {
             }),
             hideButtons: true,
           }),
-      },
-      {
-        name: 'darkMode',
-        value: this.state.darkMode,
-        label: 'Dark Mode',
-        description: 'toggle between light and dark themes',
-        type: 'switch',
       },
       {
         name: 'animatePresets',
@@ -181,10 +202,19 @@ export default class Settings extends React.Component<IProps, IState> {
           'experimental, gives the window extra padding on the sides',
         type: 'switch',
       },
+      {
+        name: 'windowPadding',
+        value: this.state.windowPadding,
+        label: 'Window Padding',
+        description:
+          'experimental, gives the window extra padding on the sides',
+        type: 'switch',
+      },
     ];
 
+    // TODO: Figure out why this is needed
     // temporarily disable some appearance features
-    this.appearance = [this.appearance[2], this.appearance[3]];
+    // this.appearance = [this.appearance[2], this.appearance[3]];
   }
 
   /**

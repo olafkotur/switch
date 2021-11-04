@@ -10,6 +10,13 @@ export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
  */
 export type WindowBehaviour = 'window' | 'within' | 'external';
 
+export type FontFamily =
+  | 'Arial'
+  | 'Verdana'
+  | 'Helvetica'
+  | 'Courier New'
+  | 'Times New Roman';
+
 export interface IStoredData<T> {
   data: T[];
 }
@@ -22,8 +29,8 @@ export interface IUserSettings {
   windowBehaviour: WindowBehaviour;
   accentColor: string;
   animatePresets: boolean;
-  darkMode: boolean;
   windowPadding: boolean;
+  fontFamily: FontFamily;
 }
 
 export interface ISetting {

@@ -4,7 +4,7 @@ import storage from 'electron-json-storage';
 import Loader from './components/Loader/Loader';
 import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
 import { render } from 'react-dom';
-import { IUserSettings } from './typings/d';
+import { FontFamily, IUserSettings } from './typings/d';
 import { SettingsService } from './services/settings';
 import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css';
@@ -22,8 +22,10 @@ export default class App extends React.Component<{}, IState> {
   /**
    * Local properties
    */
-  protected theme: Theme;
+  protected theme: Theme | null = null;
   protected userSettings: IUserSettings | null = null;
+  protected defaultFontFamily: FontFamily = 'Arial';
+  protected defaultAccentColor = '#227093';
 
   /**
    * App constructor
@@ -37,17 +39,37 @@ export default class App extends React.Component<{}, IState> {
       initialise: true,
     };
 
-    // local properties
+    // storage setup
+    const dataPath = storage.getDataPath();
+    storage.setDataPath(dataPath);
+
+    // scope binding
+    this.handleRefresh = this.handleRefresh.bind(this);
+  }
+
+  /**
+   * Component mounting
+   */
+  public async componentDidMount() {
+    await this.handleRefresh();
+  }
+
+  /**
+   * Apply user settings to application.
+   */
+  protected applyUserSettings() {
     this.theme = createMuiTheme({
       typography: {
-        fontFamily: '"Courier New", Courier, monospace',
+        fontFamily: this.userSettings?.fontFamily || this.defaultFontFamily,
         fontSize: 14,
         fontWeightLight: 300,
         fontWeightRegular: 400,
         fontWeightMedium: 500,
       },
       palette: {
-        primary: { main: '#227093' },
+        primary: {
+          main: this.userSettings?.accentColor || this.defaultAccentColor,
+        },
         secondary: { main: '#fff' },
         error: { main: '#b33939' },
       },
@@ -66,20 +88,6 @@ export default class App extends React.Component<{}, IState> {
         },
       },
     });
-
-    // storage setup
-    const dataPath = storage.getDataPath();
-    storage.setDataPath(dataPath);
-
-    // scope binding
-    this.handleRefresh = this.handleRefresh.bind(this);
-  }
-
-  /**
-   * Component mounting
-   */
-  public async componentDidMount() {
-    await this.handleRefresh();
   }
 
   /**
@@ -88,17 +96,25 @@ export default class App extends React.Component<{}, IState> {
   protected async handleRefresh() {
     this.setState({ loading: true });
     this.userSettings = await SettingsService.fetch();
+    this.applyUserSettings();
     this.setState({ loading: false });
   }
 
   render() {
     return (
-      <MuiThemeProvider theme={this.theme}>
+      <MuiThemeProvider theme={this.theme as Theme}>
         {!this.state.loading ? (
-          <Dashboard
-            userSettings={this.userSettings as IUserSettings}
-            handleRefresh={this.handleRefresh}
-          />
+          <div
+            style={{
+              fontFamily:
+                this.userSettings?.fontFamily || this.defaultFontFamily,
+            }}
+          >
+            <Dashboard
+              userSettings={this.userSettings as IUserSettings}
+              handleRefresh={this.handleRefresh}
+            />
+          </div>
         ) : (
           <Loader shortLoader={!this.state.initialise} />
         )}

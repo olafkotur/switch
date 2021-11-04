@@ -2,7 +2,7 @@ import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import KeybindButton from '../KeybindButton/KeybindButton';
 import { accentColors } from '../../imports/customUI';
-import { WindowBehaviour } from '../../typings/d';
+import { FontFamily, WindowBehaviour } from '../../typings/d';
 import { FormControl, Select, MenuItem } from '@material-ui/core';
 import './dialog.css';
 
@@ -34,7 +34,7 @@ export const visibilityKeybindSelect = (
   <div>
     <span>
       Please record a new <code>visibility keybind</code>, you must include{' '}
-      <code>two</code> characters. You can also just click away to cancel.
+      <code>two</code> characters.
     </span>
     <br />
     <div className="my-3">
@@ -62,7 +62,7 @@ export const windowBehaviourSelect = (
   <div>
     <span>
       Please choose a <code>hyperlink behaviour</code> from the following
-      options. You can also just click away to cancel.
+      options.
     </span>
     <br />
     <div className="my-3">
@@ -95,8 +95,7 @@ export const windowBehaviourSelect = (
 export const accentColorSelect = (setAccentColor: (color: string) => void) => (
   <div>
     <span>
-      Please choose an <code>accent color</code> from the following options. You
-      can also just click away to cancel.
+      Please choose an <code>accent color</code> from the following options.
     </span>
     <br />
     <div className="d-flex flex-row row justify-content-center">
@@ -116,5 +115,46 @@ export const accentColorSelect = (setAccentColor: (color: string) => void) => (
       Note that you will have to <code>restart</code> the application to see any
       changes.
     </span>
+  </div>
+);
+
+export const fontFamilySelect = (
+  initialValue: FontFamily,
+  setFontFamily: (value: FontFamily) => void,
+) => (
+  <div>
+    <span>
+      Please choose a <code>font family</code> from the following options.
+    </span>
+    <br />
+    <div className="my-3">
+      <FormControl variant="outlined" className="w-100">
+        <Select
+          id="font-family-select"
+          className="dialog-window-behaviour"
+          value={initialValue}
+          onChange={(e) => setFontFamily(e.target.value as FontFamily)}
+        >
+          <MenuItem value="Arial" style={{ fontFamily: 'Arial' }}>
+            Arial
+          </MenuItem>
+          <MenuItem value="Verdana" style={{ fontFamily: 'Verdana' }}>
+            Verdana
+          </MenuItem>
+          <MenuItem value="Helvetica" style={{ fontFamily: 'Helvetica' }}>
+            Helvetica
+          </MenuItem>
+          <MenuItem value="Courier New" style={{ fontFamily: 'Courier New' }}>
+            Courier New
+          </MenuItem>
+          <MenuItem
+            value="Times New Roman"
+            style={{ fontFamily: 'Times New Roman' }}
+          >
+            Times New Roman
+          </MenuItem>
+        </Select>
+      </FormControl>
+    </div>
   </div>
 );

@@ -13,8 +13,8 @@ const defaultSettings: IUserSettings = {
   windowBehaviour: 'external',
   accentColor: '#227093',
   animatePresets: true,
-  darkMode: true,
   windowPadding: false,
+  fontFamily: 'Arial',
 };
 
 export const SettingsService = {
