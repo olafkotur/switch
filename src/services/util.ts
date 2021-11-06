@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import moment from 'moment';
 import { remote } from 'electron';
 import { IWindowInfo } from '../typings/d';
+import { useEffect, useRef } from 'react';
 
 export const UtilService = {
   /**
@@ -65,5 +66,17 @@ export const UtilService = {
     }
 
     return userAgent;
+  },
+
+  /**
+   * Custom use effect for fetching previous state/prop value.
+   * @param value - value to compare against
+   */
+  usePrevious: <T>(value: T): T | undefined => {
+    const ref = useRef<T>();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
   },
 };

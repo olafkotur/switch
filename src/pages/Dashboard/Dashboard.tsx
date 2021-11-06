@@ -89,7 +89,6 @@ const Dashboard = (): React.ReactElement => {
                     useModifiedAgent={settings.modifiedAgent}
                     defaultWindowBehaviour={settings.windowBehaviour}
                     actionRequest={actionRequest}
-                    handleRefresh={async () => {}}
                   />
                 </div>
               );

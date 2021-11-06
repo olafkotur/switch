@@ -11,7 +11,6 @@ interface IProps {
   actionRequest: IActionRequest;
   useModifiedAgent: boolean;
   defaultWindowBehaviour: WindowBehaviour;
-  handleRefresh: () => Promise<void>;
 }
 
 interface IState {
@@ -54,22 +53,18 @@ export default class WebView extends React.Component<IProps, IState> {
     });
 
     // handle new windows
-    this.webView.addEventListener(
-      'new-window',
-      async (e): Promise<void> => {
-        if (e.url) {
-          // override to open as 'window' in special cases
-          const override = e.disposition === 'new-window';
+    this.webView.addEventListener('new-window', async (e): Promise<void> => {
+      if (e.url) {
+        // override to open as 'window' in special cases
+        const override = e.disposition === 'new-window';
 
-          // open hyperlink using set behaviour
-          const shouldRefresh = await ElectronService.openHyperlink(
-            e.url,
-            override ? 'window' : this.props.defaultWindowBehaviour,
-          );
-          shouldRefresh && this.props.handleRefresh();
-        }
-      },
-    );
+        // open hyperlink using set behaviour
+        await ElectronService.openHyperlink(
+          e.url,
+          override ? 'window' : this.props.defaultWindowBehaviour,
+        );
+      }
+    });
   }
 
   /**

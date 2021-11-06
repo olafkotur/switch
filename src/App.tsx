@@ -30,7 +30,7 @@ const App = (): React.ReactElement => {
 
     // TODO: Will likely have to use async/await here
     fetchUserData();
-    setTimeout(() => setLoading(false), 2000);
+    setTimeout(() => setLoading(false), 0);
   }, []);
 
   React.useEffect(() => {
