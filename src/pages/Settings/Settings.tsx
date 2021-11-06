@@ -23,6 +23,7 @@ import {
 } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
 import './settings.css';
+import Profile from '../../components/Profile/Profile';
 
 interface IProps {
   items: IMenuItem[];
@@ -255,6 +256,8 @@ export default class Settings extends React.Component<IProps, IState> {
             </span>
           </Paper>
         )}
+
+        <Profile />
 
         <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;General</h4>
         <div className="setting-group bg-secondary">
