@@ -6,25 +6,7 @@ import { RootState } from '../../store';
 import './styles.css';
 
 const Profile = (): React.ReactElement => {
-  const [loading, setLoading] = React.useState<boolean>(true);
-
-  const dispatch = useDispatch();
   const { email, avatar } = useSelector((state: RootState) => state.user);
-
-  React.useEffect(() => {
-    fetchProfileData();
-  }, []);
-
-  /**
-   * Fetches user profile data.
-   */
-  const fetchProfileData = async (): Promise<void> => {
-    const data = await UserService.fetchProfile();
-    if (data) {
-      dispatch(setEmail(data.email));
-      setLoading(false);
-    }
-  };
 
   /**
    * Render profile row.
@@ -43,11 +25,6 @@ const Profile = (): React.ReactElement => {
       </div>
     );
   };
-
-  // return loader
-  if (loading) {
-    return <></>;
-  }
 
   return (
     <div className="setting-group bg-secondary d-flex flex-row align-items-center">

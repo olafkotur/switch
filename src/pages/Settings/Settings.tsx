@@ -3,16 +3,11 @@ import Preset from '../../components/Preset/Preset';
 import Setting from '../../components/Setting/Setting';
 import { Info } from '@material-ui/icons';
 import {
-  IMenuItem,
   ISettingConfig,
-  IPreset,
   IUserSettings,
   FontFamily,
-  WindowBehaviour,
   IDialog,
 } from '../../typings/d';
-import { SettingsService } from '../../services/settings';
-import { UtilService } from '../../services/util';
 import { Paper } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
 import {
@@ -22,13 +17,12 @@ import {
   fontFamilySelect,
   tutorial,
 } from '../../components/Dialog/DialogContent';
-import * as _ from 'lodash';
-import './styles.css';
 import Profile from './Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSettings } from '../../redux/user';
 import { RootState } from '../../store';
 import { setDialog } from '../../redux/interface';
+import './styles.css';
 
 const Settings = (): React.ReactElement => {
   const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);
@@ -42,11 +36,16 @@ const Settings = (): React.ReactElement => {
    * @param value - value of the setting
    */
   const handleChange = (name: string, value: boolean | string): void => {
+    const settingsWithRestart = [
+      'overlayMode',
+      'windowBehaviour',
+      'visiblityKeybind',
+    ];
+    settingsWithRestart.includes(name) && setShouldRestart(true);
     dispatch(setSettings({ ...settings, [name]: value }));
   };
 
   const presets = PresetService.fetch();
-
   const general: ISettingConfig[] = [
     {
       name: 'tutorial',
@@ -71,7 +70,6 @@ const Settings = (): React.ReactElement => {
       label: 'Visiblity Keybind',
       description: 'combination used to toggle the window’s visibility',
       type: 'pop-up',
-      restart: true,
       customHandler: () => {
         const dialog: IDialog = {
           open: true,
@@ -96,7 +94,6 @@ const Settings = (): React.ReactElement => {
       description:
         'choose what happens when you open a hyperlink within Switch',
       type: 'pop-up',
-      restart: true,
       customHandler: () => {
         const dialog: IDialog = {
           open: true,
@@ -118,7 +115,6 @@ const Settings = (): React.ReactElement => {
       label: 'Overlay mode',
       description: 'switch will display over other applications',
       type: 'switch',
-      restart: true,
     },
     {
       name: 'modifiedAgent',
@@ -136,7 +132,6 @@ const Settings = (): React.ReactElement => {
       type: 'switch',
     },
   ];
-
   const appearance: ISettingConfig[] = [
     {
       name: 'fontFamily',
@@ -227,7 +222,6 @@ const Settings = (): React.ReactElement => {
         ))}
       </div>
 
-      {/* preset settings */}
       <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Presets</h4>
       <div className="setting-group bg-secondary">
         <div className="d-flex flex-row row">

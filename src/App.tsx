@@ -5,15 +5,21 @@ import Loader from './components/Loader/Loader';
 import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
 import { render } from 'react-dom';
 import { RootState, store } from './store';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css';
 import Dialog from './components/Dialog/Dialog';
+import { UserService } from './services/user';
+import { SettingsService } from './services/settings';
+import { MenuService } from './services/menu';
+import { setEmail, setSettings } from './redux/user';
+import { setApplications } from './redux/interface';
 
 const App = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [theme, setTheme] = React.useState<Theme>();
 
+  const dispatch = useDispatch();
   const { settings } = useSelector((state: RootState) => state.user);
   const { error, dialog } = useSelector((state: RootState) => state.interface);
 
@@ -22,7 +28,7 @@ const App = (): React.ReactElement => {
     const dataPath = storage.getDataPath();
     storage.setDataPath(dataPath);
 
-    setTimeout(() => setLoading(false), 750);
+    fetchUserData().then(() => setLoading(false));
   }, []);
 
   React.useEffect(() => {
@@ -60,6 +66,19 @@ const App = (): React.ReactElement => {
       }),
     );
   }, [settings]);
+
+  /**
+   * Fetches user data and stores in redux.
+   */
+  const fetchUserData = async (): Promise<void> => {
+    const profile = await UserService.fetchProfile();
+    const settings = await SettingsService.fetch();
+    const applications = await MenuService.fetchList();
+
+    profile && dispatch(setEmail(profile.email));
+    settings && dispatch(setSettings(settings));
+    applications && dispatch(setApplications(applications));
+  };
 
   if (loading) {
     return <Loader />;

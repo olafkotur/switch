@@ -24,7 +24,6 @@ const Dashboard = (): React.ReactElement => {
   });
 
   const { settings } = useSelector((state: RootState) => state.user);
-  const { dialog } = useSelector((state: RootState) => state.interface);
 
   React.useEffect(() => {
     (async () => {
@@ -42,12 +41,8 @@ const Dashboard = (): React.ReactElement => {
     action: TPages,
     menuItem: IMenuItem | null = null,
   ): void => {
-    if (action === 'web') {
-      setPage(action);
-      setActiveApplication(menuItem);
-    } else {
-      setPage(action);
-    }
+    setPage(action);
+    action === 'web' && setActiveApplication(menuItem);
   };
 
   /**
@@ -68,18 +63,14 @@ const Dashboard = (): React.ReactElement => {
       <div className="row">
         <div
           className="menu bg-secondary"
-          style={settings.overlayMode ? { width: 65 } : {}}
+          style={!settings.overlayMode ? { width: 65 } : {}}
         >
           <Menu
             page={page}
             items={applications}
             focusedItem={activeApplication}
-            userSettings={settings}
-            overlayMode={settings.overlayMode}
             handleClick={handleMenuItemClicked}
-            handleRefresh={async () => {}}
             handleActionRequest={handleActionRequest}
-            handleDialog={() => {}}
           />
         </div>
         <div className="col p-0">
@@ -107,7 +98,7 @@ const Dashboard = (): React.ReactElement => {
 
           {page === 'search' && (
             <div className="dashboard-container d-flex justify-content-center">
-              <Search items={applications} handleRefresh={async () => {}} />
+              <Search />
             </div>
           )}
 

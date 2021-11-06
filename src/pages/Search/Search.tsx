@@ -6,12 +6,7 @@ import { SearchService } from '../../services/search';
 import { MenuService } from '../../services/menu';
 import './search.css';
 
-interface IProps {
-  items: IMenuItem[];
-  handleRefresh: () => Promise<void>;
-}
-
-const Search = ({ items, handleRefresh }: IProps): React.ReactElement => {
+const Search = (): React.ReactElement => {
   const [isValid, setIsValid] = React.useState<boolean>(false);
   const [searchInput, setSearchInput] = React.useState<string>('');
 
@@ -40,7 +35,6 @@ const Search = ({ items, handleRefresh }: IProps): React.ReactElement => {
     if (!success) {
       alertError();
     }
-    handleRefresh(); // do not await
   };
 
   /**
@@ -53,7 +47,6 @@ const Search = ({ items, handleRefresh }: IProps): React.ReactElement => {
     if (!success) {
       alertError();
     }
-    handleRefresh(); // do not await
   };
 
   /**
