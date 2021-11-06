@@ -6,7 +6,7 @@ import {
 } from 'react-beautiful-dnd';
 import { IDialog, IMenuItem, WebViewAction } from '../../typings/d';
 import React from 'react';
-import MenuItem from '../MenuItem/MenuItem';
+import MenuItem from './MenuItem';
 import { VisibilityOff, Search, Settings } from '@material-ui/icons';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { TPages } from '../../pages/Dashboard/Dashboard';
@@ -79,6 +79,8 @@ const Menu = ({
     <div className="vh-100">
       <div className="menu-top">
         {!settings.overlayMode && <div className="mb-4" />}
+
+        {/* drag and drop */}
         <div className="d-flex flex-column justify-content-center align-items-center">
           <DragDropContext
             onDragUpdate={handleDragUpdate}
@@ -104,7 +106,6 @@ const Menu = ({
                                 : false
                             }
                             handleClick={handleClick}
-                            handleRefresh={async () => {}}
                             handleActionRequest={handleActionRequest}
                           />
                         </div>
@@ -150,7 +151,6 @@ const Menu = ({
               }`}
               onClick={() => handleClick('settings')}
             >
-              {/* <Settings className="primary" /> */}
               <img src={avatar} className="menu-avatar" />
             </IconButton>
           </Tooltip>

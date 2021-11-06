@@ -18,14 +18,13 @@ import { TPages } from '../../pages/Dashboard/Dashboard';
 import { IMenuItem, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
 import { UtilService } from '../../services/util';
-import './menuItem.css';
+import './styles.css';
 
 interface IProps {
   data: IMenuItem;
   page: TPages;
   focused: boolean;
   handleClick: (action: TPages, item?: IMenuItem) => void;
-  handleRefresh: () => Promise<void>;
   handleActionRequest: (id: string, action: WebViewAction) => void;
 }
 
@@ -94,11 +93,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
    * @param id - service id
    */
   protected async handleDelete(): Promise<void> {
-    const res = await MenuService.delete(this.props.data.id);
-    if (!res) {
-      return UtilService.error();
-    }
-    this.props.handleRefresh(); // do not await
+    await MenuService.delete(this.props.data.id);
   }
 
   /**
@@ -106,11 +101,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
    * @param data - menu item data
    */
   protected async handleUpdate(data: IMenuItem): Promise<void> {
-    const res = await MenuService.update(data);
-    if (!res) {
-      return UtilService.error();
-    }
-    this.props.handleRefresh(); // do not await
+    await MenuService.update(data);
   }
 
   /**
