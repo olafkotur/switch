@@ -17,7 +17,6 @@ import {
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { IMenuItem, WebViewAction } from '../../typings/d';
 import { MenuService } from '../../services/menu';
-import { UtilService } from '../../services/util';
 import './styles.css';
 
 interface IProps {

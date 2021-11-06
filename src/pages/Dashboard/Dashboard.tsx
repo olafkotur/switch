@@ -16,8 +16,7 @@ const Dashboard = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<TPages>('settings');
   const [applications, setApplications] = React.useState<IMenuItem[]>([]);
-  const [activeApplication, setActiveApplication] =
-    React.useState<IMenuItem | null>(null);
+  const [activeApplication, setActiveApplication] = React.useState<IMenuItem>();
   const [actionRequest, setActionRequest] = React.useState<IActionRequest>({
     id: '',
     action: '',
@@ -39,7 +38,7 @@ const Dashboard = (): React.ReactElement => {
    */
   const handleMenuItemClicked = (
     action: TPages,
-    menuItem: IMenuItem | null = null,
+    menuItem?: IMenuItem,
   ): void => {
     setPage(action);
     action === 'web' && setActiveApplication(menuItem);

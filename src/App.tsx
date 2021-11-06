@@ -12,7 +12,7 @@ import Dialog from './components/Dialog/Dialog';
 import { UserService } from './services/user';
 import { SettingsService } from './services/settings';
 import { MenuService } from './services/menu';
-import { setEmail, setSettings } from './redux/user';
+import { setAuth, setEmail, setSettings } from './redux/user';
 import { setApplications } from './redux/interface';
 
 const App = (): React.ReactElement => {
@@ -77,6 +77,7 @@ const App = (): React.ReactElement => {
     const settings = await SettingsService.fetch();
     const applications = await MenuService.fetchList();
 
+    dispatch(setAuth(true)); // TODO: Temporary, replace with a login
     profile && dispatch(setEmail(profile.email));
     settings && dispatch(setSettings(settings));
     applications && dispatch(setApplications(applications));

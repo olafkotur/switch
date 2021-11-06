@@ -21,7 +21,7 @@ import './styles.css';
 interface IProps {
   page: TPages;
   items: IMenuItem[];
-  focusedItem: IMenuItem | null;
+  focusedItem?: IMenuItem;
   handleClick: (action: TPages, item?: IMenuItem) => void;
   handleActionRequest: (id: string, action: WebViewAction) => void;
 }
