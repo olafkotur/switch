@@ -9,15 +9,10 @@ import { Provider, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css';
 
-interface IState {
-  loading: boolean;
-  initialise: boolean;
-}
-
 const App = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [initialise, setInitialise] = React.useState<boolean>(true);
   const [theme, setTheme] = React.useState<Theme>();
+
   const { settings } = useSelector((state: RootState) => state.user);
 
   React.useEffect(() => {
@@ -25,6 +20,10 @@ const App = (): React.ReactElement => {
     const dataPath = storage.getDataPath();
     storage.setDataPath(dataPath);
 
+    setTimeout(() => setLoading(false), 1500);
+  }, []);
+
+  React.useEffect(() => {
     // theme setup
     setTheme(
       createMuiTheme({
@@ -58,12 +57,10 @@ const App = (): React.ReactElement => {
         },
       }),
     );
-
-    setTimeout(() => setLoading(false), 1500);
-  }, []);
+  }, [settings]);
 
   if (loading) {
-    return <Loader shortLoader={!initialise} />;
+    return <Loader />;
   }
 
   return (

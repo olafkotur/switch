@@ -38,17 +38,15 @@ export interface IUserSettings {
 export interface ISetting {
   name: string;
   value: string | boolean;
-  refresh?: boolean;
   restart?: boolean;
-  handleChange?: Function;
 }
 
 export interface ISettingConfig extends ISetting {
   type: 'switch' | 'pop-up';
   label: string;
   description: string;
-  icon?: SvgIconComponent;
   experimental?: boolean;
+  CustomIcon?: SvgIconComponent;
 }
 
 export interface ISelectOption {

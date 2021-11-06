@@ -5,7 +5,7 @@ import Loading from 'react-loading-components';
 import './loader.css';
 
 interface IProps {
-  shortLoader: boolean;
+  shortLoader?: boolean;
 }
 
 interface IState {
@@ -28,7 +28,7 @@ export default class Loader extends React.Component<IProps, IState> {
 
     this.state = {
       showText: !this.props.shortLoader,
-      showLoader: this.props.shortLoader,
+      showLoader: this.props.shortLoader || false,
     };
 
     // choose random color
