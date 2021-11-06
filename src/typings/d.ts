@@ -119,5 +119,4 @@ export interface IDialog {
   disableEscKey?: boolean;
   handlePrimary?: () => void;
   handleSecondary?: () => void;
-  handleClose?: () => void;
 }

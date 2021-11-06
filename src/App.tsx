@@ -22,7 +22,7 @@ const App = (): React.ReactElement => {
     const dataPath = storage.getDataPath();
     storage.setDataPath(dataPath);
 
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 750);
   }, []);
 
   React.useEffect(() => {

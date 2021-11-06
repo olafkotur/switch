@@ -6,14 +6,17 @@ import {
   DialogActions,
   Button,
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { IDialog } from '../../typings/d';
+import { setDialog } from '../../redux/interface';
 
 const Dialog = (): React.ReactElement => {
-  const dialog = useSelector(
-    (state: RootState) => state.interface.dialog,
-  ) as IDialog;
+  const dispatch = useDispatch();
+  const dialog = useSelector((state: RootState) => state.interface.dialog);
+
+  if (!dialog) {
+    return <></>;
+  }
 
   return (
     <div>
@@ -21,7 +24,7 @@ const Dialog = (): React.ReactElement => {
         fullWidth
         open={dialog.open}
         disableEscapeKeyDown={dialog.disableEscKey}
-        onClose={dialog.handleClose}
+        onClose={() => dispatch(setDialog(null))}
         PaperProps={{ style: { background: '#303136' } }}
       >
         <div className="primary">

@@ -55,12 +55,15 @@ const Settings = (): React.ReactElement => {
       description: 'watch the application tutorial video',
       type: 'pop-up',
       CustomIcon: Info,
-      // this.props.handleDialog({
-      //   open: true,
-      //   title: 'Tutorial Video',
-      //   content: tutorial(),
-      //   hideButtons: true,
-      // }),
+      customHandler: () => {
+        const dialog: IDialog = {
+          open: true,
+          title: 'Tutorial Video',
+          hideButtons: true,
+          content: tutorial(),
+        };
+        dispatch(setDialog(dialog));
+      },
     },
     {
       name: 'visiblityKeybind',
@@ -69,18 +72,22 @@ const Settings = (): React.ReactElement => {
       description: 'combination used to toggle the window’s visibility',
       type: 'pop-up',
       restart: true,
-      // this.props.handleDialog({
-      //   open: true,
-      //   title: 'Visibility Keybind',
-      //   content: visibilityKeybindSelect(
-      //     this.state.visiblityKeybind,
-      //     (v: string) =>
-      //       this.handleUpdate('visiblityKeybind', v, false, true),
-      //   ),
-      //   hideButtons: true,
-      //   disableEscKey: true,
-      //   secondaryLabel: 'dismiss',
-      // }),
+      customHandler: () => {
+        const dialog: IDialog = {
+          open: true,
+          title: 'Visiblity Keybind',
+          hideButtons: true,
+          disableEscKey: true,
+          secondaryLabel: 'Dismiss',
+          content: visibilityKeybindSelect(
+            settings.visiblityKeybind,
+            (v: string) => {
+              handleChange('visiblityKeybind', v);
+            },
+          ),
+        };
+        dispatch(setDialog(dialog));
+      },
     },
     {
       name: 'windowBehaviour',
@@ -90,23 +97,20 @@ const Settings = (): React.ReactElement => {
         'choose what happens when you open a hyperlink within Switch',
       type: 'pop-up',
       restart: true,
-      // this.props.handleDialog({
-      //   open: true,
-      //   title: 'Hyperlink Behaviour',
-      //   content: windowBehaviourSelect(
-      //     this.state.windowBehaviour,
-      //     (v: string) => {
-      //       this.handleUpdate('windowBehaviour', v, true, true);
-      //       this.props.handleDialog({
-      //         open: false,
-      //         hideButtons: true,
-      //         title: '',
-      //         content: '',
-      //       });
-      //     },
-      //   ),
-      //   hideButtons: true,
-      // }),
+      customHandler: () => {
+        const dialog: IDialog = {
+          open: true,
+          title: 'Hyperlink Behaviour',
+          hideButtons: true,
+          content: windowBehaviourSelect(
+            settings.windowBehaviour,
+            (v: string) => {
+              handleChange('windowBehaviour', v);
+            },
+          ),
+        };
+        dispatch(setDialog(dialog));
+      },
     },
     {
       name: 'overlayMode',
@@ -151,20 +155,6 @@ const Settings = (): React.ReactElement => {
         };
         dispatch(setDialog(dialog));
       },
-      // this.props.handleDialog({
-      // open: true,
-      // title: 'Font Family',
-      // content: fontFamilySelect(this.state.fontFamily, (v: FontFamily) => {
-      //   this.handleUpdate('fontFamily', v, true, false);
-      //   this.props.handleDialog({
-      //     open: false,
-      //     hideButtons: true,
-      //     title: '',
-      //     content: '',
-      //   });
-      // }),
-      // hideButtons: true,
-      // }),
     },
     {
       name: 'accentColor',
@@ -172,20 +162,17 @@ const Settings = (): React.ReactElement => {
       label: 'Accent Color',
       description: 'change the accent colour of the application',
       type: 'pop-up',
-      // this.props.handleDialog({
-      //   open: true,
-      //   title: 'Accent Color',
-      //   content: accentColorSelect((v: string) => {
-      //     this.handleUpdate('accentColor', v, true, false);
-      //     this.props.handleDialog({
-      //       open: false,
-      //       hideButtons: true,
-      //       title: '',
-      //       content: '',
-      //     });
-      //   }),
-      //   hideButtons: true,
-      // }),
+      customHandler: () => {
+        const dialog: IDialog = {
+          open: true,
+          title: 'Accent Color',
+          hideButtons: true,
+          content: accentColorSelect((v: string) => {
+            handleChange('accentColor', v);
+          }),
+        };
+        dispatch(setDialog(dialog));
+      },
     },
     {
       name: 'animatePresets',
