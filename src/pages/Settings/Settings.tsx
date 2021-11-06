@@ -30,19 +30,7 @@ import { setSettings } from '../../redux/user';
 import { RootState } from '../../store';
 import { setDialog } from '../../redux/interface';
 
-interface IProps {
-  items: IMenuItem[];
-  userSettings: IUserSettings;
-  handleRefresh: () => Promise<void>;
-  handleDialog: (data: IDialog) => void;
-}
-
-const Settings = ({
-  items,
-  userSettings,
-  handleRefresh,
-  handleDialog,
-}: IProps): React.ReactElement => {
+const Settings = (): React.ReactElement => {
   const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);
 
   const dispatch = useDispatch();
