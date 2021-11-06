@@ -230,6 +230,8 @@ const Settings = (): React.ReactElement => {
           ))}
         </div>
       </div>
+
+      <div className="setting-footer" />
     </div>
   );
 };
