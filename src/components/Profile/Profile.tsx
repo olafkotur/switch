@@ -2,7 +2,6 @@ import React from 'react';
 import { UserService } from '../../services/user';
 import { ISettingConfig } from '../../typings/d';
 import { IProfileData } from '../../typings/data';
-import Setting from '../Setting/Setting';
 import './profile.css';
 
 const defaultAvatar = require('../../../assets/default-avatar.png');

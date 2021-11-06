@@ -94,7 +94,6 @@ export const RequestService = {
     options: IRequestOptions,
     attempt: number,
   ): Promise<IResponse> => {
-    console.log(response.res);
     if (response.res.code === 401 && attempt < 1) {
       const refreshResponse = await RequestService.request(
         {

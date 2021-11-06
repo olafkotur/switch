@@ -4,7 +4,7 @@ export const SearchService = {
   /**
    * Returns service suggestions
    */
-  getSuggestions: async (): Promise<IMenuItem[]> => {
+  getSuggestions: (): IMenuItem[] => {
     return [
       {
         id: '',
