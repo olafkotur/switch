@@ -7,18 +7,16 @@ export const UserService = {
   /**
    * Authenticate existing user.
    */
-  login: async (email: string, password: string): Promise<boolean> => {
+  login: async (email: string, password: string): Promise<void> => {
     const response = await RequestService.post(`${config.apiUrl}/user/login`, {
       email,
       password,
     });
 
     // save token to local storage
-    if (response.res.status === 200) {
-      await StorageService.set('jwtTokens', { ...response.res.data });
-      return true;
+    if (response.result.status === 200) {
+      await StorageService.set('jwtTokens', { ...response.result.data });
     }
-    return false;
   },
 
   /**
@@ -33,6 +31,9 @@ export const UserService = {
     const response = await RequestService.get(
       `${config.apiUrl}/api/user/profile`,
     );
-    return response.res.data;
+    if (response.result.code === 200) {
+      return response.result.data;
+    }
+    return null;
   },
 };

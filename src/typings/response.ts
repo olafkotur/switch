@@ -1,5 +1,5 @@
 export interface IResponse {
   // tslint:disable-next-line: no-any
-  res: any;
+  result: any;
   headers: Headers;
 }

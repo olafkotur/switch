@@ -6,7 +6,7 @@
     "no-consecutive-blank-lines": true,
     "no-unnecessary-else": true,
     "prefer-template": true,
-    "no-any": true,
+    "no-any": false,
     "variable-name": ["allow-pascal-case"],
     "space-in-parens": false,
     "object-curly-spacing": [true, "always"],

@@ -59,7 +59,7 @@ export const RequestService = {
             'Content-Type': 'application/json',
           },
         }).then(async (v) =>
-          resolve({ res: await v.json(), headers: v.headers }),
+          resolve({ result: await v.json(), headers: v.headers }),
         );
       } catch (e) {
         reject(new Error(`RequestService:request :: ${e}`));
@@ -94,7 +94,7 @@ export const RequestService = {
     options: IRequestOptions,
     attempt: number,
   ): Promise<IResponse> => {
-    if (response.res.code === 401 && attempt < 1) {
+    if (response.result.code === 401 && attempt < 1) {
       const refreshResponse = await RequestService.request(
         {
           method: 'post',
@@ -105,8 +105,8 @@ export const RequestService = {
       );
 
       // try again with new tokens
-      if (refreshResponse.res.code === 200) {
-        const newTokens = refreshResponse.res.data as ITokenData;
+      if (refreshResponse.result.code === 200) {
+        const newTokens = refreshResponse.result.data as ITokenData;
         await StorageService.set('jwtTokens', newTokens);
         return RequestService.requestR(options, attempt + 1);
       }

@@ -1,16 +1,15 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEmail } from '../../redux/user';
 import { UserService } from '../../services/user';
-import { IProfileData } from '../../typings/data';
+import { RootState } from '../../store';
 import './styles.css';
-
-const defaultAvatar = require('../../../assets/default-avatar.png');
 
 const Profile = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [profileData, setProfileData] = React.useState<IProfileData | null>(
-    null,
-  );
+
+  const dispatch = useDispatch();
+  const { email, avatar } = useSelector((state: RootState) => state.user);
 
   React.useEffect(() => {
     fetchProfileData();
@@ -22,9 +21,9 @@ const Profile = (): React.ReactElement => {
   const fetchProfileData = async (): Promise<void> => {
     const data = await UserService.fetchProfile();
     if (data) {
-      setProfileData(data);
+      dispatch(setEmail(data.email));
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   /**
@@ -52,11 +51,11 @@ const Profile = (): React.ReactElement => {
 
   return (
     <div className="setting-group bg-secondary d-flex flex-row align-items-center">
-      <img src={defaultAvatar} className="setting-profile-avatar" />
+      <img src={avatar} className="setting-profile-avatar" />
       <div className="align-items-center ml-3">
-        {profileData ? (
+        {email ? (
           <>
-            {renderRow('Email', profileData.email)}
+            {renderRow('Email', email)}
             {renderRow('Password', '**************')}
           </>
         ) : (
