@@ -2,121 +2,95 @@ import React from 'react';
 import { SettingsService } from '../../services/settings';
 import { Button, Paper, Tooltip } from '@material-ui/core';
 import './keybindButton.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 interface IProps {
-  keybind: string;
   handleUpdate: (value: string) => void;
 }
 
-interface IState {
-  recording: boolean;
-  changed: boolean;
-  keyBinds: string[];
-}
+// TODO: Come back to this, something isn't right with the keyboard events
+const KeybindButton = ({ handleUpdate }: IProps): React.ReactElement => {
+  const [key, setKey] = React.useState<string>('');
+  const [keyBinds, setKeyBinds] = React.useState<string[]>(['s']);
+  const [changed, setChanged] = React.useState<boolean>(false);
+  const [recording, setRecording] = React.useState<boolean>(false);
 
-export default class KeybindButton extends React.Component<IProps, IState> {
-  /**
-   * KeybindButton constructor
-   * @param props - component properties
-   */
-  constructor(props: IProps) {
-    super(props);
+  const { settings } = useSelector((state: RootState) => state.user);
 
-    this.state = {
-      recording: false,
-      changed: false,
-      keyBinds: [],
-    };
+  // React.useEffect(() => {
+  //   setKeyBinds([...keyBinds, key]);
+  //   console.log({keyBinds, key})
+  //   if (keyBinds.length >= 2) {
+  //     setRecording(false);
+  //     setChanged(true);
+  //     handleUpdate(formatKeybinds());
+  //     document.removeEventListener('keydown', handleEvent);
+  //   }
+  // }, [key]);
 
-    // scope binding
-    this.handleClick = this.handleClick.bind(this);
-    this.handleRecord = this.handleRecord.bind(this);
-    this.formatKeybinds = this.formatKeybinds.bind(this);
-  }
-
-  /**
-   * Component update
-   * @param _prevProps - previous properties
-   * @param prevState - previous state
-   */
-  public componentDidUpdate(_prevProps: IProps, prevState: IState) {
-    if (prevState.recording !== this.state.recording) {
-      this.state.recording
-        ? document.addEventListener('keydown', this.handleRecord)
-        : document.removeEventListener('keydown', this.handleRecord);
+  const handleEvent = (e: KeyboardEvent): void => {
+    e.preventDefault();
+    const value = SettingsService.validateKey(e.key);
+    if (!value) {
+      return;
     }
-  }
+
+    const newBinds = [...keyBinds, value];
+    if (newBinds.length >= 2) {
+      setRecording(false);
+      setChanged(true);
+      document.removeEventListener('keydown', handleEvent);
+    }
+    console.log({ newBinds, keyBinds, value });
+    setKeyBinds(newBinds);
+  };
 
   /**
    * Handles click event
    */
-  protected handleClick(): void {
-    if (!this.state.recording) {
-      this.setState({ recording: true, keyBinds: [] });
+  const handleClick = (): void => {
+    if (!recording) {
+      setRecording(true);
+      setKeyBinds([]);
+      document.addEventListener('keydown', handleEvent);
     }
-  }
-
-  /**
-   * Handles keybind recording
-   * @param e - keyboard event
-   */
-  protected async handleRecord(e: KeyboardEvent): Promise<void> {
-    e.preventDefault();
-
-    // validate key binding
-    const value = SettingsService.validateKey(e.key);
-    if (value) {
-      if (this.state.keyBinds.length && this.state.keyBinds[0] === value) {
-        return;
-      }
-      this.setState({ keyBinds: [...this.state.keyBinds, value] });
-    }
-
-    // stop recording after 2 keys
-    if (this.state.keyBinds.length >= 2) {
-      this.props.handleUpdate(this.formatKeybinds());
-      this.setState({ recording: false, changed: true });
-    }
-  }
+  };
 
   /**
    * Formats keybinds
    */
-  protected formatKeybinds(): string {
+  const formatKeybinds = (): string => {
     let formatted = '...';
-    formatted = this.state.keyBinds[0] ? this.state.keyBinds[0] : formatted;
-    formatted = this.state.keyBinds[1]
-      ? `${formatted} + ${this.state.keyBinds[1]}`
-      : formatted;
+    formatted = keyBinds[0] ? keyBinds[0] : formatted;
+    formatted = keyBinds[1] ? `${formatted} + ${keyBinds[1]}` : formatted;
     return formatted;
-  }
+  };
 
-  render() {
-    return (
-      <div className="d-flex flex-row row justify-content-between mx-1">
-        <Paper
-          variant="outlined"
-          className="d-flex align-items-center px-3 py-2 keybind-button-text"
+  return (
+    <div className="d-flex flex-row row justify-content-between mx-1">
+      <Paper
+        variant="outlined"
+        className="d-flex align-items-center px-3 py-2 keybind-button-text"
+      >
+        {changed ? formatKeybinds() : settings.visiblityKeybind}
+      </Paper>
+      <Button
+        variant="contained"
+        className={`setting-button ${recording ? 'bg-error' : 'primary'} py-2`}
+        color="primary"
+        onClick={handleClick}
+      >
+        <Tooltip
+          title={`Currently set to ${
+            changed ? formatKeybinds() : settings.visiblityKeybind
+          }`}
         >
-          {this.state.changed ? this.formatKeybinds() : this.props.keybind}
-        </Paper>
-        <Button
-          variant="contained"
-          className={`setting-button ${
-            this.state.recording ? 'bg-error' : 'primary'
-          } py-2`}
-          color="primary"
-          onClick={this.handleClick}
-        >
-          <Tooltip
-            title={`Currently set to ${
-              this.state.changed ? this.formatKeybinds() : this.props.keybind
-            }`}
-          >
-            <span className="setting-button-text">record keybind</span>
-          </Tooltip>
-        </Button>
-      </div>
-    );
-  }
-}
+          <span className="setting-button-text">record keybind</span>
+        </Tooltip>
+      </Button>
+    </div>
+  );
+};
+
+export default KeybindButton;

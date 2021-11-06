@@ -28,7 +28,9 @@ const App = (): React.ReactElement => {
     const dataPath = storage.getDataPath();
     storage.setDataPath(dataPath);
 
-    fetchUserData().then(() => setLoading(false));
+    // TODO: Will likely have to use async/await here
+    fetchUserData();
+    setTimeout(() => setLoading(false), 2000);
   }, []);
 
   React.useEffect(() => {
