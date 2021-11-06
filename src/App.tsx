@@ -6,6 +6,8 @@ import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
 import { render } from 'react-dom';
 import { FontFamily, IUserSettings } from './typings/d';
 import { SettingsService } from './services/settings';
+import { store } from './store';
+import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css';
 
@@ -103,21 +105,23 @@ export default class App extends React.Component<{}, IState> {
   render() {
     return (
       <MuiThemeProvider theme={this.theme as Theme}>
-        {!this.state.loading ? (
-          <div
-            style={{
-              fontFamily:
-                this.userSettings?.fontFamily || this.defaultFontFamily,
-            }}
-          >
-            <Dashboard
-              userSettings={this.userSettings as IUserSettings}
-              handleRefresh={this.handleRefresh}
-            />
-          </div>
-        ) : (
-          <Loader shortLoader={!this.state.initialise} />
-        )}
+        <Provider store={store}>
+          {!this.state.loading ? (
+            <div
+              style={{
+                fontFamily:
+                  this.userSettings?.fontFamily || this.defaultFontFamily,
+              }}
+            >
+              <Dashboard
+                userSettings={this.userSettings as IUserSettings}
+                handleRefresh={this.handleRefresh}
+              />
+            </div>
+          ) : (
+            <Loader shortLoader={!this.state.initialise} />
+          )}
+        </Provider>
       </MuiThemeProvider>
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { UserService } from '../../services/user';
-import { ISettingConfig } from '../../typings/d';
 import { IProfileData } from '../../typings/data';
 import './styles.css';
 
