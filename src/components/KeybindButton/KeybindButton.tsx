@@ -12,7 +12,7 @@ interface IProps {
 // TODO: Come back to this, something isn't right with the keyboard events
 const KeybindButton = ({ handleUpdate }: IProps): React.ReactElement => {
   const [key, setKey] = React.useState<string>('');
-  const [keyBinds, setKeyBinds] = React.useState<string[]>(['s']);
+  const [keyBinds, setKeyBinds] = React.useState<string[]>([]);
   const [changed, setChanged] = React.useState<boolean>(false);
   const [recording, setRecording] = React.useState<boolean>(false);
 
@@ -36,14 +36,13 @@ const KeybindButton = ({ handleUpdate }: IProps): React.ReactElement => {
       return;
     }
 
-    const newBinds = [...keyBinds, value];
-    if (newBinds.length >= 2) {
+    setKeyBinds((keyBinds) => [...keyBinds, value]);
+    console.log({ keyBinds });
+    if (keyBinds.length >= 2) {
       setRecording(false);
       setChanged(true);
       document.removeEventListener('keydown', handleEvent);
     }
-    console.log({ newBinds, keyBinds, value });
-    setKeyBinds(newBinds);
   };
 
   /**

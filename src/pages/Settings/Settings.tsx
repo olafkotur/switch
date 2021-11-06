@@ -28,7 +28,7 @@ const Settings = (): React.ReactElement => {
   const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);
 
   const dispatch = useDispatch();
-  const settings = useSelector((state: RootState) => state.user.settings);
+  const { settings } = useSelector((state: RootState) => state.user);
 
   /**
    * Default change handler applied to all settings.
@@ -226,13 +226,7 @@ const Settings = (): React.ReactElement => {
       <div className="setting-group bg-secondary">
         <div className="d-flex flex-row row">
           {presets.map((v) => (
-            <Preset
-              {...v}
-              key={`preset-setting-${v.name}`}
-              animate={settings.animatePresets}
-              windowPadding={settings.windowPadding}
-              handleRefresh={async () => {}}
-            />
+            <Preset {...v} key={`preset-setting-${v.name}`} />
           ))}
         </div>
       </div>
