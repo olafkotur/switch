@@ -2,7 +2,6 @@ import React from 'react';
 import Preset from '../../components/Preset/Preset';
 import Setting from '../../components/Setting/Setting';
 import { Info } from '@material-ui/icons';
-import { IProps as IDialog } from '../../components/Dialog/Dialog';
 import {
   IMenuItem,
   ISettingConfig,
@@ -10,6 +9,7 @@ import {
   IUserSettings,
   FontFamily,
   WindowBehaviour,
+  IDialog,
 } from '../../typings/d';
 import { SettingsService } from '../../services/settings';
 import { UtilService } from '../../services/util';
@@ -28,6 +28,7 @@ import Profile from './Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSettings } from '../../redux/user';
 import { RootState } from '../../store';
+import { setDialog } from '../../redux/interface';
 
 interface IProps {
   items: IMenuItem[];
@@ -46,6 +47,15 @@ const Settings = ({
 
   const dispatch = useDispatch();
   const settings = useSelector((state: RootState) => state.user.settings);
+
+  /**
+   * Default change handler applied to all settings.
+   * @param name - name of the setting
+   * @param value - value of the setting
+   */
+  const handleChange = (name: string, value: boolean | string): void => {
+    dispatch(setSettings({ ...settings, [name]: value }));
+  };
 
   const presets = PresetService.fetch();
 
@@ -142,19 +152,30 @@ const Settings = ({
       label: 'Font Family',
       description: 'change the font used for the application',
       type: 'pop-up',
+      customHandler: () => {
+        const dialog: IDialog = {
+          open: true,
+          title: 'Font Family',
+          hideButtons: true,
+          content: fontFamilySelect(settings.fontFamily, (v: FontFamily) => {
+            handleChange('fontFamily', v);
+          }),
+        };
+        dispatch(setDialog(dialog));
+      },
       // this.props.handleDialog({
-      //   open: true,
-      //   title: 'Font Family',
-      //   content: fontFamilySelect(this.state.fontFamily, (v: FontFamily) => {
-      //     this.handleUpdate('fontFamily', v, true, false);
-      //     this.props.handleDialog({
-      //       open: false,
-      //       hideButtons: true,
-      //       title: '',
-      //       content: '',
-      //     });
-      //   }),
-      //   hideButtons: true,
+      // open: true,
+      // title: 'Font Family',
+      // content: fontFamilySelect(this.state.fontFamily, (v: FontFamily) => {
+      //   this.handleUpdate('fontFamily', v, true, false);
+      //   this.props.handleDialog({
+      //     open: false,
+      //     hideButtons: true,
+      //     title: '',
+      //     content: '',
+      //   });
+      // }),
+      // hideButtons: true,
       // }),
     },
     {
@@ -214,6 +235,7 @@ const Settings = ({
             {...v}
             key={`general-setting-${v.name}`}
             value={settings[v.name as keyof IUserSettings]}
+            handleChange={handleChange}
           />
         ))}
       </div>
@@ -225,6 +247,7 @@ const Settings = ({
             {...v}
             key={`appearance-setting-${v.name}`}
             value={settings[v.name as keyof IUserSettings]}
+            handleChange={handleChange}
           />
         ))}
       </div>

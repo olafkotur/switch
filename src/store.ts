@@ -1,10 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  createSerializableStateInvariantMiddleware,
+} from '@reduxjs/toolkit';
 import userReducer from './redux/user';
+import interfaceReducer from './redux/interface';
+
+const serializableMiddleware = createSerializableStateInvariantMiddleware({
+  isSerializable: () => true,
+});
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    interface: interfaceReducer,
   },
+  middleware: [serializableMiddleware],
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

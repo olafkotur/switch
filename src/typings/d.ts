@@ -46,6 +46,7 @@ export interface ISettingConfig extends ISetting {
   label: string;
   description: string;
   experimental?: boolean;
+  customHandler?: Function;
   CustomIcon?: SvgIconComponent;
 }
 
@@ -103,4 +104,20 @@ export interface IActionRequest {
 export interface IKey {
   name: string;
   value: string;
+}
+
+export interface IDialog {
+  open: boolean;
+  title: string;
+  content: React.ReactElement | string;
+  animate?: boolean;
+  primaryLabel?: string;
+  secondaryLabel?: string;
+  hideButtons?: boolean;
+  hidePrimary?: boolean;
+  hideSecondary?: boolean;
+  disableEscKey?: boolean;
+  handlePrimary?: () => void;
+  handleSecondary?: () => void;
+  handleClose?: () => void;
 }

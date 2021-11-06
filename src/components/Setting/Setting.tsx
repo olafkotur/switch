@@ -8,7 +8,7 @@ import { setSettings } from '../../redux/user';
 import { RootState } from '../../store';
 
 interface IProps extends ISettingConfig {
-  customHandler?: Function;
+  handleChange: (name: string, value: any) => void;
 }
 
 const Setting = ({
@@ -19,19 +19,11 @@ const Setting = ({
   name,
   value,
   customHandler,
+  handleChange,
   CustomIcon,
 }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const settings = useSelector((state: RootState) => state.user.settings);
-
-  /**
-   * Default change handler applied to all settings.
-   * @param name - name of the setting
-   * @param value - value of the setting
-   */
-  const handleChange = (name: string, value: boolean | string): void => {
-    dispatch(setSettings({ ...settings, [name]: value }));
-  };
 
   /**
    * Renders setting action

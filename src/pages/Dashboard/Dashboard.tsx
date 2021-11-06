@@ -3,9 +3,10 @@ import WebView from '../../components/WebView/WebView';
 import Menu from '../../components/Menu/Menu';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import Dialog, { IProps as IDialog } from '../../components/Dialog/Dialog';
+import Dialog from '../../components/Dialog/Dialog';
 import {
   IActionRequest,
+  IDialog,
   IMenuItem,
   IUserSettings,
   IWebView,
@@ -176,14 +177,6 @@ export default class Dashboard extends React.Component<IProps, IState> {
               )}
             </div>
           </div>
-
-          {/* show dialog across the entire app */}
-          {this.state.dialog && (
-            <Dialog
-              {...this.state.dialog}
-              handleClose={this.handleDialogClose}
-            />
-          )}
         </div>
       )
     );

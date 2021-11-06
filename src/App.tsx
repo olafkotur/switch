@@ -2,7 +2,12 @@ import React from 'react';
 import Dashboard from './pages/Dashboard/Dashboard';
 import storage from 'electron-json-storage';
 import Loader from './components/Loader/Loader';
-import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
+import {
+  createMuiTheme,
+  Dialog,
+  MuiThemeProvider,
+  Theme,
+} from '@material-ui/core';
 import { render } from 'react-dom';
 import { RootState, store } from './store';
 import { Provider, useSelector } from 'react-redux';
@@ -14,6 +19,7 @@ const App = (): React.ReactElement => {
   const [theme, setTheme] = React.useState<Theme>();
 
   const { settings } = useSelector((state: RootState) => state.user);
+  const { error, dialog } = useSelector((state: RootState) => state.interface);
 
   React.useEffect(() => {
     // storage setup
@@ -67,6 +73,7 @@ const App = (): React.ReactElement => {
     <MuiThemeProvider theme={theme as Theme}>
       <div style={{ fontFamily: settings.fontFamily }}>
         <Dashboard userSettings={settings} handleRefresh={async () => {}} />
+        <Dialog open={dialog?.open || false} />
       </div>
     </MuiThemeProvider>
   );
