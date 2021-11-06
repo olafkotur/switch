@@ -55,7 +55,7 @@ export const RequestService = {
           ...options,
           headers: {
             ...options.headers,
-            Authorization: `Bearer ${jwtTokens.access}`,
+            Authorization: `Bearer ${jwtTokens.accessToken}`,
             'Content-Type': 'application/json',
           },
         }).then(async (v) =>
@@ -98,8 +98,8 @@ export const RequestService = {
       const refreshResponse = await RequestService.request(
         {
           method: 'post',
-          url: `${config}/api/user/refresh`,
-          body: JSON.stringify({ refresh: jwtTokens.refresh }),
+          url: `${config.apiUrl}/api/user/refresh`,
+          body: JSON.stringify({ refreshToken: jwtTokens.refreshToken }),
         },
         jwtTokens,
       );

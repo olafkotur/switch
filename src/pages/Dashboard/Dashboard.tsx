@@ -29,7 +29,6 @@ interface IState {
   activeApplication: IMenuItem | null;
   dialog: IDialog | null;
 }
-
 export default class Dashboard extends React.Component<IProps, IState> {
   /**
    * Local properties
@@ -51,7 +50,6 @@ export default class Dashboard extends React.Component<IProps, IState> {
       actionRequest: { id: '', action: '' },
       dialog: null,
     };
-
     // scope binding
     this.handleMenuItemClicked = this.handleMenuItemClicked.bind(this);
     this.handleActionRequest = this.handleActionRequest.bind(this);

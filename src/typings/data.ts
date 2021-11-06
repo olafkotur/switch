@@ -3,6 +3,6 @@ export interface IProfileData {
 }
 
 export interface ITokenData {
-  access: string;
-  refresh: string;
+  accessToken: string;
+  refreshToken: string;
 }

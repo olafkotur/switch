@@ -22,8 +22,8 @@ import {
   tutorial,
 } from '../../components/Dialog/DialogContent';
 import * as _ from 'lodash';
-import './settings.css';
-import Profile from '../../components/Profile/Profile';
+import './styles.css';
+import Profile from './Profile';
 
 interface IProps {
   items: IMenuItem[];

@@ -15,10 +15,7 @@ export const UserService = {
 
     // save token to local storage
     if (response.res.status === 200) {
-      await StorageService.set('jwtTokens', {
-        access: response.res.data.accessToken,
-        refresh: response.res.data.refreshToken,
-      });
+      await StorageService.set('jwtTokens', { ...response.res.data });
       return true;
     }
     return false;

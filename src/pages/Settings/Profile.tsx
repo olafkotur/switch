@@ -2,7 +2,7 @@ import React from 'react';
 import { UserService } from '../../services/user';
 import { ISettingConfig } from '../../typings/d';
 import { IProfileData } from '../../typings/data';
-import './profile.css';
+import './styles.css';
 
 const defaultAvatar = require('../../../assets/default-avatar.png');
 
@@ -51,8 +51,8 @@ const Profile = (): React.ReactElement => {
   }
 
   return (
-    <div className="profile-container bg-secondary d-flex flex-row align-items-center">
-      <img src={defaultAvatar} className="profile-avatar" />
+    <div className="setting-group bg-secondary d-flex flex-row align-items-center">
+      <img src={defaultAvatar} className="setting-profile-avatar" />
       <div className="align-items-center ml-3">
         {profileData ? (
           <>

@@ -1,0 +1,15 @@
+.settings-container {
+  margin-top: 5vh;
+  width: 60vw;
+}
+
+.setting-group {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.setting-profile-avatar {
+  height: 120px;
+  width: 120px;
+  border-radius: 60px;
+}
