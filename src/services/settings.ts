@@ -1,41 +1,42 @@
 import { IUserSettings } from '../typings/d';
 import { StorageService } from './storage';
 import { modifiers, alphabetic, numeric, special } from '../imports/keys';
-import * as _ from 'lodash';
+import { RequestService } from './request';
+import { config } from '../config';
+import _ from 'lodash';
 
 const STORAGE_KEY = 'userSettings';
-
-const defaultSettings: IUserSettings = {
-  overlayMode: true,
-  modifiedAgent: true,
-  visiblityKeybind: 'CommandOrControl + Esc',
-  warningMessages: true,
-  windowBehaviour: 'external',
-  accentColor: '#227093',
-  animatePresets: true,
-  windowPadding: false,
-  fontFamily: 'Arial',
-};
 
 export const SettingsService = {
   /**
    * Fetches user settings
    */
-  fetch: async (): Promise<IUserSettings> => {
-    const res = (await StorageService.get(STORAGE_KEY)) as IUserSettings;
-    return _.isEmpty(res) ? defaultSettings : res;
+  fetch: async (): Promise<IUserSettings | null> => {
+    const remote = await RequestService.get(`${config.apiUrl}/api/settings`);
+    const local = await StorageService.get(STORAGE_KEY);
+
+    // always preference for remote
+    if (remote.result.data) {
+      await StorageService.set(STORAGE_KEY, remote.result.data); // update local
+      return remote.result.data;
+    }
+    // use local if remote is not available
+    if (local && !_.isEmpty(local)) {
+      return local as IUserSettings;
+    }
+
+    return null;
   },
 
   /**
-   * Updates provided user settings
+   * Updates user settings in the database and local storage.
+   * @param updatedSettings - updated user settings
    */
-  update: async (toUpdate: Partial<IUserSettings>): Promise<boolean> => {
-    const previous = await SettingsService.fetch();
-    const data: IUserSettings = {
-      ...previous,
-      ...toUpdate,
-    };
-    return await StorageService.set(STORAGE_KEY, data);
+  update: async (updatedSettings: IUserSettings): Promise<boolean> => {
+    const url = `${config.apiUrl}/api/settings/update`;
+    const remote = await RequestService.post(url, updatedSettings);
+    const local = await StorageService.set(STORAGE_KEY, updatedSettings);
+    return remote.result.code === 200 && local;
   },
 
   /**

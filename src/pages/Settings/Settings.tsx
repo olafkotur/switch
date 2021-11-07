@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSettings } from '../../redux/user';
 import { RootState } from '../../store';
 import { setDialog } from '../../redux/interface';
+import { SettingsService } from '../../services/settings';
 import './styles.css';
 
 const Settings = (): React.ReactElement => {
@@ -41,9 +42,10 @@ const Settings = (): React.ReactElement => {
       'windowBehaviour',
       'visiblityKeybind',
     ];
-    console.log({ name, value });
     settingsWithRestart.includes(name) && setShouldRestart(true);
-    dispatch(setSettings({ ...settings, [name]: value }));
+    const updatedSettings = { ...settings, [name]: value };
+    SettingsService.update(updatedSettings); // do not wait for response
+    dispatch(setSettings(updatedSettings));
   };
 
   const presets = PresetService.fetch();

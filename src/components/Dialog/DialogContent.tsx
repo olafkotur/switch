@@ -80,7 +80,7 @@ export const windowBehaviourSelect = (
   <div className="row justify-content-center">
     {windowBehaviours.map((v) => (
       <ButtonBase
-        key={`dialog-select-box-${v}`}
+        key={`dialog-select-box-${v.label}`}
         className="d-flex justify-content-center align-items-center dialog-window-behaviour"
         style={{
           background: v.value === initialValue ? accentColor : '#1f2225',

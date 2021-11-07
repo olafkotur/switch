@@ -6,14 +6,14 @@ import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core';
 import { render } from 'react-dom';
 import { RootState, store } from './store';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.css';
-import './custom.css';
 import Dialog from './components/Dialog/Dialog';
 import { UserService } from './services/user';
 import { SettingsService } from './services/settings';
 import { MenuService } from './services/menu';
 import { setAuth, setEmail, setSettings } from './redux/user';
 import { setApplications } from './redux/interface';
+import 'bootstrap/dist/css/bootstrap.css';
+import './custom.css';
 
 const App = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -28,9 +28,7 @@ const App = (): React.ReactElement => {
     const dataPath = storage.getDataPath();
     storage.setDataPath(dataPath);
 
-    // TODO: Will likely have to use async/await here
-    fetchUserData();
-    setTimeout(() => setLoading(false), 0);
+    fetchUserData().then(() => setTimeout(() => setLoading(false), 1000));
   }, []);
 
   React.useEffect(() => {
@@ -63,7 +61,7 @@ const App = (): React.ReactElement => {
     const settings = await SettingsService.fetch();
     const applications = await MenuService.fetchList();
 
-    dispatch(setAuth(true)); // TODO: Temporary, replace with a login
+    dispatch(setAuth(!!profile));
     profile && dispatch(setEmail(profile.email));
     settings && dispatch(setSettings(settings));
     applications && dispatch(setApplications(applications));
