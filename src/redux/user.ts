@@ -18,7 +18,7 @@ const initialState: IUserState = {
     visiblityKeybind: 'CommandOrControl + Esc',
     warningMessages: true,
     windowBehaviour: 'external',
-    accentColor: '#227093',
+    accentColor: '#b33939',
     animatePresets: true,
     windowPadding: false,
     fontFamily: 'Arial',

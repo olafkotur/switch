@@ -2,7 +2,7 @@ import React from 'react';
 import Dashboard from './pages/Dashboard/Dashboard';
 import storage from 'electron-json-storage';
 import Loader from './components/Loader/Loader';
-import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
+import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core';
 import { render } from 'react-dom';
 import { RootState, store } from './store';
 import { Provider, useDispatch, useSelector } from 'react-redux';
@@ -38,32 +38,18 @@ const App = (): React.ReactElement => {
     setTheme(
       createMuiTheme({
         typography: {
-          fontFamily: settings.fontFamily,
           fontSize: 14,
-          fontWeightLight: 300,
-          fontWeightRegular: 400,
-          fontWeightMedium: 500,
+          fontFamily: settings.fontFamily,
         },
         palette: {
-          primary: {
-            main: settings.accentColor,
-          },
+          background: { default: '#303136', paper: '#303136' },
+          text: { primary: '#fff' },
+          primary: { main: settings.accentColor },
           secondary: { main: '#fff' },
           error: { main: '#b33939' },
         },
         overrides: {
-          MuiButton: {
-            label: {
-              fontSize: 12,
-              textTransform: 'lowercase',
-            },
-          },
-          MuiChip: {
-            label: {
-              fontSize: 12,
-              textTransform: 'lowercase',
-            },
-          },
+          MuiButton: { label: { fontSize: 12, textTransform: 'lowercase' } },
         },
       }),
     );
@@ -88,12 +74,13 @@ const App = (): React.ReactElement => {
   }
 
   return (
-    <MuiThemeProvider theme={theme as Theme}>
+    <ThemeProvider theme={theme as Theme}>
       <div style={{ fontFamily: settings.fontFamily }}>
+        {/* <CssBaseline /> */}
         <Dashboard />
         {dialog && <Dialog />}
       </div>
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 };
 

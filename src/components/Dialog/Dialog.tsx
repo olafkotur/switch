@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Grow,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -26,13 +27,14 @@ const Dialog = (): React.ReactElement => {
         disableEscapeKeyDown={dialog.disableEscKey}
         onClose={() => dispatch(setDialog(null))}
         PaperProps={{ style: { background: '#303136' } }}
+        TransitionComponent={Grow}
       >
         <div className="primary">
           <DialogTitle>{dialog.title}</DialogTitle>
         </div>
 
         <div className="primary pb-2">
-          <DialogContent>{dialog.content}</DialogContent>
+          <DialogContent className="pt-0">{dialog.content}</DialogContent>
         </div>
 
         {!dialog.hideButtons && (

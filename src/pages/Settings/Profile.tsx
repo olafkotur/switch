@@ -1,4 +1,10 @@
-import { Button, IconButton, Menu, MenuItem } from '@material-ui/core';
+import {
+  Button,
+  IconButton,
+  makeStyles,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEmail } from '../../redux/user';
@@ -46,14 +52,6 @@ const Profile = (): React.ReactElement => {
           open={!!anchorEl}
           onClose={() => setAnchorEl(null)}
           className="p-0"
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
         >
           {!auth && (
             <MenuItem onClick={() => console.log('do something')}>

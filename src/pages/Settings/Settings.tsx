@@ -41,6 +41,7 @@ const Settings = (): React.ReactElement => {
       'windowBehaviour',
       'visiblityKeybind',
     ];
+    console.log({ name, value });
     settingsWithRestart.includes(name) && setShouldRestart(true);
     dispatch(setSettings({ ...settings, [name]: value }));
   };
@@ -100,9 +101,11 @@ const Settings = (): React.ReactElement => {
           title: 'Hyperlink Behaviour',
           hideButtons: true,
           content: windowBehaviourSelect(
+            settings.accentColor,
             settings.windowBehaviour,
             (v: string) => {
               handleChange('windowBehaviour', v);
+              dispatch(setDialog(null));
             },
           ),
         };
@@ -144,9 +147,14 @@ const Settings = (): React.ReactElement => {
           open: true,
           title: 'Font Family',
           hideButtons: true,
-          content: fontFamilySelect(settings.fontFamily, (v: FontFamily) => {
-            handleChange('fontFamily', v);
-          }),
+          content: fontFamilySelect(
+            settings.accentColor,
+            settings.fontFamily,
+            (v: FontFamily) => {
+              handleChange('fontFamily', v);
+              dispatch(setDialog(null));
+            },
+          ),
         };
         dispatch(setDialog(dialog));
       },
@@ -164,6 +172,7 @@ const Settings = (): React.ReactElement => {
           hideButtons: true,
           content: accentColorSelect((v: string) => {
             handleChange('accentColor', v);
+            dispatch(setDialog(null));
           }),
         };
         dispatch(setDialog(dialog));

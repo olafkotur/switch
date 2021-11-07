@@ -1,6 +1,6 @@
 import React from 'react';
 import { ISelectOption, ISettingConfig } from '../../typings/d';
-import { IconButton, Switch } from '@material-ui/core';
+import { IconButton, makeStyles, Switch } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import './setting.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,8 +22,7 @@ const Setting = ({
   handleChange,
   CustomIcon,
 }: IProps): React.ReactElement => {
-  const dispatch = useDispatch();
-  const settings = useSelector((state: RootState) => state.user.settings);
+  const { settings } = useSelector((state: RootState) => state.user);
 
   /**
    * Renders setting action
@@ -42,7 +41,15 @@ const Setting = ({
         const Icon = CustomIcon || Edit;
         return (
           <IconButton
-            className="bg-primary mr-2 p-2"
+            className="mr-2 p-2"
+            classes={makeStyles({
+              root: {
+                backgroundColor: '#303136',
+                '&:hover': {
+                  backgroundColor: settings.accentColor,
+                },
+              },
+            })()}
             color="primary"
             onClick={() => (customHandler ? customHandler() : {})}
           >

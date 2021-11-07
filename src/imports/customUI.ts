@@ -1,7 +1,23 @@
+import { FontFamily, WindowBehaviour } from '../typings/d';
+
 export const accentColors: string[] = [
+  '#b33939',
   '#227093',
-  '#7E9181',
-  '#564256',
-  '#CCAE62',
-  '#40407A',
+  '#ccae62',
+  '#7e9181',
+  '#40407a',
+];
+
+export const fontFamilies: FontFamily[] = [
+  'Arial',
+  'Verdana',
+  'Helvetica',
+  'Courier New',
+  'Times New Roman',
+];
+
+export const windowBehaviours: { value: WindowBehaviour; label: string }[] = [
+  { value: 'external', label: 'Open in default browser' },
+  { value: 'window', label: 'Open a new window' },
+  { value: 'within', label: 'Create a new Switch tab' },
 ];

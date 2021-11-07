@@ -63,16 +63,17 @@ const Menu = ({
    * Handles visibility toggle
    */
   const handleToggleVisibility = (): void => {
-    if (settings.warningMessages) {
-      const dialog: IDialog = {
-        open: true,
-        title: 'Hold on a second...',
-        content: hideWindowWarning(settings.visiblityKeybind),
-        handlePrimary: () => ElectronService.toggleVisibility(),
-      };
-      dispatch(setDialog(dialog));
+    if (!settings.warningMessages) {
+      return ElectronService.toggleVisibility();
     }
-    return ElectronService.toggleVisibility();
+    const dialog: IDialog = {
+      open: true,
+      hideSecondary: true,
+      title: 'Hold on a second...',
+      content: hideWindowWarning(settings.visiblityKeybind),
+      handlePrimary: () => ElectronService.toggleVisibility(),
+    };
+    dispatch(setDialog(dialog));
   };
 
   return (
