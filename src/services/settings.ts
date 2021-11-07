@@ -7,25 +7,43 @@ import _ from 'lodash';
 
 const STORAGE_KEY = 'userSettings';
 
+export const defaultSettings: IUserSettings = {
+  overlayMode: true,
+  modifiedAgent: true,
+  visiblityKeybind: 'CommandOrControl + Esc',
+  warningMessages: true,
+  windowBehaviour: 'external',
+  accentColor: '#b33939',
+  animatePresets: true,
+  windowPadding: false,
+  fontFamily: 'Arial',
+};
+
 export const SettingsService = {
   /**
    * Fetches user settings
    */
   fetch: async (): Promise<IUserSettings | null> => {
     const remote = await RequestService.get(`${config.apiUrl}/api/settings`);
-    const local = await StorageService.get(STORAGE_KEY);
 
     // always preference for remote
     if (remote.result.data) {
       await StorageService.set(STORAGE_KEY, remote.result.data); // update local
       return remote.result.data;
     }
-    // use local if remote is not available
-    if (local && !_.isEmpty(local)) {
-      return local as IUserSettings;
-    }
 
-    return null;
+    return await SettingsService.fetchLocal();
+  },
+
+  /**
+   * Fetches local user settings
+   */
+  fetchLocal: async () => {
+    const data = await StorageService.get(STORAGE_KEY);
+    if (data && !_.isEmpty(data)) {
+      return data as IUserSettings;
+    }
+    return defaultSettings;
   },
 
   /**

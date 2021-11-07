@@ -62,7 +62,7 @@ export const RequestService = {
           resolve({ result: await v.json(), headers: v.headers }),
         );
       } catch (e) {
-        reject(new Error(`RequestService:request :: ${e}`));
+        reject(null);
       }
     });
   },

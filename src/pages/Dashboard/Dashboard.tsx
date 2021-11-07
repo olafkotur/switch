@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import * as _ from 'lodash';
 import './dashboard.css';
+import Alert from '../../components/Alert/Alert';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -23,6 +24,7 @@ const Dashboard = (): React.ReactElement => {
   });
 
   const { settings } = useSelector((state: RootState) => state.user);
+  const { error } = useSelector((state: RootState) => state.interface);
 
   React.useEffect(() => {
     (async () => {
@@ -105,6 +107,8 @@ const Dashboard = (): React.ReactElement => {
               <Settings />
             </div>
           )}
+
+          {error && <Alert />}
         </div>
       </div>
     </div>

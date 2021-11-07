@@ -3,7 +3,7 @@ import log from 'electron-log';
 import updater from 'electron-simple-updater';
 import { app, BrowserWindow, Tray, Menu } from 'electron';
 import { ElectronService } from '../src/services/electron';
-import { SettingsService } from '../src/services/settings';
+import { defaultSettings, SettingsService } from '../src/services/settings';
 import { StorageService } from '../src/services/storage';
 import * as url from 'url';
 import * as path from 'path';
@@ -13,8 +13,7 @@ log.info('App starting...');
 updater.init({
   autoDownload: true,
   checkUpdateOnStart: true,
-  url:
-    'https://raw.githubusercontent.com/olafkotur/switch-releases/master/updates.json',
+  url: 'https://raw.githubusercontent.com/olafkotur/switch-releases/master/updates.json',
 });
 
 // global variables
@@ -31,16 +30,7 @@ storage.setDataPath(dataPath);
  */
 const createMainWindow = async (): Promise<void> => {
   // fetch user settings
-  let userSettings = await SettingsService.fetch();
-
-  // @ts-ignore - only used in v1.3.0 release
-  if (userSettings && userSettings.data) {
-    const res = await StorageService.remove('userSettings');
-    log.info('Deleted old userSettings object.');
-    if (res) {
-      userSettings = await SettingsService.fetch();
-    }
-  }
+  const userSettings = await SettingsService.fetchLocal();
 
   // create main window
   const screenInfo = ElectronService.getScreenInfo();

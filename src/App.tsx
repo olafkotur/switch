@@ -11,7 +11,8 @@ import { UserService } from './services/user';
 import { SettingsService } from './services/settings';
 import { MenuService } from './services/menu';
 import { setAuth, setEmail, setSettings } from './redux/user';
-import { setApplications } from './redux/interface';
+import { setApplications, setError } from './redux/interface';
+import Alert from './components/Alert/Alert';
 import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css';
 
@@ -21,12 +22,15 @@ const App = (): React.ReactElement => {
 
   const dispatch = useDispatch();
   const { settings } = useSelector((state: RootState) => state.user);
-  const { error, dialog } = useSelector((state: RootState) => state.interface);
+  const { dialog } = useSelector((state: RootState) => state.interface);
 
   React.useEffect(() => {
     // storage setup
     const dataPath = storage.getDataPath();
     storage.setDataPath(dataPath);
+
+    // listen for network changes
+    checkConnection();
 
     fetchUserData().then(() => setTimeout(() => setLoading(false), 1000));
   }, []);
@@ -54,6 +58,22 @@ const App = (): React.ReactElement => {
   }, [settings]);
 
   /**
+   * Checks if the user is connected to the internet.
+   */
+  const checkConnection = (): void => {
+    const msg =
+      'Cannot connect to the internet, Switch is using latest preferences backup until back online.';
+
+    // check initial network state
+    !window.navigator.onLine && setTimeout(() => dispatch(setError(msg)), 3000);
+
+    // listen for network changes
+    window.addEventListener('offline', () => {
+      dispatch(setError(msg));
+    });
+  };
+
+  /**
    * Fetches user data and stores in redux.
    */
   const fetchUserData = async (): Promise<void> => {
@@ -74,7 +94,6 @@ const App = (): React.ReactElement => {
   return (
     <ThemeProvider theme={theme as Theme}>
       <div style={{ fontFamily: settings.fontFamily }}>
-        {/* <CssBaseline /> */}
         <Dashboard />
         {dialog && <Dialog />}
       </div>

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { defaultSettings } from '../services/settings';
 import { IUserSettings } from '../typings/d';
 
 export interface IUserState {
@@ -12,17 +13,7 @@ const initialState: IUserState = {
   auth: false,
   email: '',
   avatar: require('../../assets/default-avatar.png'),
-  settings: {
-    overlayMode: true,
-    modifiedAgent: true,
-    visiblityKeybind: 'CommandOrControl + Esc',
-    warningMessages: true,
-    windowBehaviour: 'external',
-    accentColor: '#b33939',
-    animatePresets: true,
-    windowPadding: false,
-    fontFamily: 'Arial',
-  },
+  settings: defaultSettings,
 };
 
 export const userSlice = createSlice({
