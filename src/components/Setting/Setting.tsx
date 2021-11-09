@@ -1,74 +1,81 @@
 import React from 'react';
 import { ISelectOption, ISettingConfig } from '../../typings/d';
-import { IconButton, Switch } from '@material-ui/core';
+import { IconButton, makeStyles, Switch } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import './setting.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSettings } from '../../redux/user';
+import { RootState } from '../../store';
 
 interface IProps extends ISettingConfig {
-  handleUpdate: (name: string, value: string | boolean, shouldRefresh: boolean, shouldRestart: boolean) => Promise<void>;
+  handleChange: (name: string, value: any) => void;
 }
 
-interface IState {
-  selectedOption: ISelectOption | null;
-}
-
-export default class Setting extends React.Component<IProps, IState> {
-
-  /**
-   * Setting constructor
-   * @param props - component properties
-   */
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {
-      selectedOption: null,
-    };
-  }
-
-  /**
-   * Handles select change
-   * @param option - select option
-   */
-  protected handleSelectChange(option: ISelectOption) {
-    this.props.handleUpdate(this.props.name, option.value, this.props.refresh || false, this.props.restart || false);
-    this.setState({ selectedOption: option });
-  }
+const Setting = ({
+  type,
+  label,
+  description,
+  experimental,
+  name,
+  value,
+  customHandler,
+  handleChange,
+  CustomIcon,
+}: IProps): React.ReactElement => {
+  const { settings } = useSelector((state: RootState) => state.user);
 
   /**
    * Renders setting action
    */
-  protected renderAction(): React.ReactElement {
-    switch (this.props.type) {
+  const renderComponent = (): React.ReactElement => {
+    switch (type) {
       case 'switch':
-        return <Switch
-          color="primary"
-          checked={!!this.props.value}
-          onChange={(_e, checked) => this.props.handleUpdate(this.props.name, checked, this.props.refresh || false, this.props.restart || false)}
-        />;
+        return (
+          <Switch
+            color="primary"
+            checked={!!value}
+            onChange={(_e, checked) => handleChange(name, checked)}
+          />
+        );
       case 'pop-up':
-        return <IconButton
-          className="bg-primary mr-2 p-2" color="primary"
-          onClick={ () => this.props.handleChange ? this.props.handleChange() : {} }
-        >
-          <Edit className="primary" fontSize="small" />
-        </IconButton>;
+        const Icon = CustomIcon || Edit;
+        return (
+          <IconButton
+            className="mr-2 p-2"
+            classes={makeStyles({
+              root: {
+                backgroundColor: '#303136',
+                '&:hover': {
+                  backgroundColor: settings.accentColor,
+                },
+              },
+            })()}
+            color="primary"
+            onClick={() => (customHandler ? customHandler() : {})}
+          >
+            <Icon className="primary" fontSize="small" />
+          </IconButton>
+        );
       default:
         return <></>;
     }
-  }
-
-  render() {
-    return (
-      <div className="d-flex flex-row justify-content-between align-items-center ">
-        <div>
-          <h6 className="primary align-self-center m-0">{this.props.label}</h6>
-          <p className="text-muted">{this.props.description}</p>
-        </div>
-        <div className="d-flex flex-row justify-content-center align-items-center">
-          {this.renderAction()}
-        </div>
+  };
+  return (
+    <div className="d-flex flex-row justify-content-between align-items-center ">
+      <div>
+        <span className="primary align-self-center">
+          {label}
+          {experimental && (
+            <span className="experimental-setting ml-1">experimental</span>
+          )}
+        </span>
+        <p className="text-muted">{description}</p>
       </div>
-    );
-  }
-}
+      <div className="d-flex flex-row justify-content-center align-items-center">
+        {renderComponent()}
+      </div>
+    </div>
+  );
+};
+
+export default Setting;

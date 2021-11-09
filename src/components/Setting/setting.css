@@ -3,10 +3,6 @@
   margin-bottom: 20px;
 }
 
-.setting-button {
-  align-self: center;
-}
-
 .setting-label {
   width: 40vw;
   overflow-x: scroll;
@@ -26,6 +22,18 @@
 
 .setting-description {
   font-size: 10px;
+}
+
+.setting-icon-button {
+  background-color: #303136;
+}
+
+.experimental-setting {
+  background-color: #303136;
+  color: #eb4d4b;
+  font-size: 12px;
+  border-radius: 15px;
+  padding: 3px 8px;
 }
 
 .MuiSelect-select:focus {

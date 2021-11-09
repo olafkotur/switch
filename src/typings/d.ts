@@ -1,3 +1,5 @@
+import { SvgIconComponent } from '@material-ui/icons';
+
 // tslint:disable-next-line: no-any
 export type Icon = any;
 
@@ -9,6 +11,13 @@ export type WebViewAction = 'refresh' | 'back' | 'forward' | '';
  * External - open in default browser
  */
 export type WindowBehaviour = 'window' | 'within' | 'external';
+
+export type FontFamily =
+  | 'Arial'
+  | 'Verdana'
+  | 'Helvetica'
+  | 'Courier New'
+  | 'Times New Roman';
 
 export interface IStoredData<T> {
   data: T[];
@@ -22,22 +31,23 @@ export interface IUserSettings {
   windowBehaviour: WindowBehaviour;
   accentColor: string;
   animatePresets: boolean;
-  darkMode: boolean;
   windowPadding: boolean;
+  fontFamily: FontFamily;
 }
 
 export interface ISetting {
   name: string;
   value: string | boolean;
-  refresh?: boolean;
   restart?: boolean;
-  handleChange?: Function;
 }
 
 export interface ISettingConfig extends ISetting {
   type: 'switch' | 'pop-up';
   label: string;
   description: string;
+  experimental?: boolean;
+  customHandler?: Function;
+  CustomIcon?: SvgIconComponent;
 }
 
 export interface ISelectOption {
@@ -72,8 +82,7 @@ export interface IPresetPreview {
   yOffset: number;
 }
 
-export interface IServiceSetting extends IMenuItem {
-}
+export interface IServiceSetting extends IMenuItem {}
 
 export interface IMenuItem {
   id: string;
@@ -95,4 +104,19 @@ export interface IActionRequest {
 export interface IKey {
   name: string;
   value: string;
+}
+
+export interface IDialog {
+  open: boolean;
+  title: string;
+  content: React.ReactElement | string;
+  animate?: boolean;
+  primaryLabel?: string;
+  secondaryLabel?: string;
+  hideButtons?: boolean;
+  hidePrimary?: boolean;
+  hideSecondary?: boolean;
+  disableEscKey?: boolean;
+  handlePrimary?: () => void;
+  handleSecondary?: () => void;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { SettingsService } from '../../services/settings';
 import { Button, Paper, Tooltip } from '@material-ui/core';
-import './keybindButton.css';
+import './styles.css';
 
 interface IProps {
   keybind: string;
@@ -15,7 +15,6 @@ interface IState {
 }
 
 export default class KeybindButton extends React.Component<IProps, IState> {
-
   /**
    * KeybindButton constructor
    * @param props - component properties
@@ -86,7 +85,9 @@ export default class KeybindButton extends React.Component<IProps, IState> {
   protected formatKeybinds(): string {
     let formatted = '...';
     formatted = this.state.keyBinds[0] ? this.state.keyBinds[0] : formatted;
-    formatted = this.state.keyBinds[1] ? `${formatted} + ${this.state.keyBinds[1]}` : formatted;
+    formatted = this.state.keyBinds[1]
+      ? `${formatted} + ${this.state.keyBinds[1]}`
+      : formatted;
     return formatted;
   }
 
@@ -95,20 +96,24 @@ export default class KeybindButton extends React.Component<IProps, IState> {
       <div className="d-flex flex-row row justify-content-between mx-1">
         <Paper
           variant="outlined"
-          className="d-flex align-items-center px-3 py-2 keybind-button-text"
+          className="d-flex align-items-center px-3 py-2 keybind-text"
         >
           {this.state.changed ? this.formatKeybinds() : this.props.keybind}
         </Paper>
         <Button
           variant="contained"
-          className={`setting-button ${this.state.recording ? 'bg-error' : 'primary'} py-2`}
+          className={`${
+            this.state.recording ? 'bg-error' : ''
+          } py-2 primary keybind-button`}
           color="primary"
           onClick={this.handleClick}
         >
-          <Tooltip title={`Currently set to ${this.state.changed ? this.formatKeybinds() : this.props.keybind}`}>
-            <span className="setting-button-text" >
-              record keybind
-            </span>
+          <Tooltip
+            title={`Currently set to ${
+              this.state.changed ? this.formatKeybinds() : this.props.keybind
+            }`}
+          >
+            <span>record keybind</span>
           </Tooltip>
         </Button>
       </div>

@@ -2,108 +2,111 @@ import React from 'react';
 import Dashboard from './pages/Dashboard/Dashboard';
 import storage from 'electron-json-storage';
 import Loader from './components/Loader/Loader';
-import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
+import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core';
 import { render } from 'react-dom';
-import { IUserSettings } from './typings/d';
+import { RootState, store } from './store';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import Dialog from './components/Dialog/Dialog';
+import { UserService } from './services/user';
 import { SettingsService } from './services/settings';
+import { MenuService } from './services/menu';
+import { setAuth, setEmail, setSettings } from './redux/user';
+import { setApplications, setError } from './redux/interface';
+import Alert from './components/Alert/Alert';
 import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css';
 
-const mainElement = document.createElement('div');
-mainElement.setAttribute('id', 'root');
-document.body.appendChild(mainElement);
+const App = (): React.ReactElement => {
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [theme, setTheme] = React.useState<Theme>();
 
-interface IState {
-  loading: boolean;
-  initialise: boolean;
-}
+  const dispatch = useDispatch();
+  const { settings } = useSelector((state: RootState) => state.user);
+  const { dialog } = useSelector((state: RootState) => state.interface);
 
-export default class App extends React.Component<{}, IState> {
-  /**
-   * Local properties
-   */
-  protected theme: Theme;
-  protected userSettings: IUserSettings | null = null;
-
-  /**
-   * App constructor
-   * @param props - class properties
-   */
-  constructor(props: {}) {
-    super(props);
-
-    this.state = {
-      loading: true,
-      initialise: true,
-    };
-
-    // local properties
-    this.theme = createMuiTheme({
-      typography: {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: 14,
-        fontWeightLight: 300,
-        fontWeightRegular: 400,
-        fontWeightMedium: 500,
-      },
-      palette: {
-        primary: { main: '#227093' },
-        secondary: { main: '#fff' },
-        error: { main: '#b33939' },
-      },
-      overrides: {
-        MuiButton: {
-          label: {
-            fontSize: 12,
-            textTransform: 'lowercase',
-          },
-        },
-        MuiChip: {
-          label: {
-            fontSize: 12,
-            textTransform: 'lowercase',
-          },
-        },
-      },
-    });
-
+  React.useEffect(() => {
     // storage setup
     const dataPath = storage.getDataPath();
     storage.setDataPath(dataPath);
 
-    // scope binding
-    this.handleRefresh = this.handleRefresh.bind(this);
-  }
+    // listen for network changes
+    checkConnection();
 
-  /**
-   * Component mounting
-   */
-  public async componentDidMount() {
-    await this.handleRefresh();
-  }
+    fetchUserData().then(() => setTimeout(() => setLoading(false), 1000));
+  }, []);
 
-  /**
-   * Handles app refresh
-   */
-  protected async handleRefresh() {
-    this.setState({ loading: true });
-    this.userSettings = await SettingsService.fetch();
-    this.setState({ loading: false });
-  }
-
-  render() {
-    return (
-      <MuiThemeProvider theme={this.theme}>
-        {!this.state.loading ?
-          <Dashboard
-            userSettings={this.userSettings as IUserSettings}
-            handleRefresh={this.handleRefresh}
-          />
-          : <Loader shortLoader={!this.state.initialise} />
-        }
-      </MuiThemeProvider>
+  React.useEffect(() => {
+    // theme setup
+    setTheme(
+      createMuiTheme({
+        typography: {
+          fontSize: 14,
+          fontFamily: settings.fontFamily,
+        },
+        palette: {
+          background: { default: '#303136', paper: '#303136' },
+          text: { primary: '#fff' },
+          primary: { main: settings.accentColor },
+          secondary: { main: '#fff' },
+          error: { main: '#b33939' },
+        },
+        overrides: {
+          MuiButton: { label: { fontSize: 12, textTransform: 'lowercase' } },
+        },
+      }),
     );
-  }
-}
+  }, [settings]);
 
-render(<App />, mainElement);
+  /**
+   * Checks if the user is connected to the internet.
+   */
+  const checkConnection = (): void => {
+    const msg =
+      'Cannot connect to the internet, Switch is using latest preferences backup until back online.';
+
+    // check initial network state
+    !window.navigator.onLine && setTimeout(() => dispatch(setError(msg)), 3000);
+
+    // listen for network changes
+    window.addEventListener('offline', () => {
+      dispatch(setError(msg));
+    });
+  };
+
+  /**
+   * Fetches user data and stores in redux.
+   */
+  const fetchUserData = async (): Promise<void> => {
+    const profile = await UserService.fetchProfile();
+    const settings = await SettingsService.fetch();
+    const applications = await MenuService.fetchList();
+
+    dispatch(setAuth(!!profile));
+    profile && dispatch(setEmail(profile.email));
+    settings && dispatch(setSettings(settings));
+    applications && dispatch(setApplications(applications));
+  };
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  return (
+    <ThemeProvider theme={theme as Theme}>
+      <div style={{ fontFamily: settings.fontFamily }}>
+        <Dashboard />
+        {dialog && <Dialog />}
+      </div>
+    </ThemeProvider>
+  );
+};
+
+const mainElement = document.createElement('div');
+mainElement.setAttribute('id', 'root');
+document.body.appendChild(mainElement);
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  mainElement,
+);

@@ -2,6 +2,7 @@ import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
 import { WindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
 import { MenuService } from './menu';
+import { UtilService } from './util';
 
 let previousScreenInfo: IScreenInfo | null = null;
 
@@ -11,7 +12,8 @@ export const ElectronService = {
    * @param useRemote - flag to user remote
    */
   getScreenInfo: (useRemote?: boolean): IScreenInfo => {
-    const screenSize = (useRemote ? remote.screen : screen).getPrimaryDisplay().workAreaSize;
+    const screenSize = (useRemote ? remote.screen : screen).getPrimaryDisplay()
+      .workAreaSize;
     return { width: screenSize.width, height: screenSize.height };
   },
 
@@ -21,7 +23,12 @@ export const ElectronService = {
   getWindowInfo: (window: BrowserWindow): IWindowInfo => {
     const size = window.getSize();
     const position = window.getPosition();
-    return { width: size[0], height: size[1], xPosition: position[0], yPosition: position[1] };
+    return {
+      width: size[0],
+      height: size[1],
+      xPosition: position[0],
+      yPosition: position[1],
+    };
   },
 
   /**
@@ -31,14 +38,25 @@ export const ElectronService = {
    * @param animate - true to animate repositioning
    * @param windowPadding - gives extra padding around the sides
    */
-  setWindowInfo: async (win?: BrowserWindow, winInfo?: IWindowInfo, animate?: boolean, windowPadding?: boolean): Promise<void> => {
+  setWindowInfo: async (
+    win?: BrowserWindow,
+    winInfo?: IWindowInfo,
+    animate?: boolean,
+    windowPadding?: boolean,
+  ): Promise<void> => {
     const window = win || remote.getCurrentWindow();
-    const windowInfo = winInfo || await StorageService.get('currentWindowInfo') as IWindowInfo | null;
+    const windowInfo =
+      winInfo ||
+      ((await StorageService.get('currentWindowInfo')) as IWindowInfo | null);
     if (windowInfo) {
       const width = windowPadding ? windowInfo.width - 50 : windowInfo.width;
       const height = windowPadding ? windowInfo.height - 25 : windowInfo.height;
-      const xPos = windowPadding ? windowInfo.xPosition + 25 : windowInfo.xPosition;
-      const yPos = windowPadding ? windowInfo.yPosition + 25 : windowInfo.yPosition;
+      const xPos = windowPadding
+        ? windowInfo.xPosition + 25
+        : windowInfo.xPosition;
+      const yPos = windowPadding
+        ? windowInfo.yPosition + 25
+        : windowInfo.yPosition;
       window.setSize(width, height, animate);
       window.setPosition(xPos, yPos, animate);
     }
@@ -50,20 +68,32 @@ export const ElectronService = {
    * @param keybind - visibility keybind
    * @param overlayMode - overlay mode flag
    */
-  setGlobalShortcuts: (window: BrowserWindow, keybind: string, overlayMode: boolean): void => {
+  setGlobalShortcuts: (
+    window: BrowserWindow,
+    keybind: string,
+    overlayMode: boolean,
+  ): void => {
     const newScreenInfo = ElectronService.getScreenInfo();
-    previousScreenInfo = previousScreenInfo ? previousScreenInfo : { ...newScreenInfo };
+    previousScreenInfo = previousScreenInfo
+      ? previousScreenInfo
+      : { ...newScreenInfo };
 
     // register shortcuts
-    globalShortcut.register(keybind ? keybind.replace(/\ /g, '') : 'CommandOrControl+Esc', (): void => {
-      // check if screen size has changed - happens if user switches displays
-      if (newScreenInfo.width !== previousScreenInfo!.width || previousScreenInfo!.height !== previousScreenInfo!.height) {
-        previousScreenInfo = { ...newScreenInfo };
-        window.setSize(newScreenInfo.width, newScreenInfo.height);
-        window.reload();
-      }
-      overlayMode && ElectronService.toggleVisibility(window);
-    });
+    globalShortcut.register(
+      keybind ? keybind.replace(/\ /g, '') : 'CommandOrControl+Esc',
+      (): void => {
+        // check if screen size has changed - happens if user switches displays
+        if (
+          newScreenInfo.width !== previousScreenInfo!.width ||
+          previousScreenInfo!.height !== previousScreenInfo!.height
+        ) {
+          previousScreenInfo = { ...newScreenInfo };
+          window.setSize(newScreenInfo.width, newScreenInfo.height);
+          window.reload();
+        }
+        overlayMode && ElectronService.toggleVisibility(window);
+      },
+    );
   },
 
   /**
@@ -91,7 +121,12 @@ export const ElectronService = {
    */
   setWindowMode: (overlay: boolean, win?: BrowserWindow): void => {
     const window = win || remote.getCurrentWindow();
-    const options = { visible: true, fullScreen: false, alwaysTop: true, menu: false }; // assume overlay
+    const options = {
+      visible: true,
+      fullScreen: false,
+      alwaysTop: true,
+      menu: false,
+    }; // assume overlay
     if (!overlay) {
       options.visible = false;
       options.fullScreen = true;
@@ -99,7 +134,10 @@ export const ElectronService = {
     }
     window.setVisibleOnAllWorkspaces(options.visible);
     window.setFullScreenable(options.fullScreen);
-    window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'torn-off-menu' : undefined);
+    window.setAlwaysOnTop(
+      options.alwaysTop,
+      options.alwaysTop ? 'torn-off-menu' : undefined,
+    );
   },
 
   /**
@@ -140,7 +178,7 @@ export const ElectronService = {
     });
 
     // load the url and show the window
-    childWindow.loadURL(url);
+    childWindow.loadURL(url, { userAgent: UtilService.getUserAgent(url) });
     childWindow.show();
 
     // clear child window and set parent to what it was
@@ -156,7 +194,10 @@ export const ElectronService = {
    * @param url - url to be opened
    * @param behaviour - default window behaviour
    */
-  openHyperlink: async (url: string, behaviour: WindowBehaviour): Promise<boolean> => {
+  openHyperlink: async (
+    url: string,
+    behaviour: WindowBehaviour,
+  ): Promise<boolean> => {
     let shouldRefresh = false;
     switch (behaviour) {
       case 'window':

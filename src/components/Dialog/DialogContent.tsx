@@ -1,21 +1,27 @@
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import KeybindButton from '../KeybindButton/KeybindButton';
-import { accentColors } from '../../imports/customUI';
-import { WindowBehaviour } from '../../typings/d';
+import {
+  accentColors,
+  fontFamilies,
+  windowBehaviours,
+} from '../../imports/customUI';
+import { FontFamily, WindowBehaviour } from '../../typings/d';
 import { FormControl, Select, MenuItem } from '@material-ui/core';
 import './dialog.css';
 
 /**
- * Trigerred when there is an update available to download.
+ * Tutorial content, triggered by the tutorial button.
  */
-export const updateAvailable = () => (
+export const tutorial = () => (
   <div>
-    <span>We've downloaded an update for you in the background, it's available to <code>install</code> whenever you're ready.</span>
-    <br/><br/>
-    <span>Please <code>re-launch</code> the application after clicking install.</span>
-    <br/><br/>
-    <span>You can choose to ignore it, it will simply be applied the next time you re-launch the application.</span>
+    <iframe
+      width="100%"
+      height="310px"
+      frameBorder="0"
+      src="https://www.youtube.com/embed/8UVNT4wvIGY?autoplay=1"
+      allow="autoplay"
+    />
   </div>
 );
 
@@ -25,8 +31,12 @@ export const updateAvailable = () => (
  */
 export const hideWindowWarning = (visiblityKeybind: string) => (
   <div>
-    <span>You're about to hide Switch from your desktop, you can bring the window back at anytime using the key <code>{visiblityKeybind}</code> combination.</span>
-    <br/><br/>
+    <span>
+      You're about to hide Switch from your desktop, you can bring the window
+      back at anytime using the key <code>{visiblityKeybind}</code> combination.
+    </span>
+    <br />
+    <br />
     <span>Feel free to disable this message from the settings page.</span>
   </div>
 );
@@ -36,44 +46,50 @@ export const hideWindowWarning = (visiblityKeybind: string) => (
  * @param initialValue - initial visibility keybind value
  * @param setVisibilityKeybind - handler to set visibility keybind
  */
-export const visibilityKeybindSelect = (initialValue: string, setVisibilityKeybind: (value: string) => void) => (
+export const visibilityKeybindSelect = (
+  initialValue: string,
+  setVisibilityKeybind: (value: string) => void,
+) => (
   <div>
-    <span>Please record a new <code>visibility keybind</code>, you must include <code>two</code> characters. You can also just click away to cancel.</span>
-    <br/>
+    <span>
+      Please record a new <code>visibility keybind</code>, you must include{' '}
+      <code>two</code> characters. You will have to <code>restart</code> the
+      application to see any changes.
+    </span>
+    <br />
     <div className="my-3">
       <KeybindButton
         keybind={initialValue}
-        handleUpdate={v => setVisibilityKeybind(v)}
+        handleUpdate={(v) => setVisibilityKeybind(v)}
       />
     </div>
-    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
   </div>
 );
 
 /**
  * Triggered when user attempts to change the window behaviour.
+ * @param accentColor - current accent color
  * @param initialValue - initial window behaviour value
  * @param setWindowBehaviour - handler to set window behaviour
  */
-export const windowBehaviourSelect = (initialValue: WindowBehaviour, setWindowBehaviour: (value: WindowBehaviour) => void) => (
-  <div>
-    <span>Please choose a <code>hyperlink behaviour</code> from the following options. You can also just click away to cancel.</span>
-    <br/>
-    <div className="my-3">
-      <FormControl variant="outlined" className="w-100">
-        <Select
-          id="window-behaviour-select"
-          className="dialog-window-behaviour"
-          value={initialValue}
-          onChange={e => setWindowBehaviour(e.target.value as WindowBehaviour)}
-        >
-          <MenuItem value="external">Open in default browser</MenuItem>
-          <MenuItem value="window">Open a new window</MenuItem>
-          <MenuItem value="within">Create a new Switch tab</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
-    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
+export const windowBehaviourSelect = (
+  accentColor: string,
+  initialValue: WindowBehaviour,
+  setWindowBehaviour: (value: WindowBehaviour) => void,
+) => (
+  <div className="row justify-content-center">
+    {windowBehaviours.map((v) => (
+      <ButtonBase
+        key={`dialog-select-box-${v.label}`}
+        className="d-flex justify-content-center align-items-center dialog-window-behaviour"
+        style={{
+          background: v.value === initialValue ? accentColor : '#1f2225',
+        }}
+        onClick={() => setWindowBehaviour(v.value)}
+      >
+        <span>{v.label}</span>
+      </ButtonBase>
+    ))}
   </div>
 );
 
@@ -82,22 +98,41 @@ export const windowBehaviourSelect = (initialValue: WindowBehaviour, setWindowBe
  * @param setAccentColor - handler to set accent color
  */
 export const accentColorSelect = (setAccentColor: (color: string) => void) => (
-  <div>
-    <span>Please choose an <code>accent color</code> from the following options. You can also just click away to cancel.</span>
-    <br/>
-    <div className="d-flex flex-row row justify-content-center">
-      { accentColors.map(v => (
-        <ButtonBase
-          key={`dialog-accent-color-${v}`}
-          className="d-flex justify-content-center align-items-center dialog-accent-color"
-          style={{ backgroundColor: v }}
-          onClick={() => setAccentColor(v)}
-        >
-          <span>{v.toLowerCase()}</span>
-        </ButtonBase>
-      )) }
-    </div>
-    <br/>
-    <span>Note that you will have to <code>restart</code> the application to see any changes.</span>
+  <div className="row justify-content-center">
+    {accentColors.map((v) => (
+      <ButtonBase
+        key={`dialog-accent-color-${v}`}
+        className="d-flex justify-content-center align-items-center dialog-accent-color"
+        style={{ backgroundColor: v }}
+        onClick={() => setAccentColor(v)}
+      >
+        <span>{v.toLowerCase()}</span>
+      </ButtonBase>
+    ))}
+  </div>
+);
+
+/**
+ * Triggerred when user attempts to change the font family.
+ * @param accentColor - current accent color
+ * @param initialValue - initial font family value
+ * @param setFontFamily - handler to set font family
+ */
+export const fontFamilySelect = (
+  accentColor: string,
+  initialValue: FontFamily,
+  setFontFamily: (value: FontFamily) => void,
+) => (
+  <div className="row justify-content-center">
+    {fontFamilies.map((v) => (
+      <ButtonBase
+        key={`dialog-accent-color-${v}`}
+        className="d-flex justify-content-center align-items-center dialog-font-family"
+        style={{ background: v === initialValue ? accentColor : '#1f2225' }}
+        onClick={() => setFontFamily(v)}
+      >
+        <span style={{ fontFamily: v, padding: 5 }}>{v.toLowerCase()}</span>
+      </ButtonBase>
+    ))}
   </div>
 );

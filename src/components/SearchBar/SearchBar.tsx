@@ -29,14 +29,16 @@ export default class SearchBar extends React.Component<IProps> {
           }}
           InputProps={{
             disableUnderline: true,
-            startAdornment: <InputAdornment position="start" className="pl-3">
-              <div className="primary pt-1 pb-1 pr-3 border-right">
-                <Search color="inherit" fontSize="large" />
-              </div>
-            </InputAdornment>,
+            startAdornment: (
+              <InputAdornment position="start" className="pl-3">
+                <div className="primary pt-1 pb-1 pr-3 border-right">
+                  <Search color="inherit" fontSize="large" />
+                </div>
+              </InputAdornment>
+            ),
           }}
           value={this.props.value}
-          onChange={async e => await this.props.handleUpdate(e.target.value)}
+          onChange={async (e) => await this.props.handleUpdate(e.target.value)}
         />
         <Button
           className="primary mr-3"

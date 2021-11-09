@@ -1,77 +1,62 @@
-import { ButtonBase, Paper } from '@material-ui/core';
 import React from 'react';
+import { ButtonBase, Paper } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import { PresetService } from '../../services/preset';
+import { RootState } from '../../store';
 import { IPreset } from '../../typings/d';
 import './preset.css';
 
-interface IProps extends IPreset {
-  animate: boolean;
-  windowPadding: boolean;
-  handleRefresh: () => Promise<void>;
-}
+interface IProps extends IPreset {}
 
-interface IState {
-  focused: boolean;
-}
+const Preset = ({
+  name,
+  width,
+  height,
+  xPosition,
+  yPosition,
+  preview,
+}: IProps): React.ReactElement => {
+  const [focused, setFocused] = React.useState<boolean>(false);
 
-export default class Preset extends React.Component<IProps, IState> {
-  /**
-   * Local properties
-   */
-  protected options: object;
-
-  /**
-   * Preset constructor
-   */
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {
-      focused: false,
-    };
-
-    // local properties
-    this.options = {
-      width: `${this.props.preview.width}%`,
-      height: `${this.props.preview.height}%`,
-      marginLeft: `${this.props.preview.xOffset}%`,
-      marginTop: `${this.props.preview.yOffset}%`,
-    };
-
-    // scope binding
-    this.handleActive = this.handleActive.bind(this);
-  }
+  const { settings } = useSelector((state: RootState) => state.user);
 
   /**
    * Handles set active preset
    */
-  protected async handleActive(): Promise<void> {
+  const handleActive = async (): Promise<void> => {
     await PresetService.active(
-      this.props.width,
-      this.props.height,
-      this.props.xPosition,
-      this.props.yPosition,
-      this.props.animate,
-      this.props.windowPadding,
+      width,
+      height,
+      xPosition,
+      yPosition,
+      settings.animatePresets,
+      settings.windowPadding,
     );
-  }
+  };
 
-  render() {
-    return (
-      <ButtonBase
-        className="col-xl-3 col-lg-4 col-md-6 p-2"
-        onClick={this.handleActive}
-        onMouseEnter={() => this.setState({ focused: true })}
-        onMouseLeave={() => this.setState({ focused: false })}
-      >
-        <Paper className="d-flex preset-outer p-1 bg-primary align-items-center w-100" >
-          {this.state.focused && <p className="primary position-absolute w-100 text-center">{this.props.name}</p>}
-          <div
-            className="position-static preset-inner"
-            style={{ ...this.options }}
-          />
-        </Paper>
-      </ButtonBase>
-    );
-  }
-}
+  return (
+    <ButtonBase
+      className="col-xl-3 col-lg-4 col-md-6 p-2"
+      onClick={handleActive}
+      onMouseEnter={() => setFocused(true)}
+      onMouseLeave={() => setFocused(false)}
+    >
+      <Paper className="d-flex preset-outer p-1 bg-primary align-items-center w-100">
+        {focused && (
+          <p className="primary position-absolute w-100 text-center">{name}</p>
+        )}
+        <div
+          className="position-static preset-inner"
+          style={{
+            width: `${preview.width}%`,
+            height: `${preview.height}%`,
+            marginLeft: `${preview.xOffset}%`,
+            marginTop: `${preview.yOffset}%`,
+          }}
+        />
+      </Paper>
+    </ButtonBase>
+  );
+};
+
+export default Preset;

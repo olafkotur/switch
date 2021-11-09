@@ -2,68 +2,46 @@ import React from 'react';
 import { Zoom } from '@material-ui/core';
 // @ts-ignore
 import Loading from 'react-loading-components';
+import './loader.css';
 
-interface IProps {
-  shortLoader: boolean;
-}
+const Loader = (): React.ReactElement => {
+  const [color, setColor] = React.useState<string>('');
+  const [showText, setShowText] = React.useState<boolean>(true);
+  const [showLoader, setShowLoader] = React.useState<boolean>(false);
 
-interface IState {
-  showText: boolean;
-  showLoader: boolean;
-}
+  React.useEffect(() => {
+    // switch between text and loader
+    const interval = setInterval(() => {
+      const availableColors = ['#fff', '#B33939', '#227093', '#CCAE62'];
+      const random = Math.floor(Math.random() * 5) + 1;
+      setColor(availableColors[random - 1]);
 
-export default class Loader extends React.Component<IProps, IState> {
-  /**
-   * Local properties
-   */
-  protected color: string;
+      setShowText((showText) => !showText);
+      setShowLoader((showLoader) => !showLoader);
+    }, 1000);
 
-  /**
-   * Loader constructor
-   * @param props - component properties
-   */
-  constructor(props: IProps) {
-    super(props);
+    return () => clearInterval(interval);
+  }, []);
 
-    this.state = {
-      showText: !this.props.shortLoader,
-      showLoader: this.props.shortLoader,
-    };
+  return (
+    <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
+      <Zoom in={showText}>
+        <div className="d-flex flex-row position-absolute">
+          <h1 className="loader-text secondary mr-2">s</h1>
+          <h1 className="loader-text primary mr-2">w</h1>
+          <h1 className="loader-text primary mr-2">i</h1>
+          <h1 className="loader-text primary mr-2">t</h1>
+          <h1 className="loader-text tertiary mr-2">c</h1>
+          <h1 className="loader-text quaternary mr-2">h</h1>
+        </div>
+      </Zoom>
+      <Zoom in={showLoader}>
+        <div>
+          <Loading type="grid" width={80} height={80} fill={color} />
+        </div>
+      </Zoom>
+    </div>
+  );
+};
 
-    // choose random color
-    const availableColors = ['#fff', '#B33939', '#227093', '#CCAE62'];
-    const random = Math.floor(Math.random() * 5) + 1;
-    this.color = availableColors[random - 1];
-  }
-
-  /**
-   * Component mounting
-   */
-  public componentDidMount() {
-    if (!this.props.shortLoader) {
-      setTimeout(() => this.setState({ showText: false, showLoader: true }), 750);
-    }
-  }
-
-  render() {
-    return (
-      <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
-        <Zoom in={this.state.showText} >
-          <div className="d-flex flex-row position-absolute">
-            <h1 className="secondary mr-2">s</h1>
-            <h1 className="primary mr-2">w</h1>
-            <h1 className="primary mr-2">i</h1>
-            <h1 className="primary mr-2">t</h1>
-            <h1 className="tertiary mr-2">c</h1>
-            <h1 className="quaternary mr-2">h</h1>
-          </div>
-        </Zoom>
-        <Zoom in={this.state.showLoader} >
-          <div>
-            <Loading type="grid" width={80} height={80} fill={this.color} />
-          </div>
-        </Zoom>
-      </div>
-    );
-  }
-}
+export default Loader;

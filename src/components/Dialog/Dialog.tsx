@@ -1,97 +1,69 @@
 import React from 'react';
-import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
+import {
+  Dialog as MuiDialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Grow,
+} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { setDialog } from '../../redux/interface';
 
-export interface IProps {
-  open: boolean;
-  title: string;
-  content: React.ReactElement |  string;
-  animate?: boolean;
-  primaryLabel?: string;
-  secondaryLabel?: string;
-  hideButtons?: boolean;
-  hidePrimary?: boolean;
-  hideSecondary?: boolean;
-  disableEscKey?: boolean;
-  handlePrimary?: () => void;
-  handleSecondary?: () => void;
-  handleClose?: () => void;
-}
+const Dialog = (): React.ReactElement => {
+  const dispatch = useDispatch();
+  const dialog = useSelector((state: RootState) => state.interface.dialog);
 
-export default class Dialog extends React.Component<IProps> {
-
-  /**
-   * Dialog constructor
-   * @param props - component properties
-   */
-  constructor(props: IProps) {
-    super(props);
-
-    // scope binding
-    this.handlePrimary = this.handlePrimary.bind(this);
-    this.handleSecondary = this.handleSecondary.bind(this);
+  if (!dialog) {
+    return <></>;
   }
 
-  /**
-   * Wrapper for dialog primary action
-   */
-  protected handlePrimary(): void {
-    // this is an optional function
-    if (this.props.handlePrimary) {
-      this.props.handlePrimary();
-    }
-    this.props.handleClose && this.props.handleClose();
-  }
+  return (
+    <div>
+      <MuiDialog
+        fullWidth
+        open={dialog.open}
+        disableEscapeKeyDown={dialog.disableEscKey}
+        onClose={() => dispatch(setDialog(null))}
+        PaperProps={{ style: { background: '#303136' } }}
+        TransitionComponent={Grow}
+      >
+        <div className="primary">
+          <DialogTitle>{dialog.title}</DialogTitle>
+        </div>
 
-  /**
-   * Wrapper for dialog secondary action
-   */
-  protected handleSecondary(): void {
-    // this is an optional function
-    if (this.props.handleSecondary) {
-      this.props.handleSecondary();
-    }
-    this.props.handleClose && this.props.handleClose();
-  }
+        <div className="primary pb-2">
+          <DialogContent className="pt-0">{dialog.content}</DialogContent>
+        </div>
 
-  render() {
-    return (
-      <div>
-        <MuiDialog
-          fullWidth
-          open={this.props.open}
-          disableEscapeKeyDown={this.props.disableEscKey}
-          onClose={this.props.handleClose}
-          PaperProps={{ style: { background: '#303136' } }}
-        >
-          <div className="primary">
-            <DialogTitle >{this.props.title}</DialogTitle>
-          </div>
+        {!dialog.hideButtons && (
+          <DialogActions>
+            {!dialog.hideSecondary && (
+              <Button
+                className="mr-1"
+                variant="contained"
+                onClick={dialog.handleSecondary}
+              >
+                {dialog.secondaryLabel || 'Cancel'}
+              </Button>
+            )}
 
-          <div className="primary pb-2">
-            <DialogContent>{this.props.content}</DialogContent>
-          </div>
+            {!dialog.hidePrimary && (
+              <Button
+                className="ml-1"
+                color="primary"
+                variant="contained"
+                onClick={dialog.handlePrimary}
+              >
+                {dialog.primaryLabel || 'Proceed'}
+              </Button>
+            )}
+          </DialogActions>
+        )}
+      </MuiDialog>
+    </div>
+  );
+};
 
-          { !this.props.hideButtons && <DialogActions>
-            {!this.props.hideSecondary && <Button
-              className="mr-1"
-              variant="contained"
-              onClick={this.handleSecondary}
-            >
-              {this.props.secondaryLabel || 'Cancel'}
-            </Button>}
-
-            {!this.props.hidePrimary && <Button
-              className="ml-1"
-              color="primary"
-              variant="contained"
-              onClick={this.handlePrimary}
-            >
-              {this.props.primaryLabel || 'Proceed'}
-            </Button>}
-          </DialogActions>}
-
-        </MuiDialog>
-      </div>
-    );
-  }
-}
+export default Dialog;
