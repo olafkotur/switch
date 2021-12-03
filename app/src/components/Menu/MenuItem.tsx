@@ -15,7 +15,7 @@ import {
   Publish,
 } from '@material-ui/icons';
 import { TPages } from '../../pages/Dashboard/Dashboard';
-import { IMenuItem, WebViewAction } from '../../typings/d';
+import { IMenuItem, WebViewAction } from '../../typings/user';
 import { MenuService } from '../../services/menu';
 import './styles.css';
 

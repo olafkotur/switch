@@ -1,4 +1,4 @@
-import { IUserSettings } from '../typings/d';
+import { IUserSettings } from '../typings/user';
 import { StorageService } from './storage';
 import { modifiers, alphabetic, numeric, special } from '../imports/keys';
 import { RequestService } from './request';
@@ -38,7 +38,7 @@ export const SettingsService = {
   /**
    * Fetches local user settings
    */
-  fetchLocal: async () => {
+  fetchLocal: async (): Promise<IUserSettings> => {
     const data = await StorageService.get(STORAGE_KEY);
     if (data && !_.isEmpty(data)) {
       return data as IUserSettings;

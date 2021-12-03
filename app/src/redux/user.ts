@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { defaultSettings } from '../services/settings';
-import { IUserSettings } from '../typings/d';
+import { IUserSettings } from '../typings/user';
 
 export interface IUserState {
   auth: boolean;

@@ -1,11 +1,11 @@
 import React from 'react';
-import { IconButton, TextField, Tooltip } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuth } from '../../redux/user';
 import { RootState } from '../../store';
 import { ExitToApp } from '@material-ui/icons';
 import { setDialog } from '../../redux/interface';
 import { LoginRegister } from './LoginRegister';
+import { UserService } from '../../services/user';
 import './styles.css';
 
 const Profile = (): React.ReactElement => {
@@ -24,7 +24,7 @@ const Profile = (): React.ReactElement => {
   };
 
   const handleLogout = async (): Promise<void> => {
-    dispatch(setAuth(false));
+    await UserService.logout(dispatch);
   };
 
   /**

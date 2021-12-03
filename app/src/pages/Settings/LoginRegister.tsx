@@ -2,16 +2,13 @@ import React from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
 import { TextInput } from '../../components/TextInput/TextInput';
 import { UserService } from '../../services/user';
-import { setDialog, setError } from '../../redux/interface';
 import { useDispatch } from 'react-redux';
 import './styles.css';
-import Loader from '../../components/Loader/Loader';
-import { setAuth } from '../../redux/user';
 
 export const LoginRegister = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [email, setEmail] = React.useState<string>('olafkotur@gmail.com');
-  const [password, setPassword] = React.useState<string>('Poly0981123!');
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
   const [valid, setValid] = React.useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -26,46 +23,15 @@ export const LoginRegister = (): React.ReactElement => {
   }, [email, password]);
 
   /**
-   * Clears current dialog from the screen.
+   * Handlers user login registration.
+   * @param action - action to perform i.e. login or register
    */
-  const clearDialog = (): void => {
-    dispatch(setDialog(null));
-  };
-
-  /**
-   * Handles user login with given credentials.
-   */
-  const handleLogin = async (): Promise<void> => {
+  const handleLoginRegister = async (
+    action: 'login' | 'register',
+  ): Promise<void> => {
     setLoading(true);
-    const result = await UserService.login(email, password);
-    if (result.code !== 200) {
-      setLoading(false);
-      dispatch(setError(result.message || 'Unexpected error occurred'));
-      return;
-    }
-
-    // login was successful
+    await UserService[action](email, password, dispatch);
     setLoading(false);
-    dispatch(setAuth(true));
-    clearDialog();
-  };
-
-  /**
-   * Handles user registration with given credentials.
-   */
-  const handleRegister = async (): Promise<void> => {
-    setLoading(true);
-    const result = await UserService.createUser(email, password);
-    if (result.code !== 201) {
-      setLoading(false);
-      dispatch(setError(result.message || 'Unexpected error occurred'));
-      return;
-    }
-
-    // registration was successful
-    setLoading(false);
-    dispatch(setAuth(true));
-    clearDialog();
   };
 
   return (
@@ -94,7 +60,7 @@ export const LoginRegister = (): React.ReactElement => {
             style={{ opacity: valid ? 1 : 0.5 }}
             variant="contained"
             disabled={!valid}
-            onClick={handleLogin}
+            onClick={async () => await handleLoginRegister('login')}
           >
             Login
           </Button>
@@ -103,7 +69,7 @@ export const LoginRegister = (): React.ReactElement => {
             style={{ opacity: valid ? 1 : 0.5 }}
             variant="contained"
             disabled={!valid}
-            onClick={handleRegister}
+            onClick={async () => await handleLoginRegister('register')}
           >
             Register
           </Button>

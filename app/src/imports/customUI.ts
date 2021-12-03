@@ -1,4 +1,4 @@
-import { FontFamily, WindowBehaviour } from '../typings/d';
+import { FontFamily, WindowBehaviour } from '../typings/user';
 
 export const accentColors: string[] = [
   '#b33939',

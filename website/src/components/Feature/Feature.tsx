@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonBase, Paper, Slide } from '@material-ui/core';
-import { IFeatureConfig } from '../../typings/d';
+import { IFeatureConfig } from '../../typings/user';
 import './feature.css';
 
 interface IProps extends IFeatureConfig {

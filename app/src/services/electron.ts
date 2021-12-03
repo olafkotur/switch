@@ -1,6 +1,6 @@
 import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
 import { StorageService } from './storage';
-import { WindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
+import { WindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/user';
 import { MenuService } from './menu';
 import { UtilService } from './util';
 

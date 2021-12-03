@@ -4,7 +4,7 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
-import { IDialog, IMenuItem, WebViewAction } from '../../typings/d';
+import { IDialog, IMenuItem, WebViewAction } from '../../typings/user';
 import React from 'react';
 import MenuItem from './MenuItem';
 import { VisibilityOff, Search, Settings } from '@material-ui/icons';

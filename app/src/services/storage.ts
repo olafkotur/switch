@@ -1,12 +1,18 @@
 import storage from 'electron-json-storage';
 
+export type StorageKey =
+  | 'menuItems'
+  | 'currentWindowInfo'
+  | 'jwtTokens'
+  | 'userSettings';
+
 export const StorageService = {
   /**
    * Sets an object by name (insert, update)
    * @param key - object key
    * @param data - data to be stored
    */
-  set: async (key: string, data: object): Promise<boolean> => {
+  set: async (key: StorageKey, data: object): Promise<boolean> => {
     return await new Promise((resolve, reject) => {
       storage.set(key, data, (error) => {
         if (error) {

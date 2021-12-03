@@ -1,5 +1,5 @@
 import React from 'react';
-import { ISelectOption, ISettingConfig } from '../../typings/d';
+import { ISelectOption, ISettingConfig } from '../../typings/user';
 import { IconButton, makeStyles, Switch } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import './setting.css';

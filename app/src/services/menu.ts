@@ -1,4 +1,4 @@
-import { Icon, IMenuItem, IStoredData } from '../typings/d';
+import { Icon, IMenuItem, IStoredData } from '../typings/user';
 import { StorageService } from './storage';
 import { UtilService } from './util';
 import * as _ from 'lodash';

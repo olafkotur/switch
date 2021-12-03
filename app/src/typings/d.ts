@@ -23,18 +23,6 @@ export interface IStoredData<T> {
   data: T[];
 }
 
-export interface IUserSettings {
-  overlayMode: boolean;
-  modifiedAgent: boolean;
-  visiblityKeybind: string;
-  warningMessages: boolean;
-  windowBehaviour: WindowBehaviour;
-  accentColor: string;
-  animatePresets: boolean;
-  windowPadding: boolean;
-  fontFamily: FontFamily;
-}
-
 export interface ISetting {
   name: string;
   value: string | boolean;

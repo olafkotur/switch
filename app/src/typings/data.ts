@@ -1,5 +1,3 @@
-import { IUserSettings } from './d';
-
 export interface IProfileData {
   email: string;
 }

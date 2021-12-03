@@ -1,6 +1,8 @@
+import { Dispatch } from '@reduxjs/toolkit';
 import { config } from '../config';
+import { setDialog, setError } from '../redux/interface';
+import { setAuth, setEmail } from '../redux/user';
 import { IProfileData } from '../typings/data';
-import { IResponseResult } from '../typings/response';
 import { RequestService } from './request';
 import { StorageService } from './storage';
 
@@ -9,8 +11,13 @@ export const UserService = {
    * Authenticate existing user.
    * @param email - user email
    * @param password - user password
+   * @param dispatch - redux dispatch
    */
-  login: async (email: string, password: string): Promise<IResponseResult> => {
+  login: async (
+    email: string,
+    password: string,
+    dispatch: Dispatch,
+  ): Promise<void> => {
     const response = await RequestService.post(
       `${config.apiUrl}/api/user/login`,
       {
@@ -26,18 +33,31 @@ export const UserService = {
       });
     }
 
-    return response.result;
+    // handle error messages
+    if (response.result.code !== 200) {
+      dispatch(
+        setError(response.result.message || 'Unexpected error occurred'),
+      );
+      return;
+    }
+
+    // update redux state
+    dispatch(setEmail(email));
+    dispatch(setAuth(true));
+    dispatch(setDialog(null));
   },
 
   /**
    * Create a new user account.
    * @param email - user email
    * @param password - user password
+   * @param dispatch - redux dispatch
    */
-  createUser: async (
+  register: async (
     email: string,
     password: string,
-  ): Promise<IResponseResult> => {
+    dispatch: Dispatch,
+  ): Promise<void> => {
     const response = await RequestService.post(
       `${config.apiUrl}/api/user/create`,
       {
@@ -53,7 +73,29 @@ export const UserService = {
       });
     }
 
-    return response.result;
+    // handle error messages
+    if (response.result.code !== 201) {
+      dispatch(
+        setError(response.result.message || 'Unexpected error occurred'),
+      );
+      return;
+    }
+
+    // update redux state
+    dispatch(setEmail(email));
+    dispatch(setAuth(true));
+    dispatch(setDialog(null));
+  },
+
+  /**
+   * Clears all tokens from local storage.
+   * @param dispatch - redux dispatch
+   */
+  logout: async (dispatch: Dispatch): Promise<void> => {
+    await StorageService.remove('jwtTokens');
+
+    // update redux state
+    dispatch(setAuth(false));
   },
 
   /**

@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import moment from 'moment';
 import { remote } from 'electron';
-import { IWindowInfo } from '../typings/d';
+import { IWindowInfo } from '../typings/user';
 import { useEffect, useRef } from 'react';
 
 export const UtilService = {

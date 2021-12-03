@@ -5,7 +5,7 @@ import Video from '../../components/Video/Video';
 import Header from '../../components/Header/Header';
 import Download from '../../components/Download/Download';
 import Feature from '../../components/Feature/Feature';
-import { IFeatureConfig } from '../../typings/d';
+import { IFeatureConfig } from '../../typings/user';
 import './landing.css';
 
 interface IState {

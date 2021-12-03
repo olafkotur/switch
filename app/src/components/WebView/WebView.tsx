@@ -1,6 +1,6 @@
 import React from 'react';
 import { UtilService } from '../../services/util';
-import { WindowBehaviour, IActionRequest } from '../../typings/d';
+import { WindowBehaviour, IActionRequest } from '../../typings/user';
 import { ElectronService } from '../../services/electron';
 import { WebviewTag } from 'electron';
 

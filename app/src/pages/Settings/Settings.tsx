@@ -7,7 +7,7 @@ import {
   IUserSettings,
   FontFamily,
   IDialog,
-} from '../../typings/d';
+} from '../../typings/user';
 import { Paper } from '@material-ui/core';
 import { PresetService } from '../../services/preset';
 import {

@@ -3,7 +3,7 @@ import WebView from '../../components/WebView/WebView';
 import Menu from '../../components/Menu/Menu';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
+import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/user';
 import { MenuService } from '../../services/menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';

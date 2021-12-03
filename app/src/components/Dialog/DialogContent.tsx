@@ -6,7 +6,7 @@ import {
   fontFamilies,
   windowBehaviours,
 } from '../../imports/customUI';
-import { FontFamily, WindowBehaviour } from '../../typings/d';
+import { FontFamily, WindowBehaviour } from '../../typings/user';
 import './dialog.css';
 
 /**

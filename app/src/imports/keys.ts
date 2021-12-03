@@ -1,4 +1,4 @@
-import { IKey } from '../typings/d';
+import { IKey } from '../typings/user';
 
 export const modifiers: IKey[] = [
   { name: 'Alt', value: 'Alt' },

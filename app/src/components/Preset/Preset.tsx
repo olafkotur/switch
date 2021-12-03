@@ -3,7 +3,7 @@ import { ButtonBase, Paper } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { PresetService } from '../../services/preset';
 import { RootState } from '../../store';
-import { IPreset } from '../../typings/d';
+import { IPreset } from '../../typings/user';
 import './preset.css';
 
 interface IProps extends IPreset {}
