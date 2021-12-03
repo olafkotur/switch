@@ -1,5 +1,19 @@
+# common
 node_modules
+coverage
+build
 dist
 packages
-*.env
-*.DS_Store
+
+# misc
+.DS_Store
+.eslintcache
+.env
+.csv
+.vscode
+
+# api
+dist/**
+*/assets/db/*
+!*/assets/db/doNotRemove
+dump/
