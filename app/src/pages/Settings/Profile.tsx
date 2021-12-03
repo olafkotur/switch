@@ -1,21 +1,31 @@
-import {
-  Button,
-  IconButton,
-  makeStyles,
-  Menu,
-  MenuItem,
-} from '@material-ui/core';
 import React from 'react';
+import { IconButton, TextField, Tooltip } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail } from '../../redux/user';
-import { UserService } from '../../services/user';
+import { setAuth } from '../../redux/user';
 import { RootState } from '../../store';
-import { MoreVert } from '@material-ui/icons';
+import { ExitToApp } from '@material-ui/icons';
+import { setDialog } from '../../redux/interface';
+import { LoginRegister } from './LoginRegister';
 import './styles.css';
 
 const Profile = (): React.ReactElement => {
-  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
+  const dispatch = useDispatch();
   const { auth, email, avatar } = useSelector((state: RootState) => state.user);
+
+  const handleLoginOrRegister = async (): Promise<void> => {
+    dispatch(
+      setDialog({
+        open: true,
+        title: 'Login / Register',
+        hideButtons: true,
+        content: <LoginRegister />,
+      }),
+    );
+  };
+
+  const handleLogout = async (): Promise<void> => {
+    dispatch(setAuth(false));
+  };
 
   /**
    * Render profile row.
@@ -38,37 +48,23 @@ const Profile = (): React.ReactElement => {
   return (
     <div className="setting-group bg-secondary">
       <div className="d-flex justify-content-end">
-        <IconButton
-          className="p-1 m-0"
-          aria-controls="basic-menu"
-          aria-haspopup="true"
-          aria-expanded={!!anchorEl ? 'true' : undefined}
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-        >
-          <MoreVert className="primary" />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl as Element}
-          open={!!anchorEl}
-          onClose={() => setAnchorEl(null)}
-          className="p-0"
-        >
-          {!auth && (
-            <MenuItem onClick={() => console.log('do something')}>
-              Login
-            </MenuItem>
-          )}
-          {!auth && (
-            <MenuItem onClick={() => console.log('do something')}>
-              Register
-            </MenuItem>
-          )}
-          {auth && (
-            <MenuItem onClick={() => console.log('do something')}>
-              <span className="text-danger">Logout</span>
-            </MenuItem>
-          )}
-        </Menu>
+        {!auth && (
+          <>
+            <IconButton className="px-2 py-0" onClick={handleLoginOrRegister}>
+              <span className="primary setting-profile-action-text">
+                Login / Register
+              </span>
+            </IconButton>
+          </>
+        )}
+
+        {auth && (
+          <Tooltip title="Logout">
+            <IconButton className="p-0 m-0" onClick={handleLogout}>
+              <ExitToApp className="secondary" />
+            </IconButton>
+          </Tooltip>
+        )}
       </div>
 
       <div className="d-flex flex-row align-items-center setting-profile-face-lift">
@@ -83,7 +79,7 @@ const Profile = (): React.ReactElement => {
             <>
               {renderRow(
                 'Not logged in',
-                'create an account or login to unlock more features',
+                'login or create an account to unlock more features',
               )}
             </>
           )}

@@ -15,9 +15,18 @@
 }
 
 .setting-profile-face-lift {
-  margin-top: -28px;
+  margin-top: -22px;
 }
 
 .setting-footer {
   padding-bottom: 5vh;
+}
+
+.setting-profile-action-text {
+  font-size: 12px;
+  opacity: 50%;
+}
+
+.setting-loader {
+  margin-top: -25px;
 }

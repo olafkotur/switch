@@ -2,7 +2,7 @@ import React from 'react';
 import Dashboard from './pages/Dashboard/Dashboard';
 import storage from 'electron-json-storage';
 import Loader from './components/Loader/Loader';
-import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core';
+import { createTheme, Theme, ThemeProvider } from '@material-ui/core';
 import { render } from 'react-dom';
 import { RootState, store } from './store';
 import { Provider, useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,6 @@ import { SettingsService } from './services/settings';
 import { MenuService } from './services/menu';
 import { setAuth, setEmail, setSettings } from './redux/user';
 import { setApplications, setError } from './redux/interface';
-import Alert from './components/Alert/Alert';
 import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css';
 
@@ -38,7 +37,7 @@ const App = (): React.ReactElement => {
   React.useEffect(() => {
     // theme setup
     setTheme(
-      createMuiTheme({
+      createTheme({
         typography: {
           fontSize: 14,
           fontFamily: settings.fontFamily,

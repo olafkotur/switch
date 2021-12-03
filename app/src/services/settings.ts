@@ -28,8 +28,8 @@ export const SettingsService = {
 
     // always preference for remote
     if (remote.result.data) {
-      await StorageService.set(STORAGE_KEY, remote.result.data); // update local
-      return remote.result.data;
+      await StorageService.set(STORAGE_KEY, remote.result.data as object); // update local
+      return remote.result.data as IUserSettings | null;
     }
 
     return await SettingsService.fetchLocal();

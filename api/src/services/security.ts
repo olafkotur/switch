@@ -74,4 +74,12 @@ export const SecurityService = {
       });
     });
   },
+
+  /**
+   * Checks whether password is valid based on its strength.
+   * @param password - password to be verified
+   */
+  validatePassword: (password: string): boolean => {
+    return new RegExp('(?=^.{8,}$)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$').test(password);
+  },
 };

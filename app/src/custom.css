@@ -36,6 +36,10 @@ input:focus {
   background: #1f2225 !important;
 }
 
+.bg-tertiary {
+  background: #227093 !important;
+}
+
 .bg-error {
   background: #b33939 !important;
 }

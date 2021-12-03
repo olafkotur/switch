@@ -7,7 +7,6 @@ import {
   windowBehaviours,
 } from '../../imports/customUI';
 import { FontFamily, WindowBehaviour } from '../../typings/d';
-import { FormControl, Select, MenuItem } from '@material-ui/core';
 import './dialog.css';
 
 /**
@@ -136,3 +135,11 @@ export const fontFamilySelect = (
     ))}
   </div>
 );
+
+export const login = () => {
+  <div>Login</div>;
+};
+
+export const register = () => {
+  <div>Register</div>;
+};
