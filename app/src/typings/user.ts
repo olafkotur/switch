@@ -11,3 +11,8 @@ export interface IUserSettings {
   windowPadding: boolean;
   fontFamily: FontFamily;
 }
+
+export interface IProfile {
+  email: string;
+  avatar: any;
+}

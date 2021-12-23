@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { defaultSettings } from '../services/settings';
-import { IUserSettings } from '../typings/user';
+import { IProfile, IUserSettings } from '../typings/user';
 
 export interface IUserState {
   auth: boolean;
-  email: string;
-  avatar: any;
+  profile: IProfile;
   settings: IUserSettings;
 }
 
 const initialState: IUserState = {
   auth: false,
-  email: '',
-  avatar: require('../../assets/default-avatar.png'),
+  profile: {
+    email: '',
+    avatar: null,
+  },
   settings: defaultSettings,
 };
 
@@ -23,11 +24,9 @@ export const userSlice = createSlice({
     setAuth: (state, action: PayloadAction<boolean>) => {
       state.auth = action.payload;
     },
-    setEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
-    },
-    setAvatar: (state, action: PayloadAction<any>) => {
-      state.avatar = action.payload;
+
+    setProfile: (state, action: PayloadAction<IProfile>) => {
+      state.profile = action.payload;
     },
     setSettings: (state, action: PayloadAction<IUserSettings>) => {
       state.settings = action.payload;
@@ -35,5 +34,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setAuth, setEmail, setAvatar, setSettings } = userSlice.actions;
+export const { setAuth, setProfile, setSettings } = userSlice.actions;
 export default userSlice.reducer;

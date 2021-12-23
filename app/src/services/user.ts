@@ -1,8 +1,8 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { config } from '../config';
 import { setDialog, setError } from '../redux/interface';
-import { setAuth, setEmail } from '../redux/user';
-import { IProfileData } from '../typings/data';
+import { setAuth, setProfile } from '../redux/user';
+import { IProfile } from '../typings/user';
 import { RequestService } from './request';
 import { StorageService } from './storage';
 
@@ -35,14 +35,19 @@ export const UserService = {
 
     // handle error messages
     if (response.result.code !== 200) {
-      dispatch(
-        setError(response.result.message || 'Unexpected error occurred'),
-      );
+      dispatch(setError(response.result.message || config.defaultError));
+      return;
+    }
+
+    // fetch profile data
+    const profile = await UserService.fetchProfile();
+    if (!profile) {
+      dispatch(setError(response.result.message || config.defaultError));
       return;
     }
 
     // update redux state
-    dispatch(setEmail(email));
+    dispatch(setProfile(profile));
     dispatch(setAuth(true));
     dispatch(setDialog(null));
   },
@@ -82,7 +87,7 @@ export const UserService = {
     }
 
     // update redux state
-    dispatch(setEmail(email));
+    dispatch(setProfile({ email, avatar: null }));
     dispatch(setAuth(true));
     dispatch(setDialog(null));
   },
@@ -101,12 +106,12 @@ export const UserService = {
   /**
    * Fetch existing user account profile data.
    */
-  fetchProfile: async (): Promise<IProfileData | null> => {
+  fetchProfile: async (): Promise<IProfile | null> => {
     const response = await RequestService.get(
       `${config.apiUrl}/api/user/profile`,
     );
     if (response.result.code === 200) {
-      return response.result.data as IProfileData | null;
+      return response.result.data as IProfile | null;
     }
     return null;
   },

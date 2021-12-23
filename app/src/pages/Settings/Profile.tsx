@@ -10,7 +10,9 @@ import './styles.css';
 
 const Profile = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const { auth, email, avatar } = useSelector((state: RootState) => state.user);
+  const { auth, profile } = useSelector((state: RootState) => state.user);
+
+  const defaultAvatar = require('../../../assets/default-avatar.png');
 
   const handleLoginOrRegister = async (): Promise<void> => {
     dispatch(
@@ -68,11 +70,14 @@ const Profile = (): React.ReactElement => {
       </div>
 
       <div className="d-flex flex-row align-items-center setting-profile-face-lift">
-        <img src={avatar} className="setting-profile-avatar" />
+        <img
+          src={profile.avatar || defaultAvatar}
+          className="setting-profile-avatar"
+        />
         <div className="align-items-center ml-3">
           {auth ? (
             <>
-              {renderRow('Email', email)}
+              {renderRow('Email', profile.email)}
               {renderRow('Password', '**************')}
             </>
           ) : (
