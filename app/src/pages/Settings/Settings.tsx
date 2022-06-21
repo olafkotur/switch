@@ -9,7 +9,7 @@ import {
   tutorial,
   visibilityKeybindSelect,
   windowBehaviourSelect,
-} from '../../components/Dialog/DialogContent';
+} from '../../components/Dialog';
 import { setDialog } from '../../redux/interface';
 import { setSettings } from '../../redux/user';
 import { PresetService } from '../../services/preset';

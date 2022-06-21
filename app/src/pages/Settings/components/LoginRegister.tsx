@@ -2,7 +2,7 @@ import { Button, CircularProgress } from '@material-ui/core';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import Stylesheet from 'reactjs-stylesheet';
-import { TextInput } from '../../../components/TextInput/TextInput';
+import { TextInput } from '../../../components/TextInput';
 import { UserService } from '../../../services/user';
 
 export const LoginRegister = (): React.ReactElement => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Stylesheet from 'reactjs-stylesheet';
-import { Alert } from '../../components/Alert/Alert';
+import { Alert } from '../../components/Alert';
 import { MenuService } from '../../services/menu';
 import { RootState } from '../../store';
 import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';

@@ -8,7 +8,7 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideWindowWarning } from '../../../../components/Dialog/DialogContent';
+import { hideWindowWarning } from '../../../../components/Dialog';
 import { setApplications, setDialog } from '../../../../redux/interface';
 import { ElectronService } from '../../../../services/electron';
 import { MenuService } from '../../../../services/menu';
