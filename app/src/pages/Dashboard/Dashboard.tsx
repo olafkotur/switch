@@ -2,13 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Stylesheet from 'reactjs-stylesheet';
 import { Alert } from '../../components/Alert/Alert';
-import { Menu } from '../../components/Menu/Menu';
-import { WebView } from '../../components/WebView/WebView';
 import { MenuService } from '../../services/menu';
 import { RootState } from '../../store';
 import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
 import { Search } from '../Search/Search';
 import { Settings } from '../Settings/Settings';
+import { Menu } from './components/Menu/Menu';
+import { WebView } from './components/WebView/WebView';
 
 export type TPages = 'web' | 'search' | 'settings';
 

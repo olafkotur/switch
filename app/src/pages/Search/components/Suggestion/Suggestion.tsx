@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
-import { Icon, IMenuItem } from '../../typings/d';
+import { Icon, IMenuItem } from '../../../../typings/d';
 import './suggestion.css';
 
 interface IProps extends IMenuItem {

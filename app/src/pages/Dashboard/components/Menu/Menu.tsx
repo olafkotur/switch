@@ -8,13 +8,13 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { TPages } from '../../pages/Dashboard/Dashboard';
-import { setApplications, setDialog } from '../../redux/interface';
-import { ElectronService } from '../../services/electron';
-import { MenuService } from '../../services/menu';
-import { RootState } from '../../store';
-import { IDialog, IMenuItem, WebViewAction } from '../../typings/d';
-import { hideWindowWarning } from '../Dialog/DialogContent';
+import { hideWindowWarning } from '../../../../components/Dialog/DialogContent';
+import { setApplications, setDialog } from '../../../../redux/interface';
+import { ElectronService } from '../../../../services/electron';
+import { MenuService } from '../../../../services/menu';
+import { RootState } from '../../../../store';
+import { IDialog, IMenuItem, WebViewAction } from '../../../../typings/d';
+import { TPages } from '../../Dashboard';
 import { MenuItem } from './MenuItem';
 import './styles.css';
 

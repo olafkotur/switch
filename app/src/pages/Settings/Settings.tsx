@@ -10,8 +10,6 @@ import {
   visibilityKeybindSelect,
   windowBehaviourSelect,
 } from '../../components/Dialog/DialogContent';
-import { Preset } from '../../components/Preset/Preset';
-import { Setting } from '../../components/Setting/Setting';
 import { setDialog } from '../../redux/interface';
 import { setSettings } from '../../redux/user';
 import { PresetService } from '../../services/preset';
@@ -19,7 +17,9 @@ import { SettingsService } from '../../services/settings';
 import { RootState } from '../../store';
 import { FontFamily, IDialog, ISettingConfig } from '../../typings/d';
 import { IUserSettings } from '../../typings/user';
+import { Preset } from './components/Preset/Preset';
 import { Profile } from './components/Profile';
+import { Setting } from './components/Setting/Setting';
 
 export const Settings = (): React.ReactElement => {
   const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);

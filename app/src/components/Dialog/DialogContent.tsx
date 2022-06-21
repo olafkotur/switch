@@ -5,8 +5,8 @@ import {
   fontFamilies,
   windowBehaviours,
 } from '../../imports/customUI';
+import { KeybindButton } from '../../pages/Settings/components/KeybindButton/KeybindButton';
 import { FontFamily, WindowBehaviour } from '../../typings/d';
-import { KeybindButton } from '../KeybindButton/KeybindButton';
 import './dialog.css';
 
 /**

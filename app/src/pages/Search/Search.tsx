@@ -1,10 +1,10 @@
 import React from 'react';
 import Stylesheet from 'reactjs-stylesheet';
-import { SearchBar } from '../../components/SearchBar/SearchBar';
-import { Suggestion } from '../../components/Suggestion/Suggestion';
 import { MenuService } from '../../services/menu';
 import { SearchService } from '../../services/search';
 import { Icon } from '../../typings/d';
+import { SearchBar } from './components/SearchBar/SearchBar';
+import { Suggestion } from './components/Suggestion/Suggestion';
 
 export const Search = (): React.ReactElement => {
   const [isValid, setIsValid] = React.useState<boolean>(false);

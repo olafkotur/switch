@@ -1,8 +1,8 @@
 import { WebviewTag } from 'electron';
 import React from 'react';
-import { ElectronService } from '../../services/electron';
-import { UtilService } from '../../services/util';
-import { IActionRequest, WindowBehaviour } from '../../typings/d';
+import { ElectronService } from '../../../../services/electron';
+import { UtilService } from '../../../../services/util';
+import { IActionRequest, WindowBehaviour } from '../../../../typings/d';
 
 interface IProps {
   id: string;

@@ -14,9 +14,9 @@ import {
   Refresh,
 } from '@material-ui/icons';
 import React from 'react';
-import { TPages } from '../../pages/Dashboard/Dashboard';
-import { MenuService } from '../../services/menu';
-import { IMenuItem, WebViewAction } from '../../typings/d';
+import { MenuService } from '../../../../services/menu';
+import { IMenuItem, WebViewAction } from '../../../../typings/d';
+import { TPages } from '../../Dashboard';
 import './styles.css';
 
 interface IProps {

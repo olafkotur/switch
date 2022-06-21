@@ -2,8 +2,8 @@ import { IconButton, makeStyles, Switch } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { ISettingConfig } from '../../typings/d';
+import { RootState } from '../../../../store';
+import { ISettingConfig } from '../../../../typings/d';
 import './setting.css';
 
 interface IProps extends ISettingConfig {
