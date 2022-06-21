@@ -1,9 +1,0 @@
-.preset-outer {
-  height: 100px;
-}
-
-.preset-inner {
-  border-color: rgba(255, 255, 255, 0.5);
-  border-width: 4px;
-  border-style: dotted;
-}

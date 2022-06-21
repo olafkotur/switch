@@ -1,7 +1,7 @@
 import { Button, Paper, Tooltip } from '@material-ui/core';
 import React from 'react';
-import { SettingsService } from '../../../../services/settings';
-import './styles.css';
+import Stylesheet from 'reactjs-stylesheet';
+import { SettingsService } from '../../../services/settings';
 
 interface IProps {
   keybind: string;
@@ -14,6 +14,7 @@ interface IState {
   keyBinds: string[];
 }
 
+// TODO: refactor to use React.FC
 export class KeybindButton extends React.Component<IProps, IState> {
   /**
    * KeybindButton constructor
@@ -96,7 +97,8 @@ export class KeybindButton extends React.Component<IProps, IState> {
       <div className="d-flex flex-row row justify-content-between mx-1">
         <Paper
           variant="outlined"
-          className="d-flex align-items-center px-3 py-2 keybind-text"
+          className="d-flex align-items-center px-3 py-2"
+          style={styles.text}
         >
           {this.state.changed ? this.formatKeybinds() : this.props.keybind}
         </Paper>
@@ -120,3 +122,12 @@ export class KeybindButton extends React.Component<IProps, IState> {
     );
   }
 }
+
+const styles = Stylesheet.create({
+  text: {
+    width: '77%',
+    fontSize: 14,
+    backgroundColor: '#1f2225',
+    border: 0,
+  },
+});

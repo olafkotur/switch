@@ -1,6 +1,5 @@
 import React, { HTMLInputTypeAttribute } from 'react';
 import Stylesheet from 'reactjs-stylesheet';
-import './styles.css';
 
 interface IProps {
   value: string;

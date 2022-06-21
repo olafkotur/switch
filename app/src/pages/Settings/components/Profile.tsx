@@ -96,8 +96,8 @@ export const Profile = (): React.ReactElement => {
 
 const styles = Stylesheet.create({
   container: {
-    paddingTop: '5vh',
-    width: '60vw',
+    padding: 20,
+    borderRadius: 10,
   },
   avatar: {
     height: 120,

@@ -7,8 +7,8 @@ import { RootState } from '../../store';
 import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
 import { Search } from '../Search/Search';
 import { Settings } from '../Settings/Settings';
-import { Menu } from './components/Menu/Menu';
-import { WebView } from './components/WebView/WebView';
+import { Menu } from './components/Menu';
+import { WebView } from './components/WebView';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -62,7 +62,7 @@ export const Dashboard = (): React.ReactElement => {
     <div className="container-fluid">
       <div className="row">
         <div
-          className="menu bg-secondary"
+          className="bg-secondary"
           style={!settings.overlayMode ? { width: 65 } : {}}
         >
           <Menu

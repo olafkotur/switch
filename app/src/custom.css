@@ -71,3 +71,12 @@ input:focus {
 .border-primary {
   border-color: #fff !important;
 }
+
+/********* Overrides *********/
+.MuiSelect-select:focus {
+  background: transparent !important;
+}
+
+.MuiSelect-select.MuiSelect-select {
+  padding-right: 0 !important;
+}

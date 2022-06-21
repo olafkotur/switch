@@ -8,15 +8,15 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideWindowWarning } from '../../../../components/Dialog';
-import { setApplications, setDialog } from '../../../../redux/interface';
-import { ElectronService } from '../../../../services/electron';
-import { MenuService } from '../../../../services/menu';
-import { RootState } from '../../../../store';
-import { IDialog, IMenuItem, WebViewAction } from '../../../../typings/d';
-import { TPages } from '../../Dashboard';
+import Stylesheet from 'reactjs-stylesheet';
+import { hideWindowWarning } from '../../../components/Dialog';
+import { setApplications, setDialog } from '../../../redux/interface';
+import { ElectronService } from '../../../services/electron';
+import { MenuService } from '../../../services/menu';
+import { RootState } from '../../../store';
+import { IDialog, IMenuItem, WebViewAction } from '../../../typings/d';
+import { TPages } from '../Dashboard';
 import { MenuItem } from './MenuItem';
-import './styles.css';
 
 interface IProps {
   page: TPages;
@@ -77,8 +77,8 @@ export const Menu = ({
   };
 
   return (
-    <div className="vh-100">
-      <div className="menu-top">
+    <div className="vh-100" style={styles.container}>
+      <div style={styles.top}>
         {!settings.overlayMode && <div className="mb-4" />}
 
         {/* drag and drop */}
@@ -121,12 +121,16 @@ export const Menu = ({
         </div>
       </div>
 
-      <div className="menu-bottom">
-        <div className="menu-actions d-flex flex-column justify-content-center align-items-center">
+      <div style={styles.bottom}>
+        <div
+          className="d-flex flex-column justify-content-center align-items-center"
+          style={styles.actions}
+        >
           {settings.overlayMode && (
             <Tooltip title="Hide window" enterDelay={750}>
               <IconButton
-                className="menu-item flex-column"
+                className="flex-column"
+                style={styles.item}
                 onClick={handleToggleVisibility}
               >
                 <VisibilityOff className="primary" fontSize="small" />
@@ -136,9 +140,11 @@ export const Menu = ({
 
           <Tooltip title="Add new applications" enterDelay={750}>
             <IconButton
-              className={`menu-item flex-column ${
-                page === 'search' ? 'menu-selected' : ''
-              }`}
+              className="flex-column"
+              style={{
+                ...styles.item,
+                ...(page === 'search' ? styles.selected : {}),
+              }}
               onClick={() => handleClick('search')}
             >
               <Search className="primary" />
@@ -147,12 +153,14 @@ export const Menu = ({
 
           <Tooltip title="Access settings page" enterDelay={750}>
             <IconButton
-              className={`menu-item flex-column ${
-                page === 'settings' ? 'menu-selected' : ''
-              }`}
+              className="flex-column"
+              style={{
+                ...styles.item,
+                ...(page === 'settings' ? styles.selected : {}),
+              }}
               onClick={() => handleClick('settings')}
             >
-              <img src={profile.avatar} className="menu-avatar" />
+              <img src={profile.avatar} style={styles.avatar} />
             </IconButton>
           </Tooltip>
         </div>
@@ -160,3 +168,42 @@ export const Menu = ({
     </div>
   );
 };
+
+const styles = Stylesheet.create({
+  container: {
+    width: 50,
+    height: '100vh',
+    position: 'sticky',
+    zIndex: 10,
+  },
+  top: {
+    height: '85%',
+    overflowY: 'scroll',
+  },
+  bottom: {
+    height: '15%',
+  },
+  actions: {
+    width: '100%',
+    bottom: 0,
+    paddingBottom: 10,
+    position: 'absolute',
+    backgroundColor: '#1f2225',
+  },
+  item: {
+    width: 40,
+    height: 40,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  selected: {
+    backgroundColor: '#56585c',
+    borderRadius: 10,
+  },
+  avatar: {
+    height: 24,
+    width: 24,
+    borderRadius: 12,
+  },
+});

@@ -15,7 +15,7 @@ import {
   fontFamilies,
   windowBehaviours,
 } from '../imports/customUI';
-import { KeybindButton } from '../pages/Settings/components/KeybindButton/KeybindButton';
+import { KeybindButton } from '../pages/Settings/components/KeybindButton';
 import { setDialog } from '../redux/interface';
 import { RootState } from '../store';
 import { FontFamily, WindowBehaviour } from '../typings/d';

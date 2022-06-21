@@ -17,9 +17,9 @@ import { SettingsService } from '../../services/settings';
 import { RootState } from '../../store';
 import { FontFamily, IDialog, ISettingConfig } from '../../typings/d';
 import { IUserSettings } from '../../typings/user';
-import { Preset } from './components/Preset/Preset';
+import { Preset } from './components/Preset';
 import { Profile } from './components/Profile';
-import { Setting } from './components/Setting/Setting';
+import { Setting } from './components/Setting';
 
 export const Settings = (): React.ReactElement => {
   const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);
