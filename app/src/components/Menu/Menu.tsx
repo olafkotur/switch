@@ -1,21 +1,21 @@
+import { IconButton, Tooltip } from '@material-ui/core';
+import { Search, VisibilityOff } from '@material-ui/icons';
+import React from 'react';
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
-import { IDialog, IMenuItem, WebViewAction } from '../../typings/user';
-import React from 'react';
-import MenuItem from './MenuItem';
-import { VisibilityOff, Search, Settings } from '@material-ui/icons';
-import { IconButton, Tooltip } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import { TPages } from '../../pages/Dashboard/Dashboard';
+import { setApplications, setDialog } from '../../redux/interface';
 import { ElectronService } from '../../services/electron';
 import { MenuService } from '../../services/menu';
-import { hideWindowWarning } from '../Dialog/DialogContent';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { setApplications, setDialog } from '../../redux/interface';
+import { IDialog, IMenuItem, WebViewAction } from '../../typings/d';
+import { hideWindowWarning } from '../Dialog/DialogContent';
+import MenuItem from './MenuItem';
 import './styles.css';
 
 interface IProps {
@@ -35,7 +35,7 @@ const Menu = ({
   let tempItems: IMenuItem[] = [];
 
   const dispatch = useDispatch();
-  const { settings, avatar } = useSelector((state: RootState) => state.user);
+  const { settings, profile } = useSelector((state: RootState) => state.user);
   const { applications } = useSelector((state: RootState) => state.interface);
 
   /**
@@ -152,7 +152,7 @@ const Menu = ({
               }`}
               onClick={() => handleClick('settings')}
             >
-              <img src={avatar} className="menu-avatar" />
+              <img src={profile.avatar} className="menu-avatar" />
             </IconButton>
           </Tooltip>
         </div>

@@ -1,9 +1,9 @@
-import { IUserSettings } from '../typings/user';
-import { StorageService } from './storage';
-import { modifiers, alphabetic, numeric, special } from '../imports/keys';
-import { RequestService } from './request';
-import { config } from '../config';
 import _ from 'lodash';
+import { config } from '../config';
+import { alphabetic, modifiers, numeric, special } from '../imports/keys';
+import { IUserSettings } from '../typings/user';
+import { RequestService } from './request';
+import { StorageService } from './storage';
 
 const STORAGE_KEY = 'userSettings';
 

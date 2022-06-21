@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IDialog, IMenuItem } from '../typings/user';
+import { IDialog, IMenuItem } from '../typings/d';
 
 export interface IInterfaceState {
   error: string;

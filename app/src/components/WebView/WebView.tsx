@@ -1,8 +1,8 @@
-import React from 'react';
-import { UtilService } from '../../services/util';
-import { WindowBehaviour, IActionRequest } from '../../typings/user';
-import { ElectronService } from '../../services/electron';
 import { WebviewTag } from 'electron';
+import React from 'react';
+import { ElectronService } from '../../services/electron';
+import { UtilService } from '../../services/util';
+import { IActionRequest, WindowBehaviour } from '../../typings/user';
 
 interface IProps {
   id: string;

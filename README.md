@@ -11,7 +11,7 @@ Monorepo for all Switch related projects, currently consists of: an API, the app
 ### App './app/'
 #### Setup
 * Run `yarn` to install dependencies
-* Run `yarn yarn` to start the application
+* Run `yarn start` to start the application
 * Run `yarn dev:electron` to start the electron app in development mode (optional)
 * Run `yarn dev:react` to start the react app in development mode (optional)
 

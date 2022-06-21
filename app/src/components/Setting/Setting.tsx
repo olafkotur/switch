@@ -1,11 +1,10 @@
-import React from 'react';
-import { ISelectOption, ISettingConfig } from '../../typings/user';
 import { IconButton, makeStyles, Switch } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-import './setting.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSettings } from '../../redux/user';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { ISettingConfig } from '../../typings/d';
+import './setting.css';
 
 interface IProps extends ISettingConfig {
   handleChange: (name: string, value: any) => void;

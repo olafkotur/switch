@@ -1,6 +1,6 @@
 import crypto from 'crypto-js';
-import { config } from '../config';
 import jwt from 'jsonwebtoken';
+import { config } from '../config';
 import { IAuth, JwtResponse } from '../typings/data';
 
 export const SecurityService = {

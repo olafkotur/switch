@@ -1,6 +1,6 @@
-import React from 'react';
 import { Button } from '@material-ui/core';
 import { Apple, Dashboard } from '@material-ui/icons';
+import React from 'react';
 import './download.css';
 
 interface IProps {

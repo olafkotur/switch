@@ -1,9 +1,9 @@
 import React from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Suggestion from '../../components/Suggestion/Suggestion';
-import { Icon, IMenuItem } from '../../typings/user';
-import { SearchService } from '../../services/search';
 import { MenuService } from '../../services/menu';
+import { SearchService } from '../../services/search';
+import { Icon } from '../../typings/user';
 import './search.css';
 
 const Search = (): React.ReactElement => {

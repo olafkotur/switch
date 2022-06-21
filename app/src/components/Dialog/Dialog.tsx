@@ -1,15 +1,15 @@
-import React from 'react';
 import {
-  Dialog as MuiDialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Button,
+  Dialog as MuiDialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grow,
 } from '@material-ui/core';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
 import { setDialog } from '../../redux/interface';
+import { RootState } from '../../store';
 
 const Dialog = (): React.ReactElement => {
   const dispatch = useDispatch();

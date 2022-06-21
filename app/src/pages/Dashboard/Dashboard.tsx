@@ -1,15 +1,14 @@
 import React from 'react';
-import WebView from '../../components/WebView/WebView';
+import { useSelector } from 'react-redux';
+import Alert from '../../components/Alert/Alert';
 import Menu from '../../components/Menu/Menu';
+import WebView from '../../components/WebView/WebView';
+import { MenuService } from '../../services/menu';
+import { RootState } from '../../store';
+import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/user';
 import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
-import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/user';
-import { MenuService } from '../../services/menu';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import * as _ from 'lodash';
 import './dashboard.css';
-import Alert from '../../components/Alert/Alert';
 
 export type TPages = 'web' | 'search' | 'settings';
 

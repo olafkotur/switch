@@ -1,11 +1,11 @@
-import React from 'react';
 import { IconButton, Tooltip } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
 import { ExitToApp } from '@material-ui/icons';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setDialog } from '../../redux/interface';
-import { LoginRegister } from './LoginRegister';
 import { UserService } from '../../services/user';
+import { RootState } from '../../store';
+import { LoginRegister } from './LoginRegister';
 import './styles.css';
 
 const Profile = (): React.ReactElement => {

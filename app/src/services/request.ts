@@ -1,9 +1,9 @@
-import { IRequestHeaders, IRequestOptions } from '../typings/request';
 import * as _ from 'lodash';
+import { config } from '../config';
+import { ITokenData } from '../typings/data';
+import { IRequestHeaders, IRequestOptions } from '../typings/request';
 import { IResponse } from '../typings/response';
 import { StorageService } from './storage';
-import { ITokenData } from '../typings/data';
-import { config } from '../config';
 
 export const RequestService = {
   /**

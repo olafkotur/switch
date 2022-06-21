@@ -1,8 +1,8 @@
-import React from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { TextInput } from '../../components/TextInput/TextInput';
 import { UserService } from '../../services/user';
-import { useDispatch } from 'react-redux';
 import './styles.css';
 
 export const LoginRegister = (): React.ReactElement => {

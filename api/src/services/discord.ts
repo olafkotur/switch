@@ -1,6 +1,6 @@
-import { config } from '../config';
-import fetch from 'node-fetch';
 import * as _ from 'lodash';
+import fetch from 'node-fetch';
+import { config } from '../config';
 
 export const DiscordService = {
   /**

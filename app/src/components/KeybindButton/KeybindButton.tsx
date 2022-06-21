@@ -1,6 +1,6 @@
+import { Button, Paper, Tooltip } from '@material-ui/core';
 import React from 'react';
 import { SettingsService } from '../../services/settings';
-import { Button, Paper, Tooltip } from '@material-ui/core';
 import './styles.css';
 
 interface IProps {

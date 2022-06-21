@@ -1,6 +1,6 @@
-import React from 'react';
 import { Button, InputAdornment, TextField } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
+import React from 'react';
 import './searchBar.css';
 
 interface IProps {

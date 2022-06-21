@@ -1,5 +1,5 @@
-import React from 'react';
 import { ButtonBase, Paper, Slide } from '@material-ui/core';
+import React from 'react';
 import { IFeatureConfig } from '../../typings/user';
 import './feature.css';
 

@@ -1,9 +1,9 @@
+import { IconButton, Slide } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setError } from '../../redux/interface';
 import { RootState } from '../../store';
-import { IconButton, Slide } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
 import './styles.css';
 
 const Alert = (): React.ReactElement => {

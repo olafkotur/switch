@@ -1,12 +1,12 @@
-import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import KeybindButton from '../KeybindButton/KeybindButton';
+import React from 'react';
 import {
   accentColors,
   fontFamilies,
   windowBehaviours,
 } from '../../imports/customUI';
 import { FontFamily, WindowBehaviour } from '../../typings/user';
+import KeybindButton from '../KeybindButton/KeybindButton';
 import './dialog.css';
 
 /**

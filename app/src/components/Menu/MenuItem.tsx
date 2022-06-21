@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   ButtonBase,
   IconButton,
@@ -7,16 +6,17 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import {
-  Image,
-  Refresh,
   ArrowBack,
   ArrowForward,
   Delete,
+  Image,
   Publish,
+  Refresh,
 } from '@material-ui/icons';
+import React from 'react';
 import { TPages } from '../../pages/Dashboard/Dashboard';
-import { IMenuItem, WebViewAction } from '../../typings/user';
 import { MenuService } from '../../services/menu';
+import { IMenuItem, WebViewAction } from '../../typings/user';
 import './styles.css';
 
 interface IProps {

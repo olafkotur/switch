@@ -1,28 +1,24 @@
-import React from 'react';
-import Preset from '../../components/Preset/Preset';
-import Setting from '../../components/Setting/Setting';
-import { Info } from '@material-ui/icons';
-import {
-  ISettingConfig,
-  IUserSettings,
-  FontFamily,
-  IDialog,
-} from '../../typings/user';
 import { Paper } from '@material-ui/core';
-import { PresetService } from '../../services/preset';
+import { Info } from '@material-ui/icons';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  visibilityKeybindSelect,
-  windowBehaviourSelect,
   accentColorSelect,
   fontFamilySelect,
   tutorial,
+  visibilityKeybindSelect,
+  windowBehaviourSelect,
 } from '../../components/Dialog/DialogContent';
-import Profile from './Profile';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSettings } from '../../redux/user';
-import { RootState } from '../../store';
+import Preset from '../../components/Preset/Preset';
+import Setting from '../../components/Setting/Setting';
 import { setDialog } from '../../redux/interface';
+import { setSettings } from '../../redux/user';
+import { PresetService } from '../../services/preset';
 import { SettingsService } from '../../services/settings';
+import { RootState } from '../../store';
+import { FontFamily, IDialog, ISettingConfig } from '../../typings/d';
+import { IUserSettings } from '../../typings/user';
+import Profile from './Profile';
 import './styles.css';
 
 const Settings = (): React.ReactElement => {
