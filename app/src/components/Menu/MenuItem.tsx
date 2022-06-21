@@ -16,7 +16,7 @@ import {
 import React from 'react';
 import { TPages } from '../../pages/Dashboard/Dashboard';
 import { MenuService } from '../../services/menu';
-import { IMenuItem, WebViewAction } from '../../typings/user';
+import { IMenuItem, WebViewAction } from '../../typings/d';
 import './styles.css';
 
 interface IProps {
@@ -31,7 +31,7 @@ interface IState {
   contextMenu: boolean;
 }
 
-export default class MenuItem extends React.Component<IProps, IState> {
+export class MenuItem extends React.Component<IProps, IState> {
   /**
    * Local properties
    */

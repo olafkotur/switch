@@ -1,13 +1,13 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
-import { Icon, IMenuItem } from '../../typings/user';
+import { Icon, IMenuItem } from '../../typings/d';
 import './suggestion.css';
 
 interface IProps extends IMenuItem {
   handleSuggestion: (url: string, icon: Icon) => Promise<void>;
 }
 
-const Suggestion = ({
+export const Suggestion = ({
   url,
   icon,
   handleSuggestion,
@@ -18,5 +18,3 @@ const Suggestion = ({
     </Button>
   );
 };
-
-export default Suggestion;

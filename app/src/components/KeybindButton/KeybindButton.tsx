@@ -14,7 +14,7 @@ interface IState {
   keyBinds: string[];
 }
 
-export default class KeybindButton extends React.Component<IProps, IState> {
+export class KeybindButton extends React.Component<IProps, IState> {
   /**
    * KeybindButton constructor
    * @param props - component properties

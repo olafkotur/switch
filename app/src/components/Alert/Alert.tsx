@@ -6,7 +6,7 @@ import { setError } from '../../redux/interface';
 import { RootState } from '../../store';
 import './styles.css';
 
-const Alert = (): React.ReactElement => {
+export const Alert = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { settings } = useSelector((state: RootState) => state.user);
   const { error } = useSelector((state: RootState) => state.interface);
@@ -41,5 +41,3 @@ const Alert = (): React.ReactElement => {
     </div>
   );
 };
-
-export default Alert;

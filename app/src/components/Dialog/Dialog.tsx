@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setDialog } from '../../redux/interface';
 import { RootState } from '../../store';
 
-const Dialog = (): React.ReactElement => {
+export const Dialog = (): React.ReactElement => {
   const dispatch = useDispatch();
   const dialog = useSelector((state: RootState) => state.interface.dialog);
 
@@ -65,5 +65,3 @@ const Dialog = (): React.ReactElement => {
     </div>
   );
 };
-
-export default Dialog;

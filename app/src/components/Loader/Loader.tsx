@@ -4,7 +4,7 @@ import React from 'react';
 import Loading from 'react-loading-components';
 import './loader.css';
 
-const Loader = (): React.ReactElement => {
+export const Loader = (): React.ReactElement => {
   const [color, setColor] = React.useState<string>('');
   const [showText, setShowText] = React.useState<boolean>(true);
   const [showLoader, setShowLoader] = React.useState<boolean>(false);
@@ -43,5 +43,3 @@ const Loader = (): React.ReactElement => {
     </div>
   );
 };
-
-export default Loader;

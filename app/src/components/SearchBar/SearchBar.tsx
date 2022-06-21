@@ -10,7 +10,7 @@ interface IProps {
   handleConfirm: () => Promise<void>;
 }
 
-export default class SearchBar extends React.Component<IProps> {
+export class SearchBar extends React.Component<IProps> {
   render() {
     return (
       <div className="search-bar">

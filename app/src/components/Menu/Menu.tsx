@@ -15,7 +15,7 @@ import { MenuService } from '../../services/menu';
 import { RootState } from '../../store';
 import { IDialog, IMenuItem, WebViewAction } from '../../typings/d';
 import { hideWindowWarning } from '../Dialog/DialogContent';
-import MenuItem from './MenuItem';
+import { MenuItem } from './MenuItem';
 import './styles.css';
 
 interface IProps {
@@ -26,7 +26,7 @@ interface IProps {
   handleActionRequest: (id: string, action: WebViewAction) => void;
 }
 
-const Menu = ({
+export const Menu = ({
   page,
   focusedItem,
   handleClick,
@@ -160,5 +160,3 @@ const Menu = ({
     </div>
   );
 };
-
-export default Menu;

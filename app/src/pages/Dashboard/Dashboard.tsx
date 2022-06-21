@@ -1,18 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Alert from '../../components/Alert/Alert';
-import Menu from '../../components/Menu/Menu';
-import WebView from '../../components/WebView/WebView';
+import { Alert } from '../../components/Alert/Alert';
+import { Menu } from '../../components/Menu/Menu';
+import { WebView } from '../../components/WebView/WebView';
 import { MenuService } from '../../services/menu';
 import { RootState } from '../../store';
-import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/user';
-import Search from '../Search/Search';
-import Settings from '../Settings/Settings';
+import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
+import { Search } from '../Search/Search';
+import { Settings } from '../Settings/Settings';
 import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
 
-const Dashboard = (): React.ReactElement => {
+export const Dashboard = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<TPages>('settings');
   const [applications, setApplications] = React.useState<IMenuItem[]>([]);
@@ -113,5 +113,3 @@ const Dashboard = (): React.ReactElement => {
     </div>
   );
 };
-
-export default Dashboard;

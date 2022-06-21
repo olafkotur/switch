@@ -1,12 +1,12 @@
 import React from 'react';
-import SearchBar from '../../components/SearchBar/SearchBar';
-import Suggestion from '../../components/Suggestion/Suggestion';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { Suggestion } from '../../components/Suggestion/Suggestion';
 import { MenuService } from '../../services/menu';
 import { SearchService } from '../../services/search';
-import { Icon } from '../../typings/user';
+import { Icon } from '../../typings/d';
 import './search.css';
 
-const Search = (): React.ReactElement => {
+export const Search = (): React.ReactElement => {
   const [isValid, setIsValid] = React.useState<boolean>(false);
   const [searchInput, setSearchInput] = React.useState<string>('');
 
@@ -84,5 +84,3 @@ const Search = (): React.ReactElement => {
     </div>
   );
 };
-
-export default Search;

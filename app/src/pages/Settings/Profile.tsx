@@ -8,7 +8,7 @@ import { RootState } from '../../store';
 import { LoginRegister } from './LoginRegister';
 import './styles.css';
 
-const Profile = (): React.ReactElement => {
+export const Profile = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { auth, profile } = useSelector((state: RootState) => state.user);
 
@@ -93,5 +93,3 @@ const Profile = (): React.ReactElement => {
     </div>
   );
 };
-
-export default Profile;

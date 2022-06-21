@@ -2,7 +2,7 @@ import { WebviewTag } from 'electron';
 import React from 'react';
 import { ElectronService } from '../../services/electron';
 import { UtilService } from '../../services/util';
-import { IActionRequest, WindowBehaviour } from '../../typings/user';
+import { IActionRequest, WindowBehaviour } from '../../typings/d';
 
 interface IProps {
   id: string;
@@ -17,7 +17,7 @@ interface IState {
   allowControls: boolean;
 }
 
-export default class WebView extends React.Component<IProps, IState> {
+export class WebView extends React.Component<IProps, IState> {
   /**
    * Local properties
    */

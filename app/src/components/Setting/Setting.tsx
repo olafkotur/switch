@@ -10,7 +10,7 @@ interface IProps extends ISettingConfig {
   handleChange: (name: string, value: any) => void;
 }
 
-const Setting = ({
+export const Setting = ({
   type,
   label,
   description,
@@ -76,5 +76,3 @@ const Setting = ({
     </div>
   );
 };
-
-export default Setting;
