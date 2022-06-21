@@ -2,17 +2,17 @@ import { IconButton, Tooltip } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDialog } from '../../redux/interface';
-import { UserService } from '../../services/user';
-import { RootState } from '../../store';
+import Stylesheet from 'reactjs-stylesheet';
+import { setDialog } from '../../../redux/interface';
+import { UserService } from '../../../services/user';
+import { RootState } from '../../../store';
 import { LoginRegister } from './LoginRegister';
-import './styles.css';
 
 export const Profile = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { auth, profile } = useSelector((state: RootState) => state.user);
 
-  const defaultAvatar = require('../../../assets/default-avatar.png');
+  const defaultAvatar = require('../../../../assets/default-avatar.png');
 
   const handleLoginOrRegister = async (): Promise<void> => {
     dispatch(
@@ -48,12 +48,12 @@ export const Profile = (): React.ReactElement => {
   };
 
   return (
-    <div className="setting-group bg-secondary">
+    <div className="bg-secondary" style={styles.container}>
       <div className="d-flex justify-content-end">
         {!auth && (
           <>
             <IconButton className="px-2 py-0" onClick={handleLoginOrRegister}>
-              <span className="primary setting-profile-action-text">
+              <span className="primary" style={styles.actionText}>
                 Login / Register
               </span>
             </IconButton>
@@ -69,11 +69,11 @@ export const Profile = (): React.ReactElement => {
         )}
       </div>
 
-      <div className="d-flex flex-row align-items-center setting-profile-face-lift">
-        <img
-          src={profile.avatar || defaultAvatar}
-          className="setting-profile-avatar"
-        />
+      <div
+        className="d-flex flex-row align-items-center"
+        style={styles.faceLift}
+      >
+        <img src={profile.avatar || defaultAvatar} style={styles.avatar} />
         <div className="align-items-center ml-3">
           {auth ? (
             <>
@@ -93,3 +93,22 @@ export const Profile = (): React.ReactElement => {
     </div>
   );
 };
+
+const styles = Stylesheet.create({
+  container: {
+    paddingTop: '5vh',
+    width: '60vw',
+  },
+  avatar: {
+    height: 120,
+    width: 120,
+    borderRadius: 60,
+  },
+  faceLift: {
+    marginTop: -22,
+  },
+  actionText: {
+    fontSize: 12,
+    opacity: 0.5,
+  },
+});

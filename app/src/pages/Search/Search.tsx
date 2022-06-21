@@ -1,10 +1,10 @@
 import React from 'react';
+import Stylesheet from 'reactjs-stylesheet';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { Suggestion } from '../../components/Suggestion/Suggestion';
 import { MenuService } from '../../services/menu';
 import { SearchService } from '../../services/search';
 import { Icon } from '../../typings/d';
-import './search.css';
 
 export const Search = (): React.ReactElement => {
   const [isValid, setIsValid] = React.useState<boolean>(false);
@@ -66,7 +66,7 @@ export const Search = (): React.ReactElement => {
   };
 
   return (
-    <div className="search-container">
+    <div style={styles.container}>
       <SearchBar
         value={searchInput}
         isValid={isValid}
@@ -84,3 +84,13 @@ export const Search = (): React.ReactElement => {
     </div>
   );
 };
+
+const styles = Stylesheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '60vw',
+    height: '100vh',
+    marginTop: '10%',
+  },
+});

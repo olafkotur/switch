@@ -2,6 +2,7 @@ import { Paper } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Stylesheet from 'reactjs-stylesheet';
 import {
   accentColorSelect,
   fontFamilySelect,
@@ -18,8 +19,7 @@ import { SettingsService } from '../../services/settings';
 import { RootState } from '../../store';
 import { FontFamily, IDialog, ISettingConfig } from '../../typings/d';
 import { IUserSettings } from '../../typings/user';
-import { Profile } from './Profile';
-import './styles.css';
+import { Profile } from './components/Profile';
 
 export const Settings = (): React.ReactElement => {
   const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);
@@ -194,7 +194,7 @@ export const Settings = (): React.ReactElement => {
   ];
 
   return (
-    <div className="settings-container">
+    <div style={styles.container}>
       {shouldRestart && (
         <Paper className="d-flex flex-row justify-content-center mb-4 py-3 bg-secondary">
           <span className="text-danger text-center p-1">
@@ -206,7 +206,7 @@ export const Settings = (): React.ReactElement => {
       <Profile />
 
       <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;General</h4>
-      <div className="setting-group bg-secondary">
+      <div className="bg-secondary" style={styles.group}>
         {general.map((v) => (
           <Setting
             {...v}
@@ -218,7 +218,7 @@ export const Settings = (): React.ReactElement => {
       </div>
 
       <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Appearance</h4>
-      <div className="setting-group bg-secondary">
+      <div className="bg-secondary" style={styles.group}>
         {appearance.map((v) => (
           <Setting
             {...v}
@@ -230,7 +230,7 @@ export const Settings = (): React.ReactElement => {
       </div>
 
       <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Presets</h4>
-      <div className="setting-group bg-secondary">
+      <div className="bg-secondary" style={styles.group}>
         <div className="d-flex flex-row row">
           {presets.map((v) => (
             <Preset {...v} key={`preset-setting-${v.name}`} />
@@ -238,7 +238,21 @@ export const Settings = (): React.ReactElement => {
         </div>
       </div>
 
-      <div className="setting-footer" />
+      <div style={styles.footer} />
     </div>
   );
 };
+
+const styles = Stylesheet.create({
+  container: {
+    paddingTop: '5vh',
+    width: '60vw',
+  },
+  group: {
+    padding: 20,
+    borderRadius: 10,
+  },
+  footer: {
+    paddingBottom: '5vh',
+  },
+});

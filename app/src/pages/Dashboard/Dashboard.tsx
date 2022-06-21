@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Stylesheet from 'reactjs-stylesheet';
 import { Alert } from '../../components/Alert/Alert';
 import { Menu } from '../../components/Menu/Menu';
 import { WebView } from '../../components/WebView/WebView';
@@ -8,7 +9,6 @@ import { RootState } from '../../store';
 import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
 import { Search } from '../Search/Search';
 import { Settings } from '../Settings/Settings';
-import './dashboard.css';
 
 export type TPages = 'web' | 'search' | 'settings';
 
@@ -96,13 +96,19 @@ export const Dashboard = (): React.ReactElement => {
           </div>
 
           {page === 'search' && (
-            <div className="dashboard-container d-flex justify-content-center">
+            <div
+              className="d-flex justify-content-center"
+              style={styles.container}
+            >
               <Search />
             </div>
           )}
 
           {page === 'settings' && (
-            <div className="dashboard-container d-flex justify-content-center">
+            <div
+              className="d-flex justify-content-center"
+              style={styles.container}
+            >
               <Settings />
             </div>
           )}
@@ -113,3 +119,10 @@ export const Dashboard = (): React.ReactElement => {
     </div>
   );
 };
+
+const styles = Stylesheet.create({
+  container: {
+    height: '100vh',
+    overflowY: 'scroll',
+  },
+});

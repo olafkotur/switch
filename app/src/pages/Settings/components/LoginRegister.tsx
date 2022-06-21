@@ -1,9 +1,9 @@
 import { Button, CircularProgress } from '@material-ui/core';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { TextInput } from '../../components/TextInput/TextInput';
-import { UserService } from '../../services/user';
-import './styles.css';
+import Stylesheet from 'reactjs-stylesheet';
+import { TextInput } from '../../../components/TextInput/TextInput';
+import { UserService } from '../../../services/user';
 
 export const LoginRegister = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -37,7 +37,7 @@ export const LoginRegister = (): React.ReactElement => {
   return (
     <div className="d-flex justify-content-center align-items-center">
       {loading && (
-        <CircularProgress className="position-absolute setting-loader" />
+        <CircularProgress className="position-absolute" style={styles.loader} />
       )}
       <div className="p-1" style={loading ? { opacity: 0.2 } : {}}>
         <TextInput
@@ -78,3 +78,9 @@ export const LoginRegister = (): React.ReactElement => {
     </div>
   );
 };
+
+const styles = Stylesheet.create({
+  loader: {
+    marginTop: -25,
+  },
+});
