@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://switchapp.dev.com">
-    <img width="120px" style="margin-top: 30px" src="https://switchapp.dev/static/media/switch-icon.d468bbb2.png">
+    <img width="150px" style="margin-top: 30px" src="https://github.com/olafkotur/switch/blob/main/app/assets/switch-icon.png?raw=true">
   </a>
 </p>
 
