@@ -1,21 +1,14 @@
 import { app, BrowserWindow, Menu, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import log from 'electron-log';
-import updater from 'electron-simple-updater';
+import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
 import * as url from 'url';
 import { ElectronService } from '../src/services/electron';
 import { SettingsService } from '../src/services/settings';
 
-// auto-updates setup
-log.info('App starting...');
-updater.init({
-  autoDownload: true,
-  checkUpdateOnStart: true,
-  url: 'https://raw.githubusercontent.com/olafkotur/switch-releases/master/updates.json',
-});
+log.info('App is starting...');
 
-// global variables
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 let mainWindow: BrowserWindow;
 let tray: Tray;
@@ -112,6 +105,7 @@ const sendStatusToWindow = (status: string): void => {
 // launch window
 app.on('ready', async () => {
   await createMainWindow();
+  await autoUpdater.checkForUpdates();
 });
 app.on('window-all-closed', () => {
   app.quit();

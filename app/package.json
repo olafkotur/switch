@@ -1,8 +1,19 @@
 {
   "name": "switch",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./dist/main.js",
+  "keywords": [],
+  "author": "Olaf Kotur <olafkotur97@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olafkotur/switch"
+  },
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
   "scripts": {
     "start": "npm-run-all -p dev:react electron:serve",
     "dev:electron": "cross-env NODE_ENV=development webpack --config webpack/electron.webpack.js --mode development && npm run start:electron",
@@ -16,9 +27,6 @@
     "package": "npm-run-all build package:dist",
     "package:dist": "electron-builder"
   },
-  "keywords": [],
-  "author": "Olaf Kotur <olafkotur97@gmail.com>",
-  "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "@material-ui/core": "^4.11.0",
@@ -34,7 +42,7 @@
     "css-loader": "^5.0.1",
     "electron-json-storage": "^4.3.0",
     "electron-log": "^4.3.0",
-    "electron-simple-updater": "^2.0.10",
+    "electron-updater": "^5.0.5",
     "file-loader": "^6.2.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
