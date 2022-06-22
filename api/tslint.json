@@ -17,6 +17,9 @@
     "ter-arrow-parens": false,
     "align": false,
     "semicolon": [true, "always", "ignore-bound-class-methods"],
-    "max-line-length": [true, { "limit": 120, "ignore-pattern": "//||console." }]
+    "max-line-length": [
+      true,
+      { "limit": 120, "ignore-pattern": "//||console." }
+    ]
   }
 }

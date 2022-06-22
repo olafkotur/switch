@@ -1,4 +1,4 @@
-import { IMenuItem } from '../typings/user';
+import { IMenuItem } from '../typings/user'
 
 export const SearchService = {
   /**
@@ -114,7 +114,7 @@ export const SearchService = {
         icon: require('../../assets/suggestions/reddit.png'),
         order: -1,
       },
-    ];
+    ]
   },
 
   /**
@@ -124,6 +124,6 @@ export const SearchService = {
   validateUrl: (url: string): boolean => {
     return new RegExp(
       /^(?:http(s)?:\/\/)?[\w.-]+(?:[\.|\:][\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm,
-    ).test(url);
+    ).test(url)
   },
-};
+}

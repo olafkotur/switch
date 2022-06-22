@@ -1,42 +1,42 @@
-import { WebviewTag } from 'electron';
-import React from 'react';
-import { ElectronService } from '../../../services/electron';
-import { UtilService } from '../../../services/util';
-import { IActionRequest, WindowBehaviour } from '../../../typings/d';
+import { WebviewTag } from 'electron'
+import React from 'react'
+import { ElectronService } from '../../../services/electron'
+import { UtilService } from '../../../services/util'
+import { IActionRequest, WindowBehaviour } from '../../../typings/d'
 
 interface IProps {
-  id: string;
-  url: string;
-  hidden: boolean;
-  actionRequest: IActionRequest;
-  useModifiedAgent: boolean;
-  defaultWindowBehaviour: WindowBehaviour;
+  id: string
+  url: string
+  hidden: boolean
+  actionRequest: IActionRequest
+  useModifiedAgent: boolean
+  defaultWindowBehaviour: WindowBehaviour
 }
 
 interface IState {
-  allowControls: boolean;
+  allowControls: boolean
 }
 
 export class WebView extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
-  protected webView!: WebviewTag;
-  protected userAgent: string;
+  protected webView!: WebviewTag
+  protected userAgent: string
 
   /**
    * WebView constructor
    * @param props - component prosp
    */
   constructor(props: IProps) {
-    super(props);
+    super(props)
 
     this.state = {
       allowControls: false,
-    };
+    }
 
     // local properties
-    this.userAgent = UtilService.getUserAgent(this.props.url);
+    this.userAgent = UtilService.getUserAgent(this.props.url)
   }
 
   /**
@@ -45,26 +45,26 @@ export class WebView extends React.Component<IProps, IState> {
   componentDidMount(): void {
     this.webView = document.getElementById(
       `webview-${this.props.id}`,
-    ) as WebviewTag;
+    ) as WebviewTag
 
     // enable page controls
     this.webView.addEventListener('dom-ready', () => {
-      this.setState({ allowControls: true });
-    });
+      this.setState({ allowControls: true })
+    })
 
     // handle new windows
     this.webView.addEventListener('new-window', async (e): Promise<void> => {
       if (e.url) {
         // override to open as 'window' in special cases
-        const override = e.disposition === 'new-window';
+        const override = e.disposition === 'new-window'
 
         // open hyperlink using set behaviour
         await ElectronService.openHyperlink(
           e.url,
           override ? 'window' : this.props.defaultWindowBehaviour,
-        );
+        )
       }
-    });
+    })
   }
 
   /**
@@ -79,14 +79,14 @@ export class WebView extends React.Component<IProps, IState> {
     ) {
       switch (this.props.actionRequest.action) {
         case 'back':
-          this.webView.goBack();
-          break;
+          this.webView.goBack()
+          break
         case 'forward':
-          this.webView.goForward();
-          break;
+          this.webView.goForward()
+          break
         case 'refresh':
-          this.webView.reload();
-          break;
+          this.webView.reload()
+          break
       }
     }
   }
@@ -99,6 +99,6 @@ export class WebView extends React.Component<IProps, IState> {
         className={`vh-100 ${this.props.hidden ? 'd-none' : ''}`}
         useragent={this.props.useModifiedAgent ? this.userAgent : undefined}
       />
-    );
+    )
   }
 }

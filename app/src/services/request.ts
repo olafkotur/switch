@@ -1,9 +1,9 @@
-import * as _ from 'lodash';
-import { config } from '../config';
-import { ITokenData } from '../typings/data';
-import { IRequestHeaders, IRequestOptions } from '../typings/request';
-import { IResponse } from '../typings/response';
-import { StorageService } from './storage';
+import * as _ from 'lodash'
+import { config } from '../config'
+import { ITokenData } from '../typings/data'
+import { IRequestHeaders, IRequestOptions } from '../typings/request'
+import { IResponse } from '../typings/response'
+import { StorageService } from './storage'
 
 export const RequestService = {
   /**
@@ -19,7 +19,7 @@ export const RequestService = {
       url,
       headers,
       method: 'get',
-    });
+    })
   },
 
   /**
@@ -37,7 +37,7 @@ export const RequestService = {
       headers,
       method: 'post',
       body: JSON.stringify(body),
-    });
+    })
   },
 
   /**
@@ -60,11 +60,11 @@ export const RequestService = {
           },
         }).then(async (v) =>
           resolve({ result: await v.json(), headers: v.headers }),
-        );
+        )
       } catch (e) {
-        reject(null);
+        reject(null)
       }
-    });
+    })
   },
 
   /**
@@ -76,9 +76,9 @@ export const RequestService = {
     options: IRequestOptions,
     attempt = 0,
   ): Promise<IResponse> => {
-    const jwtTokens = (await StorageService.get('jwtTokens')) as ITokenData;
-    const response = await RequestService.request(options, jwtTokens);
-    return RequestService.proxy(response, jwtTokens, options, attempt);
+    const jwtTokens = (await StorageService.get('jwtTokens')) as ITokenData
+    const response = await RequestService.request(options, jwtTokens)
+    return RequestService.proxy(response, jwtTokens, options, attempt)
   },
 
   /**
@@ -102,17 +102,17 @@ export const RequestService = {
           body: JSON.stringify({ refreshToken: jwtTokens.refreshToken }),
         },
         jwtTokens,
-      );
+      )
 
       // try again with new tokens
       if (refreshResponse.result.code === 200) {
-        const newTokens = refreshResponse.result.data as ITokenData;
-        await StorageService.set('jwtTokens', newTokens);
-        return RequestService.requestR(options, attempt + 1);
+        const newTokens = refreshResponse.result.data as ITokenData
+        await StorageService.set('jwtTokens', newTokens)
+        return RequestService.requestR(options, attempt + 1)
       }
     }
 
-    return response;
+    return response
   },
 
   /**
@@ -122,7 +122,7 @@ export const RequestService = {
   queryString: (query: object): string => {
     return _.entries(query)
       .map((v) => `${v[0]}=${v[1]}`)
-      .join('&');
+      .join('&')
   },
 
   /**
@@ -130,7 +130,7 @@ export const RequestService = {
    * @param fields - fields to be checked
    */
   requiredFields: (fields: string[]): boolean => {
-    const missing = fields.map((v) => !v);
-    return !missing.length;
+    const missing = fields.map((v) => !v)
+    return !missing.length
   },
-};
+}

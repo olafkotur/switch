@@ -1,10 +1,10 @@
-import { ButtonBase, Paper } from '@material-ui/core';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
-import { PresetService } from '../../../services/preset';
-import { RootState } from '../../../store';
-import { IPreset } from '../../../typings/d';
+import { ButtonBase, Paper } from '@material-ui/core'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
+import { PresetService } from '../../../services/preset'
+import { RootState } from '../../../store'
+import { IPreset } from '../../../typings/d'
 
 interface IProps extends IPreset {}
 
@@ -16,9 +16,9 @@ export const Preset = ({
   yPosition,
   preview,
 }: IProps): React.ReactElement => {
-  const [focused, setFocused] = React.useState<boolean>(false);
+  const [focused, setFocused] = React.useState<boolean>(false)
 
-  const { settings } = useSelector((state: RootState) => state.user);
+  const { settings } = useSelector((state: RootState) => state.user)
 
   /**
    * Handles set active preset
@@ -31,15 +31,15 @@ export const Preset = ({
       yPosition,
       settings.animatePresets,
       settings.windowPadding,
-    );
-  };
+    )
+  }
 
   const extraStyles = {
     width: `${preview.width}%`,
     height: `${preview.height}%`,
     marginLeft: `${preview.xOffset}%`,
     marginTop: `${preview.yOffset}%`,
-  };
+  }
 
   return (
     <ButtonBase
@@ -61,8 +61,8 @@ export const Preset = ({
         />
       </Paper>
     </ButtonBase>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   outer: {
@@ -73,4 +73,4 @@ const styles = Stylesheet.create({
     borderWidth: 4,
     borderStyle: 'dotted',
   },
-});
+})

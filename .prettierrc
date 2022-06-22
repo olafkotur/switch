@@ -2,11 +2,11 @@
   "singleQuote": true,
   "trailingComma": "all",
   "arrowParens": "always",
+  "semi": false,
   "vetur.format.defaultFormatterOptions": {
     "prettier": {
       "singleQuote": true,
       "arrowParens": "always"
     }
-  },
-  "printWidth": 120
+  }
 }

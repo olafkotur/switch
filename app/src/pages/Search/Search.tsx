@@ -1,41 +1,41 @@
-import React from 'react';
-import Stylesheet from 'reactjs-stylesheet';
-import { MenuService } from '../../services/menu';
-import { SearchService } from '../../services/search';
-import { Icon } from '../../typings/d';
-import { SearchBar } from './components/SearchBar';
-import { Suggestion } from './components/Suggestion';
+import React from 'react'
+import Stylesheet from 'reactjs-stylesheet'
+import { MenuService } from '../../services/menu'
+import { SearchService } from '../../services/search'
+import { Icon } from '../../typings/d'
+import { SearchBar } from './components/SearchBar'
+import { Suggestion } from './components/Suggestion'
 
 export const Search = (): React.ReactElement => {
-  const [isValid, setIsValid] = React.useState<boolean>(false);
-  const [searchInput, setSearchInput] = React.useState<string>('');
+  const [isValid, setIsValid] = React.useState<boolean>(false)
+  const [searchInput, setSearchInput] = React.useState<string>('')
 
   /**
    * Alert error
    */
   const alertError = (): void => {
-    alert('Something went wrong, please try again');
-  };
+    alert('Something went wrong, please try again')
+  }
 
   /**
    * Handles search update
    * @param value - search value
    */
   const handleUpdateSearch = async (value: string): Promise<void> => {
-    const isValid = SearchService.validateUrl(value);
-    setIsValid(isValid);
-    setSearchInput(value);
-  };
+    const isValid = SearchService.validateUrl(value)
+    setIsValid(isValid)
+    setSearchInput(value)
+  }
 
   /**
    * Handles confirm
    */
   const handleConfirm = async (): Promise<void> => {
-    const success = await MenuService.save(searchInput);
+    const success = await MenuService.save(searchInput)
     if (!success) {
-      alertError();
+      alertError()
     }
-  };
+  }
 
   /**
    * Handles confirm
@@ -43,17 +43,17 @@ export const Search = (): React.ReactElement => {
    * @param icon - service icon
    */
   const handleSuggestion = async (url: string, icon: Icon): Promise<void> => {
-    const success = await MenuService.save(url, icon);
+    const success = await MenuService.save(url, icon)
     if (!success) {
-      alertError();
+      alertError()
     }
-  };
+  }
 
   /**
    * Generates result components
    */
   const renderSuggestions = (): React.ReactElement[] => {
-    const data = SearchService.getSuggestions();
+    const data = SearchService.getSuggestions()
     return data.map((v, i) => {
       return (
         <Suggestion
@@ -61,9 +61,9 @@ export const Search = (): React.ReactElement => {
           key={`suggestion-${i}`}
           handleSuggestion={handleSuggestion}
         />
-      );
-    });
-  };
+      )
+    })
+  }
 
   return (
     <div style={styles.container}>
@@ -82,8 +82,8 @@ export const Search = (): React.ReactElement => {
         {renderSuggestions()}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   container: {
@@ -93,4 +93,4 @@ const styles = Stylesheet.create({
     height: '100vh',
     marginTop: '10%',
   },
-});
+})

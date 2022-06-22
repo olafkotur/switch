@@ -1,26 +1,26 @@
-import { IconButton, Slide } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
-import { setError } from '../redux/interface';
-import { RootState } from '../store';
+import { IconButton, Slide } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
+import { setError } from '../redux/interface'
+import { RootState } from '../store'
 
 export const Alert = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const { error } = useSelector((state: RootState) => state.interface);
+  const dispatch = useDispatch()
+  const { error } = useSelector((state: RootState) => state.interface)
 
   React.useEffect(() => {
     // close automatically if no action
-    setTimeout(() => handleClose(), 10000);
-  }, []);
+    setTimeout(() => handleClose(), 10000)
+  }, [])
 
   /**
    * Handles close event.
    */
   const handleClose = (): void => {
-    dispatch(setError(''));
-  };
+    dispatch(setError(''))
+  }
 
   return (
     <div className="d-flex justify-content-center" style={styles.container}>
@@ -47,8 +47,8 @@ export const Alert = (): React.ReactElement => {
         </div>
       </Slide>
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   container: {
@@ -74,4 +74,4 @@ const styles = Stylesheet.create({
   closeButton: {
     right: 20,
   },
-});
+})

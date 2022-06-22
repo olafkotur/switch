@@ -1,11 +1,11 @@
-import _ from 'lodash';
-import { config } from '../config';
-import { alphabetic, modifiers, numeric, special } from '../imports/keys';
-import { IUserSettings } from '../typings/user';
-import { RequestService } from './request';
-import { StorageService } from './storage';
+import _ from 'lodash'
+import { config } from '../config'
+import { alphabetic, modifiers, numeric, special } from '../imports/keys'
+import { IUserSettings } from '../typings/user'
+import { RequestService } from './request'
+import { StorageService } from './storage'
 
-const STORAGE_KEY = 'userSettings';
+const STORAGE_KEY = 'userSettings'
 
 export const defaultSettings: IUserSettings = {
   overlayMode: true,
@@ -17,33 +17,33 @@ export const defaultSettings: IUserSettings = {
   animatePresets: true,
   windowPadding: false,
   fontFamily: 'Arial',
-};
+}
 
 export const SettingsService = {
   /**
    * Fetches user settings
    */
   fetch: async (): Promise<IUserSettings | null> => {
-    const remote = await RequestService.get(`${config.apiUrl}/api/settings`);
+    const remote = await RequestService.get(`${config.apiUrl}/api/settings`)
 
     // always preference for remote
     if (remote.result.data) {
-      await StorageService.set(STORAGE_KEY, remote.result.data as object); // update local
-      return remote.result.data as IUserSettings | null;
+      await StorageService.set(STORAGE_KEY, remote.result.data as object) // update local
+      return remote.result.data as IUserSettings | null
     }
 
-    return await SettingsService.fetchLocal();
+    return await SettingsService.fetchLocal()
   },
 
   /**
    * Fetches local user settings
    */
   fetchLocal: async (): Promise<IUserSettings> => {
-    const data = await StorageService.get(STORAGE_KEY);
+    const data = await StorageService.get(STORAGE_KEY)
     if (data && !_.isEmpty(data)) {
-      return data as IUserSettings;
+      return data as IUserSettings
     }
-    return defaultSettings;
+    return defaultSettings
   },
 
   /**
@@ -51,10 +51,10 @@ export const SettingsService = {
    * @param updatedSettings - updated user settings
    */
   update: async (updatedSettings: IUserSettings): Promise<boolean> => {
-    const url = `${config.apiUrl}/api/settings/update`;
-    const remote = await RequestService.post(url, updatedSettings);
-    const local = await StorageService.set(STORAGE_KEY, updatedSettings);
-    return remote.result.code === 200 && local;
+    const url = `${config.apiUrl}/api/settings/update`
+    const remote = await RequestService.post(url, updatedSettings)
+    const local = await StorageService.set(STORAGE_KEY, updatedSettings)
+    return remote.result.code === 200 && local
   },
 
   /**
@@ -63,29 +63,29 @@ export const SettingsService = {
    */
   validateKey: (key: string): string | null => {
     // match modifier keys
-    const m = modifiers.find((v) => v.name === key);
+    const m = modifiers.find((v) => v.name === key)
     if (m) {
-      return m.value;
+      return m.value
     }
 
     // match alphabetic keys
-    const a = alphabetic.find((v) => v.name === key);
+    const a = alphabetic.find((v) => v.name === key)
     if (a) {
-      return a.value;
+      return a.value
     }
 
     // match numeric keys
-    const n = numeric.find((v) => v.name === key);
+    const n = numeric.find((v) => v.name === key)
     if (n) {
-      return n.value;
+      return n.value
     }
 
     // match special keys
-    const s = special.find((v) => v.name === key);
+    const s = special.find((v) => v.name === key)
     if (s) {
-      return s.value;
+      return s.value
     }
 
-    return null;
+    return null
   },
-};
+}

@@ -1,10 +1,10 @@
-import { Dispatch } from '@reduxjs/toolkit';
-import { config } from '../config';
-import { setDialog, setError } from '../redux/interface';
-import { setAuth, setProfile } from '../redux/user';
-import { IProfile } from '../typings/user';
-import { RequestService } from './request';
-import { StorageService } from './storage';
+import { Dispatch } from '@reduxjs/toolkit'
+import { config } from '../config'
+import { setDialog, setError } from '../redux/interface'
+import { setAuth, setProfile } from '../redux/user'
+import { IProfile } from '../typings/user'
+import { RequestService } from './request'
+import { StorageService } from './storage'
 
 export const UserService = {
   /**
@@ -24,32 +24,32 @@ export const UserService = {
         email,
         password,
       },
-    );
+    )
 
     // save token to local storage
     if (response.result.code === 200 && response.result.data) {
       await StorageService.set('jwtTokens', {
         ...(response.result.data as object),
-      });
+      })
     }
 
     // handle error messages
     if (response.result.code !== 200) {
-      dispatch(setError(response.result.message || config.defaultError));
-      return;
+      dispatch(setError(response.result.message || config.defaultError))
+      return
     }
 
     // fetch profile data
-    const profile = await UserService.fetchProfile();
+    const profile = await UserService.fetchProfile()
     if (!profile) {
-      dispatch(setError(response.result.message || config.defaultError));
-      return;
+      dispatch(setError(response.result.message || config.defaultError))
+      return
     }
 
     // update redux state
-    dispatch(setProfile(profile));
-    dispatch(setAuth(true));
-    dispatch(setDialog(null));
+    dispatch(setProfile(profile))
+    dispatch(setAuth(true))
+    dispatch(setDialog(null))
   },
 
   /**
@@ -69,27 +69,25 @@ export const UserService = {
         email,
         password,
       },
-    );
+    )
 
     // save token to local storage
     if (response.result.code === 200 && response.result.data) {
       await StorageService.set('jwtTokens', {
         ...(response.result.data as object),
-      });
+      })
     }
 
     // handle error messages
     if (response.result.code !== 201) {
-      dispatch(
-        setError(response.result.message || 'Unexpected error occurred'),
-      );
-      return;
+      dispatch(setError(response.result.message || 'Unexpected error occurred'))
+      return
     }
 
     // update redux state
-    dispatch(setProfile({ email, avatar: null }));
-    dispatch(setAuth(true));
-    dispatch(setDialog(null));
+    dispatch(setProfile({ email, avatar: null }))
+    dispatch(setAuth(true))
+    dispatch(setDialog(null))
   },
 
   /**
@@ -97,10 +95,10 @@ export const UserService = {
    * @param dispatch - redux dispatch
    */
   logout: async (dispatch: Dispatch): Promise<void> => {
-    await StorageService.remove('jwtTokens');
+    await StorageService.remove('jwtTokens')
 
     // update redux state
-    dispatch(setAuth(false));
+    dispatch(setAuth(false))
   },
 
   /**
@@ -109,10 +107,10 @@ export const UserService = {
   fetchProfile: async (): Promise<IProfile | null> => {
     const response = await RequestService.get(
       `${config.apiUrl}/api/user/profile`,
-    );
+    )
     if (response.result.code === 200) {
-      return response.result.data as IProfile | null;
+      return response.result.data as IProfile | null
     }
-    return null;
+    return null
   },
-};
+}

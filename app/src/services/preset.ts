@@ -1,12 +1,12 @@
-import { IPreset, IScreenInfo } from '../typings/user';
-import { ElectronService } from './electron';
+import { IPreset, IScreenInfo } from '../typings/user'
+import { ElectronService } from './electron'
 
 export const PresetService = {
   /**
    * Returns the default preset settings
    */
   fetch: (sInfo?: IScreenInfo): IPreset[] => {
-    const screenSize = sInfo || ElectronService.getScreenInfo(true);
+    const screenSize = sInfo || ElectronService.getScreenInfo(true)
     return [
       {
         name: 'Full Screen',
@@ -48,7 +48,7 @@ export const PresetService = {
         yPosition: 0,
         preview: { width: 50, height: 100, xOffset: 50, yOffset: 0 },
       },
-    ];
+    ]
   },
 
   /**
@@ -73,15 +73,15 @@ export const PresetService = {
       height: Math.round(height),
       xPosition: Math.round(xPosition),
       yPosition: Math.round(yPosition),
-    };
+    }
     return new Promise((resolve) => {
       ElectronService.setWindowInfo(
         undefined,
         windowInfo,
         animate,
         windowPadding,
-      );
-      resolve();
-    });
+      )
+      resolve()
+    })
   },
-};
+}

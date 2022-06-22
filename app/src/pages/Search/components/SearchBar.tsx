@@ -1,13 +1,13 @@
-import { Button, InputAdornment, TextField } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
-import React from 'react';
-import Stylesheet from 'reactjs-stylesheet';
+import { Button, InputAdornment, TextField } from '@material-ui/core'
+import { Search } from '@material-ui/icons'
+import React from 'react'
+import Stylesheet from 'reactjs-stylesheet'
 
 interface IProps {
-  value: string;
-  isValid: boolean;
-  handleUpdate: (value: string) => Promise<void>;
-  handleConfirm: () => Promise<void>;
+  value: string
+  isValid: boolean
+  handleUpdate: (value: string) => Promise<void>
+  handleConfirm: () => Promise<void>
 }
 
 export class SearchBar extends React.Component<IProps> {
@@ -50,7 +50,7 @@ export class SearchBar extends React.Component<IProps> {
           Confirm
         </Button>
       </div>
-    );
+    )
   }
 }
 
@@ -69,4 +69,4 @@ const styles = Stylesheet.create({
     width: '95%',
     justifyContent: 'center',
   },
-});
+})

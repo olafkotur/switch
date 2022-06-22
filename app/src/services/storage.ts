@@ -1,10 +1,10 @@
-import storage from 'electron-json-storage';
+import storage from 'electron-json-storage'
 
 export type StorageKey =
   | 'menuItems'
   | 'currentWindowInfo'
   | 'jwtTokens'
-  | 'userSettings';
+  | 'userSettings'
 
 export const StorageService = {
   /**
@@ -16,11 +16,11 @@ export const StorageService = {
     return await new Promise((resolve, reject) => {
       storage.set(key, data, (error) => {
         if (error) {
-          reject(false);
+          reject(false)
         }
-        resolve(true);
-      });
-    });
+        resolve(true)
+      })
+    })
   },
 
   /**
@@ -31,11 +31,11 @@ export const StorageService = {
     return await new Promise((resolve, reject) => {
       storage.get(key, (_error, data) => {
         if (data) {
-          resolve(data);
+          resolve(data)
         }
-        reject(null);
-      });
-    });
+        reject(null)
+      })
+    })
   },
 
   /**
@@ -44,8 +44,8 @@ export const StorageService = {
    */
   remove: async (key: string): Promise<boolean> => {
     return await new Promise((resolve) => {
-      storage.remove(key, () => resolve(true));
-    });
+      storage.remove(key, () => resolve(true))
+    })
   },
 
   /**
@@ -54,9 +54,9 @@ export const StorageService = {
    */
   base64: async (file: File): Promise<string> => {
     return await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-    });
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+    })
   },
-};
+}

@@ -1,26 +1,26 @@
-import { Button, CircularProgress } from '@material-ui/core';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
-import { TextInput } from '../../../components/TextInput';
-import { UserService } from '../../../services/user';
+import { Button, CircularProgress } from '@material-ui/core'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
+import { TextInput } from '../../../components/TextInput'
+import { UserService } from '../../../services/user'
 
 export const LoginRegister = (): React.ReactElement => {
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [email, setEmail] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
-  const [valid, setValid] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [email, setEmail] = React.useState<string>('')
+  const [password, setPassword] = React.useState<string>('')
+  const [valid, setValid] = React.useState<boolean>(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
-    const validEmail = email.includes('@') && email.includes('.');
+    const validEmail = email.includes('@') && email.includes('.')
     const validPassword = RegExp(
       '(?=^.{8,}$)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$',
-    ).test(password);
+    ).test(password)
 
-    setValid(validEmail && validPassword);
-  }, [email, password]);
+    setValid(validEmail && validPassword)
+  }, [email, password])
 
   /**
    * Handlers user login registration.
@@ -29,10 +29,10 @@ export const LoginRegister = (): React.ReactElement => {
   const handleLoginRegister = async (
     action: 'login' | 'register',
   ): Promise<void> => {
-    setLoading(true);
-    await UserService[action](email, password, dispatch);
-    setLoading(false);
-  };
+    setLoading(true)
+    await UserService[action](email, password, dispatch)
+    setLoading(false)
+  }
 
   return (
     <div className="d-flex justify-content-center align-items-center">
@@ -76,11 +76,11 @@ export const LoginRegister = (): React.ReactElement => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   loader: {
     marginTop: -25,
   },
-});
+})
