@@ -1,9 +1,11 @@
 import React, { HTMLInputTypeAttribute } from 'react'
 import Stylesheet from 'reactjs-stylesheet'
+import { BORDER_RADIUS } from '../constants'
 
 interface IProps {
   value: string
   onChange: (value: string) => void
+  name?: string
   type?: HTMLInputTypeAttribute
   placeholder?: string
   description?: string
@@ -12,14 +14,15 @@ interface IProps {
 export const TextInput = ({
   value,
   onChange,
+  name,
   type,
   placeholder,
   description,
 }: IProps): React.ReactElement => {
   return (
     <div style={styles.container}>
+      {name && <span className="ml-2 primary">{name}</span>}
       <input
-        className="bg-secondary"
         style={styles.textInput}
         type={type || 'text'}
         value={value}
@@ -47,6 +50,8 @@ const styles = Stylesheet.create({
     paddingLeft: 20,
     width: '100%',
     color: 'rgba(255, 255, 255, 0.5)',
+    background: '#303136',
+    borderRadius: BORDER_RADIUS,
   },
   description: {
     fontSize: 12,

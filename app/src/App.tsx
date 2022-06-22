@@ -8,6 +8,7 @@ import { Dialog } from './components/Dialog'
 import { Loader } from './components/Loader'
 import './custom.css'
 import { Dashboard } from './pages/Dashboard/Dashboard'
+import { Login } from './pages/Login/Login'
 import { setApplications, setError } from './redux/interface'
 import { setAuth, setProfile, setSettings } from './redux/user'
 import { MenuService } from './services/menu'
@@ -20,7 +21,7 @@ const App = (): React.ReactElement => {
   const [theme, setTheme] = React.useState<Theme>()
 
   const dispatch = useDispatch()
-  const { settings } = useSelector((state: RootState) => state.user)
+  const { settings, auth } = useSelector((state: RootState) => state.user)
   const { dialog } = useSelector((state: RootState) => state.interface)
 
   React.useEffect(() => {
@@ -73,7 +74,7 @@ const App = (): React.ReactElement => {
   }
 
   /**
-   * Fetches user data and stores in redux.
+   * Fetches user data and stores in state.
    */
   const fetchUserData = async (): Promise<void> => {
     const profile = await UserService.fetchProfile()
@@ -86,6 +87,10 @@ const App = (): React.ReactElement => {
     applications && dispatch(setApplications(applications))
   }
 
+  // TODO: temp hax
+  // return <Loader />
+  return <Login />
+
   if (loading) {
     return <Loader />
   }
@@ -93,7 +98,7 @@ const App = (): React.ReactElement => {
   return (
     <ThemeProvider theme={theme as Theme}>
       <div style={{ fontFamily: settings.fontFamily }}>
-        <Dashboard />
+        {!auth ? <Login /> : <Dashboard />}
         {dialog && <Dialog />}
       </div>
     </ThemeProvider>

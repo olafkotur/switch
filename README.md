@@ -29,6 +29,7 @@ My use case started with just wanting to check my [Notion](https://notion.so) no
 - Only available on `macOS` for the time being
 - Header over to the [releases](https://github.com/olafkotur/switch/releases) and download the latest `.dmg` file
 - You'll receive auto-updates so you only need to do this once
+- **Switch is currently invite-only, reach out to me if you'd like a code, otherwise feel free to spin-up a local instance**
 
 ## 🔨 Setup
 
@@ -59,7 +60,22 @@ _This repo contains both the `app` and `api`, make sure you're in the correct di
 - Update [updates file](https://github.com/olafkotur/switch-releases/blob/master/updates.json) with the latest version info
 - Automatic updates will be rolled out to all users
 
-## ⚠️ Known issues
+## 💻 Contributing
+
+- You're more than welcome to submit a PR, follow the below rules before you do
+- Setup your env in-line with the project guidelines _e.g. prettier_
+- Ensure all commits have meaningful descriptions
+- Branch name should follow the format of `fix/appropriate-title` `feat/appropriate-title` `chore/appropriate-title` etc...
+- Create a PR against `main` branch and add an existing contributor as a reviewer
+- PRs will be rejected if the above is not met
+
+## ⚠️ Issues
+
+- If you've found a bug or something isn't quite right, open an issue
+- Be respectful, write as if you're the one reading
+- Contributors will tackle the issue once enough information is provided
+
+**Known Issues**
 
 - Streaming services will not work in Switch due to additional licensing required to do so
 - Some `webapps` such as Whatsapp can sometimes break due to requiring a specific Chrome version
