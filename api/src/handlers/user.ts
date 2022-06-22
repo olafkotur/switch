@@ -65,6 +65,7 @@ export const UserHandler = {
   ): Promise<void> => {
     const username = req.body.username || ''
     const password = req.body.password || ''
+    const avatar = req.body.avatar || ''
     if (!username || !password) {
       return ResponseService.bad('Missing username or password', res)
     }
@@ -86,7 +87,11 @@ export const UserHandler = {
 
     // create new user
     const hashedPassword = SecurityService.hash(password)
-    const result = await UserService.createUser(username, hashedPassword)
+    const result = await UserService.createUser(
+      username,
+      hashedPassword,
+      avatar,
+    )
     if (!result.success) {
       return ResponseService.bad(
         result.message || 'Unknown error occurred',
@@ -120,7 +125,8 @@ export const UserHandler = {
   ): Promise<void> => {
     const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
     const jwtResponse = await SecurityService.verifyToken(jwtToken)
-    if (jwtResponse.error) {
+    const user = await UserService.fetchSingle(jwtResponse.data.username)
+    if (jwtResponse.error || !user) {
       const message =
         jwtResponse.error === 'TokenExpiredError'
           ? 'Token Expired'
@@ -128,7 +134,7 @@ export const UserHandler = {
       return ResponseService.unauthorized(message, res)
     }
 
-    const data = { username: jwtResponse.data.username }
+    const data = { username: user.username, avatar: user.avatar }
     return ResponseService.data(data, res)
   },
 }

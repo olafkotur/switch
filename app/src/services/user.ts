@@ -1,10 +1,12 @@
 import { Dispatch } from '@reduxjs/toolkit'
 import { config } from '../config'
+import { DEFAULT_AVATAR } from '../icons'
 import { setDialog, setError } from '../redux/interface'
 import { setAuth, setProfile } from '../redux/user'
 import { IProfile } from '../typings/user'
 import { RequestService } from './request'
 import { StorageService } from './storage'
+import { UtilService } from './util'
 
 export const UserService = {
   /**
@@ -63,17 +65,18 @@ export const UserService = {
     password: string,
     dispatch: Dispatch,
   ): Promise<void> => {
+    const avatar = await UtilService.imgBase64(DEFAULT_AVATAR)
     const response = await RequestService.post(
       `${config.apiUrl}/api/user/create`,
       {
         username,
         password,
+        avatar,
       },
     )
 
     // save token to local storage
     if (response.result.code === 201 && response.result.data) {
-      console.log(response.result.data)
       await StorageService.set('jwtTokens', {
         ...(response.result.data as object),
       })
@@ -86,7 +89,7 @@ export const UserService = {
     }
 
     // update redux state
-    dispatch(setProfile({ username, avatar: null }))
+    dispatch(setProfile({ username, avatar }))
     dispatch(setAuth(true))
     dispatch(setDialog(null))
   },

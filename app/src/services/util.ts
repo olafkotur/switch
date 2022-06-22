@@ -1,8 +1,11 @@
 import crypto from 'crypto'
 import { remote } from 'electron'
 import moment from 'moment'
+import path from 'path'
 import { useEffect, useRef } from 'react'
-import { IWindowInfo } from '../typings/user'
+import { IWindowInfo } from '../typings/d'
+// @ts-ignore
+import imageToBase64 from 'image-to-base64/browser'
 
 export const UtilService = {
   /**
@@ -78,5 +81,15 @@ export const UtilService = {
       ref.current = value
     })
     return ref.current
+  },
+
+  /**
+   * Convert image into base64 format.
+   * @param image - input image
+   */
+  imgBase64: async (image: any): Promise<string> => {
+    const ext = path.extname(image).substring(1)
+    const base64 = await imageToBase64(image)
+    return `data:image/${ext};base64,${base64}`
   },
 }

@@ -10,6 +10,7 @@ interface IModelBase {
 export interface IUserModel extends IModelBase {
   username: string
   password: string
+  avatar: string // base64
 }
 
 export interface ISettingsModel extends IModelBase {

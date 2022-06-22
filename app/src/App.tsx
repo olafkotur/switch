@@ -1,5 +1,4 @@
 import { createTheme, Theme, ThemeProvider } from '@material-ui/core'
-import 'bootstrap/dist/css/bootstrap.css'
 import storage from 'electron-json-storage'
 import React from 'react'
 import { render } from 'react-dom'
@@ -7,7 +6,6 @@ import { Provider, useDispatch, useSelector } from 'react-redux'
 import { Alert } from './components/Alert'
 import { Dialog } from './components/Dialog'
 import { Loader } from './components/Loader'
-import './custom.css'
 import { Dashboard } from './pages/Dashboard/Dashboard'
 import { Login } from './pages/Login/Login'
 import { setApplications, setError } from './redux/interface'
@@ -16,6 +14,9 @@ import { MenuService } from './services/menu'
 import { SettingsService } from './services/settings'
 import { UserService } from './services/user'
 import { RootState, store } from './store'
+// this line prevents import sorter messing with .css order
+import 'bootstrap/dist/css/bootstrap.css'
+import './custom.css'
 
 const App = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true)
@@ -81,7 +82,6 @@ const App = (): React.ReactElement => {
     const profile = await UserService.fetchProfile()
     const settings = await SettingsService.fetch()
     const applications = await MenuService.fetchList()
-
     dispatch(setAuth(!!profile))
     profile && dispatch(setProfile(profile))
     settings && dispatch(setSettings(settings))

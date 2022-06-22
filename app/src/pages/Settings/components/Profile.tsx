@@ -10,8 +10,6 @@ export const Profile = (): React.ReactElement => {
   const dispatch = useDispatch()
   const { auth, profile } = useSelector((state: RootState) => state.user)
 
-  const defaultAvatar = require('../../../../assets/default-avatar.png')
-
   const handleLogout = async (): Promise<void> => {
     await UserService.logout(dispatch)
   }
@@ -48,7 +46,7 @@ export const Profile = (): React.ReactElement => {
         className="d-flex flex-row align-items-center"
         style={styles.faceLift}
       >
-        <img src={profile.avatar || defaultAvatar} style={styles.avatar} />
+        <img src={profile.avatar} style={styles.avatar} />
         <div className="align-items-center ml-3">
           {auth ? (
             <>

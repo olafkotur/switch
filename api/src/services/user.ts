@@ -30,10 +30,12 @@ export const UserService = {
    * Creates new user and saves in db.
    * @param username - user name
    * @param password - user password
+   * @param avatar - user avatar
    */
   createUser: async (
     username: string,
     password: string,
+    avatar: string,
   ): Promise<{ success: boolean; message?: string }> => {
     const exists = await database.getCollection('users').findOne({ username })
     if (exists) {
@@ -44,6 +46,7 @@ export const UserService = {
     const data: IUserModel = {
       username,
       password,
+      avatar,
       updatedAt: new Date(),
       createdAt: new Date(),
     }

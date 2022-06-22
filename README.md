@@ -40,8 +40,8 @@ _This repo contains both the `app` and `api`, make sure you're in the correct di
 - Create a copy of `default.env` as `.env`
 - Run `yarn` to install dependencies
 - Run `yarn start` to start the application
-- Run `yarn dev:electron` to start electron only `optional`
-- Run `yarn dev:react` to start react front-end only `optional`
+- Run `yarn start:electron` to start electron only `optional`
+- Run `yarn start:react` to start react front-end only `optional`
 - Note the `app` will wait for the `api` to respond
 
 **To setup the `./api`, follow the below instructions:**
