@@ -19,7 +19,7 @@ export const SettingsService = {
     const settings = await DatabaseService.getCollection('settings').findOne({
       uid: user._id,
     })
-    return settings.meta || null
+    return settings?.meta || null
   },
 
   /**

@@ -81,7 +81,7 @@ export const UserHandler = {
     // check if user exists
     const user = await UserService.fetchSingle(username)
     if (user) {
-      return ResponseService.bad('User already exists', res)
+      return ResponseService.bad('Username has already been taken', res)
     }
 
     // create new user
@@ -94,7 +94,19 @@ export const UserHandler = {
       )
     }
 
-    return ResponseService.create('User created successfully', res)
+    // generate a jwt token for the user
+    const accessToken = SecurityService.generateToken(
+      username,
+      hashedPassword,
+      'access',
+    )
+    const refreshToken = SecurityService.generateToken(
+      username,
+      hashedPassword,
+      'refresh',
+    )
+
+    return ResponseService.create({ accessToken, refreshToken }, res)
   },
 
   /**

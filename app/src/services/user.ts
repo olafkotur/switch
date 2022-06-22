@@ -72,7 +72,8 @@ export const UserService = {
     )
 
     // save token to local storage
-    if (response.result.code === 200 && response.result.data) {
+    if (response.result.code === 201 && response.result.data) {
+      console.log(response.result.data)
       await StorageService.set('jwtTokens', {
         ...(response.result.data as object),
       })

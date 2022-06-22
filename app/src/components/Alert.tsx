@@ -69,7 +69,7 @@ const styles = Stylesheet.create({
     textAlign: 'center',
   },
   text: {
-    fontSize: 12,
+    fontSize: 14,
   },
   closeButton: {
     right: 20,
