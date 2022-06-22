@@ -54,4 +54,4 @@ My use case started with just wanting to check my [Notion](https://notion.so) no
 
 ## ⚠️ Known issues
 * Streaming services will not work in Switch due to additional licensing required to do so
-* Some `webapps` such as Whatsapp can sometimes break due to requriring a specific Chrome version
+* Some `webapps` such as Whatsapp can sometimes break due to requiring a specific Chrome version
