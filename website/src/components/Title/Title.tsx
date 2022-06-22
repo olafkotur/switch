@@ -1,5 +1,5 @@
-import React from 'react';
 import { Slide } from '@material-ui/core';
+import React from 'react';
 import logo from '../../assets/switch-icon.png';
 import './title.css';
 

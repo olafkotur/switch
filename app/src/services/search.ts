@@ -1,4 +1,4 @@
-import { IMenuItem } from '../typings/d';
+import { IMenuItem } from '../typings/user';
 
 export const SearchService = {
   /**

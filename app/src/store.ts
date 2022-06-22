@@ -2,8 +2,8 @@ import {
   configureStore,
   createSerializableStateInvariantMiddleware,
 } from '@reduxjs/toolkit';
-import userReducer from './redux/user';
 import interfaceReducer from './redux/interface';
+import userReducer from './redux/user';
 
 const serializableMiddleware = createSerializableStateInvariantMiddleware({
   isSerializable: () => true,

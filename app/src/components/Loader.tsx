@@ -1,10 +1,10 @@
-import React from 'react';
 import { Zoom } from '@material-ui/core';
+import React from 'react';
 // @ts-ignore
 import Loading from 'react-loading-components';
-import './loader.css';
+import Stylesheet from 'reactjs-stylesheet';
 
-const Loader = (): React.ReactElement => {
+export const Loader = (): React.ReactElement => {
   const [color, setColor] = React.useState<string>('');
   const [showText, setShowText] = React.useState<boolean>(true);
   const [showLoader, setShowLoader] = React.useState<boolean>(false);
@@ -27,12 +27,24 @@ const Loader = (): React.ReactElement => {
     <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
       <Zoom in={showText}>
         <div className="d-flex flex-row position-absolute">
-          <h1 className="loader-text secondary mr-2">s</h1>
-          <h1 className="loader-text primary mr-2">w</h1>
-          <h1 className="loader-text primary mr-2">i</h1>
-          <h1 className="loader-text primary mr-2">t</h1>
-          <h1 className="loader-text tertiary mr-2">c</h1>
-          <h1 className="loader-text quaternary mr-2">h</h1>
+          <h1 className="secondary mr-2" style={styles.text}>
+            s
+          </h1>
+          <h1 className="primary mr-2" style={styles.text}>
+            w
+          </h1>
+          <h1 className="primary mr-2" style={styles.text}>
+            i
+          </h1>
+          <h1 className="primary mr-2" style={styles.text}>
+            t
+          </h1>
+          <h1 className="tertiary mr-2" style={styles.text}>
+            c
+          </h1>
+          <h1 className="quaternary mr-2" style={styles.text}>
+            h
+          </h1>
         </div>
       </Zoom>
       <Zoom in={showLoader}>
@@ -44,4 +56,8 @@ const Loader = (): React.ReactElement => {
   );
 };
 
-export default Loader;
+const styles = Stylesheet.create({
+  text: {
+    fontFamily: 'Courier New',
+  },
+});

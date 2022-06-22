@@ -1,6 +1,6 @@
 import crypto from 'crypto-js';
-import { config } from '../config';
 import jwt from 'jsonwebtoken';
+import { config } from '../config';
 import { IAuth, JwtResponse } from '../typings/data';
 
 export const SecurityService = {
@@ -73,5 +73,13 @@ export const SecurityService = {
         resolve(response);
       });
     });
+  },
+
+  /**
+   * Checks whether password is valid based on its strength.
+   * @param password - password to be verified
+   */
+  validatePassword: (password: string): boolean => {
+    return new RegExp('(?=^.{8,}$)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$').test(password);
   },
 };

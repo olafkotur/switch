@@ -1,19 +1,18 @@
 import React from 'react';
-import WebView from '../../components/WebView/WebView';
-import Menu from '../../components/Menu/Menu';
-import Search from '../Search/Search';
-import Settings from '../Settings/Settings';
-import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
-import { MenuService } from '../../services/menu';
 import { useSelector } from 'react-redux';
+import Stylesheet from 'reactjs-stylesheet';
+import { Alert } from '../../components/Alert';
+import { MenuService } from '../../services/menu';
 import { RootState } from '../../store';
-import * as _ from 'lodash';
-import './dashboard.css';
-import Alert from '../../components/Alert/Alert';
+import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
+import { Search } from '../Search/Search';
+import { Settings } from '../Settings/Settings';
+import { Menu } from './components/Menu';
+import { WebView } from './components/WebView';
 
 export type TPages = 'web' | 'search' | 'settings';
 
-const Dashboard = (): React.ReactElement => {
+export const Dashboard = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<TPages>('settings');
   const [applications, setApplications] = React.useState<IMenuItem[]>([]);
@@ -63,7 +62,7 @@ const Dashboard = (): React.ReactElement => {
     <div className="container-fluid">
       <div className="row">
         <div
-          className="menu bg-secondary"
+          className="bg-secondary"
           style={!settings.overlayMode ? { width: 65 } : {}}
         >
           <Menu
@@ -97,13 +96,19 @@ const Dashboard = (): React.ReactElement => {
           </div>
 
           {page === 'search' && (
-            <div className="dashboard-container d-flex justify-content-center">
+            <div
+              className="d-flex justify-content-center"
+              style={styles.container}
+            >
               <Search />
             </div>
           )}
 
           {page === 'settings' && (
-            <div className="dashboard-container d-flex justify-content-center">
+            <div
+              className="d-flex justify-content-center"
+              style={styles.container}
+            >
               <Settings />
             </div>
           )}
@@ -115,4 +120,9 @@ const Dashboard = (): React.ReactElement => {
   );
 };
 
-export default Dashboard;
+const styles = Stylesheet.create({
+  container: {
+    height: '100vh',
+    overflowY: 'scroll',
+  },
+});

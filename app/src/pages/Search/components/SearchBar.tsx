@@ -1,7 +1,7 @@
-import React from 'react';
 import { Button, InputAdornment, TextField } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-import './searchBar.css';
+import React from 'react';
+import Stylesheet from 'reactjs-stylesheet';
 
 interface IProps {
   value: string;
@@ -10,13 +10,13 @@ interface IProps {
   handleConfirm: () => Promise<void>;
 }
 
-export default class SearchBar extends React.Component<IProps> {
+export class SearchBar extends React.Component<IProps> {
   render() {
     return (
-      <div className="search-bar">
+      <div style={styles.container}>
         <TextField
           variant="standard"
-          className="search-bar-input"
+          style={styles.input}
           placeholder="https://notion.so"
           inputProps={{
             style: {
@@ -53,3 +53,20 @@ export default class SearchBar extends React.Component<IProps> {
     );
   }
 }
+
+const styles = Stylesheet.create({
+  container: {
+    height: 70,
+    width: '100%',
+    background: '#56585c',
+    borderRadius: 15,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    height: '75%',
+    width: '95%',
+    justifyContent: 'center',
+  },
+});

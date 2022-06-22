@@ -36,6 +36,10 @@ input:focus {
   background: #1f2225 !important;
 }
 
+.bg-tertiary {
+  background: #227093 !important;
+}
+
 .bg-error {
   background: #b33939 !important;
 }
@@ -66,4 +70,13 @@ input:focus {
 
 .border-primary {
   border-color: #fff !important;
+}
+
+/********* Overrides *********/
+.MuiSelect-select:focus {
+  background: transparent !important;
+}
+
+.MuiSelect-select.MuiSelect-select {
+  padding-right: 0 !important;
 }

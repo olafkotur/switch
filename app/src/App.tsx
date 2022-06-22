@@ -1,20 +1,19 @@
-import React from 'react';
-import Dashboard from './pages/Dashboard/Dashboard';
-import storage from 'electron-json-storage';
-import Loader from './components/Loader/Loader';
-import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core';
-import { render } from 'react-dom';
-import { RootState, store } from './store';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import Dialog from './components/Dialog/Dialog';
-import { UserService } from './services/user';
-import { SettingsService } from './services/settings';
-import { MenuService } from './services/menu';
-import { setAuth, setEmail, setSettings } from './redux/user';
-import { setApplications, setError } from './redux/interface';
-import Alert from './components/Alert/Alert';
+import { createTheme, Theme, ThemeProvider } from '@material-ui/core';
 import 'bootstrap/dist/css/bootstrap.css';
+import storage from 'electron-json-storage';
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Dialog } from './components/Dialog';
+import { Loader } from './components/Loader';
 import './custom.css';
+import { Dashboard } from './pages/Dashboard/Dashboard';
+import { setApplications, setError } from './redux/interface';
+import { setAuth, setProfile, setSettings } from './redux/user';
+import { MenuService } from './services/menu';
+import { SettingsService } from './services/settings';
+import { UserService } from './services/user';
+import { RootState, store } from './store';
 
 const App = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -38,7 +37,7 @@ const App = (): React.ReactElement => {
   React.useEffect(() => {
     // theme setup
     setTheme(
-      createMuiTheme({
+      createTheme({
         typography: {
           fontSize: 14,
           fontFamily: settings.fontFamily,
@@ -82,7 +81,7 @@ const App = (): React.ReactElement => {
     const applications = await MenuService.fetchList();
 
     dispatch(setAuth(!!profile));
-    profile && dispatch(setEmail(profile.email));
+    profile && dispatch(setProfile(profile));
     settings && dispatch(setSettings(settings));
     applications && dispatch(setApplications(applications));
   };

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   ButtonBase,
   IconButton,
@@ -7,17 +6,18 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import {
-  Image,
-  Refresh,
   ArrowBack,
   ArrowForward,
   Delete,
+  Image,
   Publish,
+  Refresh,
 } from '@material-ui/icons';
-import { TPages } from '../../pages/Dashboard/Dashboard';
-import { IMenuItem, WebViewAction } from '../../typings/d';
-import { MenuService } from '../../services/menu';
-import './styles.css';
+import React from 'react';
+import Stylesheet from 'reactjs-stylesheet';
+import { MenuService } from '../../../services/menu';
+import { IMenuItem, WebViewAction } from '../../../typings/d';
+import { TPages } from '../Dashboard';
 
 interface IProps {
   data: IMenuItem;
@@ -31,7 +31,8 @@ interface IState {
   contextMenu: boolean;
 }
 
-export default class MenuItem extends React.Component<IProps, IState> {
+// TODO: refactor to React.FC
+export class MenuItem extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
@@ -119,22 +120,18 @@ export default class MenuItem extends React.Component<IProps, IState> {
   }
 
   render() {
+    const extraStyles =
+      this.props.page === 'web' && this.props.focused ? styles.selected : {};
     return (
-      <div
-        className={`menu-item mt-2 ${
-          this.props.page === 'web' && this.props.focused
-            ? 'menu-item-selected'
-            : ''
-        }`}
-      >
+      <div className="mt-2" style={{ ...styles.container, ...extraStyles }}>
         <ButtonBase
           onClick={() => this.props.handleClick('web', this.props.data)}
           onContextMenu={this.handleContextMenu}
         >
           {this.props.data.icon ? (
-            <img className="menu-item-image" src={this.props.data.icon} />
+            <img style={styles.img} src={this.props.data.icon} />
           ) : (
-            <Image className="menu-item-image" color="secondary" />
+            <Image style={styles.img} color="secondary" />
           )}
         </ButtonBase>
         <Slide in={this.state.contextMenu} direction="right" ref={this.ref}>
@@ -143,10 +140,7 @@ export default class MenuItem extends React.Component<IProps, IState> {
             elevation={10}
           >
             <IconButton className="menu-item-image align-self-center">
-              <Tooltip
-                title="Upload a custom image"
-                className="menu-item-image-upload-hover"
-              >
+              <Tooltip title="Upload a custom image" style={styles.uploadHover}>
                 <label
                   htmlFor={`file-upload-${this.props.data.id}`}
                   className="position-absolute"
@@ -159,15 +153,9 @@ export default class MenuItem extends React.Component<IProps, IState> {
                     onChange={this.handleUpload}
                   />
                   {this.props.data.icon ? (
-                    <img
-                      src={this.props.data.icon}
-                      className="menu-item-image-upload"
-                    />
+                    <img src={this.props.data.icon} style={styles.upload} />
                   ) : (
-                    <Publish
-                      color="secondary"
-                      className="menu-item-image-upload"
-                    />
+                    <Publish color="secondary" style={styles.upload} />
                   )}
                 </label>
               </Tooltip>
@@ -203,3 +191,29 @@ export default class MenuItem extends React.Component<IProps, IState> {
     );
   }
 }
+
+const styles = Stylesheet.create({
+  container: {
+    width: 40,
+    height: 40,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  img: {
+    width: 30,
+    height: 30,
+  },
+  upload: {
+    width: 30,
+    height: 30,
+    marginLeft: '0.5em',
+  },
+  uploadHover: {
+    zIndex: 100,
+  },
+  selected: {
+    backgroundColor: '#56585c',
+    borderRadius: 10,
+  },
+});

@@ -1,14 +1,81 @@
-import React from 'react';
+import {
+  Button,
+  Dialog as MuiDialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grow,
+} from '@material-ui/core';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import KeybindButton from '../KeybindButton/KeybindButton';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Stylesheet from 'reactjs-stylesheet';
 import {
   accentColors,
   fontFamilies,
   windowBehaviours,
-} from '../../imports/customUI';
-import { FontFamily, WindowBehaviour } from '../../typings/d';
-import { FormControl, Select, MenuItem } from '@material-ui/core';
-import './dialog.css';
+} from '../imports/customUI';
+import { KeybindButton } from '../pages/Settings/components/KeybindButton';
+import { setDialog } from '../redux/interface';
+import { RootState } from '../store';
+import { FontFamily, WindowBehaviour } from '../typings/d';
+
+export const Dialog = (): React.ReactElement => {
+  const dispatch = useDispatch();
+  const dialog = useSelector((state: RootState) => state.interface.dialog);
+
+  if (!dialog) {
+    return <></>;
+  }
+
+  return (
+    <div>
+      <MuiDialog
+        fullWidth
+        open={dialog.open}
+        disableEscapeKeyDown={dialog.disableEscKey}
+        onClose={() => dispatch(setDialog(null))}
+        PaperProps={{ style: { background: '#303136' } }}
+        TransitionComponent={Grow}
+      >
+        <div className="primary">
+          <DialogTitle>{dialog.title}</DialogTitle>
+        </div>
+
+        <div className="primary pb-2">
+          <DialogContent className="pt-0">{dialog.content}</DialogContent>
+        </div>
+
+        {!dialog.hideButtons && (
+          <DialogActions>
+            {!dialog.hideSecondary && (
+              <Button
+                className="mr-1"
+                variant="contained"
+                onClick={dialog.handleSecondary}
+              >
+                {dialog.secondaryLabel || 'Cancel'}
+              </Button>
+            )}
+
+            {!dialog.hidePrimary && (
+              <Button
+                className="ml-1"
+                color="primary"
+                variant="contained"
+                onClick={dialog.handlePrimary}
+              >
+                {dialog.primaryLabel || 'Proceed'}
+              </Button>
+            )}
+          </DialogActions>
+        )}
+      </MuiDialog>
+    </div>
+  );
+};
+
+// TODO: Refactor dialog component to be less ugly
 
 /**
  * Tutorial content, triggered by the tutorial button.
@@ -81,8 +148,9 @@ export const windowBehaviourSelect = (
     {windowBehaviours.map((v) => (
       <ButtonBase
         key={`dialog-select-box-${v.label}`}
-        className="d-flex justify-content-center align-items-center dialog-window-behaviour"
+        className="d-flex justify-content-center align-items-center"
         style={{
+          ...styles.windowBehaviour,
           background: v.value === initialValue ? accentColor : '#1f2225',
         }}
         onClick={() => setWindowBehaviour(v.value)}
@@ -102,8 +170,8 @@ export const accentColorSelect = (setAccentColor: (color: string) => void) => (
     {accentColors.map((v) => (
       <ButtonBase
         key={`dialog-accent-color-${v}`}
-        className="d-flex justify-content-center align-items-center dialog-accent-color"
-        style={{ backgroundColor: v }}
+        className="d-flex justify-content-center align-items-center"
+        style={{ ...styles.accentColor, backgroundColor: v }}
         onClick={() => setAccentColor(v)}
       >
         <span>{v.toLowerCase()}</span>
@@ -127,8 +195,11 @@ export const fontFamilySelect = (
     {fontFamilies.map((v) => (
       <ButtonBase
         key={`dialog-accent-color-${v}`}
-        className="d-flex justify-content-center align-items-center dialog-font-family"
-        style={{ background: v === initialValue ? accentColor : '#1f2225' }}
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          ...styles.fontFamily,
+          background: v === initialValue ? accentColor : '#1f2225',
+        }}
         onClick={() => setFontFamily(v)}
       >
         <span style={{ fontFamily: v, padding: 5 }}>{v.toLowerCase()}</span>
@@ -136,3 +207,32 @@ export const fontFamilySelect = (
     ))}
   </div>
 );
+
+export const login = () => {
+  <div>Login</div>;
+};
+
+export const register = () => {
+  <div>Register</div>;
+};
+
+const styles = Stylesheet.create({
+  accentColor: {
+    width: 106,
+    height: 100,
+    margin: 5,
+    borderRadius: 10,
+  },
+  fontFamily: {
+    width: 106,
+    height: 100,
+    margin: 5,
+    borderRadius: 10,
+  },
+  windowBehaviour: {
+    width: 184,
+    height: 100,
+    margin: 5,
+    borderRadius: 10,
+  },
+});

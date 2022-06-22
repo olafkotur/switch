@@ -1,8 +1,8 @@
-import React from 'react';
-import Landing from './pages/Landing/Landing';
 import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core';
 import 'bootstrap/dist/css/bootstrap.css';
+import React from 'react';
 import './custom.css';
+import Landing from './pages/Landing/Landing';
 
 export default class App extends React.Component {
   /**

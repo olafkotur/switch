@@ -1,9 +1,9 @@
-import { IUserSettings } from '../typings/d';
-import { StorageService } from './storage';
-import { modifiers, alphabetic, numeric, special } from '../imports/keys';
-import { RequestService } from './request';
-import { config } from '../config';
 import _ from 'lodash';
+import { config } from '../config';
+import { alphabetic, modifiers, numeric, special } from '../imports/keys';
+import { IUserSettings } from '../typings/user';
+import { RequestService } from './request';
+import { StorageService } from './storage';
 
 const STORAGE_KEY = 'userSettings';
 
@@ -28,8 +28,8 @@ export const SettingsService = {
 
     // always preference for remote
     if (remote.result.data) {
-      await StorageService.set(STORAGE_KEY, remote.result.data); // update local
-      return remote.result.data;
+      await StorageService.set(STORAGE_KEY, remote.result.data as object); // update local
+      return remote.result.data as IUserSettings | null;
     }
 
     return await SettingsService.fetchLocal();
@@ -38,7 +38,7 @@ export const SettingsService = {
   /**
    * Fetches local user settings
    */
-  fetchLocal: async () => {
+  fetchLocal: async (): Promise<IUserSettings> => {
     const data = await StorageService.get(STORAGE_KEY);
     if (data && !_.isEmpty(data)) {
       return data as IUserSettings;

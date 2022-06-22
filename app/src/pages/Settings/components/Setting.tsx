@@ -1,17 +1,16 @@
-import React from 'react';
-import { ISelectOption, ISettingConfig } from '../../typings/d';
 import { IconButton, makeStyles, Switch } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-import './setting.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSettings } from '../../redux/user';
-import { RootState } from '../../store';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import Stylesheet from 'reactjs-stylesheet';
+import { RootState } from '../../../store';
+import { ISettingConfig } from '../../../typings/d';
 
 interface IProps extends ISettingConfig {
   handleChange: (name: string, value: any) => void;
 }
 
-const Setting = ({
+export const Setting = ({
   type,
   label,
   description,
@@ -66,7 +65,9 @@ const Setting = ({
         <span className="primary align-self-center">
           {label}
           {experimental && (
-            <span className="experimental-setting ml-1">experimental</span>
+            <span className="ml-1" style={styles.experimentalSetting}>
+              experimental
+            </span>
           )}
         </span>
         <p className="text-muted">{description}</p>
@@ -78,4 +79,14 @@ const Setting = ({
   );
 };
 
-export default Setting;
+const styles = Stylesheet.create({
+  experimentalSetting: {
+    backgroundColor: '#303136',
+    color: '#eb4d4b',
+    fontSize: 12,
+    borderRadius: 15,
+    padding: 3,
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+});

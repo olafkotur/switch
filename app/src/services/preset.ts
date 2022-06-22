@@ -1,4 +1,4 @@
-import { IPreset, IScreenInfo } from '../typings/d';
+import { IPreset, IScreenInfo } from '../typings/user';
 import { ElectronService } from './electron';
 
 export const PresetService = {

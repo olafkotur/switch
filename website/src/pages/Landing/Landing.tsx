@@ -1,11 +1,11 @@
 import React from 'react';
-import Title from '../../components/Title/Title';
-import Footer from '../../components/Footer/Footer';
-import Video from '../../components/Video/Video';
-import Header from '../../components/Header/Header';
 import Download from '../../components/Download/Download';
 import Feature from '../../components/Feature/Feature';
-import { IFeatureConfig } from '../../typings/d';
+import Footer from '../../components/Footer/Footer';
+import Header from '../../components/Header/Header';
+import Title from '../../components/Title/Title';
+import Video from '../../components/Video/Video';
+import { IFeatureConfig } from '../../typings/user';
 import './landing.css';
 
 interface IState {

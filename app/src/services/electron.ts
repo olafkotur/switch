@@ -1,7 +1,7 @@
 import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
-import { StorageService } from './storage';
-import { WindowBehaviour, IScreenInfo, IWindowInfo } from '../typings/d';
+import { IScreenInfo, IWindowInfo, WindowBehaviour } from '../typings/user';
 import { MenuService } from './menu';
+import { StorageService } from './storage';
 import { UtilService } from './util';
 
 let previousScreenInfo: IScreenInfo | null = null;

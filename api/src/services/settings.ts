@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 import { ISettingsModel, SettingsMeta } from '../typings/models';
 import { DatabaseService } from './database';
 

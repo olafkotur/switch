@@ -1,31 +1,27 @@
-import React from 'react';
-import Preset from '../../components/Preset/Preset';
-import Setting from '../../components/Setting/Setting';
-import { Info } from '@material-ui/icons';
-import {
-  ISettingConfig,
-  IUserSettings,
-  FontFamily,
-  IDialog,
-} from '../../typings/d';
 import { Paper } from '@material-ui/core';
-import { PresetService } from '../../services/preset';
+import { Info } from '@material-ui/icons';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Stylesheet from 'reactjs-stylesheet';
 import {
-  visibilityKeybindSelect,
-  windowBehaviourSelect,
   accentColorSelect,
   fontFamilySelect,
   tutorial,
-} from '../../components/Dialog/DialogContent';
-import Profile from './Profile';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSettings } from '../../redux/user';
-import { RootState } from '../../store';
+  visibilityKeybindSelect,
+  windowBehaviourSelect,
+} from '../../components/Dialog';
 import { setDialog } from '../../redux/interface';
+import { setSettings } from '../../redux/user';
+import { PresetService } from '../../services/preset';
 import { SettingsService } from '../../services/settings';
-import './styles.css';
+import { RootState } from '../../store';
+import { FontFamily, IDialog, ISettingConfig } from '../../typings/d';
+import { IUserSettings } from '../../typings/user';
+import { Preset } from './components/Preset';
+import { Profile } from './components/Profile';
+import { Setting } from './components/Setting';
 
-const Settings = (): React.ReactElement => {
+export const Settings = (): React.ReactElement => {
   const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -198,7 +194,7 @@ const Settings = (): React.ReactElement => {
   ];
 
   return (
-    <div className="settings-container">
+    <div style={styles.container}>
       {shouldRestart && (
         <Paper className="d-flex flex-row justify-content-center mb-4 py-3 bg-secondary">
           <span className="text-danger text-center p-1">
@@ -210,7 +206,7 @@ const Settings = (): React.ReactElement => {
       <Profile />
 
       <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;General</h4>
-      <div className="setting-group bg-secondary">
+      <div className="bg-secondary" style={styles.group}>
         {general.map((v) => (
           <Setting
             {...v}
@@ -222,7 +218,7 @@ const Settings = (): React.ReactElement => {
       </div>
 
       <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Appearance</h4>
-      <div className="setting-group bg-secondary">
+      <div className="bg-secondary" style={styles.group}>
         {appearance.map((v) => (
           <Setting
             {...v}
@@ -234,7 +230,7 @@ const Settings = (): React.ReactElement => {
       </div>
 
       <h4 className="primary font-weight-bold mt-5">&nbsp;&nbsp;Presets</h4>
-      <div className="setting-group bg-secondary">
+      <div className="bg-secondary" style={styles.group}>
         <div className="d-flex flex-row row">
           {presets.map((v) => (
             <Preset {...v} key={`preset-setting-${v.name}`} />
@@ -242,9 +238,21 @@ const Settings = (): React.ReactElement => {
         </div>
       </div>
 
-      <div className="setting-footer" />
+      <div style={styles.footer} />
     </div>
   );
 };
 
-export default Settings;
+const styles = Stylesheet.create({
+  container: {
+    paddingTop: '5vh',
+    width: '60vw',
+  },
+  group: {
+    padding: 20,
+    borderRadius: 10,
+  },
+  footer: {
+    paddingBottom: '5vh',
+  },
+});

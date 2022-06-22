@@ -16,8 +16,14 @@ export const UserHandler = {
       return ResponseService.bad('Missing email or password', res);
     }
 
+    // check if user exists
+    const hashedPassword = SecurityService.hash(password);
+    const user = await UserService.fetchByCredentials(email, hashedPassword);
+    if (!user) {
+      return ResponseService.notFound('Invalid email or password', res);
+    }
+
     // generate a jwt token for the user
-    const hashedPassword = SecurityService.encrypt(password);
     const accessToken = SecurityService.generateToken(email, hashedPassword, 'access');
     const refreshToken = SecurityService.generateToken(email, hashedPassword, 'refresh');
     return ResponseService.data({ accessToken, refreshToken }, res);
@@ -49,8 +55,23 @@ export const UserHandler = {
       return ResponseService.bad('Missing email or password', res);
     }
 
+    // check password strength
+    const validPassword = SecurityService.validatePassword(password);
+    if (!validPassword) {
+      return ResponseService.bad(
+        'Password must contain at least 8 characters, one lowercase and uppercase letter and one special character',
+        res,
+      );
+    }
+
+    // check if user exists
+    const user = await UserService.fetchSingle(email);
+    if (user) {
+      return ResponseService.bad('User already exists', res);
+    }
+
     // create new user
-    const hashedPassword = SecurityService.encrypt(password);
+    const hashedPassword = SecurityService.hash(password);
     const result = await UserService.createUser(email, hashedPassword);
     if (!result.success) {
       return ResponseService.bad(result.message || 'Unknown error occurred', res);

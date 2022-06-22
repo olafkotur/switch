@@ -6,7 +6,7 @@ const env: Environment = process.env.NODE_ENV === 'production' ? 'production' : 
 
 export const config = {
   env,
-  mongoUri: env === 'production' ? process.env.MONGO_URI || '' : 'mongodb://localhost:27017/',
+  mongoUri: env === 'production' ? process.env.MONGO_URI || '' : 'mongodb://127.0.0.1:27017/',
   jwtSecret: process.env.JWT_SECRET || '',
   cryptoSalt: process.env.CRYPTO_SALT || '',
   port: process.env.PORT || '8080',

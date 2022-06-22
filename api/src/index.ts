@@ -1,9 +1,8 @@
 import express from 'express';
 import { config } from './config';
+import { SettingsHandler } from './handlers/settings';
 import { UserHandler } from './handlers/user';
 import { DatabaseService } from './services/database';
-import { SettingsHandler } from './handlers/settings';
-import _ from 'lodash';
 
 export const database = DatabaseService;
 
