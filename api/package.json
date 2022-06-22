@@ -1,15 +1,12 @@
 {
   "name": "switch-api",
-  "version": "1.0.0",
   "main": "./dist/main.js",
-  "repository": "git@github.com:olafkotur/switch-api.git",
+  "repository": "git@github.com:olafkotur/switch.git",
   "author": "olafkotur <olafkotur97@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only ./src/index.ts",
-    "mongo:dev:start": "mongod --dbpath assets/db --fork --logpath /dev/null",
-    "mongo:dev:stop": "mongo admin --eval 'db.shutdownServer()' > /dev/null"
+    "start": "ts-node-dev --respawn --transpile-only ./src/index.ts"
   },
   "dependencies": {
     "@types/crypto-js": "^4.0.2",

@@ -1,21 +1,50 @@
-## Switch
-Monorepo for all Switch related projects, currently consists of: an API, the application and the website.
+<p align="center">
+  <a href="https://switchapp.dev.com">
+    <img width="120px" style="margin-top: 30px" src="https://switchapp.dev/static/media/switch-icon.d468bbb2.png">
+  </a>
+</p>
 
-### API './api/'
-#### Setup
-* Run `yarn` to install dependencies
-* Run `yarn mongo:dev:start` to start the local database in background
-* Run `yarn mongo:dev:stop` to stop the local database (when finished)
-* Run `yarn start` to start the API server
+<h1 align="center">Switch</h1>
 
-### App './app/'
-#### Setup
+<div align="center">
+
+Lightweight overlay browser
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+</div>
+
+## 👋🏽 About
+*Switch started off as a very small project I created for myself to improve my workflow. Overtime I noticed other people enjoyed to use it too so I made some improvements to make it worthy and public. I would appreciate any feedback you may have on this project.*
+
+#### What does it do?
+This is a simple lightweight browser and can be summoned over any existing application. It's designed to help you quickly interact with your favourite applications without losing focus.
+
+My use case started with just wanting to check my [Notion](https://notion.so) notes during development. I then realised I use for so much more including `Discord` `Github` and `Twitter`. You can add most `webapps` of your choice to the Switch browser.
+
+## ⬇️ Download
+* Only available on `macOS` for the time being
+* Header over to the [releases](https://github.com/olafkotur/switch/releases) and download the latest `.dmg` file
+* You'll receive auto-updates so you only need to do this once
+
+## 🔨  Setup
+*This repo contains both the `app` and `api`, make sure you're in the correct directory.*
+
+**To setup the `./app`, follow the below instructions:**
+* Create a copy of `default.env` as `.env`
 * Run `yarn` to install dependencies
 * Run `yarn start` to start the application
-* Run `yarn dev:electron` to start the electron app in development mode (optional)
-* Run `yarn dev:react` to start the react app in development mode (optional)
+* Run `yarn dev:electron` to start electron only `optional`
+* Run `yarn dev:react` to start react front-end only `optional`
+* Note the `app` will wait for the `api` to respond
 
-#### Publishing
+**To setup the `./api`, follow the below instructions:**
+* Start a mongodb server (instructions not included in this repo)
+* Create a copy of `default.env` as `.env`
+* Run `yarn` to install dependencies
+* Run `yarn start` to start the API
+
+## 📦 Publishing
 * Update the version in `app/package.json`
 * Run `yarn package` to create a package for publishing
 * Create a new release in [olafkotur/switch-releases](https://github.com/olafkotur/switch-releases/releases) repository
@@ -23,8 +52,6 @@ Monorepo for all Switch related projects, currently consists of: an API, the app
 * Update [updates file](https://github.com/olafkotur/switch-releases/blob/master/updates.json) with the latest version info
 * Automatic updates will be rolled out to all users
 
-### Website './website/'
-#### Setup
-* Run `yarn` to install dependencies
-* Run `yarn start` to start the website locally
-* Updates are pushed automatically from `master` branch
+## ⚠️ Known issues
+* Streaming services will not work in Switch due to additional licensing required to do so
+* Some `webapps` such as Whatsapp can sometimes break due to requriring a specific Chrome version
