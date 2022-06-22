@@ -5,27 +5,27 @@ import {
   DialogContent,
   DialogTitle,
   Grow,
-} from '@material-ui/core';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
+} from '@material-ui/core'
+import ButtonBase from '@material-ui/core/ButtonBase'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
 import {
   accentColors,
   fontFamilies,
   windowBehaviours,
-} from '../imports/customUI';
-import { KeybindButton } from '../pages/Settings/components/KeybindButton';
-import { setDialog } from '../redux/interface';
-import { RootState } from '../store';
-import { FontFamily, WindowBehaviour } from '../typings/d';
+} from '../imports/customUI'
+import { KeybindButton } from '../pages/Settings/components/KeybindButton'
+import { setDialog } from '../redux/interface'
+import { RootState } from '../store'
+import { FontFamily, WindowBehaviour } from '../typings/d'
 
 export const Dialog = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const dialog = useSelector((state: RootState) => state.interface.dialog);
+  const dispatch = useDispatch()
+  const dialog = useSelector((state: RootState) => state.interface.dialog)
 
   if (!dialog) {
-    return <></>;
+    return <></>
   }
 
   return (
@@ -72,8 +72,8 @@ export const Dialog = (): React.ReactElement => {
         )}
       </MuiDialog>
     </div>
-  );
-};
+  )
+}
 
 // TODO: Refactor dialog component to be less ugly
 
@@ -90,7 +90,7 @@ export const tutorial = () => (
       allow="autoplay"
     />
   </div>
-);
+)
 
 /**
  * Trigerred when a user attempts to hide the window using the button in the UI.
@@ -106,7 +106,7 @@ export const hideWindowWarning = (visiblityKeybind: string) => (
     <br />
     <span>Feel free to disable this message from the settings page.</span>
   </div>
-);
+)
 
 /**
  * Triggered when user attempts to change the visibility keybind.
@@ -131,7 +131,7 @@ export const visibilityKeybindSelect = (
       />
     </div>
   </div>
-);
+)
 
 /**
  * Triggered when user attempts to change the window behaviour.
@@ -159,7 +159,7 @@ export const windowBehaviourSelect = (
       </ButtonBase>
     ))}
   </div>
-);
+)
 
 /**
  * Triggered when user attempts to change the accent color.
@@ -178,7 +178,7 @@ export const accentColorSelect = (setAccentColor: (color: string) => void) => (
       </ButtonBase>
     ))}
   </div>
-);
+)
 
 /**
  * Triggerred when user attempts to change the font family.
@@ -206,15 +206,15 @@ export const fontFamilySelect = (
       </ButtonBase>
     ))}
   </div>
-);
+)
 
 export const login = () => {
-  <div>Login</div>;
-};
+  ;<div>Login</div>
+}
 
 export const register = () => {
-  <div>Register</div>;
-};
+  ;<div>Register</div>
+}
 
 const styles = Stylesheet.create({
   accentColor: {
@@ -235,4 +235,4 @@ const styles = Stylesheet.create({
     margin: 5,
     borderRadius: 10,
   },
-});
+})

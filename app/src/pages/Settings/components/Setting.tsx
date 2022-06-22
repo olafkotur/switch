@@ -1,13 +1,13 @@
-import { IconButton, makeStyles, Switch } from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
-import { RootState } from '../../../store';
-import { ISettingConfig } from '../../../typings/d';
+import { IconButton, makeStyles, Switch } from '@material-ui/core'
+import { Edit } from '@material-ui/icons'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
+import { RootState } from '../../../store'
+import { ISettingConfig } from '../../../typings/d'
 
 interface IProps extends ISettingConfig {
-  handleChange: (name: string, value: any) => void;
+  handleChange: (name: string, value: any) => void
 }
 
 export const Setting = ({
@@ -21,7 +21,7 @@ export const Setting = ({
   handleChange,
   CustomIcon,
 }: IProps): React.ReactElement => {
-  const { settings } = useSelector((state: RootState) => state.user);
+  const { settings } = useSelector((state: RootState) => state.user)
 
   /**
    * Renders setting action
@@ -35,9 +35,9 @@ export const Setting = ({
             checked={!!value}
             onChange={(_e, checked) => handleChange(name, checked)}
           />
-        );
+        )
       case 'pop-up':
-        const Icon = CustomIcon || Edit;
+        const Icon = CustomIcon || Edit
         return (
           <IconButton
             className="mr-2 p-2"
@@ -54,11 +54,11 @@ export const Setting = ({
           >
             <Icon className="primary" fontSize="small" />
           </IconButton>
-        );
+        )
       default:
-        return <></>;
+        return <></>
     }
-  };
+  }
   return (
     <div className="d-flex flex-row justify-content-between align-items-center ">
       <div>
@@ -76,8 +76,8 @@ export const Setting = ({
         {renderComponent()}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   experimentalSetting: {
@@ -89,4 +89,4 @@ const styles = Stylesheet.create({
     paddingLeft: 8,
     paddingRight: 8,
   },
-});
+})

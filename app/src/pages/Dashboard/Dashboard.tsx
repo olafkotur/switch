@@ -1,36 +1,36 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
-import { Alert } from '../../components/Alert';
-import { MenuService } from '../../services/menu';
-import { RootState } from '../../store';
-import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d';
-import { Search } from '../Search/Search';
-import { Settings } from '../Settings/Settings';
-import { Menu } from './components/Menu';
-import { WebView } from './components/WebView';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
+import { Alert } from '../../components/Alert'
+import { MenuService } from '../../services/menu'
+import { RootState } from '../../store'
+import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d'
+import { Search } from '../Search/Search'
+import { Settings } from '../Settings/Settings'
+import { Menu } from './components/Menu'
+import { WebView } from './components/WebView'
 
-export type TPages = 'web' | 'search' | 'settings';
+export type TPages = 'web' | 'search' | 'settings'
 
 export const Dashboard = (): React.ReactElement => {
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [page, setPage] = React.useState<TPages>('settings');
-  const [applications, setApplications] = React.useState<IMenuItem[]>([]);
-  const [activeApplication, setActiveApplication] = React.useState<IMenuItem>();
+  const [loading, setLoading] = React.useState<boolean>(true)
+  const [page, setPage] = React.useState<TPages>('settings')
+  const [applications, setApplications] = React.useState<IMenuItem[]>([])
+  const [activeApplication, setActiveApplication] = React.useState<IMenuItem>()
   const [actionRequest, setActionRequest] = React.useState<IActionRequest>({
     id: '',
     action: '',
-  });
+  })
 
-  const { settings } = useSelector((state: RootState) => state.user);
-  const { error } = useSelector((state: RootState) => state.interface);
+  const { settings } = useSelector((state: RootState) => state.user)
+  const { error } = useSelector((state: RootState) => state.interface)
 
   React.useEffect(() => {
-    (async () => {
-      setApplications(await MenuService.fetchList());
-      setLoading(false);
-    })();
-  }, []);
+    ;(async () => {
+      setApplications(await MenuService.fetchList())
+      setLoading(false)
+    })()
+  }, [])
 
   /**
    * Sets the new focused menu item
@@ -41,9 +41,9 @@ export const Dashboard = (): React.ReactElement => {
     action: TPages,
     menuItem?: IMenuItem,
   ): void => {
-    setPage(action);
-    action === 'web' && setActiveApplication(menuItem);
-  };
+    setPage(action)
+    action === 'web' && setActiveApplication(menuItem)
+  }
 
   /**
    * Handles action request
@@ -51,11 +51,11 @@ export const Dashboard = (): React.ReactElement => {
    * @param action - web view action
    */
   const handleActionRequest = (id: string, action: WebViewAction) => {
-    setActionRequest({ id, action });
-  };
+    setActionRequest({ id, action })
+  }
 
   if (loading) {
-    return <></>;
+    return <></>
   }
 
   return (
@@ -79,7 +79,7 @@ export const Dashboard = (): React.ReactElement => {
             {applications.map((v) => {
               const hidden = !(
                 activeApplication && activeApplication.id === v.id
-              );
+              )
               return (
                 <div key={v.id} className={`${hidden ? 'd-none' : ''}`}>
                   <WebView
@@ -91,7 +91,7 @@ export const Dashboard = (): React.ReactElement => {
                     actionRequest={actionRequest}
                   />
                 </div>
-              );
+              )
             })}
           </div>
 
@@ -117,12 +117,12 @@ export const Dashboard = (): React.ReactElement => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   container: {
     height: '100vh',
     overflowY: 'scroll',
   },
-});
+})

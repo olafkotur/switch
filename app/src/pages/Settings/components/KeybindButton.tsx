@@ -1,17 +1,17 @@
-import { Button, Paper, Tooltip } from '@material-ui/core';
-import React from 'react';
-import Stylesheet from 'reactjs-stylesheet';
-import { SettingsService } from '../../../services/settings';
+import { Button, Paper, Tooltip } from '@material-ui/core'
+import React from 'react'
+import Stylesheet from 'reactjs-stylesheet'
+import { SettingsService } from '../../../services/settings'
 
 interface IProps {
-  keybind: string;
-  handleUpdate: (value: string) => void;
+  keybind: string
+  handleUpdate: (value: string) => void
 }
 
 interface IState {
-  recording: boolean;
-  changed: boolean;
-  keyBinds: string[];
+  recording: boolean
+  changed: boolean
+  keyBinds: string[]
 }
 
 // TODO: refactor to use React.FC
@@ -21,18 +21,18 @@ export class KeybindButton extends React.Component<IProps, IState> {
    * @param props - component properties
    */
   constructor(props: IProps) {
-    super(props);
+    super(props)
 
     this.state = {
       recording: false,
       changed: false,
       keyBinds: [],
-    };
+    }
 
     // scope binding
-    this.handleClick = this.handleClick.bind(this);
-    this.handleRecord = this.handleRecord.bind(this);
-    this.formatKeybinds = this.formatKeybinds.bind(this);
+    this.handleClick = this.handleClick.bind(this)
+    this.handleRecord = this.handleRecord.bind(this)
+    this.formatKeybinds = this.formatKeybinds.bind(this)
   }
 
   /**
@@ -44,7 +44,7 @@ export class KeybindButton extends React.Component<IProps, IState> {
     if (prevState.recording !== this.state.recording) {
       this.state.recording
         ? document.addEventListener('keydown', this.handleRecord)
-        : document.removeEventListener('keydown', this.handleRecord);
+        : document.removeEventListener('keydown', this.handleRecord)
     }
   }
 
@@ -53,7 +53,7 @@ export class KeybindButton extends React.Component<IProps, IState> {
    */
   protected handleClick(): void {
     if (!this.state.recording) {
-      this.setState({ recording: true, keyBinds: [] });
+      this.setState({ recording: true, keyBinds: [] })
     }
   }
 
@@ -62,21 +62,21 @@ export class KeybindButton extends React.Component<IProps, IState> {
    * @param e - keyboard event
    */
   protected async handleRecord(e: KeyboardEvent): Promise<void> {
-    e.preventDefault();
+    e.preventDefault()
 
     // validate key binding
-    const value = SettingsService.validateKey(e.key);
+    const value = SettingsService.validateKey(e.key)
     if (value) {
       if (this.state.keyBinds.length && this.state.keyBinds[0] === value) {
-        return;
+        return
       }
-      this.setState({ keyBinds: [...this.state.keyBinds, value] });
+      this.setState({ keyBinds: [...this.state.keyBinds, value] })
     }
 
     // stop recording after 2 keys
     if (this.state.keyBinds.length >= 2) {
-      this.props.handleUpdate(this.formatKeybinds());
-      this.setState({ recording: false, changed: true });
+      this.props.handleUpdate(this.formatKeybinds())
+      this.setState({ recording: false, changed: true })
     }
   }
 
@@ -84,12 +84,12 @@ export class KeybindButton extends React.Component<IProps, IState> {
    * Formats keybinds
    */
   protected formatKeybinds(): string {
-    let formatted = '...';
-    formatted = this.state.keyBinds[0] ? this.state.keyBinds[0] : formatted;
+    let formatted = '...'
+    formatted = this.state.keyBinds[0] ? this.state.keyBinds[0] : formatted
     formatted = this.state.keyBinds[1]
       ? `${formatted} + ${this.state.keyBinds[1]}`
-      : formatted;
-    return formatted;
+      : formatted
+    return formatted
   }
 
   render() {
@@ -119,7 +119,7 @@ export class KeybindButton extends React.Component<IProps, IState> {
           </Tooltip>
         </Button>
       </div>
-    );
+    )
   }
 }
 
@@ -130,4 +130,4 @@ const styles = Stylesheet.create({
     backgroundColor: '#1f2225',
     border: 0,
   },
-});
+})

@@ -1,18 +1,18 @@
-import { IconButton, Tooltip } from '@material-ui/core';
-import { ExitToApp } from '@material-ui/icons';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
-import { setDialog } from '../../../redux/interface';
-import { UserService } from '../../../services/user';
-import { RootState } from '../../../store';
-import { LoginRegister } from './LoginRegister';
+import { IconButton, Tooltip } from '@material-ui/core'
+import { ExitToApp } from '@material-ui/icons'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
+import { setDialog } from '../../../redux/interface'
+import { UserService } from '../../../services/user'
+import { RootState } from '../../../store'
+import { LoginRegister } from './LoginRegister'
 
 export const Profile = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const { auth, profile } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch()
+  const { auth, profile } = useSelector((state: RootState) => state.user)
 
-  const defaultAvatar = require('../../../../assets/default-avatar.png');
+  const defaultAvatar = require('../../../../assets/default-avatar.png')
 
   const handleLoginOrRegister = async (): Promise<void> => {
     dispatch(
@@ -22,12 +22,12 @@ export const Profile = (): React.ReactElement => {
         hideButtons: true,
         content: <LoginRegister />,
       }),
-    );
-  };
+    )
+  }
 
   const handleLogout = async (): Promise<void> => {
-    await UserService.logout(dispatch);
-  };
+    await UserService.logout(dispatch)
+  }
 
   /**
    * Render profile row.
@@ -44,8 +44,8 @@ export const Profile = (): React.ReactElement => {
         </div>
         <div className="d-flex flex-row justify-content-center align-items-center"></div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className="bg-secondary" style={styles.container}>
@@ -91,8 +91,8 @@ export const Profile = (): React.ReactElement => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   container: {
@@ -111,4 +111,4 @@ const styles = Stylesheet.create({
     fontSize: 12,
     opacity: 0.5,
   },
-});
+})

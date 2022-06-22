@@ -1,7 +1,7 @@
-import crypto from 'crypto-js';
-import jwt from 'jsonwebtoken';
-import { config } from '../config';
-import { IAuth, JwtResponse } from '../typings/data';
+import crypto from 'crypto-js'
+import jwt from 'jsonwebtoken'
+import { config } from '../config'
+import { IAuth, JwtResponse } from '../typings/data'
 
 export const SecurityService = {
   /**
@@ -9,7 +9,7 @@ export const SecurityService = {
    * @param input - input string
    */
   encrypt: (input: string): string => {
-    return crypto.AES.encrypt(input, config.cryptoSalt).toString();
+    return crypto.AES.encrypt(input, config.cryptoSalt).toString()
   },
 
   /**
@@ -17,7 +17,9 @@ export const SecurityService = {
    * @param input - input string
    */
   decrypt: (input: string): string => {
-    return crypto.AES.decrypt(input, config.cryptoSalt).toString(crypto.enc.Utf8);
+    return crypto.AES.decrypt(input, config.cryptoSalt).toString(
+      crypto.enc.Utf8,
+    )
   },
 
   /**
@@ -25,7 +27,7 @@ export const SecurityService = {
    * @param input - input string
    */
   hash: (input: string): string => {
-    return crypto.SHA256(input).toString();
+    return crypto.SHA256(input).toString()
   },
 
   /**
@@ -33,9 +35,13 @@ export const SecurityService = {
    * @param email - email of the user
    * @param password - password of the user
    */
-  generateToken: (email: string, password: string, model: 'access' | 'refresh'): string => {
-    const expiresIn = model === 'access' ? '2h' : '7d';
-    return jwt.sign({ email, password, model }, config.jwtSecret, { expiresIn });
+  generateToken: (
+    email: string,
+    password: string,
+    model: 'access' | 'refresh',
+  ): string => {
+    const expiresIn = model === 'access' ? '2h' : '7d'
+    return jwt.sign({ email, password, model }, config.jwtSecret, { expiresIn })
   },
 
   /**
@@ -46,17 +52,28 @@ export const SecurityService = {
     return await new Promise((resolve) => {
       jwt.verify(token, config.jwtSecret, (error, decoded) => {
         if (!decoded || decoded.model !== 'refresh' || error) {
-          return resolve(null);
+          return resolve(null)
         }
         // clean payload and generate a new token
-        const payload: IAuth = { email: decoded.email, password: decoded.password };
+        const payload: IAuth = {
+          email: decoded.email,
+          password: decoded.password,
+        }
         const tokens = {
-          accessToken: SecurityService.generateToken(payload.email, payload.password, 'access'),
-          refreshToken: SecurityService.generateToken(payload.email, payload.password, 'refresh'),
-        };
-        resolve(tokens);
-      });
-    });
+          accessToken: SecurityService.generateToken(
+            payload.email,
+            payload.password,
+            'access',
+          ),
+          refreshToken: SecurityService.generateToken(
+            payload.email,
+            payload.password,
+            'refresh',
+          ),
+        }
+        resolve(tokens)
+      })
+    })
   },
 
   /**
@@ -66,13 +83,13 @@ export const SecurityService = {
   verifyToken: async (accessToken: string): Promise<JwtResponse> => {
     return await new Promise((resolve) => {
       jwt.verify(accessToken, config.jwtSecret, (error, decoded) => {
-        const response = { data: decoded as IAuth };
+        const response = { data: decoded as IAuth }
         if (error) {
-          return resolve({ ...response, error: error.name });
+          return resolve({ ...response, error: error.name })
         }
-        resolve(response);
-      });
-    });
+        resolve(response)
+      })
+    })
   },
 
   /**
@@ -80,6 +97,8 @@ export const SecurityService = {
    * @param password - password to be verified
    */
   validatePassword: (password: string): boolean => {
-    return new RegExp('(?=^.{8,}$)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$').test(password);
+    return new RegExp(
+      '(?=^.{8,}$)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$',
+    ).test(password)
   },
-};
+}

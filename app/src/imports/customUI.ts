@@ -1,4 +1,4 @@
-import { FontFamily, WindowBehaviour } from '../typings/user';
+import { FontFamily, WindowBehaviour } from '../typings/user'
 
 export const accentColors: string[] = [
   '#b33939',
@@ -6,7 +6,7 @@ export const accentColors: string[] = [
   '#ccae62',
   '#7e9181',
   '#40407a',
-];
+]
 
 export const fontFamilies: FontFamily[] = [
   'Arial',
@@ -14,10 +14,10 @@ export const fontFamilies: FontFamily[] = [
   'Helvetica',
   'Courier New',
   'Times New Roman',
-];
+]
 
 export const windowBehaviours: { value: WindowBehaviour; label: string }[] = [
   { value: 'external', label: 'Open in default browser' },
   { value: 'window', label: 'Open a new window' },
   { value: 'within', label: 'Create a new Switch tab' },
-];
+]

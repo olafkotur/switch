@@ -1,10 +1,10 @@
-import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron';
-import { IScreenInfo, IWindowInfo, WindowBehaviour } from '../typings/user';
-import { MenuService } from './menu';
-import { StorageService } from './storage';
-import { UtilService } from './util';
+import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron'
+import { IScreenInfo, IWindowInfo, WindowBehaviour } from '../typings/user'
+import { MenuService } from './menu'
+import { StorageService } from './storage'
+import { UtilService } from './util'
 
-let previousScreenInfo: IScreenInfo | null = null;
+let previousScreenInfo: IScreenInfo | null = null
 
 export const ElectronService = {
   /**
@@ -13,22 +13,22 @@ export const ElectronService = {
    */
   getScreenInfo: (useRemote?: boolean): IScreenInfo => {
     const screenSize = (useRemote ? remote.screen : screen).getPrimaryDisplay()
-      .workAreaSize;
-    return { width: screenSize.width, height: screenSize.height };
+      .workAreaSize
+    return { width: screenSize.width, height: screenSize.height }
   },
 
   /**
    * Fetches current window info (before remote window intialisation)
    */
   getWindowInfo: (window: BrowserWindow): IWindowInfo => {
-    const size = window.getSize();
-    const position = window.getPosition();
+    const size = window.getSize()
+    const position = window.getPosition()
     return {
       width: size[0],
       height: size[1],
       xPosition: position[0],
       yPosition: position[1],
-    };
+    }
   },
 
   /**
@@ -44,21 +44,21 @@ export const ElectronService = {
     animate?: boolean,
     windowPadding?: boolean,
   ): Promise<void> => {
-    const window = win || remote.getCurrentWindow();
+    const window = win || remote.getCurrentWindow()
     const windowInfo =
       winInfo ||
-      ((await StorageService.get('currentWindowInfo')) as IWindowInfo | null);
+      ((await StorageService.get('currentWindowInfo')) as IWindowInfo | null)
     if (windowInfo) {
-      const width = windowPadding ? windowInfo.width - 50 : windowInfo.width;
-      const height = windowPadding ? windowInfo.height - 25 : windowInfo.height;
+      const width = windowPadding ? windowInfo.width - 50 : windowInfo.width
+      const height = windowPadding ? windowInfo.height - 25 : windowInfo.height
       const xPos = windowPadding
         ? windowInfo.xPosition + 25
-        : windowInfo.xPosition;
+        : windowInfo.xPosition
       const yPos = windowPadding
         ? windowInfo.yPosition + 25
-        : windowInfo.yPosition;
-      window.setSize(width, height, animate);
-      window.setPosition(xPos, yPos, animate);
+        : windowInfo.yPosition
+      window.setSize(width, height, animate)
+      window.setPosition(xPos, yPos, animate)
     }
   },
 
@@ -73,10 +73,10 @@ export const ElectronService = {
     keybind: string,
     overlayMode: boolean,
   ): void => {
-    const newScreenInfo = ElectronService.getScreenInfo();
+    const newScreenInfo = ElectronService.getScreenInfo()
     previousScreenInfo = previousScreenInfo
       ? previousScreenInfo
-      : { ...newScreenInfo };
+      : { ...newScreenInfo }
 
     // register shortcuts
     globalShortcut.register(
@@ -87,13 +87,13 @@ export const ElectronService = {
           newScreenInfo.width !== previousScreenInfo!.width ||
           previousScreenInfo!.height !== previousScreenInfo!.height
         ) {
-          previousScreenInfo = { ...newScreenInfo };
-          window.setSize(newScreenInfo.width, newScreenInfo.height);
-          window.reload();
+          previousScreenInfo = { ...newScreenInfo }
+          window.setSize(newScreenInfo.width, newScreenInfo.height)
+          window.reload()
         }
-        overlayMode && ElectronService.toggleVisibility(window);
+        overlayMode && ElectronService.toggleVisibility(window)
       },
-    );
+    )
   },
 
   /**
@@ -103,15 +103,15 @@ export const ElectronService = {
   setWindowListeners: (window: BrowserWindow): void => {
     // resize event
     window.on('resize', async () => {
-      const windowInfo = ElectronService.getWindowInfo(window);
-      await StorageService.set('currentWindowInfo', windowInfo);
-    });
+      const windowInfo = ElectronService.getWindowInfo(window)
+      await StorageService.set('currentWindowInfo', windowInfo)
+    })
 
     // new-window event
     window.webContents.on('new-window', async (event, url) => {
-      event.preventDefault();
-      await ElectronService.openHyperlink(url, 'external');
-    });
+      event.preventDefault()
+      await ElectronService.openHyperlink(url, 'external')
+    })
   },
 
   /**
@@ -120,24 +120,24 @@ export const ElectronService = {
    * @param win - browser window
    */
   setWindowMode: (overlay: boolean, win?: BrowserWindow): void => {
-    const window = win || remote.getCurrentWindow();
+    const window = win || remote.getCurrentWindow()
     const options = {
       visible: true,
       fullScreen: false,
       alwaysTop: true,
       menu: false,
-    }; // assume overlay
+    } // assume overlay
     if (!overlay) {
-      options.visible = false;
-      options.fullScreen = true;
-      options.alwaysTop = false;
+      options.visible = false
+      options.fullScreen = true
+      options.alwaysTop = false
     }
-    window.setVisibleOnAllWorkspaces(options.visible);
-    window.setFullScreenable(options.fullScreen);
+    window.setVisibleOnAllWorkspaces(options.visible)
+    window.setFullScreenable(options.fullScreen)
     window.setAlwaysOnTop(
       options.alwaysTop,
       options.alwaysTop ? 'torn-off-menu' : undefined,
-    );
+    )
   },
 
   /**
@@ -145,12 +145,12 @@ export const ElectronService = {
    * @param win - browser window
    */
   toggleVisibility: (win?: BrowserWindow): void => {
-    const window = win || remote.getCurrentWindow();
-    const visible = window.isVisible();
+    const window = win || remote.getCurrentWindow()
+    const visible = window.isVisible()
     if (visible) {
-      return window.hide();
+      return window.hide()
     }
-    return window.show();
+    return window.show()
   },
 
   /**
@@ -159,9 +159,9 @@ export const ElectronService = {
    */
   openWindow: (url: string): void => {
     // disable always on top for main window
-    const mainWindow = remote.getCurrentWindow();
-    const isAlwaysOnTop = mainWindow.isAlwaysOnTop();
-    mainWindow.setAlwaysOnTop(false);
+    const mainWindow = remote.getCurrentWindow()
+    const isAlwaysOnTop = mainWindow.isAlwaysOnTop()
+    mainWindow.setAlwaysOnTop(false)
 
     // create child window
     let childWindow: BrowserWindow = new remote.BrowserWindow({
@@ -175,18 +175,18 @@ export const ElectronService = {
         nodeIntegration: false,
         webviewTag: true,
       },
-    });
+    })
 
     // load the url and show the window
-    childWindow.loadURL(url, { userAgent: UtilService.getUserAgent(url) });
-    childWindow.show();
+    childWindow.loadURL(url, { userAgent: UtilService.getUserAgent(url) })
+    childWindow.show()
 
     // clear child window and set parent to what it was
     childWindow.on('closed', () => {
       // @ts-ignore
-      childWindow = null;
-      mainWindow.setAlwaysOnTop(isAlwaysOnTop);
-    });
+      childWindow = null
+      mainWindow.setAlwaysOnTop(isAlwaysOnTop)
+    })
   },
 
   /**
@@ -198,25 +198,25 @@ export const ElectronService = {
     url: string,
     behaviour: WindowBehaviour,
   ): Promise<boolean> => {
-    let shouldRefresh = false;
+    let shouldRefresh = false
     switch (behaviour) {
       case 'window':
-        ElectronService.openWindow(url);
-        break;
+        ElectronService.openWindow(url)
+        break
       case 'within':
-        shouldRefresh = true;
-        await MenuService.save(url);
-        break;
+        shouldRefresh = true
+        await MenuService.save(url)
+        break
       default:
-        shell.openExternal(url);
+        shell.openExternal(url)
     }
-    return shouldRefresh;
+    return shouldRefresh
   },
 
   /**
    * Quits the application (used to apply updates)
    */
   quit: (): void => {
-    return remote.app.quit();
+    return remote.app.quit()
   },
-};
+}

@@ -1,5 +1,5 @@
-import { database } from '..';
-import { IUserModel } from '../typings/models';
+import { database } from '..'
+import { IUserModel } from '../typings/models'
 
 export const UserService = {
   /**
@@ -7,8 +7,8 @@ export const UserService = {
    * @param email - user email
    */
   fetchSingle: async (email: string): Promise<IUserModel | null> => {
-    const user = await database.getCollection('users').findOne({ email });
-    return user || null;
+    const user = await database.getCollection('users').findOne({ email })
+    return user || null
   },
 
   /**
@@ -16,9 +16,14 @@ export const UserService = {
    * @param email - user email
    * @param password - hashed user password
    */
-  fetchByCredentials: async (email: string, password: string): Promise<IUserModel | null> => {
-    const user = await database.getCollection('users').findOne({ email, password });
-    return user || null;
+  fetchByCredentials: async (
+    email: string,
+    password: string,
+  ): Promise<IUserModel | null> => {
+    const user = await database
+      .getCollection('users')
+      .findOne({ email, password })
+    return user || null
   },
 
   /**
@@ -26,10 +31,13 @@ export const UserService = {
    * @param email - user email
    * @param password - user password
    */
-  createUser: async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
-    const exists = await database.getCollection('users').findOne({ email });
+  createUser: async (
+    email: string,
+    password: string,
+  ): Promise<{ success: boolean; message?: string }> => {
+    const exists = await database.getCollection('users').findOne({ email })
     if (exists) {
-      return { success: false, message: 'User already exists' };
+      return { success: false, message: 'User already exists' }
     }
 
     // define user model
@@ -38,10 +46,10 @@ export const UserService = {
       password,
       updatedAt: new Date(),
       createdAt: new Date(),
-    };
+    }
 
     // create new user
-    const res = await database.getCollection('users').insertOne(data);
-    return { success: res.result.ok === 1 };
+    const res = await database.getCollection('users').insertOne(data)
+    return { success: res.result.ok === 1 }
   },
-};
+}

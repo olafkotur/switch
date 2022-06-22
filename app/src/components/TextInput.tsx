@@ -1,12 +1,12 @@
-import React, { HTMLInputTypeAttribute } from 'react';
-import Stylesheet from 'reactjs-stylesheet';
+import React, { HTMLInputTypeAttribute } from 'react'
+import Stylesheet from 'reactjs-stylesheet'
 
 interface IProps {
-  value: string;
-  onChange: (value: string) => void;
-  type?: HTMLInputTypeAttribute;
-  placeholder?: string;
-  description?: string;
+  value: string
+  onChange: (value: string) => void
+  type?: HTMLInputTypeAttribute
+  placeholder?: string
+  description?: string
 }
 
 export const TextInput = ({
@@ -30,8 +30,8 @@ export const TextInput = ({
         {description}
       </span>
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   container: {
@@ -51,4 +51,4 @@ const styles = Stylesheet.create({
   description: {
     fontSize: 12,
   },
-});
+})

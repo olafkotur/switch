@@ -1,11 +1,11 @@
-import { IKey } from '../typings/user';
+import { IKey } from '../typings/user'
 
 export const modifiers: IKey[] = [
   { name: 'Alt', value: 'Alt' },
   { name: 'Control', value: 'CommandOrControl' },
   { name: 'Meta', value: 'CommandOrControl' },
   { name: 'Shift', value: 'Shift' },
-];
+]
 
 export const numeric: IKey[] = [
   { name: '1', value: '1' },
@@ -18,7 +18,7 @@ export const numeric: IKey[] = [
   { name: '8', value: '8' },
   { name: '9', value: '9' },
   { name: '0', value: '0' },
-];
+]
 
 export const alphabetic: IKey[] = [
   { name: 'a', value: 'A' },
@@ -73,7 +73,7 @@ export const alphabetic: IKey[] = [
   { name: 'X', value: 'X' },
   { name: 'Y', value: 'Y' },
   { name: 'Z', value: 'Z' },
-];
+]
 
 export const special: IKey[] = [
   { name: '+', value: 'Plus' },
@@ -93,4 +93,4 @@ export const special: IKey[] = [
   { name: '@', value: '@' },
   { name: '#', value: '#' },
   { name: '$', value: '$' },
-];
+]

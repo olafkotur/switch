@@ -1,7 +1,7 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const rootPath = path.resolve(__dirname, '..');
+const rootPath = path.resolve(__dirname, '..')
 
 module.exports = {
   resolve: {
@@ -43,4 +43,4 @@ module.exports = {
     publicPath: './',
   },
   plugins: [new HtmlWebpackPlugin()],
-};
+}

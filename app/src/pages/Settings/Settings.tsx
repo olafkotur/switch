@@ -1,31 +1,31 @@
-import { Paper } from '@material-ui/core';
-import { Info } from '@material-ui/icons';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Stylesheet from 'reactjs-stylesheet';
+import { Paper } from '@material-ui/core'
+import { Info } from '@material-ui/icons'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Stylesheet from 'reactjs-stylesheet'
 import {
   accentColorSelect,
   fontFamilySelect,
   tutorial,
   visibilityKeybindSelect,
   windowBehaviourSelect,
-} from '../../components/Dialog';
-import { setDialog } from '../../redux/interface';
-import { setSettings } from '../../redux/user';
-import { PresetService } from '../../services/preset';
-import { SettingsService } from '../../services/settings';
-import { RootState } from '../../store';
-import { FontFamily, IDialog, ISettingConfig } from '../../typings/d';
-import { IUserSettings } from '../../typings/user';
-import { Preset } from './components/Preset';
-import { Profile } from './components/Profile';
-import { Setting } from './components/Setting';
+} from '../../components/Dialog'
+import { setDialog } from '../../redux/interface'
+import { setSettings } from '../../redux/user'
+import { PresetService } from '../../services/preset'
+import { SettingsService } from '../../services/settings'
+import { RootState } from '../../store'
+import { FontFamily, IDialog, ISettingConfig } from '../../typings/d'
+import { IUserSettings } from '../../typings/user'
+import { Preset } from './components/Preset'
+import { Profile } from './components/Profile'
+import { Setting } from './components/Setting'
 
 export const Settings = (): React.ReactElement => {
-  const [shouldRestart, setShouldRestart] = React.useState<boolean>(false);
+  const [shouldRestart, setShouldRestart] = React.useState<boolean>(false)
 
-  const dispatch = useDispatch();
-  const { settings } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch()
+  const { settings } = useSelector((state: RootState) => state.user)
 
   /**
    * Default change handler applied to all settings.
@@ -37,14 +37,14 @@ export const Settings = (): React.ReactElement => {
       'overlayMode',
       'windowBehaviour',
       'visiblityKeybind',
-    ];
-    settingsWithRestart.includes(name) && setShouldRestart(true);
-    const updatedSettings = { ...settings, [name]: value };
-    SettingsService.update(updatedSettings); // do not wait for response
-    dispatch(setSettings(updatedSettings));
-  };
+    ]
+    settingsWithRestart.includes(name) && setShouldRestart(true)
+    const updatedSettings = { ...settings, [name]: value }
+    SettingsService.update(updatedSettings) // do not wait for response
+    dispatch(setSettings(updatedSettings))
+  }
 
-  const presets = PresetService.fetch();
+  const presets = PresetService.fetch()
   const general: ISettingConfig[] = [
     {
       name: 'tutorial',
@@ -59,8 +59,8 @@ export const Settings = (): React.ReactElement => {
           title: 'Tutorial Video',
           hideButtons: true,
           content: tutorial(),
-        };
-        dispatch(setDialog(dialog));
+        }
+        dispatch(setDialog(dialog))
       },
     },
     {
@@ -79,11 +79,11 @@ export const Settings = (): React.ReactElement => {
           content: visibilityKeybindSelect(
             settings.visiblityKeybind,
             (v: string) => {
-              handleChange('visiblityKeybind', v);
+              handleChange('visiblityKeybind', v)
             },
           ),
-        };
-        dispatch(setDialog(dialog));
+        }
+        dispatch(setDialog(dialog))
       },
     },
     {
@@ -102,12 +102,12 @@ export const Settings = (): React.ReactElement => {
             settings.accentColor,
             settings.windowBehaviour,
             (v: string) => {
-              handleChange('windowBehaviour', v);
-              dispatch(setDialog(null));
+              handleChange('windowBehaviour', v)
+              dispatch(setDialog(null))
             },
           ),
-        };
-        dispatch(setDialog(dialog));
+        }
+        dispatch(setDialog(dialog))
       },
     },
     {
@@ -132,7 +132,7 @@ export const Settings = (): React.ReactElement => {
       description: 'display helpful messages when performing some actions',
       type: 'switch',
     },
-  ];
+  ]
   const appearance: ISettingConfig[] = [
     {
       name: 'fontFamily',
@@ -149,12 +149,12 @@ export const Settings = (): React.ReactElement => {
             settings.accentColor,
             settings.fontFamily,
             (v: FontFamily) => {
-              handleChange('fontFamily', v);
-              dispatch(setDialog(null));
+              handleChange('fontFamily', v)
+              dispatch(setDialog(null))
             },
           ),
-        };
-        dispatch(setDialog(dialog));
+        }
+        dispatch(setDialog(dialog))
       },
     },
     {
@@ -169,11 +169,11 @@ export const Settings = (): React.ReactElement => {
           title: 'Accent Color',
           hideButtons: true,
           content: accentColorSelect((v: string) => {
-            handleChange('accentColor', v);
-            dispatch(setDialog(null));
+            handleChange('accentColor', v)
+            dispatch(setDialog(null))
           }),
-        };
-        dispatch(setDialog(dialog));
+        }
+        dispatch(setDialog(dialog))
       },
     },
     {
@@ -191,7 +191,7 @@ export const Settings = (): React.ReactElement => {
       type: 'switch',
       experimental: true,
     },
-  ];
+  ]
 
   return (
     <div style={styles.container}>
@@ -240,8 +240,8 @@ export const Settings = (): React.ReactElement => {
 
       <div style={styles.footer} />
     </div>
-  );
-};
+  )
+}
 
 const styles = Stylesheet.create({
   container: {
@@ -255,4 +255,4 @@ const styles = Stylesheet.create({
   footer: {
     paddingBottom: '5vh',
   },
-});
+})

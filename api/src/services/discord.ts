@@ -1,6 +1,6 @@
-import * as _ from 'lodash';
-import fetch from 'node-fetch';
-import { config } from '../config';
+import * as _ from 'lodash'
+import fetch from 'node-fetch'
+import { config } from '../config'
 
 export const DiscordService = {
   /**
@@ -9,17 +9,21 @@ export const DiscordService = {
    * @param hook - discord web hook
    * @param skipSafety - allow running outside of production
    */
-  message: async (msg: string, hook: string, skipSafety = false): Promise<void> => {
+  message: async (
+    msg: string,
+    hook: string,
+    skipSafety = false,
+  ): Promise<void> => {
     if (config.env !== 'production' && !skipSafety) {
-      return;
+      return
     }
 
-    const body = { content: msg };
+    const body = { content: msg }
     await fetch(hook, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    });
+    })
   },
 
   /**
@@ -27,10 +31,10 @@ export const DiscordService = {
    * @param data - data object
    */
   format: (data: object): string => {
-    let formatted = '';
+    let formatted = ''
     for (const entry of _.entries(data)) {
-      formatted += `${entry[0]}: ${entry[1]}\n`;
+      formatted += `${entry[0]}: ${entry[1]}\n`
     }
-    return `\n\`\`\`${formatted}\`\`\``;
+    return `\n\`\`\`${formatted}\`\`\``
   },
-};
+}

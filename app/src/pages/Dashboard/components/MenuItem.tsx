@@ -4,7 +4,7 @@ import {
   Paper,
   Slide,
   Tooltip,
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
   ArrowBack,
   ArrowForward,
@@ -12,23 +12,23 @@ import {
   Image,
   Publish,
   Refresh,
-} from '@material-ui/icons';
-import React from 'react';
-import Stylesheet from 'reactjs-stylesheet';
-import { MenuService } from '../../../services/menu';
-import { IMenuItem, WebViewAction } from '../../../typings/d';
-import { TPages } from '../Dashboard';
+} from '@material-ui/icons'
+import React from 'react'
+import Stylesheet from 'reactjs-stylesheet'
+import { MenuService } from '../../../services/menu'
+import { IMenuItem, WebViewAction } from '../../../typings/d'
+import { TPages } from '../Dashboard'
 
 interface IProps {
-  data: IMenuItem;
-  page: TPages;
-  focused: boolean;
-  handleClick: (action: TPages, item?: IMenuItem) => void;
-  handleActionRequest: (id: string, action: WebViewAction) => void;
+  data: IMenuItem
+  page: TPages
+  focused: boolean
+  handleClick: (action: TPages, item?: IMenuItem) => void
+  handleActionRequest: (id: string, action: WebViewAction) => void
 }
 
 interface IState {
-  contextMenu: boolean;
+  contextMenu: boolean
 }
 
 // TODO: refactor to React.FC
@@ -36,25 +36,25 @@ export class MenuItem extends React.Component<IProps, IState> {
   /**
    * Local properties
    */
-  protected ref: React.RefObject<HTMLDivElement> = React.createRef();
+  protected ref: React.RefObject<HTMLDivElement> = React.createRef()
 
   /**
    * MenuItem constructor
    * @param props - component properties
    */
   constructor(props: IProps) {
-    super(props);
+    super(props)
 
     this.state = {
       contextMenu: false,
-    };
+    }
 
     // scope binding
-    this.handleContextMenu = this.handleContextMenu.bind(this);
-    this.handleNavigate = this.handleNavigate.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
+    this.handleContextMenu = this.handleContextMenu.bind(this)
+    this.handleNavigate = this.handleNavigate.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.handleUpdate = this.handleUpdate.bind(this)
+    this.handleUpload = this.handleUpload.bind(this)
   }
 
   /**
@@ -67,17 +67,17 @@ export class MenuItem extends React.Component<IProps, IState> {
         this.ref.current &&
         !this.ref.current.contains(e.target as Node)
       ) {
-        this.setState({ contextMenu: false });
+        this.setState({ contextMenu: false })
       }
-    });
+    })
   }
 
   /**
    * Handles context menu
    */
   protected handleContextMenu() {
-    this.props.handleClick('web', this.props.data);
-    this.setState({ contextMenu: !this.state.contextMenu });
+    this.props.handleClick('web', this.props.data)
+    this.setState({ contextMenu: !this.state.contextMenu })
   }
 
   /**
@@ -85,7 +85,7 @@ export class MenuItem extends React.Component<IProps, IState> {
    * @param action - action request type
    */
   protected handleNavigate(action: WebViewAction) {
-    this.props.handleActionRequest(this.props.data.id, action);
+    this.props.handleActionRequest(this.props.data.id, action)
   }
 
   /**
@@ -93,7 +93,7 @@ export class MenuItem extends React.Component<IProps, IState> {
    * @param id - service id
    */
   protected async handleDelete(): Promise<void> {
-    await MenuService.delete(this.props.data.id);
+    await MenuService.delete(this.props.data.id)
   }
 
   /**
@@ -101,7 +101,7 @@ export class MenuItem extends React.Component<IProps, IState> {
    * @param data - menu item data
    */
   protected async handleUpdate(data: IMenuItem): Promise<void> {
-    await MenuService.update(data);
+    await MenuService.update(data)
   }
 
   /**
@@ -115,13 +115,13 @@ export class MenuItem extends React.Component<IProps, IState> {
       await this.handleUpdate({
         ...this.props.data,
         icon: event.target.files[0],
-      });
+      })
     }
   }
 
   render() {
     const extraStyles =
-      this.props.page === 'web' && this.props.focused ? styles.selected : {};
+      this.props.page === 'web' && this.props.focused ? styles.selected : {}
     return (
       <div className="mt-2" style={{ ...styles.container, ...extraStyles }}>
         <ButtonBase
@@ -188,7 +188,7 @@ export class MenuItem extends React.Component<IProps, IState> {
           </Paper>
         </Slide>
       </div>
-    );
+    )
   }
 }
 
@@ -216,4 +216,4 @@ const styles = Stylesheet.create({
     backgroundColor: '#56585c',
     borderRadius: 10,
   },
-});
+})

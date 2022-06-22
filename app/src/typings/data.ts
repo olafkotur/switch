@@ -1,4 +1,4 @@
 export interface ITokenData {
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string
+  refreshToken: string
 }
