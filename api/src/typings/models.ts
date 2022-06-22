@@ -8,7 +8,7 @@ interface IModelBase {
 }
 
 export interface IUserModel extends IModelBase {
-  email: string
+  username: string
   password: string
 }
 

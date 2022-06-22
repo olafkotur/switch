@@ -1,3 +1,4 @@
+import 'colors'
 import express from 'express'
 import { config } from './config'
 import { SettingsHandler } from './handlers/settings'

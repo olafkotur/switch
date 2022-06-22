@@ -9,19 +9,19 @@ import { StorageService } from './storage'
 export const UserService = {
   /**
    * Authenticate existing user.
-   * @param email - user email
+   * @param username - user name
    * @param password - user password
    * @param dispatch - redux dispatch
    */
   login: async (
-    email: string,
+    username: string,
     password: string,
     dispatch: Dispatch,
   ): Promise<void> => {
     const response = await RequestService.post(
       `${config.apiUrl}/api/user/login`,
       {
-        email,
+        username,
         password,
       },
     )
@@ -54,19 +54,19 @@ export const UserService = {
 
   /**
    * Create a new user account.
-   * @param email - user email
+   * @param username - user name
    * @param password - user password
    * @param dispatch - redux dispatch
    */
   register: async (
-    email: string,
+    username: string,
     password: string,
     dispatch: Dispatch,
   ): Promise<void> => {
     const response = await RequestService.post(
       `${config.apiUrl}/api/user/create`,
       {
-        email,
+        username,
         password,
       },
     )
@@ -85,7 +85,7 @@ export const UserService = {
     }
 
     // update redux state
-    dispatch(setProfile({ email, avatar: null }))
+    dispatch(setProfile({ username, avatar: null }))
     dispatch(setAuth(true))
     dispatch(setDialog(null))
   },

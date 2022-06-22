@@ -4,6 +4,7 @@ import storage from 'electron-json-storage'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider, useDispatch, useSelector } from 'react-redux'
+import { Alert } from './components/Alert'
 import { Dialog } from './components/Dialog'
 import { Loader } from './components/Loader'
 import './custom.css'
@@ -22,7 +23,7 @@ const App = (): React.ReactElement => {
 
   const dispatch = useDispatch()
   const { settings, auth } = useSelector((state: RootState) => state.user)
-  const { dialog } = useSelector((state: RootState) => state.interface)
+  const { dialog, error } = useSelector((state: RootState) => state.interface)
 
   React.useEffect(() => {
     // storage setup
@@ -87,10 +88,6 @@ const App = (): React.ReactElement => {
     applications && dispatch(setApplications(applications))
   }
 
-  // TODO: temp hax
-  // return <Loader />
-  return <Login />
-
   if (loading) {
     return <Loader />
   }
@@ -100,6 +97,7 @@ const App = (): React.ReactElement => {
       <div style={{ fontFamily: settings.fontFamily }}>
         {!auth ? <Login /> : <Dashboard />}
         {dialog && <Dialog />}
+        {error && <Alert />}
       </div>
     </ThemeProvider>
   )

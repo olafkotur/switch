@@ -4,11 +4,13 @@ import { DatabaseService } from './database'
 export const SettingsService = {
   /**
    * Fetches user settings from db.
-   * @param email - user email
+   * @param username - user name
    */
-  fetch: async (email: string): Promise<SettingsMeta | null> => {
+  fetch: async (username: string): Promise<SettingsMeta | null> => {
     // find user
-    const user = await DatabaseService.getCollection('users').findOne({ email })
+    const user = await DatabaseService.getCollection('users').findOne({
+      username,
+    })
     if (!user || !user._id) {
       return null
     }
@@ -22,12 +24,17 @@ export const SettingsService = {
 
   /**
    * Create new or update existing settings
-   * @param email - user email
+   * @param username - user name
    * @param settings - settings object
    */
-  upsert: async (email: string, settings: SettingsMeta): Promise<boolean> => {
+  upsert: async (
+    username: string,
+    settings: SettingsMeta,
+  ): Promise<boolean> => {
     // find user
-    const user = await DatabaseService.getCollection('users').findOne({ email })
+    const user = await DatabaseService.getCollection('users').findOne({
+      username,
+    })
     if (!user || !user._id) {
       return false
     }

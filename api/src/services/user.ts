@@ -3,46 +3,46 @@ import { IUserModel } from '../typings/models'
 
 export const UserService = {
   /**
-   * Fetches single user by email.
-   * @param email - user email
+   * Fetches single user by username.
+   * @param username - user name
    */
-  fetchSingle: async (email: string): Promise<IUserModel | null> => {
-    const user = await database.getCollection('users').findOne({ email })
+  fetchSingle: async (username: string): Promise<IUserModel | null> => {
+    const user = await database.getCollection('users').findOne({ username })
     return user || null
   },
 
   /**
    * Fetches single user by credentials
-   * @param email - user email
+   * @param username - user name
    * @param password - hashed user password
    */
   fetchByCredentials: async (
-    email: string,
+    username: string,
     password: string,
   ): Promise<IUserModel | null> => {
     const user = await database
       .getCollection('users')
-      .findOne({ email, password })
+      .findOne({ username, password })
     return user || null
   },
 
   /**
    * Creates new user and saves in db.
-   * @param email - user email
+   * @param username - user name
    * @param password - user password
    */
   createUser: async (
-    email: string,
+    username: string,
     password: string,
   ): Promise<{ success: boolean; message?: string }> => {
-    const exists = await database.getCollection('users').findOne({ email })
+    const exists = await database.getCollection('users').findOne({ username })
     if (exists) {
       return { success: false, message: 'User already exists' }
     }
 
     // define user model
     const data: IUserModel = {
-      email,
+      username,
       password,
       updatedAt: new Date(),
       createdAt: new Date(),

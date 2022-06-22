@@ -5,32 +5,32 @@ import { UserService } from '../services/user'
 
 export const UserHandler = {
   /**
-   * Login via email and password, return a JWT token.
+   * Login via username and password, return a JWT token.
    * @param req - request object
    * @param res - response object
    */
   login: async (req: express.Request, res: express.Response): Promise<void> => {
-    const email = req.body.email || ''
+    const username = req.body.username || ''
     const password = req.body.password || ''
-    if (!email || !password) {
-      return ResponseService.bad('Missing email or password', res)
+    if (!username || !password) {
+      return ResponseService.bad('Missing username or password', res)
     }
 
     // check if user exists
     const hashedPassword = SecurityService.hash(password)
-    const user = await UserService.fetchByCredentials(email, hashedPassword)
+    const user = await UserService.fetchByCredentials(username, hashedPassword)
     if (!user) {
-      return ResponseService.notFound('Invalid email or password', res)
+      return ResponseService.notFound('Invalid username or password', res)
     }
 
     // generate a jwt token for the user
     const accessToken = SecurityService.generateToken(
-      email,
+      username,
       hashedPassword,
       'access',
     )
     const refreshToken = SecurityService.generateToken(
-      email,
+      username,
       hashedPassword,
       'refresh',
     )
@@ -55,7 +55,7 @@ export const UserHandler = {
   },
 
   /**
-   * Register a new user via email and password.
+   * Register a new user via username and password.
    * @param req - request object
    * @param res - response object
    */
@@ -63,10 +63,10 @@ export const UserHandler = {
     req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const email = req.body.email || ''
+    const username = req.body.username || ''
     const password = req.body.password || ''
-    if (!email || !password) {
-      return ResponseService.bad('Missing email or password', res)
+    if (!username || !password) {
+      return ResponseService.bad('Missing username or password', res)
     }
 
     // check password strength
@@ -79,14 +79,14 @@ export const UserHandler = {
     }
 
     // check if user exists
-    const user = await UserService.fetchSingle(email)
+    const user = await UserService.fetchSingle(username)
     if (user) {
       return ResponseService.bad('User already exists', res)
     }
 
     // create new user
     const hashedPassword = SecurityService.hash(password)
-    const result = await UserService.createUser(email, hashedPassword)
+    const result = await UserService.createUser(username, hashedPassword)
     if (!result.success) {
       return ResponseService.bad(
         result.message || 'Unknown error occurred',
@@ -116,7 +116,7 @@ export const UserHandler = {
       return ResponseService.unauthorized(message, res)
     }
 
-    const data = { email: jwtResponse.data.email }
+    const data = { username: jwtResponse.data.username }
     return ResponseService.data(data, res)
   },
 }

@@ -77,7 +77,7 @@ export const Profile = (): React.ReactElement => {
         <div className="align-items-center ml-3">
           {auth ? (
             <>
-              {renderRow('Email', profile.email)}
+              {renderRow('Username', profile.username)}
               {renderRow('Password', '**************')}
             </>
           ) : (
