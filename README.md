@@ -14,6 +14,10 @@ Lightweight overlay browser
 
 </div>
 
+
+https://user-images.githubusercontent.com/24353005/175253078-cce3c954-b440-4baa-880d-d92f0f8fb394.mp4
+
+
 ## 👋🏽 About
 
 _Switch started off as a very small project I created for myself to improve my workflow. Overtime I noticed other people enjoyed to use it too so I made some improvements to make it worthy and public. I would appreciate any feedback you may have on this project._
