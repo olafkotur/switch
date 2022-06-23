@@ -41,6 +41,42 @@ export const RequestService = {
   },
 
   /**
+   * Performs a put request on the provided url.
+   * @param url - request url
+   * @param headers - request headers
+   */
+  put: async (
+    url: string,
+    body: object = {},
+    headers: IRequestHeaders = {},
+  ): Promise<IResponse> => {
+    return await RequestService.requestR({
+      url,
+      headers,
+      method: 'put',
+      body: JSON.stringify(body),
+    })
+  },
+
+  /**
+   * Performs a delete request on the provided url.
+   * @param url - request url
+   * @param headers - request headers
+   */
+  delete: async (
+    url: string,
+    body: object = {},
+    headers: IRequestHeaders = {},
+  ): Promise<IResponse> => {
+    return await RequestService.requestR({
+      url,
+      headers,
+      method: 'delete',
+      body: JSON.stringify(body),
+    })
+  },
+
+  /**
    * Executes the request with given options.
    * @param options - request options
    * @param jwtTokens - jwt tokens

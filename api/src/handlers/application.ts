@@ -66,4 +66,21 @@ export const ApplicationHandler = {
     }
     return ResponseService.bad('Unknown error occured', res)
   },
+
+  /**
+   * Delete existing application.
+   * @param req - request object
+   * @param res - response object
+   */
+  delete: async (
+    req: express.Request,
+    res: express.Response,
+  ): Promise<void> => {
+    const id = req.body.id
+    const success = await ApplicationService.delete(id)
+    if (success) {
+      return ResponseService.ok('Application deleted', res)
+    }
+    return ResponseService.bad('Unknown error occured', res)
+  },
 }

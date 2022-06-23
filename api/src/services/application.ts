@@ -88,4 +88,15 @@ export const ApplicationService = {
 
     return results.every((v) => v === true)
   },
+
+  /**
+   * Delete existing application.
+   * @param id - app id
+   */
+  delete: async (id: string): Promise<boolean> => {
+    const col = DatabaseService.getCollection('applications')
+    const _id = new Types.ObjectId(id)
+    const result = await col.deleteOne({ _id })
+    return result.result.ok === 1
+  },
 }

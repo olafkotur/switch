@@ -79,7 +79,8 @@ const setupSettingsHandler = (): void => {
 const setupApplicationHandler = (): void => {
   app.get('/api/application', ApplicationHandler.fetch)
   app.post('/api/application/create', ApplicationHandler.create)
-  app.post('/api/application/update', ApplicationHandler.update)
+  app.put('/api/application/update', ApplicationHandler.update)
+  app.delete('/api/application/delete', ApplicationHandler.delete)
 }
 
 main()

@@ -16,7 +16,6 @@ import {
 import React from 'react'
 import Stylesheet from 'reactjs-stylesheet'
 import { ApplicationService } from '../../../services/application'
-import { MenuService } from '../../../services/menu'
 import { UtilService } from '../../../services/util'
 import { WebViewAction } from '../../../typings/d'
 import { IApplicationData } from '../../../typings/data'
@@ -96,7 +95,7 @@ export class Application extends React.Component<Props, State> {
    * @param id - service id
    */
   protected async handleDelete(): Promise<void> {
-    await MenuService.delete(this.props.data._id)
+    await ApplicationService.delete(this.props.data._id)
   }
 
   /**

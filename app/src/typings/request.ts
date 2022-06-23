@@ -1,4 +1,4 @@
-export type IRequestMethod = 'get' | 'post'
+export type IRequestMethod = 'get' | 'post' | 'put' | 'delete'
 
 export interface IRequestHeaders {
   [key: string]: string

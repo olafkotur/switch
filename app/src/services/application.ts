@@ -53,9 +53,21 @@ export const ApplicationService = {
    * @param data - applications
    */
   update: async (data: IApplicationData[]): Promise<boolean> => {
-    const response = await RequestService.post(
+    const response = await RequestService.put(
       `${config.apiUrl}/api/application/update`,
       data,
+    )
+    return response.result.code === 200
+  },
+
+  /**
+   * Deletes target application.
+   * @param _id - app id
+   */
+  delete: async (_id: string): Promise<boolean> => {
+    const response = await RequestService.delete(
+      `${config.apiUrl}/api/application/delete`,
+      { id: _id },
     )
     return response.result.code === 200
   },
