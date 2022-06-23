@@ -107,6 +107,7 @@ const mainElement = document.createElement('div')
 mainElement.setAttribute('id', 'root')
 document.body.appendChild(mainElement)
 render(
+  // @ts-ignore
   <Provider store={store}>
     <App />
   </Provider>,
