@@ -1,3 +1,4 @@
+import * as _ from 'lodash'
 import { config } from '../config'
 import { IStoredData } from '../typings/d'
 import { IApplicationData } from '../typings/data'
@@ -45,5 +46,44 @@ export const ApplicationService = {
       data,
     )
     return response.result.code === 201
+  },
+
+  /**
+   * Updates existing applications.
+   * @param data - applications
+   */
+  update: async (data: IApplicationData[]): Promise<boolean> => {
+    const response = await RequestService.post(
+      `${config.apiUrl}/api/application/update`,
+      data,
+    )
+    return response.result.code === 200
+  },
+
+  /**
+   * Handles re-ordering logic of applications, does not update in db
+   * @param _id - application id
+   * @param order - new application order
+   */
+  reorder: async (args: {
+    _id: string
+    order: number
+  }): Promise<IApplicationData[]> => {
+    // TODO: may cause performance issues, consider using local cache instead
+    const applications = await ApplicationService.fetch()
+
+    // separate target from the group
+    const excludedData = applications.filter((v) => v._id !== args._id)
+    const toUpdate = applications.find(
+      (v) => v._id === args._id,
+    ) as IApplicationData
+
+    // order and update
+    const reorderedData: IApplicationData[] = []
+    _.sortBy(excludedData, 'order').forEach((v, i) => {
+      i === args.order ? reorderedData.push(toUpdate, v) : reorderedData.push(v)
+    })
+    args.order > excludedData.length - 1 && reorderedData.push(toUpdate)
+    return reorderedData.map((v, i) => ({ ...v, order: i }))
   },
 }
