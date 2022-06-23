@@ -98,7 +98,6 @@ export const Application = ({
   }
 
   const extraStyles = page === 'web' && selected ? styles.selected : {}
-  console.log({ page, selected })
 
   return (
     <div className="mt-2" style={{ ...styles.container, ...extraStyles }}>

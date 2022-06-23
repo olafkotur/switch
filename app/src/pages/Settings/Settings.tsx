@@ -6,8 +6,8 @@ import Stylesheet from 'reactjs-stylesheet'
 import {
   accentColorSelect,
   fontFamilySelect,
+  keybindSelect,
   tutorial,
-  visibilityKeybindSelect,
   windowBehaviourSelect,
 } from '../../components/Dialog'
 import { setDialog } from '../../redux/interface'
@@ -76,12 +76,7 @@ export const Settings = (): React.ReactElement => {
           hideButtons: true,
           disableEscKey: true,
           secondaryLabel: 'Dismiss',
-          content: visibilityKeybindSelect(
-            settings.visiblityKeybind,
-            (v: string) => {
-              handleChange('visiblityKeybind', v)
-            },
-          ),
+          content: keybindSelect(settings.visiblityKeybind),
         }
         dispatch(setDialog(dialog))
       },
