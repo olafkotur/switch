@@ -10,12 +10,12 @@ import ButtonBase from '@material-ui/core/ButtonBase'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Stylesheet from 'reactjs-stylesheet'
+import { BORDER_RADIUS } from '../constants'
 import {
   accentColors,
   fontFamilies,
   windowBehaviours,
 } from '../imports/customUI'
-import { KeybindButton } from '../pages/Settings/components/KeybindButton'
 import { setDialog } from '../redux/interface'
 import { RootState } from '../store'
 import { FontFamily, WindowBehaviour } from '../typings/d'
@@ -109,29 +109,34 @@ export const hideWindowWarning = (visiblityKeybind: string) => (
 )
 
 /**
- * Triggered when user attempts to change the visibility keybind.
- * @param initialValue - initial visibility keybind value
- * @param setVisibilityKeybind - handler to set visibility keybind
+ * Triggered when user attempts to change keybinds
+ * @param keybind - keybind value
  */
-export const visibilityKeybindSelect = (
-  initialValue: string,
-  setVisibilityKeybind: (value: string) => void,
-) => (
-  <div>
-    <span>
-      Please record a new <code>visibility keybind</code>, you must include{' '}
-      <code>two</code> characters. You will have to <code>restart</code> the
-      application to see any changes.
-    </span>
-    <br />
-    <div className="my-3">
-      <KeybindButton
-        keybind={initialValue}
-        handleUpdate={(v) => setVisibilityKeybind(v)}
-      />
+export const keybindSelect = (keybind: string) => {
+  const keybinds = keybind.split(' + ')
+  return (
+    <div>
+      <span>
+        Below is the key combination to toggle the window's visibility. Changing{' '}
+        <code>keybinds</code> coming soon 🚀
+      </span>
+      <br />
+
+      <div className="d-flex flex-row justify-content-between mt-2">
+        {keybinds.map((v) => (
+          <ButtonBase
+            disabled
+            key={`modifier-${v}`}
+            className="d-flex justify-content-center align-items-center w-100"
+            style={{ ...styles.keybind, backgroundColor: 'grey' }}
+          >
+            <span>{v}</span>
+          </ButtonBase>
+        ))}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 /**
  * Triggered when user attempts to change the window behaviour.
@@ -148,7 +153,7 @@ export const windowBehaviourSelect = (
     {windowBehaviours.map((v) => (
       <ButtonBase
         key={`dialog-select-box-${v.label}`}
-        className="d-flex justify-content-center align-items-center"
+        className="d-flex justify-content-center align-items-center w-100"
         style={{
           ...styles.windowBehaviour,
           background: v.value === initialValue ? accentColor : '#1f2225',
@@ -213,18 +218,25 @@ const styles = Stylesheet.create({
     width: 106,
     height: 100,
     margin: 5,
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS,
   },
   fontFamily: {
     width: 106,
     height: 100,
     margin: 5,
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS,
   },
   windowBehaviour: {
     width: 184,
     height: 100,
     margin: 5,
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS,
+  },
+  keybind: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    height: 50,
+    margin: 5,
+    borderRadius: BORDER_RADIUS,
   },
 })

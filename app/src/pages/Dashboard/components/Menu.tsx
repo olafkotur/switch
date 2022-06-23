@@ -101,9 +101,7 @@ export const Menu = ({
                           <Application
                             data={v}
                             page={page}
-                            focused={
-                              selected && selected._id === v._id ? true : false
-                            }
+                            selected={selected?._id === v._id}
                             handleClick={handleClick}
                             handleActionRequest={handleActionRequest}
                           />
