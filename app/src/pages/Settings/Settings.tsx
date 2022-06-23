@@ -10,6 +10,7 @@ import {
   tutorial,
   windowBehaviourSelect,
 } from '../../components/Dialog'
+import { BORDER_RADIUS, EDGE_SPACING } from '../../constants'
 import { setDialog } from '../../redux/interface'
 import { setSettings } from '../../redux/user'
 import { PresetService } from '../../services/preset'
@@ -17,6 +18,7 @@ import { SettingsService } from '../../services/settings'
 import { RootState } from '../../store'
 import { FontFamily, IDialog, ISettingConfig } from '../../typings/d'
 import { IUserSettings } from '../../typings/user'
+import { Footer } from './components/Footer'
 import { Preset } from './components/Preset'
 import { Profile } from './components/Profile'
 import { Setting } from './components/Setting'
@@ -233,7 +235,7 @@ export const Settings = (): React.ReactElement => {
         </div>
       </div>
 
-      <div style={styles.footer} />
+      <Footer />
     </div>
   )
 }
@@ -244,10 +246,7 @@ const styles = Stylesheet.create({
     width: '60vw',
   },
   group: {
-    padding: 20,
-    borderRadius: 10,
-  },
-  footer: {
-    paddingBottom: '5vh',
+    padding: EDGE_SPACING,
+    borderRadius: BORDER_RADIUS,
   },
 })
