@@ -21,7 +21,7 @@ export const SettingsHandler = {
     }
 
     // fetch data from db
-    const data = await SettingsService.fetch(jwtResponse.data.email)
+    const data = await SettingsService.fetch(jwtResponse.data.username)
     if (data) {
       return ResponseService.data(data, res)
     }
@@ -54,7 +54,7 @@ export const SettingsHandler = {
 
     // update or add settings
     const success = await SettingsService.upsert(
-      jwtResponse.data.email,
+      jwtResponse.data.username,
       settings,
     )
     if (success) {

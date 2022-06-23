@@ -208,14 +208,6 @@ export const fontFamilySelect = (
   </div>
 )
 
-export const login = () => {
-  ;<div>Login</div>
-}
-
-export const register = () => {
-  ;<div>Register</div>
-}
-
 const styles = Stylesheet.create({
   accentColor: {
     width: 106,

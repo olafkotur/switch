@@ -1,4 +1,5 @@
 import MongoClient from 'mongodb'
+import { config } from '../config'
 import { Collection } from '../typings/models'
 
 let database: MongoClient.Db | null = null
@@ -17,8 +18,11 @@ export const DatabaseService = {
           if (error) {
             reject(false)
           }
-          database = db.db('data')
-          console.log('Database.connect :: Succesfully connected to database')
+          database = db.db(config.mongoName)
+          console.log(
+            `Database.connect :: Succesfully connected to ${config.mongoName}`
+              .green,
+          )
           resolve(true)
         },
       )

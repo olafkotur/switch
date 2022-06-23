@@ -1,3 +1,4 @@
+import 'colors'
 import express from 'express'
 import { config } from './config'
 import { SettingsHandler } from './handlers/settings'
@@ -21,7 +22,7 @@ const main = async (): Promise<void> => {
   }
 
   // middleware
-  app.use(express.urlencoded({ extended: false }))
+  app.use(express.urlencoded({ extended: false, limit: '10mb' }))
   app.use(express.json())
   app.use(cors())
 

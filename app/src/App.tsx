@@ -1,27 +1,30 @@
 import { createTheme, Theme, ThemeProvider } from '@material-ui/core'
-import 'bootstrap/dist/css/bootstrap.css'
 import storage from 'electron-json-storage'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider, useDispatch, useSelector } from 'react-redux'
+import { Alert } from './components/Alert'
 import { Dialog } from './components/Dialog'
 import { Loader } from './components/Loader'
-import './custom.css'
 import { Dashboard } from './pages/Dashboard/Dashboard'
+import { Login } from './pages/Login/Login'
 import { setApplications, setError } from './redux/interface'
 import { setAuth, setProfile, setSettings } from './redux/user'
 import { MenuService } from './services/menu'
 import { SettingsService } from './services/settings'
 import { UserService } from './services/user'
 import { RootState, store } from './store'
+// this line prevents import sorter messing with .css order
+import 'bootstrap/dist/css/bootstrap.css'
+import './custom.css'
 
 const App = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true)
   const [theme, setTheme] = React.useState<Theme>()
 
   const dispatch = useDispatch()
-  const { settings } = useSelector((state: RootState) => state.user)
-  const { dialog } = useSelector((state: RootState) => state.interface)
+  const { settings, auth } = useSelector((state: RootState) => state.user)
+  const { dialog, error } = useSelector((state: RootState) => state.interface)
 
   React.useEffect(() => {
     // storage setup
@@ -73,13 +76,12 @@ const App = (): React.ReactElement => {
   }
 
   /**
-   * Fetches user data and stores in redux.
+   * Fetches user data and stores in state.
    */
   const fetchUserData = async (): Promise<void> => {
     const profile = await UserService.fetchProfile()
     const settings = await SettingsService.fetch()
     const applications = await MenuService.fetchList()
-
     dispatch(setAuth(!!profile))
     profile && dispatch(setProfile(profile))
     settings && dispatch(setSettings(settings))
@@ -93,8 +95,9 @@ const App = (): React.ReactElement => {
   return (
     <ThemeProvider theme={theme as Theme}>
       <div style={{ fontFamily: settings.fontFamily }}>
-        <Dashboard />
+        {!auth ? <Login /> : <Dashboard />}
         {dialog && <Dialog />}
+        {error && <Alert />}
       </div>
     </ThemeProvider>
   )

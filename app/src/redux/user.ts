@@ -11,7 +11,7 @@ export interface IUserState {
 const initialState: IUserState = {
   auth: false,
   profile: {
-    email: '',
+    username: '',
     avatar: null,
   },
   settings: defaultSettings,

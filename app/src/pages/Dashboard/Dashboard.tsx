@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Stylesheet from 'reactjs-stylesheet'
-import { Alert } from '../../components/Alert'
 import { MenuService } from '../../services/menu'
 import { RootState } from '../../store'
 import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d'
@@ -23,7 +22,6 @@ export const Dashboard = (): React.ReactElement => {
   })
 
   const { settings } = useSelector((state: RootState) => state.user)
-  const { error } = useSelector((state: RootState) => state.interface)
 
   React.useEffect(() => {
     ;(async () => {
@@ -112,8 +110,6 @@ export const Dashboard = (): React.ReactElement => {
               <Settings />
             </div>
           )}
-
-          {error && <Alert />}
         </div>
       </div>
     </div>

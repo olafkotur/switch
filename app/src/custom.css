@@ -3,6 +3,7 @@ body {
   background-color: #303136;
   background: url('../assets/bg.png');
   background-repeat: repeat;
+  font-family: 'Courier New', Courier, monospace; /* default font-family */
 }
 
 hr {

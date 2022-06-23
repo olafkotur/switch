@@ -13,6 +13,6 @@ export interface IUserSettings {
 }
 
 export interface IProfile {
-  email: string
+  username: string
   avatar: any
 }

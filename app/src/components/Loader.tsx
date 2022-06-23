@@ -2,7 +2,8 @@ import { Zoom } from '@material-ui/core'
 import React from 'react'
 // @ts-ignore
 import Loading from 'react-loading-components'
-import Stylesheet from 'reactjs-stylesheet'
+
+import { Title } from './Title'
 
 export const Loader = (): React.ReactElement => {
   const [color, setColor] = React.useState<string>('')
@@ -26,25 +27,8 @@ export const Loader = (): React.ReactElement => {
   return (
     <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
       <Zoom in={showText}>
-        <div className="d-flex flex-row position-absolute">
-          <h1 className="secondary mr-2" style={styles.text}>
-            s
-          </h1>
-          <h1 className="primary mr-2" style={styles.text}>
-            w
-          </h1>
-          <h1 className="primary mr-2" style={styles.text}>
-            i
-          </h1>
-          <h1 className="primary mr-2" style={styles.text}>
-            t
-          </h1>
-          <h1 className="tertiary mr-2" style={styles.text}>
-            c
-          </h1>
-          <h1 className="quaternary mr-2" style={styles.text}>
-            h
-          </h1>
+        <div className="position-absolute">
+          <Title />
         </div>
       </Zoom>
       <Zoom in={showLoader}>
@@ -55,9 +39,3 @@ export const Loader = (): React.ReactElement => {
     </div>
   )
 }
-
-const styles = Stylesheet.create({
-  text: {
-    fontFamily: 'Courier New',
-  },
-})
