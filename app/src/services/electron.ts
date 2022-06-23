@@ -1,6 +1,6 @@
 import { BrowserWindow, globalShortcut, remote, screen, shell } from 'electron'
 import { IScreenInfo, IWindowInfo, WindowBehaviour } from '../typings/d'
-import { MenuService } from './menu'
+import { ApplicationService } from './application'
 import { StorageService } from './storage'
 import { UtilService } from './util'
 
@@ -205,7 +205,7 @@ export const ElectronService = {
         break
       case 'within':
         shouldRefresh = true
-        await MenuService.save(url)
+        await ApplicationService.create({ url })
         break
       default:
         shell.openExternal(url)
