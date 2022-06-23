@@ -1,6 +1,5 @@
 import express from 'express'
 import { ResponseService } from '../services/response'
-import { SecurityService } from '../services/security'
 import { SettingsService } from '../services/settings'
 
 export const SettingsHandler = {
@@ -9,24 +8,18 @@ export const SettingsHandler = {
    * @param req - request object
    * @param res - response object
    */
-  fetch: async (req: express.Request, res: express.Response): Promise<void> => {
-    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
-    const jwtResponse = await SecurityService.verifyToken(jwtToken)
-    if (jwtResponse.error) {
-      const message =
-        jwtResponse.error === 'TokenExpiredError'
-          ? 'Token Expired'
-          : 'Invalid authorization'
-      return ResponseService.unauthorized(message, res)
-    }
-
-    // fetch data from db
-    const data = await SettingsService.fetch(jwtResponse.data.username)
+  fetch: async (
+    _req: express.Request,
+    res: express.Response,
+  ): Promise<void> => {
+    const jwt = res.locals.jwt.data
+    const data = await SettingsService.fetch(jwt.username)
     if (data) {
       return ResponseService.data(data, res)
     }
     return ResponseService.notFound('Settings not found', res)
   },
+
   /**
    * Update or add new user settings to the database.
    * @param req - request object
@@ -36,27 +29,14 @@ export const SettingsHandler = {
     req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
-    const jwtResponse = await SecurityService.verifyToken(jwtToken)
-    if (jwtResponse.error) {
-      const message =
-        jwtResponse.error === 'TokenExpiredError'
-          ? 'Token Expired'
-          : 'Invalid authorization'
-      return ResponseService.unauthorized(message, res)
-    }
-
-    // get settings from request body
+    const jwt = res.locals.jwt.data
     const settings = req.body || null
     if (!settings) {
       return ResponseService.bad('Invalid settings object provided', res)
     }
 
     // update or add settings
-    const success = await SettingsService.upsert(
-      jwtResponse.data.username,
-      settings,
-    )
+    const success = await SettingsService.upsert(jwt.username, settings)
     if (success) {
       return ResponseService.ok('Settings updated successfully', res)
     }

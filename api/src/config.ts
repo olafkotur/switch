@@ -15,4 +15,5 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET || '',
   cryptoSalt: process.env.CRYPTO_SALT || '',
   port: process.env.PORT || '8080',
+  noVerifyUrls: ['/api/user/login', '/api/user/create', '/api/user/refresh'],
 }

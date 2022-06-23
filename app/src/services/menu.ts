@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import { Icon, IMenuItem, IStoredData } from '../typings/user'
+import { Icon, IMenuItem, IStoredData } from '../typings/d'
 import { StorageService } from './storage'
 import { UtilService } from './util'
 

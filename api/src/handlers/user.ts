@@ -120,26 +120,15 @@ export const UserHandler = {
    * @param res - response object
    */
   fetchProfile: async (
-    req: express.Request,
+    _req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
-    const jwtResponse = await SecurityService.verifyToken(jwtToken)
-    if (jwtResponse.error) {
-      const message =
-        jwtResponse.error === 'TokenExpiredError'
-          ? 'Token Expired'
-          : 'Invalid authorization'
-      return ResponseService.unauthorized(message, res)
-    }
-
-    // fetch profile data
-    if (jwtResponse.data.username) {
-      const user = await UserService.fetchSingle(jwtResponse.data.username)
-      const data = { username: user?.username, avatar: user?.avatar }
+    const jwt = res.locals.jwt.data
+    const user = await UserService.fetchSingle(jwt.username)
+    const data = { username: user?.username, avatar: user?.avatar }
+    if (data) {
       return ResponseService.data(data, res)
     }
-
-    return ResponseService.bad('Unknown error occurred', res)
+    return ResponseService.notFound('Profile not found', res)
   },
 }

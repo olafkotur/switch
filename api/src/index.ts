@@ -4,6 +4,8 @@ import { config } from './config'
 import { SettingsHandler } from './handlers/settings'
 import { UserHandler } from './handlers/user'
 import { DatabaseService } from './services/database'
+import { ResponseService } from './services/response'
+import { SecurityService } from './services/security'
 
 export const database = DatabaseService
 
@@ -29,6 +31,22 @@ const main = async (): Promise<void> => {
   // custom middleware
   app.use(async (req, res, next) => {
     console.log(`Request :: ${req.method} ${req.url} (${req.ip})`)
+
+    // skip verify on some urls
+    if (config.noVerifyUrls.includes(req.url)) next()
+
+    // decode and verify jwt token
+    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
+    const jwtResponse = await SecurityService.verifyToken(jwtToken)
+    if (jwtResponse.error) {
+      const message =
+        jwtResponse.error === 'TokenExpiredError'
+          ? 'Token Expired'
+          : 'Invalid authorization'
+      return ResponseService.unauthorized(message, res)
+    }
+
+    res.locals.jwt = jwtResponse
     next()
   })
 
