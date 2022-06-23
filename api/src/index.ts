@@ -1,9 +1,12 @@
 import 'colors'
 import express from 'express'
 import { config } from './config'
+import { ApplicationHandler } from './handlers/application'
 import { SettingsHandler } from './handlers/settings'
 import { UserHandler } from './handlers/user'
 import { DatabaseService } from './services/database'
+import { ResponseService } from './services/response'
+import { SecurityService } from './services/security'
 
 export const database = DatabaseService
 
@@ -29,15 +32,32 @@ const main = async (): Promise<void> => {
   // custom middleware
   app.use(async (req, res, next) => {
     console.log(`Request :: ${req.method} ${req.url} (${req.ip})`)
+
+    // skip verify on some urls
+    if (config.noVerifyUrls.includes(req.url)) next()
+
+    // decode and verify jwt token
+    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
+    const jwtResponse = await SecurityService.verifyToken(jwtToken)
+    if (jwtResponse.error) {
+      const message =
+        jwtResponse.error === 'TokenExpiredError'
+          ? 'Token Expired'
+          : 'Invalid authorization'
+      return ResponseService.unauthorized(message, res)
+    }
+
+    res.locals.jwt = jwtResponse
     next()
   })
 
   // setup endpoints
   setupUserHandlers()
   setupSettingsHandler()
+  setupApplicationHandler()
 
   app.listen(config.port, () =>
-    console.log(`API listening on port ${config.port}`),
+    console.log(`API listening on port ${config.port.red}`.cyan),
   )
 }
 
@@ -54,6 +74,12 @@ const setupUserHandlers = (): void => {
 const setupSettingsHandler = (): void => {
   app.get('/api/settings', SettingsHandler.fetch)
   app.post('/api/settings/update', SettingsHandler.upsert)
+}
+
+const setupApplicationHandler = (): void => {
+  app.get('/api/application', ApplicationHandler.fetch)
+  app.post('/api/application/create', ApplicationHandler.create)
+  app.post('/api/application/update', ApplicationHandler.update)
 }
 
 main()

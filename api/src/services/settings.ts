@@ -17,7 +17,7 @@ export const SettingsService = {
 
     // fetch settings
     const settings = await DatabaseService.getCollection('settings').findOne({
-      uid: user._id,
+      userId: user._id,
     })
     return settings?.meta || null
   },
@@ -41,17 +41,17 @@ export const SettingsService = {
 
     const col = DatabaseService.getCollection('settings')
     const data: ISettingsModel = {
-      uid: user._id,
+      userId: user._id,
       meta: settings,
       updatedAt: new Date(),
       createdAt: new Date(),
     }
 
     let result = null
-    const existing = await col.findOne({ uid: user._id })
+    const existing = await col.findOne({ userId: user._id })
     if (existing) {
       result = await col.updateOne(
-        { uid: user._id },
+        { userId: user._id },
         { $set: { meta: data.meta, updatedAt: new Date() } },
       )
     } else {

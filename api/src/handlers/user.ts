@@ -2,6 +2,7 @@ import express from 'express'
 import { ResponseService } from '../services/response'
 import { SecurityService } from '../services/security'
 import { UserService } from '../services/user'
+import { IAuth } from '../typings/data'
 
 export const UserHandler = {
   /**
@@ -120,21 +121,15 @@ export const UserHandler = {
    * @param res - response object
    */
   fetchProfile: async (
-    req: express.Request,
+    _req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
-    const jwtResponse = await SecurityService.verifyToken(jwtToken)
-    const user = await UserService.fetchSingle(jwtResponse.data.username)
-    if (jwtResponse.error || !user) {
-      const message =
-        jwtResponse.error === 'TokenExpiredError'
-          ? 'Token Expired'
-          : 'Invalid authorization'
-      return ResponseService.unauthorized(message, res)
+    const jwt: IAuth = res.locals.jwt.data
+    const user = await UserService.fetchSingle(jwt.username)
+    const data = { username: user?.username, avatar: user?.avatar }
+    if (data) {
+      return ResponseService.data(data, res)
     }
-
-    const data = { username: user.username, avatar: user.avatar }
-    return ResponseService.data(data, res)
+    return ResponseService.notFound('Profile not found', res)
   },
 }
