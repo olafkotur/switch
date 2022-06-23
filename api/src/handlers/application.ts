@@ -33,7 +33,6 @@ export const ApplicationHandler = {
     const jwt: IAuth = res.locals.jwt.data
 
     const url = req.body.url || ''
-    const order = parseInt(req.body.order || '0', 10)
     const icon = req.body.icon || undefined
     if (!url) {
       return ResponseService.bad('Missing application details', res)
@@ -42,7 +41,6 @@ export const ApplicationHandler = {
     const success = await ApplicationService.create({
       username: jwt.username,
       url,
-      order,
       icon,
     })
     if (success) {

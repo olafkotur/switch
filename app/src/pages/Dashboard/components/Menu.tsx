@@ -15,6 +15,7 @@ import { ElectronService } from '../../../services/electron'
 import { MenuService } from '../../../services/menu'
 import { RootState } from '../../../store'
 import { IDialog, IMenuItem, WebViewAction } from '../../../typings/d'
+import { IApplicationData } from '../../../typings/data'
 import { TPages } from '../Dashboard'
 import { MenuItem } from './MenuItem'
 
@@ -32,7 +33,7 @@ export const Menu = ({
   handleClick,
   handleActionRequest,
 }: IProps): React.ReactElement => {
-  let tempItems: IMenuItem[] = []
+  let tempItems: IApplicationData[] = []
 
   const dispatch = useDispatch()
   const { settings, profile } = useSelector((state: RootState) => state.user)
@@ -91,7 +92,7 @@ export const Menu = ({
               {(provided) => (
                 <div ref={provided.innerRef}>
                   {applications.map((v, i) => (
-                    <Draggable key={v.id} draggableId={v.id} index={i}>
+                    <Draggable key={v._id} draggableId={v._id} index={i}>
                       {(provided) => (
                         <div
                           {...provided.draggableProps}
@@ -102,7 +103,7 @@ export const Menu = ({
                             data={v}
                             page={page}
                             focused={
-                              focusedItem && focusedItem.id === v.id
+                              focusedItem && focusedItem.id === v._id
                                 ? true
                                 : false
                             }

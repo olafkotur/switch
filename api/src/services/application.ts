@@ -29,13 +29,11 @@ export const ApplicationService = {
    * Create new application.
    * @param username - user name
    * @param url - app url
-   * @param order - app order
    * @param icon - app icon
    */
   create: async (args: {
     username: string
     url: string
-    order: number
     icon?: string
   }): Promise<boolean> => {
     // find user
@@ -47,10 +45,13 @@ export const ApplicationService = {
     }
 
     const col = DatabaseService.getCollection('applications')
+    const existingCount = await col.find({ userId: user._id }).count()
+    const order = existingCount + 1
+
     const data: IApplicationModel = {
       userId: user._id,
       url: args.url,
-      order: args.order,
+      order,
       icon: args.icon,
       updatedAt: new Date(),
       createdAt: new Date(),

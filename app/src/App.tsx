@@ -10,7 +10,7 @@ import { Dashboard } from './pages/Dashboard/Dashboard'
 import { Login } from './pages/Login/Login'
 import { setApplications, setError } from './redux/interface'
 import { setAuth, setProfile, setSettings } from './redux/user'
-import { MenuService } from './services/menu'
+import { ApplicationService } from './services/application'
 import { SettingsService } from './services/settings'
 import { UserService } from './services/user'
 import { RootState, store } from './store'
@@ -81,7 +81,8 @@ const App = (): React.ReactElement => {
   const fetchUserData = async (): Promise<void> => {
     const profile = await UserService.fetchProfile()
     const settings = await SettingsService.fetch()
-    const applications = await MenuService.fetchList()
+    const applications = await ApplicationService.fetch()
+
     dispatch(setAuth(!!profile))
     profile && dispatch(setProfile(profile))
     settings && dispatch(setSettings(settings))

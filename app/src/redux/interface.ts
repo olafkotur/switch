@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IDialog, IMenuItem } from '../typings/d'
+import { IDialog } from '../typings/d'
+import { IApplicationData } from '../typings/data'
 
 export interface IInterfaceState {
   error: string
   dialog: IDialog | null
-  applications: IMenuItem[]
+  applications: IApplicationData[]
 }
 
 const initialState: IInterfaceState = {
@@ -23,7 +24,7 @@ export const interfaceSlice = createSlice({
     setDialog: (state, action: PayloadAction<IDialog | null>) => {
       state.dialog = action.payload
     },
-    setApplications: (state, action: PayloadAction<IMenuItem[]>) => {
+    setApplications: (state, action: PayloadAction<IApplicationData[]>) => {
       state.applications = action.payload
     },
   },
