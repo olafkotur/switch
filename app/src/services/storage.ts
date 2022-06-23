@@ -5,6 +5,7 @@ export type StorageKey =
   | 'currentWindowInfo'
   | 'jwtTokens'
   | 'userSettings'
+  | 'applications'
 
 export const StorageService = {
   /**

@@ -1,6 +1,8 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import Stylesheet from 'reactjs-stylesheet'
-import { MenuService } from '../../services/menu'
+import { setApplications } from '../../redux/interface'
+import { ApplicationService } from '../../services/application'
 import { SearchService } from '../../services/search'
 import { Icon } from '../../typings/d'
 import { SearchBar } from './components/SearchBar'
@@ -10,8 +12,11 @@ export const Search = (): React.ReactElement => {
   const [isValid, setIsValid] = React.useState<boolean>(false)
   const [searchInput, setSearchInput] = React.useState<string>('')
 
+  const dispatch = useDispatch()
+
   /**
    * Alert error
+   * TODO: move this error the Alert component
    */
   const alertError = (): void => {
     alert('Something went wrong, please try again')
@@ -28,25 +33,35 @@ export const Search = (): React.ReactElement => {
   }
 
   /**
-   * Handles confirm
+   * Handles new application.
    */
   const handleConfirm = async (): Promise<void> => {
-    const success = await MenuService.save(searchInput)
+    const success = await ApplicationService.create({ url: searchInput })
     if (!success) {
       alertError()
     }
+    await refreshApplications()
   }
 
   /**
-   * Handles confirm
+   * Handles new application from suggestions.
    * @param url - service url
    * @param icon - service icon
    */
   const handleSuggestion = async (url: string, icon: Icon): Promise<void> => {
-    const success = await MenuService.save(url, icon)
+    const success = await ApplicationService.create({ url, icon })
     if (!success) {
       alertError()
     }
+    await refreshApplications()
+  }
+
+  /**
+   * Refreshes applications in state.
+   */
+  const refreshApplications = async (): Promise<void> => {
+    const applications = await ApplicationService.fetch()
+    dispatch(setApplications(applications))
   }
 
   /**

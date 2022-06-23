@@ -1,4 +1,5 @@
 import express from 'express'
+import { IApplicationData } from '../../../app/src/typings/data'
 import { ApplicationService } from '../services/application'
 import { ResponseService } from '../services/response'
 import { IAuth } from '../typings/data'
@@ -33,7 +34,6 @@ export const ApplicationHandler = {
     const jwt: IAuth = res.locals.jwt.data
 
     const url = req.body.url || ''
-    const order = parseInt(req.body.order || '0', 10)
     const icon = req.body.icon || undefined
     if (!url) {
       return ResponseService.bad('Missing application details', res)
@@ -42,7 +42,6 @@ export const ApplicationHandler = {
     const success = await ApplicationService.create({
       username: jwt.username,
       url,
-      order,
       icon,
     })
     if (success) {
@@ -60,17 +59,27 @@ export const ApplicationHandler = {
     req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const id = req.body.id || ''
-    const url = req.body.url || ''
-    const order = parseInt(req.body.order || '0', 10)
-    const icon = req.body.icon || undefined
-    if (!id || !url) {
-      return ResponseService.bad('Missing application details', res)
-    }
-
-    const success = await ApplicationService.update({ id, url, order, icon })
+    const data = req.body as IApplicationData[]
+    const success = await ApplicationService.update(data)
     if (success) {
-      return ResponseService.ok('Application created', res)
+      return ResponseService.ok(`${data.length} applications updated`, res)
+    }
+    return ResponseService.bad('Unknown error occured', res)
+  },
+
+  /**
+   * Delete existing application.
+   * @param req - request object
+   * @param res - response object
+   */
+  delete: async (
+    req: express.Request,
+    res: express.Response,
+  ): Promise<void> => {
+    const id = req.body.id
+    const success = await ApplicationService.delete(id)
+    if (success) {
+      return ResponseService.ok('Application deleted', res)
     }
     return ResponseService.bad('Unknown error occured', res)
   },

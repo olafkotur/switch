@@ -11,52 +11,52 @@ import { useDispatch, useSelector } from 'react-redux'
 import Stylesheet from 'reactjs-stylesheet'
 import { hideWindowWarning } from '../../../components/Dialog'
 import { setApplications, setDialog } from '../../../redux/interface'
+import { ApplicationService } from '../../../services/application'
 import { ElectronService } from '../../../services/electron'
-import { MenuService } from '../../../services/menu'
 import { RootState } from '../../../store'
-import { IDialog, IMenuItem, WebViewAction } from '../../../typings/d'
+import { IDialog, WebViewAction } from '../../../typings/d'
+import { IApplicationData } from '../../../typings/data'
 import { TPages } from '../Dashboard'
-import { MenuItem } from './MenuItem'
+import { Application } from './Application'
 
-interface IProps {
+interface Props {
   page: TPages
-  items: IMenuItem[]
-  focusedItem?: IMenuItem
-  handleClick: (action: TPages, item?: IMenuItem) => void
+  selected?: IApplicationData
+  handleClick: (action: TPages, data?: IApplicationData) => void
   handleActionRequest: (id: string, action: WebViewAction) => void
 }
 
 export const Menu = ({
   page,
-  focusedItem,
+  selected,
   handleClick,
   handleActionRequest,
-}: IProps): React.ReactElement => {
-  let tempItems: IMenuItem[] = []
+}: Props): React.ReactElement => {
+  let tempApplications: IApplicationData[] = []
 
   const dispatch = useDispatch()
   const { settings, profile } = useSelector((state: RootState) => state.user)
   const { applications } = useSelector((state: RootState) => state.interface)
 
   /**
-   * Handles drag update
+   * Temporarily stores positioning of applications during drag event.
    * @param result - droppable result
    */
   const handleDragUpdate = async (result: DropResult): Promise<void> => {
     if (result.destination) {
-      tempItems = await MenuService.reorder(
-        result.draggableId,
-        result.destination.index,
-      )
+      tempApplications = await ApplicationService.reorder({
+        _id: result.draggableId,
+        order: result.destination.index,
+      })
     }
   }
 
   /**
-   * Handles drag end
+   * Updates the final positioning of the applications.
    */
   const handleDragEnd = async (): Promise<void> => {
-    dispatch(setApplications(tempItems))
-    await MenuService.confirmReorder(tempItems)
+    dispatch(setApplications(tempApplications))
+    await ApplicationService.update(tempApplications)
   }
 
   /**
@@ -91,20 +91,18 @@ export const Menu = ({
               {(provided) => (
                 <div ref={provided.innerRef}>
                   {applications.map((v, i) => (
-                    <Draggable key={v.id} draggableId={v.id} index={i}>
+                    <Draggable key={v._id} draggableId={v._id} index={i}>
                       {(provided) => (
                         <div
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
                         >
-                          <MenuItem
+                          <Application
                             data={v}
                             page={page}
                             focused={
-                              focusedItem && focusedItem.id === v.id
-                                ? true
-                                : false
+                              selected && selected._id === v._id ? true : false
                             }
                             handleClick={handleClick}
                             handleActionRequest={handleActionRequest}

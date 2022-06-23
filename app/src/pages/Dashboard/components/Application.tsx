@@ -15,24 +15,26 @@ import {
 } from '@material-ui/icons'
 import React from 'react'
 import Stylesheet from 'reactjs-stylesheet'
-import { MenuService } from '../../../services/menu'
-import { IMenuItem, WebViewAction } from '../../../typings/d'
+import { ApplicationService } from '../../../services/application'
+import { UtilService } from '../../../services/util'
+import { WebViewAction } from '../../../typings/d'
+import { IApplicationData } from '../../../typings/data'
 import { TPages } from '../Dashboard'
 
-interface IProps {
-  data: IMenuItem
+interface Props {
+  data: IApplicationData
   page: TPages
   focused: boolean
-  handleClick: (action: TPages, item?: IMenuItem) => void
+  handleClick: (action: TPages, data?: IApplicationData) => void
   handleActionRequest: (id: string, action: WebViewAction) => void
 }
 
-interface IState {
+interface State {
   contextMenu: boolean
 }
 
 // TODO: refactor to React.FC
-export class MenuItem extends React.Component<IProps, IState> {
+export class Application extends React.Component<Props, State> {
   /**
    * Local properties
    */
@@ -42,7 +44,7 @@ export class MenuItem extends React.Component<IProps, IState> {
    * MenuItem constructor
    * @param props - component properties
    */
-  constructor(props: IProps) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -85,7 +87,7 @@ export class MenuItem extends React.Component<IProps, IState> {
    * @param action - action request type
    */
   protected handleNavigate(action: WebViewAction) {
-    this.props.handleActionRequest(this.props.data.id, action)
+    this.props.handleActionRequest(this.props.data._id, action)
   }
 
   /**
@@ -93,15 +95,15 @@ export class MenuItem extends React.Component<IProps, IState> {
    * @param id - service id
    */
   protected async handleDelete(): Promise<void> {
-    await MenuService.delete(this.props.data.id)
+    await ApplicationService.delete(this.props.data._id)
   }
 
   /**
    * Handles service data update
-   * @param data - menu item data
+   * @param data - app data
    */
-  protected async handleUpdate(data: IMenuItem): Promise<void> {
-    await MenuService.update(data)
+  protected async handleUpdate(data: IApplicationData): Promise<void> {
+    await ApplicationService.update([data])
   }
 
   /**
@@ -114,7 +116,7 @@ export class MenuItem extends React.Component<IProps, IState> {
     if (event.target.files) {
       await this.handleUpdate({
         ...this.props.data,
-        icon: event.target.files[0],
+        icon: await UtilService.imgBase64(event.target.files[0]),
       })
     }
   }
@@ -142,11 +144,11 @@ export class MenuItem extends React.Component<IProps, IState> {
             <IconButton className="menu-item-image align-self-center">
               <Tooltip title="Upload a custom image" style={styles.uploadHover}>
                 <label
-                  htmlFor={`file-upload-${this.props.data.id}`}
+                  htmlFor={`file-upload-${this.props.data._id}`}
                   className="position-absolute"
                 >
                   <input
-                    id={`file-upload-${this.props.data.id}`}
+                    id={`file-upload-${this.props.data._id}`}
                     className="d-none"
                     accept="image/*"
                     type="file"

@@ -1,4 +1,5 @@
 import { Types } from 'mongoose'
+import { IApplicationData } from '../../../app/src/typings/data'
 import { IApplicationModel } from '../typings/models'
 import { DatabaseService } from './database'
 
@@ -29,13 +30,11 @@ export const ApplicationService = {
    * Create new application.
    * @param username - user name
    * @param url - app url
-   * @param order - app order
    * @param icon - app icon
    */
   create: async (args: {
     username: string
     url: string
-    order: number
     icon?: string
   }): Promise<boolean> => {
     // find user
@@ -47,10 +46,13 @@ export const ApplicationService = {
     }
 
     const col = DatabaseService.getCollection('applications')
+    const existingCount = await col.find({ userId: user._id }).count()
+    const order = existingCount + 1
+
     const data: IApplicationModel = {
       userId: user._id,
       url: args.url,
-      order: args.order,
+      order,
       icon: args.icon,
       updatedAt: new Date(),
       createdAt: new Date(),
@@ -67,28 +69,34 @@ export const ApplicationService = {
    * @param order - app order
    * @param icon - app icon
    */
-  update: async (args: {
-    id: string
-    url: string
-    order: number
-    icon: string
-  }): Promise<boolean> => {
-    // find application
-    const _id = new Types.ObjectId(args.id)
+  update: async (data: IApplicationData[]): Promise<boolean> => {
     const col = DatabaseService.getCollection('applications')
-    const application = await col.findOne({ _id })
-    if (!application || !application._id) {
-      return false
+
+    // TODO: convert to bulk update once this becomes an issue
+    const results: boolean[] = []
+    for (const application of data) {
+      const updateData: Partial<IApplicationModel> = {
+        url: application.url,
+        icon: application.icon,
+        order: application.order,
+        updatedAt: new Date(),
+      }
+      const _id = new Types.ObjectId(application._id)
+      const result = await col.updateOne({ _id }, { $set: { ...updateData } })
+      results.push(result.result.ok === 1)
     }
 
-    const data: Partial<IApplicationModel> = {
-      url: args.url,
-      order: args.order,
-      icon: args.icon,
-      updatedAt: new Date(),
-    }
+    return results.every((v) => v === true)
+  },
 
-    const result = await col.updateOne({ _id }, { $set: { ...data } })
+  /**
+   * Delete existing application.
+   * @param id - app id
+   */
+  delete: async (id: string): Promise<boolean> => {
+    const col = DatabaseService.getCollection('applications')
+    const _id = new Types.ObjectId(id)
+    const result = await col.deleteOne({ _id })
     return result.result.ok === 1
   },
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Stylesheet from 'reactjs-stylesheet'
-import { MenuService } from '../../services/menu'
 import { RootState } from '../../store'
-import { IActionRequest, IMenuItem, WebViewAction } from '../../typings/d'
+import { IActionRequest, WebViewAction } from '../../typings/d'
+import { IApplicationData } from '../../typings/data'
 import { Search } from '../Search/Search'
 import { Settings } from '../Settings/Settings'
 import { Menu } from './components/Menu'
@@ -14,33 +14,33 @@ export type TPages = 'web' | 'search' | 'settings'
 export const Dashboard = (): React.ReactElement => {
   const [loading, setLoading] = React.useState<boolean>(true)
   const [page, setPage] = React.useState<TPages>('settings')
-  const [applications, setApplications] = React.useState<IMenuItem[]>([])
-  const [activeApplication, setActiveApplication] = React.useState<IMenuItem>()
+  const [selected, setSelected] = React.useState<IApplicationData>()
   const [actionRequest, setActionRequest] = React.useState<IActionRequest>({
     id: '',
     action: '',
   })
 
   const { settings } = useSelector((state: RootState) => state.user)
+  const { applications } = useSelector((state: RootState) => state.interface)
 
   React.useEffect(() => {
-    ;(async () => {
-      setApplications(await MenuService.fetchList())
-      setLoading(false)
-    })()
-  }, [])
+    if (applications) {
+      return setLoading(false)
+    }
+    setLoading(true)
+  }, [applications])
 
   /**
-   * Sets the new focused menu item
+   * Sets the selected application.
    * @param action - target page
-   * @param menuItem - focused item
+   * @param application - app data
    */
   const handleMenuItemClicked = (
     action: TPages,
-    menuItem?: IMenuItem,
+    application?: IApplicationData,
   ): void => {
     setPage(action)
-    action === 'web' && setActiveApplication(menuItem)
+    action === 'web' && setSelected(application)
   }
 
   /**
@@ -65,8 +65,7 @@ export const Dashboard = (): React.ReactElement => {
         >
           <Menu
             page={page}
-            items={applications}
-            focusedItem={activeApplication}
+            selected={selected}
             handleClick={handleMenuItemClicked}
             handleActionRequest={handleActionRequest}
           />
@@ -75,13 +74,11 @@ export const Dashboard = (): React.ReactElement => {
           {/* these must stay as hidden elements to avoid re-rendering */}
           <div className={`${page !== 'web' ? 'd-none' : ''}`}>
             {applications.map((v) => {
-              const hidden = !(
-                activeApplication && activeApplication.id === v.id
-              )
+              const hidden = !(selected && selected._id === v._id)
               return (
-                <div key={v.id} className={`${hidden ? 'd-none' : ''}`}>
+                <div key={v._id} className={`${hidden ? 'd-none' : ''}`}>
                   <WebView
-                    id={v.id}
+                    id={v._id}
                     url={v.url}
                     hidden={hidden}
                     useModifiedAgent={settings.modifiedAgent}

@@ -112,23 +112,26 @@ export const MenuService = {
 
   /**
    * Handles re-ordering logic of menu items, does not update in db
-   * @param id - menu item id
-   * @param position - new menu item position
+   * @param _id - application id
+   * @param order - new application order
    */
-  reorder: async (id: string, position: number): Promise<IMenuItem[]> => {
+  reorder: async (args: {
+    _id: string
+    order: number
+  }): Promise<IMenuItem[]> => {
     // fetch previous data
     const previousData = await MenuService.fetchList()
 
     // separate target from the group
-    const excludedData = previousData.filter((v) => v.id !== id)
-    const toUpdate = previousData.find((v) => v.id === id) as IMenuItem
+    const excludedData = previousData.filter((v) => v.id !== args._id)
+    const toUpdate = previousData.find((v) => v.id === args._id) as IMenuItem
 
     // order and update
     const reorderedData: IMenuItem[] = []
     _.sortBy(excludedData, 'order').forEach((v, i) => {
-      i === position ? reorderedData.push(toUpdate, v) : reorderedData.push(v)
+      i === args.order ? reorderedData.push(toUpdate, v) : reorderedData.push(v)
     })
-    position > excludedData.length - 1 && reorderedData.push(toUpdate)
+    args.order > excludedData.length - 1 && reorderedData.push(toUpdate)
     return reorderedData.map((v, i) => ({ ...v, order: i }))
   },
 
