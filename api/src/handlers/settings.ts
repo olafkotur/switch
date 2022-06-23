@@ -1,6 +1,7 @@
 import express from 'express'
 import { ResponseService } from '../services/response'
 import { SettingsService } from '../services/settings'
+import { IAuth } from '../typings/data'
 
 export const SettingsHandler = {
   /**
@@ -12,7 +13,7 @@ export const SettingsHandler = {
     _req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const jwt = res.locals.jwt.data
+    const jwt: IAuth = res.locals.jwt.data
     const data = await SettingsService.fetch(jwt.username)
     if (data) {
       return ResponseService.data(data, res)
@@ -29,7 +30,7 @@ export const SettingsHandler = {
     req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const jwt = res.locals.jwt.data
+    const jwt: IAuth = res.locals.jwt.data
     const settings = req.body || null
     if (!settings) {
       return ResponseService.bad('Invalid settings object provided', res)

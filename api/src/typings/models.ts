@@ -22,5 +22,5 @@ export interface IApplicationModel extends IModelBase {
   userId: Types.ObjectId
   url: string
   order: number
-  icon: string
+  icon?: string
 }

@@ -32,15 +32,15 @@ export const ApplicationService = {
    * @param order - app order
    * @param icon - app icon
    */
-  create: async (
-    username: string,
-    url: string,
-    order: number,
-    icon: string,
-  ): Promise<boolean> => {
+  create: async (args: {
+    username: string
+    url: string
+    order: number
+    icon?: string
+  }): Promise<boolean> => {
     // find user
     const user = await DatabaseService.getCollection('users').findOne({
-      username,
+      username: args.username,
     })
     if (!user || !user._id) {
       return false
@@ -48,10 +48,10 @@ export const ApplicationService = {
 
     const col = DatabaseService.getCollection('applications')
     const data: IApplicationModel = {
-      url,
-      order,
-      icon,
       userId: user._id,
+      url: args.url,
+      order: args.order,
+      icon: args.icon,
       updatedAt: new Date(),
       createdAt: new Date(),
     }
@@ -67,14 +67,14 @@ export const ApplicationService = {
    * @param order - app order
    * @param icon - app icon
    */
-  update: async (
-    id: string,
-    url: string,
-    order: number,
-    icon: string,
-  ): Promise<boolean> => {
+  update: async (args: {
+    id: string
+    url: string
+    order: number
+    icon: string
+  }): Promise<boolean> => {
     // find application
-    const _id = new Types.ObjectId(id)
+    const _id = new Types.ObjectId(args.id)
     const col = DatabaseService.getCollection('applications')
     const application = await col.findOne({ _id })
     if (!application || !application._id) {
@@ -82,9 +82,9 @@ export const ApplicationService = {
     }
 
     const data: Partial<IApplicationModel> = {
-      url,
-      order,
-      icon,
+      url: args.url,
+      order: args.order,
+      icon: args.icon,
       updatedAt: new Date(),
     }
 

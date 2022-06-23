@@ -1,6 +1,7 @@
 import 'colors'
 import express from 'express'
 import { config } from './config'
+import { ApplicationHandler } from './handlers/application'
 import { SettingsHandler } from './handlers/settings'
 import { UserHandler } from './handlers/user'
 import { DatabaseService } from './services/database'
@@ -53,9 +54,10 @@ const main = async (): Promise<void> => {
   // setup endpoints
   setupUserHandlers()
   setupSettingsHandler()
+  setupApplicationHandler()
 
   app.listen(config.port, () =>
-    console.log(`API listening on port ${config.port}`),
+    console.log(`API listening on port ${config.port.red}`.cyan),
   )
 }
 
@@ -72,6 +74,12 @@ const setupUserHandlers = (): void => {
 const setupSettingsHandler = (): void => {
   app.get('/api/settings', SettingsHandler.fetch)
   app.post('/api/settings/update', SettingsHandler.upsert)
+}
+
+const setupApplicationHandler = (): void => {
+  app.get('/api/application', ApplicationHandler.fetch)
+  app.post('/api/application/create', ApplicationHandler.create)
+  app.post('/api/application/update', ApplicationHandler.update)
 }
 
 main()

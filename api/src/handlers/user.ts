@@ -2,6 +2,7 @@ import express from 'express'
 import { ResponseService } from '../services/response'
 import { SecurityService } from '../services/security'
 import { UserService } from '../services/user'
+import { IAuth } from '../typings/data'
 
 export const UserHandler = {
   /**
@@ -123,7 +124,7 @@ export const UserHandler = {
     _req: express.Request,
     res: express.Response,
   ): Promise<void> => {
-    const jwt = res.locals.jwt.data
+    const jwt: IAuth = res.locals.jwt.data
     const user = await UserService.fetchSingle(jwt.username)
     const data = { username: user?.username, avatar: user?.avatar }
     if (data) {

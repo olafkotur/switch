@@ -7,7 +7,9 @@
     "no-unnecessary-else": true,
     "prefer-template": true,
     "no-any": false,
-    "variable-name": ["allow-pascal-case"],
+    "variable-name": {
+      "options": ["allow-pascal-case", "allow-leading-underscore"]
+    },
     "space-in-parens": false,
     "object-curly-spacing": [true, "always"],
     "brace-style": ["1tbs", { "allowSingleLine": true }],
@@ -19,6 +21,8 @@
     "max-line-length": [
       true,
       { "limit": 120, "ignore-pattern": "//||console." }
-    ]
+    ],
+    "object-shorthand-properties-first": false,
+    "trailing-comma": false
   }
 }
