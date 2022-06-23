@@ -125,8 +125,7 @@ export const UserHandler = {
   ): Promise<void> => {
     const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
     const jwtResponse = await SecurityService.verifyToken(jwtToken)
-    const user = await UserService.fetchSingle(jwtResponse.data.username)
-    if (jwtResponse.error || !user) {
+    if (jwtResponse.error) {
       const message =
         jwtResponse.error === 'TokenExpiredError'
           ? 'Token Expired'
@@ -134,7 +133,13 @@ export const UserHandler = {
       return ResponseService.unauthorized(message, res)
     }
 
-    const data = { username: user.username, avatar: user.avatar }
-    return ResponseService.data(data, res)
+    // fetch profile data
+    if (jwtResponse.data.username) {
+      const user = await UserService.fetchSingle(jwtResponse.data.username)
+      const data = { username: user?.username, avatar: user?.avatar }
+      return ResponseService.data(data, res)
+    }
+
+    return ResponseService.bad('Unknown error occurred', res)
   },
 }
