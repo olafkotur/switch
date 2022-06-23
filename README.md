@@ -14,9 +14,7 @@ Lightweight overlay browser
 
 </div>
 
-
 https://user-images.githubusercontent.com/24353005/175253078-cce3c954-b440-4baa-880d-d92f0f8fb394.mp4
-
 
 ## 👋🏽 About
 
@@ -31,29 +29,29 @@ My use case started with just wanting to check my [Notion](https://notion.so) no
 ## ⬇️ Download
 
 - Only available on `macOS` for the time being
-- Header over to the [releases](https://github.com/olafkotur/switch/releases) and download the latest `.dmg` file
+- Head over to the [releases](https://github.com/olafkotur/switch/releases) and download the latest `.dmg` file
 - You'll receive auto-updates so you only need to do this once
 - **Switch is currently invite-only, reach out to me if you'd like a code, otherwise feel free to spin-up a local instance**
 
 ## 🔨 Setup
 
-_This repo contains both the `app` and `api`, make sure you're in the correct directory._
+_This repo contains both the `api` and `app`, make sure you're in the correct directory._
+
+- Create a copy of `default.env` as `.env`
+
+**To setup the `./api`, follow the below instructions:**
+
+- Start a mongodb server (instructions not included in this repo)
+- Run `yarn` to install dependencies
+- Run `yarn start` to start the API
 
 **To setup the `./app`, follow the below instructions:**
 
-- Create a copy of `default.env` as `.env`
 - Run `yarn` to install dependencies
 - Run `yarn start` to start the application
 - Run `yarn start:electron` to start electron only `optional`
 - Run `yarn start:react` to start react front-end only `optional`
 - Note the `app` will wait for the `api` to respond
-
-**To setup the `./api`, follow the below instructions:**
-
-- Start a mongodb server (instructions not included in this repo)
-- Create a copy of `default.env` as `.env`
-- Run `yarn` to install dependencies
-- Run `yarn start` to start the API
 
 ## 📦 Publishing
 
@@ -81,5 +79,6 @@ _This repo contains both the `app` and `api`, make sure you're in the correct di
 
 **Known Issues**
 
-- Streaming services will not work in Switch due to additional licensing required to do so
+- Streaming services will not work due to additional licensing required to do so e.g. Netflix, Disney Plus
 - Some `webapps` such as Whatsapp can sometimes break due to requiring a specific Chrome version
+- Overlay mode doesn't work when the app is started whilst using another full-screen application
