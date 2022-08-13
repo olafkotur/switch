@@ -1,8 +1,15 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { render } from 'react-dom';
+import { RecoilRoot } from 'recoil';
 
 const App = (): ReactElement => {
-  return <h1>Hello World</h1>;
+  return (
+    <div>
+      <RecoilRoot>
+        <h1>Hello World</h1>
+      </RecoilRoot>
+    </div>
+  );
 };
 
 const element = document.createElement('div');

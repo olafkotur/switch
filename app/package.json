@@ -29,6 +29,7 @@
     "file-loader": "^6.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "recoil": "^0.7.5",
     "style-loader": "^2.0.0"
   },
   "devDependencies": {
