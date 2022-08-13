@@ -2,7 +2,7 @@
   "singleQuote": true,
   "trailingComma": "all",
   "arrowParens": "always",
-  "semi": false,
+  "semi": true,
   "vetur.format.defaultFormatterOptions": {
     "prettier": {
       "singleQuote": true,
