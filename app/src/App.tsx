@@ -1,18 +1,22 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { render } from 'react-dom';
 import { RecoilRoot } from 'recoil';
+import { ThemeProvider } from './style/provider';
 
 const App = (): ReactElement => {
   return (
-    <div>
-      <RecoilRoot>
-        <h1>Hello World</h1>
-      </RecoilRoot>
-    </div>
+    <ThemeProvider>
+      <span>Hello World</span>
+    </ThemeProvider>
   );
 };
 
 const element = document.createElement('div');
 element.setAttribute('id', 'root');
 document.body.appendChild(element);
-render(<App />, element);
+render(
+  <RecoilRoot>
+    <App />
+  </RecoilRoot>,
+  element,
+);

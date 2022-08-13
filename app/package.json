@@ -21,16 +21,17 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "bootstrap": "^4.5.3",
     "css-loader": "^5.0.1",
     "electron-json-storage": "^4.3.0",
     "electron-log": "^4.3.0",
     "electron-updater": "^5.0.5",
     "file-loader": "^6.2.0",
+    "framer-motion": "^7.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recoil": "^0.7.5",
-    "style-loader": "^2.0.0"
+    "style-loader": "^2.0.0",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -47,6 +48,7 @@
     "@types/electron-localshortcut": "^3.1.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/styled-components": "^5.1.26",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "commitizen": "^4.1.2",
