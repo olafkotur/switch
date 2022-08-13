@@ -4,8 +4,6 @@ import log from 'electron-log'
 import { autoUpdater } from 'electron-updater'
 import * as path from 'path'
 import * as url from 'url'
-import { ElectronService } from '../src/services/electron'
-import { SettingsService } from '../src/services/settings'
 
 log.info('App is starting...')
 
@@ -21,21 +19,16 @@ storage.setDataPath(dataPath)
  * Creates the main window
  */
 const createMainWindow = async (): Promise<void> => {
-  // fetch user settings
-  const userSettings = await SettingsService.fetchLocal()
-
-  // create main window
-  const screenInfo = ElectronService.getScreenInfo()
   mainWindow = new BrowserWindow({
-    width: screenInfo.width,
-    height: screenInfo.height,
+    width: 1920,
+    height: 720,
     minHeight: 480,
     minWidth: 720,
     center: true,
     darkTheme: true,
-    frame: !userSettings.overlayMode,
-    titleBarStyle: userSettings.overlayMode ? 'default' : 'hidden',
-    transparent: userSettings.overlayMode,
+    frame: false,
+    titleBarStyle: 'default',
+    transparent: true,
     backgroundColor: '#1F2225',
     webPreferences: {
       nodeIntegration: true,
@@ -46,29 +39,13 @@ const createMainWindow = async (): Promise<void> => {
     },
   })
 
-  // app configuration
   app.setName('Switch')
-  userSettings.overlayMode && app.dock.hide()
-
-  // window configuration
-  ElectronService.setWindowMode(userSettings.overlayMode, mainWindow)
-  ElectronService.setWindowInfo(mainWindow)
-  ElectronService.setWindowListeners(mainWindow)
-  ElectronService.setGlobalShortcuts(
-    mainWindow,
-    userSettings.visiblityKeybind,
-    userSettings.overlayMode,
-  )
-
+  app.dock.hide()
   // setup tray items
   tray = new Tray(path.join(__dirname, 'tray@2x.png'))
   const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Toggle Show / Hide',
-      visible: userSettings.overlayMode,
-      click: () => ElectronService.toggleVisibility(mainWindow),
-    },
-    { type: 'separator', visible: userSettings.overlayMode },
+    { label: 'Toggle Show / Hide' },
+    { type: 'separator' },
     { label: 'Reload', role: 'reload' },
     { label: 'Quit', role: 'quit' },
   ])

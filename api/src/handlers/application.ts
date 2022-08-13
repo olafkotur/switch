@@ -1,5 +1,5 @@
 import express from 'express'
-import { IApplicationData } from '../../../app/src/typings/data'
+import { IApplicationData } from '../../../app/oldsrc/typings/data'
 import { ApplicationService } from '../services/application'
 import { ResponseService } from '../services/response'
 import { IAuth } from '../typings/data'

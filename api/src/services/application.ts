@@ -1,5 +1,5 @@
 import { Types } from 'mongoose'
-import { IApplicationData } from '../../../app/src/typings/data'
+import { IApplicationData } from '../../../app/oldsrc/typings/data'
 import { IApplicationModel } from '../typings/models'
 import { DatabaseService } from './database'
 
