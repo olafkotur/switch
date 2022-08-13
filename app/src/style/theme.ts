@@ -25,7 +25,9 @@ export const LIGHT_THEME = {
     normal: 'rgba(0, 0, 0, 1)',
   },
   backgroundColor: {
-    normal: 'red',
+    primary: '#F2F5F7',
+    secondary: '#F8F9F9',
+    tertiary: '#307093',
   },
   border: {
     normal: '1px solid rgba(0, 0, 0, 0.08)',
@@ -40,7 +42,9 @@ export const DARK_THEME = {
     normal: 'rgba(255, 255, 255, 1)',
   },
   backgroundColor: {
-    normal: 'green',
+    primary: '#303036',
+    secondary: '#1D1D21',
+    tertiary: '#FFFFFF',
   },
   border: {
     normal: '1px solid rgba(255, 255, 255, 0.08)',

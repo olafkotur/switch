@@ -10,8 +10,10 @@ import { DARK_THEME, LIGHT_THEME } from './theme';
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: Courier New;
-    color: ${(props) => props.theme.color.normal};
     font-size: ${(props) => props.theme.fontSize.medium};
+    color: ${(props) => props.theme.color.normal};
+
+    margin: 0;
   }
 `;
 
