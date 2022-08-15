@@ -1,15 +1,18 @@
 import React, { ReactElement } from 'react';
 import { render } from 'react-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Sidebar } from './components/Sidebar';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
 import { ModulePage } from './pages/Module';
-import { ModuleState, UserState } from './state';
+import { ActiveModuleState, UserState } from './state';
 import { ThemeProvider } from './style/Provider';
 
-const Wrapper = styled.div`
+const queryClient = new QueryClient();
+
+const AppContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: 100vh;
@@ -17,17 +20,17 @@ const Wrapper = styled.div`
 
 const App = (): ReactElement => {
   const user = useRecoilValue(UserState);
-  const module = useRecoilValue(ModuleState);
+  const activeModule = useRecoilValue(ActiveModuleState);
   if (user == null) {
     return <LoginPage />;
   }
 
-  const PageComponent = module == null ? HomePage : ModulePage;
+  const PageComponent = activeModule == null ? HomePage : ModulePage;
   return (
-    <Wrapper>
+    <AppContainer>
       <Sidebar />
       <PageComponent />
-    </Wrapper>
+    </AppContainer>
   );
 };
 
@@ -36,9 +39,11 @@ element.setAttribute('id', 'root');
 document.body.appendChild(element);
 render(
   <RecoilRoot>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </QueryClientProvider>
   </RecoilRoot>,
   element,
 );

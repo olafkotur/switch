@@ -16,6 +16,11 @@ const COMMON_THEME = {
     modal: 2,
     alert: 3,
   },
+  spacing: {
+    small: '5px',
+    medium: '10px',
+    large: '15px',
+  },
 };
 
 export const LIGHT_THEME = {

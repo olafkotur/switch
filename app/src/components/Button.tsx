@@ -29,6 +29,7 @@ const IconButtonContainer = styled(Button)<{ px: string }>`
   height: ${({ px }) => px};
   background: ${(props) => props.theme.backgroundColor.tertiary};
   border-radius: ${(props) => props.theme.borderRadius.small};
+  margin: ${(props) => props.theme.spacing.small} 0;
 `;
 
 interface IconButtonProps extends Props {
@@ -39,6 +40,20 @@ export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
   return (
     <IconButtonContainer {...props} px={ICON_BUTTON_SIZES[props.size]}>
       <SvgIcon name="test" />
+    </IconButtonContainer>
+  );
+};
+
+interface ImageIconButtonProps extends IconButtonProps {
+  src: string;
+}
+
+export const ImageIconButton = ({
+  ...props
+}: ImageIconButtonProps): ReactElement => {
+  return (
+    <IconButtonContainer {...props} px={ICON_BUTTON_SIZES[props.size]}>
+      <img src={props.src} />
     </IconButtonContainer>
   );
 };

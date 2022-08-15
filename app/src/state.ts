@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { TEST_MODULE_GROUP } from '../../common/const';
 import { Module } from '../../common/types/module';
 import { User } from '../../common/types/user';
 import { Themes } from './style/theme';
@@ -14,8 +15,13 @@ export const UserState = atom({
   default: { username: 'olafkotur', avatar: '' } as User,
 });
 
-export const ModuleState = atom({
-  key: 'module',
-  // default: null as Module | null,
-  default: { id: '1', url: 'https://google.com', favicon: '' } as Module,
+export const ActiveModuleState = atom({
+  key: 'activeModule',
+  default: null as Module | null,
+});
+
+export const GroupModuleState = atom({
+  key: 'groupModule',
+  // default: [] as Module[],
+  default: TEST_MODULE_GROUP,
 });
