@@ -2,34 +2,53 @@ import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH_PX } from '../../../common/const';
-import { Module } from '../../../common/types/module';
-import { ActiveModuleState, GroupModuleState, ThemeState } from '../state';
-import { IconButton, ImageIconButton } from './Button';
+import { GroupModuleState, ThemeState } from '../state';
+import { IconButton, ModuleButton } from './Button';
+import { Divider } from './Divider';
 
 const SidebarContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  background: ${(props) => props.theme.backgroundColor.secondary};
-  padding: 10px 0;
   position: fixed;
+  height: 100vh;
   width: ${SIDE_BAR_WIDTH_PX}px;
-  height: 100%;
+  padding: ${(props) => props.theme.spacing.medium} 0;
+  background: ${(props) => props.theme.backgroundColor.secondary};
+  z-index: ${(props) => props.theme.zIndex.sidebar};
 `;
 
-interface ModuleButtonProps {
-  module: Module;
-}
+const SidebarTop = styled.div`
+  height: 100%;
+  overflow: scroll;
+`;
 
-const ModuleButton = ({ module }: ModuleButtonProps): ReactElement => {
-  const [activeModule, setActiveModule] = useRecoilState(ActiveModuleState);
-  const isActive = module.id === activeModule?.id;
+const SidebarBottom = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 0 ${(props) => props.theme.spacing.medium} 0;
+`;
+
+export const Sidebar = (): ReactElement => {
+  const groupModule = useRecoilValue(GroupModuleState);
+
   return (
-    <ImageIconButton
-      onClick={() => setActiveModule(module)}
-      size="large"
-      src={module.favicon}
-    />
+    <SidebarContainer>
+      <SidebarTop>
+        {groupModule.map((module) => (
+          <ModuleButton key={module.id} module={module} />
+        ))}
+      </SidebarTop>
+
+      <SidebarBottom>
+        <Divider width="39px" />
+        <ThemeButton />
+        <VisibilityButton />
+        <PreferencesButton />
+      </SidebarBottom>
+    </SidebarContainer>
   );
 };
 
@@ -40,18 +59,13 @@ const ThemeButton = (): ReactElement => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }, [theme, setTheme]);
 
-  return <IconButton onClick={toggleTheme} size="large" />;
+  return <IconButton onClick={toggleTheme} size="medium" name={`${theme}-mode`} />;
 };
 
-export const Sidebar = (): ReactElement => {
-  const groupModule = useRecoilValue(GroupModuleState);
+const VisibilityButton = (): ReactElement => {
+  return <IconButton onClick={() => {}} size="medium" name="grid" />;
+};
 
-  return (
-    <SidebarContainer>
-      {groupModule.map((module) => (
-        <ModuleButton key={module.id} module={module} />
-      ))}
-      <ThemeButton />
-    </SidebarContainer>
-  );
+const PreferencesButton = (): ReactElement => {
+  return <IconButton onClick={() => {}} size="medium" name="settings" />;
 };

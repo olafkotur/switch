@@ -7,7 +7,7 @@ import { Sidebar } from './components/Sidebar';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
 import { ModulePage } from './pages/Module';
-import { ActiveModuleState, UserState } from './state';
+import { ActiveModuleIdState, UserState } from './state';
 import { ThemeProvider } from './style/Provider';
 
 const queryClient = new QueryClient();
@@ -20,12 +20,12 @@ const AppContainer = styled.div`
 
 const App = (): ReactElement => {
   const user = useRecoilValue(UserState);
-  const activeModule = useRecoilValue(ActiveModuleState);
+  const activeModuleId = useRecoilValue(ActiveModuleIdState);
   if (user == null) {
     return <LoginPage />;
   }
 
-  const PageComponent = activeModule == null ? HomePage : ModulePage;
+  const PageComponent = activeModuleId == null ? HomePage : ModulePage;
   return (
     <AppContainer>
       <Sidebar />

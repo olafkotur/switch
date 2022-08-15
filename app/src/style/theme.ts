@@ -7,19 +7,23 @@ const COMMON_THEME = {
     large: '16px',
   },
   borderRadius: {
-    small: '4px',
-    medium: '6px',
-    large: '10px',
+    small: '3px',
+    medium: '5px',
+    large: '8px',
   },
-  zIndex: {
-    sidebar: 1,
-    modal: 2,
-    alert: 3,
+  border: {
+    normal: '0.5px solid #ABABAE',
+    strong: '1px solid #ABABAE',
   },
   spacing: {
     small: '5px',
     medium: '10px',
     large: '15px',
+  },
+  zIndex: {
+    sidebar: 1,
+    modal: 2,
+    alert: 3,
   },
 };
 
@@ -34,10 +38,6 @@ export const LIGHT_THEME = {
     secondary: '#F8F9F9',
     tertiary: '#307093',
   },
-  border: {
-    normal: '1px solid rgba(0, 0, 0, 0.08)',
-    strong: '1px solid rgba(0, 0, 0, 0.15)',
-  },
 };
 
 export const DARK_THEME = {
@@ -50,10 +50,6 @@ export const DARK_THEME = {
     primary: '#303036',
     secondary: '#1D1D21',
     tertiary: '#FFFFFF',
-  },
-  border: {
-    normal: '1px solid rgba(255, 255, 255, 0.08)',
-    strong: '1px solid rgba(255, 255, 255, 0.15)',
   },
 };
 

@@ -15,9 +15,9 @@ export const UserState = atom({
   default: { username: 'olafkotur', avatar: '' } as User,
 });
 
-export const ActiveModuleState = atom({
-  key: 'activeModule',
-  default: null as Module | null,
+export const ActiveModuleIdState = atom({
+  key: 'activeModuleId',
+  default: null as string | null,
 });
 
 export const GroupModuleState = atom({
