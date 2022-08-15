@@ -1,8 +1,8 @@
 import React, { ReactElement, useCallback } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH_PX } from '../../../common/const';
-import { GroupModuleState, ThemeState } from '../state';
+import { GroupModuleState, ModalState, ThemeState } from '../state';
 import { IconButton, ModuleButton } from './Button';
 import { Divider } from './Divider';
 
@@ -67,5 +67,6 @@ const VisibilityButton = (): ReactElement => {
 };
 
 const PreferencesButton = (): ReactElement => {
-  return <IconButton onClick={() => {}} size="medium" name="settings" />;
+  const setModal = useSetRecoilState(ModalState);
+  return <IconButton onClick={() => setModal('preferences')} size="medium" name="settings" />;
 };

@@ -2,6 +2,7 @@ import { atom } from 'recoil';
 import { TEST_MODULE_GROUP } from '../../common/const';
 import { Module } from '../../common/types/module';
 import { User } from '../../common/types/user';
+import { ModalName } from './components/Modal';
 import { Themes } from './style/theme';
 
 export const ThemeState = atom({
@@ -24,4 +25,9 @@ export const GroupModuleState = atom({
   key: 'groupModule',
   // default: [] as Module[],
   default: TEST_MODULE_GROUP,
+});
+
+export const ModalState = atom({
+  key: 'modal',
+  default: null as ModalName | null,
 });

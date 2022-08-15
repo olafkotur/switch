@@ -21,9 +21,10 @@ const COMMON_THEME = {
     large: '15px',
   },
   zIndex: {
-    sidebar: 1,
-    modal: 2,
-    alert: 3,
+    sidebar: 1000,
+    backdrop: 5000,
+    modal: 7500,
+    alert: 7500,
   },
 };
 
