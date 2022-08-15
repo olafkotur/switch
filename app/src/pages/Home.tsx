@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const HomeContainer = styled.div`
   display: flex;
   width: 100%;
-  background: green;
+  background: ${(props) => props.theme.backgroundColor.primary};
 `;
 
 export const HomePage = (): ReactElement => {
-  return <Container>Home</Container>;
+  return <HomeContainer>Home</HomeContainer>;
 };

@@ -16,5 +16,6 @@ export const UserState = atom({
 
 export const ModuleState = atom({
   key: 'module',
-  default: null as Module | null,
+  // default: null as Module | null,
+  default: { id: '1', url: 'https://google.com', favicon: '' } as Module,
 });

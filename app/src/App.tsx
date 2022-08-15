@@ -22,11 +22,11 @@ const App = (): ReactElement => {
     return <LoginPage />;
   }
 
-  const Component = module == null ? HomePage : ModulePage;
+  const PageComponent = module == null ? HomePage : ModulePage;
   return (
     <Wrapper>
       <Sidebar />
-      <Component />
+      <PageComponent />
     </Wrapper>
   );
 };

@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import styled from 'styled-components';
+import { SvgIcon } from '../assets/svg-icon';
 
 interface Props extends HTMLMotionProps<'div'> {}
 
@@ -14,19 +15,30 @@ const Button = ({ ...props }: Props): ReactElement => {
   );
 };
 
-const IconButtonContainer = styled(Button)`
+const ICON_BUTTON_SIZES = {
+  small: '12px',
+  medium: '24px',
+  large: '38px',
+};
+
+const IconButtonContainer = styled(Button)<{ px: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: ${({ px }) => px};
+  height: ${({ px }) => px};
   background: ${(props) => props.theme.backgroundColor.tertiary};
+  border-radius: ${(props) => props.theme.borderRadius.small};
 `;
 
-export const IconButton = ({ ...props }: Props): ReactElement => {
+interface IconButtonProps extends Props {
+  size: keyof typeof ICON_BUTTON_SIZES;
+}
+
+export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
   return (
-    <IconButtonContainer {...props}>
-      <span>Icon</span>
+    <IconButtonContainer {...props} px={ICON_BUTTON_SIZES[props.size]}>
+      <SvgIcon name="test" />
     </IconButtonContainer>
   );
 };
