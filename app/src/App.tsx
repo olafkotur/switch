@@ -8,7 +8,7 @@ import { Sidebar } from './components/Sidebar';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
 import { ModulePage } from './pages/Module';
-import { ActiveModuleIdState, ModalState, UserState } from './state';
+import { ActiveModuleIdState, UserState } from './state';
 import { ThemeProvider } from './style/Provider';
 
 const queryClient = new QueryClient();
@@ -22,7 +22,6 @@ const AppContainer = styled.div`
 const App = (): ReactElement => {
   const user = useRecoilValue(UserState);
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
-  const modal = useRecoilValue(ModalState);
 
   if (user == null) {
     return <LoginPage />;
@@ -31,7 +30,7 @@ const App = (): ReactElement => {
   const PageComponent = activeModuleId == null ? HomePage : ModulePage;
   return (
     <AppContainer>
-      {modal != null && <Modal />}
+      <Modal />
       <Sidebar />
       <PageComponent />
     </AppContainer>

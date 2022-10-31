@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import styled from 'styled-components';
-import { SvgIcon, SvgIconName } from '../assets/svg-icon';
+import { SvgIcon, SvgIconName } from './SvgIcon';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { ActiveModuleIdState, ThemeState } from '../state';
 import { Module } from '../../../common/types/module';

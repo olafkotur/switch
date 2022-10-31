@@ -31,11 +31,13 @@ const ModalContainer = styled(motion.div)`
 interface Props {}
 
 export const Modal = ({}: Props): ReactElement => {
-  const setModal = useSetRecoilState(ModalState);
+  const [modal, setModal] = useRecoilState(ModalState);
 
   const onDismiss = useCallback(() => {
     setModal(null);
   }, [setModal]);
+
+  if (modal == null) return <></>;
 
   return (
     <AnimatePresence>
