@@ -2,18 +2,18 @@ import React, { ReactElement } from 'react';
 import { useRecoilValue } from 'recoil';
 import { ThemeState } from '../state';
 
-export type SvgIconName = 'settings' | 'dark-mode' | 'light-mode' | 'grid' | 'close';
+export type IconName = 'settings' | 'dark-mode' | 'light-mode' | 'grid' | 'close';
 
 interface Props {
-  name: SvgIconName;
+  name: IconName;
   color?: string;
 }
-export const SvgIcon = ({ name, color }: Props): ReactElement => {
+export const Icon = ({ name, color }: Props): ReactElement => {
   const theme = useRecoilValue(ThemeState);
   const themeColor = theme === 'dark' ? '#fff' : '#000';
   const fill = color ?? themeColor;
 
-  const SVG_ICONS: Record<SvgIconName, ReactElement> = {
+  const SVG_ICONS: Record<IconName, ReactElement> = {
     'dark-mode': (
       <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill={fill}>
         <path d="M12 21q-3.75 0-6.375-2.625T3 12q0-3.75 2.625-6.375T12 3q.35 0 .688.025.337.025.662.075-1.025.725-1.637 1.887Q11.1 6.15 11.1 7.5q0 2.25 1.575 3.825Q14.25 12.9 16.5 12.9q1.375 0 2.525-.613 1.15-.612 1.875-1.637.05.325.075.662Q21 11.65 21 12q0 3.75-2.625 6.375T12 21Z" />

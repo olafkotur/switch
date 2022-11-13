@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import styled from 'styled-components';
-import { SvgIcon, SvgIconName } from './SvgIcon';
+import { Icon, IconName } from './Icon';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { ActiveModuleIdState, ThemeState } from '../state';
 import { Module } from '../../../common/types/module';
@@ -29,14 +29,14 @@ const IconButtonContainer = styled(Button)<{ px: string }>`
 `;
 
 interface IconButtonProps extends Props {
-  name: SvgIconName;
+  name: IconName;
   size: keyof typeof ICON_BUTTON_SIZES;
 }
 
 export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
   return (
     <IconButtonContainer {...props} px={ICON_BUTTON_SIZES[props.size]}>
-      <SvgIcon name={props.name} />
+      <Icon name={props.name} />
     </IconButtonContainer>
   );
 };
