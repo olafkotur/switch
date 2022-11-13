@@ -40,6 +40,7 @@ const ButtonContainer = styled(Button)<{ background?: string }>`
   justify-content: center;
   width: 38px;
   height: 38px;
+  cursor: pointer;
   border-radius: ${(props) => props.theme.borderRadius.small};
   margin: ${(props) => props.theme.spacing.small} 0;
   background: ${({ background }) => background};
@@ -67,7 +68,7 @@ const ModuleButton = ({ id, favicon }: Module): ReactElement => {
       onClick={() => setActiveModuleId(id)}
       background={isActive ? background : undefined}
     >
-      <img src={favicon} width="26px" />
+      <img src={favicon} width="26px" draggable={false} />
     </ButtonContainer>
   );
 };
