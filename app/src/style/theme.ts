@@ -1,11 +1,6 @@
 export type Themes = 'light' | 'dark';
 
 const COMMON_THEME = {
-  fontSize: {
-    small: '12px',
-    medium: '14px',
-    large: '16px',
-  },
   borderRadius: {
     small: '3px',
     medium: '5px',

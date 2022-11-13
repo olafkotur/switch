@@ -9,7 +9,7 @@ import { Module } from '../../../common/types/module';
 interface Props extends HTMLMotionProps<'div'> {}
 
 export const Button = ({ ...props }: Props): ReactElement => {
-  return <motion.div {...props} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} />;
+  return <motion.div {...props} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} />;
 };
 
 const ICON_BUTTON_SIZES = {

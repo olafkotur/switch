@@ -24,6 +24,7 @@ export const ActiveModuleIdState = atom({
 export const GroupModuleState = atom({
   key: 'groupModule',
   // default: [] as Module[],
+  // TODO: use dynamic module groups
   default: TEST_MODULE_GROUP,
 });
 
