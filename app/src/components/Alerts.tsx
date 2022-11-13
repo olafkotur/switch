@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement, useState } from 'react';
 import styled from 'styled-components';
-import { Icon } from './Icon';
+import { Close } from '../icons';
 
 const AlertContainer = styled(motion.div)`
   right: 0;
@@ -21,7 +21,7 @@ export const Alerts = (): ReactElement => {
   return (
     <AlertContainer>
       <DismissIconContainer>
-        <Icon name="close" />
+        <Close />
       </DismissIconContainer>
     </AlertContainer>
   );

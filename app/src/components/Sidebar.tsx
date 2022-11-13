@@ -3,11 +3,11 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH_PX } from '../../../common/const';
 import { Module } from '../../../common/types/module';
+import { DarkMode, Grid, LightMode, Settings, Switch } from '../icons';
 import { ActiveModuleIdState, GroupModuleState, ModalState, ThemeState } from '../state';
 import { Button, IconButton } from './Button';
 import { Spacer } from './Common';
 import { Divider } from './Divider';
-import { Icon } from './Icon';
 
 const SidebarContainer = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const HomeButton = (): ReactElement => {
 
   return (
     <ButtonContainer onClick={() => setActiveModuleId(null)}>
-      <Icon name="switch" />
+      <Switch />
     </ButtonContainer>
   );
 };
@@ -79,18 +79,30 @@ const ThemeButton = (): ReactElement => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }, [theme, setTheme]);
 
-  return <IconButton onClick={onClick} size="medium" name={`${theme}-mode`} />;
+  return (
+    <IconButton onClick={onClick} size="medium">
+      {theme === 'dark' ? <DarkMode /> : <LightMode />}
+    </IconButton>
+  );
 };
 
 const VisibilityButton = (): ReactElement => {
   // TODO: add visibility action
-  return <IconButton onClick={() => {}} size="medium" name="grid" />;
+  return (
+    <IconButton onClick={() => {}} size="medium">
+      <Grid />
+    </IconButton>
+  );
 };
 
 const PreferencesButton = (): ReactElement => {
   const setModal = useSetRecoilState(ModalState);
 
-  return <IconButton onClick={() => setModal('preferences')} size="medium" name="settings" />;
+  return (
+    <IconButton onClick={() => setModal('preferences')} size="medium">
+      <Settings />
+    </IconButton>
+  );
 };
 
 export const Sidebar = (): ReactElement => {

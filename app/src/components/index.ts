@@ -3,7 +3,6 @@ export * from './Asset';
 export * from './Button';
 export * from './Common';
 export * from './Divider';
-export * from './Icon';
 export * from './Modal';
 export * from './Sidebar';
 export * from './Text';

@@ -1,7 +1,6 @@
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { Icon, IconName } from './Icon';
 
 const ICON_BUTTON_SIZES = {
   small: '12px',
@@ -12,7 +11,6 @@ const ICON_BUTTON_SIZES = {
 interface Props extends HTMLMotionProps<'div'> {}
 
 interface IconButtonProps extends Props {
-  name: IconName;
   size: keyof typeof ICON_BUTTON_SIZES;
 }
 
@@ -33,7 +31,7 @@ const IconButtonContainer = styled(Button)<{ px: string }>`
 export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
   return (
     <IconButtonContainer {...props} px={ICON_BUTTON_SIZES[props.size]}>
-      <Icon name={props.name} />
+      {props.children}
     </IconButtonContainer>
   );
 };
