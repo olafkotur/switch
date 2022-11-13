@@ -2,7 +2,9 @@ import React, { ReactElement } from 'react';
 import { useRecoilValue } from 'recoil';
 import { ThemeState } from '../state';
 
-export type IconName = 'settings' | 'dark-mode' | 'light-mode' | 'grid' | 'close';
+// TODO: Refactor file to have individual files
+
+export type IconName = 'settings' | 'dark-mode' | 'light-mode' | 'grid' | 'close' | 'switch';
 
 interface Props {
   name: IconName;
@@ -37,6 +39,105 @@ export const Icon = ({ name, color }: Props): ReactElement => {
     close: (
       <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill={fill}>
         <path d="M6.062 15 5 13.938 8.938 10 5 6.062 6.062 5 10 8.938 13.938 5 15 6.062 11.062 10 15 13.938 13.938 15 10 11.062Z" />
+      </svg>
+    ),
+    switch: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="33.135"
+        height="33.135"
+        viewBox="0 0 33.135 33.135"
+      >
+        <g id="Group_4" data-name="Group 4" transform="translate(-257.635 -1042.635)">
+          <rect
+            id="Rectangle_1"
+            data-name="Rectangle 1"
+            width="6.376"
+            height="6.376"
+            transform="translate(266.573 1042.635)"
+            fill="#b33939"
+          />
+          <rect
+            id="Rectangle_2"
+            data-name="Rectangle 2"
+            width="6.376"
+            height="6.376"
+            transform="translate(284.394 1042.635)"
+            fill="#fff"
+          />
+          <rect
+            id="Rectangle_4"
+            data-name="Rectangle 4"
+            width="6.376"
+            height="6.376"
+            transform="translate(275.455 1051.573)"
+            fill="#fff"
+          />
+          <rect
+            id="Rectangle_6"
+            data-name="Rectangle 6"
+            width="6.376"
+            height="6.376"
+            transform="translate(257.635 1051.573)"
+            fill="#fff"
+          />
+          <rect
+            id="Rectangle_8"
+            data-name="Rectangle 8"
+            width="6.376"
+            height="6.376"
+            transform="translate(266.573 1060.455)"
+            fill="#fff"
+          />
+          <rect
+            id="Rectangle_12"
+            data-name="Rectangle 12"
+            width="6.376"
+            height="6.376"
+            transform="translate(266.573 1069.393)"
+            fill="#b33939"
+          />
+          <rect
+            id="Rectangle_11"
+            data-name="Rectangle 11"
+            width="6.376"
+            height="6.376"
+            transform="translate(275.455 1069.393)"
+            fill="#307093"
+          />
+          <rect
+            id="Rectangle_10"
+            data-name="Rectangle 10"
+            width="6.376"
+            height="6.376"
+            transform="translate(284.394 1060.455)"
+            fill="#fff"
+          />
+          <rect
+            id="Rectangle_3"
+            data-name="Rectangle 3"
+            width="6.376"
+            height="6.376"
+            transform="translate(284.394 1051.573)"
+            fill="#307093"
+          />
+          <rect
+            id="Rectangle_7"
+            data-name="Rectangle 7"
+            width="6.376"
+            height="6.376"
+            transform="translate(257.635 1060.455)"
+            fill="#cbae61"
+          />
+          <rect
+            id="Rectangle_9"
+            data-name="Rectangle 9"
+            width="6.376"
+            height="6.376"
+            transform="translate(275.455 1060.455)"
+            fill="#cbae61"
+          />
+        </g>
       </svg>
     ),
   };

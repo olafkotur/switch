@@ -1,6 +1,4 @@
-const ASSET_PATH = '../..';
-
-const Background = require(`${ASSET_PATH}/bg.png`);
-const SwitchIcon = require(`${ASSET_PATH}/switch-icon.png`);
+const Background = require('../../assets/bg.png');
+const SwitchIcon = require('../../assets/switch-icon.png');
 
 export { Background, SwitchIcon };
