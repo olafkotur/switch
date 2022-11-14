@@ -10,7 +10,7 @@ export interface IconProps {
 
 export const useDefaultColor = () => {
   const theme = useRecoilValue(ThemeState);
-  return theme === 'dark' ? '#fff' : '#000';
+  return theme === 'dark' ? '#fff' : '#303036';
 };
 
 export * from './Close';

@@ -1,8 +1,9 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-
-const COLOR = 'rgba(255, 255, 255, 0.75)';
+import React, { ReactElement } from 'react';
+import { useDefaultColor } from '.';
 
 export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
+  const defaultColor = useDefaultColor();
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +18,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(266.573 1042.635)"
-          fill={isActive ? COLOR : '#b33939'}
+          fill={isActive ? defaultColor : '#b33939'}
         />
         <rect
           id="Rectangle_2"
@@ -25,7 +26,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(284.394 1042.635)"
-          fill={isActive ? COLOR : '#fff'}
+          fill={defaultColor}
         />
         <rect
           id="Rectangle_4"
@@ -33,7 +34,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(275.455 1051.573)"
-          fill={isActive ? COLOR : '#fff'}
+          fill={defaultColor}
         />
         <rect
           id="Rectangle_6"
@@ -41,7 +42,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(257.635 1051.573)"
-          fill={isActive ? COLOR : '#fff'}
+          fill={defaultColor}
         />
         <rect
           id="Rectangle_8"
@@ -49,7 +50,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(266.573 1060.455)"
-          fill={isActive ? COLOR : '#fff'}
+          fill={defaultColor}
         />
         <rect
           id="Rectangle_12"
@@ -57,7 +58,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(266.573 1069.393)"
-          fill={isActive ? COLOR : '#b33939'}
+          fill={isActive ? defaultColor : '#b33939'}
         />
         <rect
           id="Rectangle_11"
@@ -65,7 +66,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(275.455 1069.393)"
-          fill={isActive ? COLOR : '#307093'}
+          fill={isActive ? defaultColor : '#307093'}
         />
         <rect
           id="Rectangle_10"
@@ -73,7 +74,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(284.394 1060.455)"
-          fill={isActive ? COLOR : '#fff'}
+          fill={defaultColor}
         />
         <rect
           id="Rectangle_3"
@@ -81,7 +82,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(284.394 1051.573)"
-          fill={isActive ? COLOR : '#307093'}
+          fill={isActive ? defaultColor : '#307093'}
         />
         <rect
           id="Rectangle_7"
@@ -89,7 +90,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(257.635 1060.455)"
-          fill={isActive ? COLOR : '#cbae61'}
+          fill={isActive ? defaultColor : '#cbae61'}
         />
         <rect
           id="Rectangle_9"
@@ -97,7 +98,7 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
           width="6.376"
           height="6.376"
           transform="translate(275.455 1060.455)"
-          fill={isActive ? COLOR : '#cbae61'}
+          fill={isActive ? defaultColor : '#cbae61'}
         />
       </g>
     </svg>
