@@ -47,11 +47,13 @@ const ButtonContainer = styled(Button)<{ background?: string }>`
 `;
 
 const HomeButton = (): ReactElement => {
-  const setActiveModuleId = useSetRecoilState(ActiveModuleIdState);
+  const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
+
+  const isActive = activeModuleId === null;
 
   return (
     <ButtonContainer onClick={() => setActiveModuleId(null)}>
-      <Switch />
+      <Switch isActive={isActive} />
     </ButtonContainer>
   );
 };
