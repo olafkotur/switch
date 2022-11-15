@@ -1,6 +1,13 @@
 export type Themes = 'light' | 'dark';
 
 const COMMON_THEME = {
+  fontSize: {
+    verySmall: '10px',
+    small: '14px',
+    medium: '16px',
+    large: '18px',
+    veryLarge: '32px',
+  },
   borderRadius: {
     small: '3px',
     medium: '5px',
@@ -14,6 +21,7 @@ const COMMON_THEME = {
     small: '5px',
     medium: '10px',
     large: '15px',
+    veryLarge: '20px',
   },
   zIndex: {
     sidebar: 1000,
@@ -28,11 +36,13 @@ export const LIGHT_THEME = {
   color: {
     faint: 'rgba(0, 0, 0, 0.6)',
     normal: 'rgba(0, 0, 0, 1)',
+    inverted: 'rgba(255, 255, 255, 1)',
   },
   backgroundColor: {
     primary: '#F2F5F7',
     secondary: '#F8F9F9',
     tertiary: '#307093',
+    faint: 'rgba(0, 0, 0, 0.15)',
   },
 };
 
@@ -41,11 +51,13 @@ export const DARK_THEME = {
   color: {
     faint: 'rgba(255, 255, 255, 0.6)',
     normal: 'rgba(255, 255, 255, 1)',
+    inverted: 'rgba(0, 0, 0, 1)',
   },
   backgroundColor: {
     primary: '#303036',
     secondary: '#1D1D21',
     tertiary: '#FFFFFF',
+    faint: 'rgba(255, 255, 255, 0.15)',
   },
 };
 

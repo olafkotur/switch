@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { Subtitle } from '../components';
+import { SubtitleText } from '../components';
 
 const PreferencesContainer = styled.div`
   display: flex;
@@ -27,10 +27,10 @@ export const Preferences = (): ReactElement => {
   return (
     <PreferencesContainer>
       <PreferencesPanel>
-        <Subtitle>General</Subtitle>
-        <Subtitle>Appearance</Subtitle>
-        <Subtitle>Layout</Subtitle>
-        <Subtitle>Account</Subtitle>
+        <SubtitleText>General</SubtitleText>
+        <SubtitleText>Appearance</SubtitleText>
+        <SubtitleText>Layout</SubtitleText>
+        <SubtitleText>Account</SubtitleText>
       </PreferencesPanel>
 
       <PreferencesContent></PreferencesContent>

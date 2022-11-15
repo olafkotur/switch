@@ -6,8 +6,9 @@ import { DARK_THEME, LIGHT_THEME } from './theme';
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: Courier New;
+    font-family: Arial;
     color: ${(props) => props.theme.color.normal};
+    user-select: none;
 
     margin: 0;
   }

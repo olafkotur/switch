@@ -1,7 +1,11 @@
 import React, { ReactElement } from 'react';
-import { useDefaultColor } from '.';
+import { IconProps, useDefaultColor } from '.';
 
-export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
+interface SwitchProps extends IconProps {
+  isActive?: boolean;
+}
+
+export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): ReactElement => {
   const defaultColor = useDefaultColor();
 
   return (
@@ -15,90 +19,101 @@ export const Switch = ({ isActive }: { isActive?: boolean }): ReactElement => {
         <rect
           id="Rectangle_1"
           data-name="Rectangle 1"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(266.573 1042.635)"
           fill={isActive ? defaultColor : '#b33939'}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_2"
           data-name="Rectangle 2"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(284.394 1042.635)"
           fill={defaultColor}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_4"
           data-name="Rectangle 4"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(275.455 1051.573)"
           fill={defaultColor}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_6"
           data-name="Rectangle 6"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(257.635 1051.573)"
           fill={defaultColor}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_8"
           data-name="Rectangle 8"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(266.573 1060.455)"
           fill={defaultColor}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_12"
           data-name="Rectangle 12"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(266.573 1069.393)"
           fill={isActive ? defaultColor : '#b33939'}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_11"
           data-name="Rectangle 11"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(275.455 1069.393)"
           fill={isActive ? defaultColor : '#307093'}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_10"
           data-name="Rectangle 10"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(284.394 1060.455)"
           fill={defaultColor}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_3"
           data-name="Rectangle 3"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(284.394 1051.573)"
           fill={isActive ? defaultColor : '#307093'}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_7"
           data-name="Rectangle 7"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(257.635 1060.455)"
           fill={isActive ? defaultColor : '#cbae61'}
+          opacity={opacity}
         />
         <rect
           id="Rectangle_9"
           data-name="Rectangle 9"
-          width="6.376"
-          height="6.376"
+          width={size}
+          height={size}
           transform="translate(275.455 1060.455)"
           fill={isActive ? defaultColor : '#cbae61'}
+          opacity={opacity}
         />
       </g>
     </svg>

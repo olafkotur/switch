@@ -124,7 +124,7 @@ export const Sidebar = (): ReactElement => {
       </SidebarTop>
 
       <SidebarBottom>
-        <Divider width="39px" />
+        <Divider width={39} />
         <ThemeButton />
         <VisibilityButton />
         <PreferencesButton />

@@ -15,7 +15,7 @@ interface IconButtonProps extends Props {
 }
 
 export const Button = ({ ...props }: Props): ReactElement => {
-  return <motion.div {...props} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} />;
+  return <motion.div {...props} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} />;
 };
 
 const IconButtonContainer = styled(Button)<{ px: string }>`
@@ -34,4 +34,18 @@ export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
       {props.children}
     </IconButtonContainer>
   );
+};
+
+const LargeButtonContainer = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 110px;
+  height: 50px;
+  background: ${(props) => props.theme.color.normal};
+  border-radius: ${(props) => props.theme.borderRadius.medium};
+`;
+
+export const LargeButton = ({ ...props }: Props): ReactElement => {
+  return <LargeButtonContainer>{props.children}</LargeButtonContainer>;
 };
