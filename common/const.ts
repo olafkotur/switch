@@ -4,6 +4,8 @@ export const SIDE_BAR_WIDTH_PX = 56;
 export const DEFAULT_ICON_SIZE = 18;
 export const DEFAULT_ICON_OPACITY = 0.75;
 
+export const SEARCH_BAR_PLACEHOLDER = 'https://notion.so';
+
 export const GOOGLE_FAVICON_URL = 'https://www.google.com/s2/favicons';
 
 export const TEST_MODULE_GROUP: Module[] = [

@@ -114,9 +114,9 @@ export const Sidebar = (): ReactElement => {
   return (
     <SidebarContainer>
       <SidebarTop>
-        <Spacer y={3} />
+        <Spacer vertical={3} />
         <HomeButton />
-        <Spacer y={3} />
+        <Spacer vertical={3} />
 
         {groupModule.map((module) => (
           <ModuleButton key={`module-${module.id}`} {...module} />
