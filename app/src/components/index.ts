@@ -1,5 +1,6 @@
 export * from './Alerts';
 export * from './Asset';
+export * from './Background';
 export * from './Button';
 export * from './Common';
 export * from './Divider';

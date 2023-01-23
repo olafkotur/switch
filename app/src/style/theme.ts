@@ -24,6 +24,7 @@ const COMMON_THEME = {
     veryLarge: '20px',
   },
   zIndex: {
+    background: -10000,
     sidebar: 1000,
     backdrop: 5000,
     modal: 7500,

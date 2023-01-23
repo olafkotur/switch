@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start:dev": "ts-node-dev --respawn --transpile-only ./src/index.ts"
+    "start": "ts-node-dev --respawn --transpile-only ./src/index.ts"
   },
   "dependencies": {
     "@types/crypto-js": "^4.0.2",

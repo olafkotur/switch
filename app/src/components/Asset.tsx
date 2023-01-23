@@ -1,4 +1,5 @@
-const Background = require('../../assets/bg.png');
+const Bg = require('../../assets/bg.png');
 const SwitchIcon = require('../../assets/switch-icon.png');
+const SwitchHeader = require('../../assets/switch-header.svg');
 
-export { Background, SwitchIcon };
+export { Bg, SwitchIcon, SwitchHeader };

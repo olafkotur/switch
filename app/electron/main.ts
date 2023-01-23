@@ -4,6 +4,7 @@ import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
 import * as url from 'url';
+import { VISIBILITY_KEYBIND } from '../../common/const';
 import { ElectronService } from './helper';
 
 log.info('App is starting...');
@@ -20,13 +21,8 @@ storage.setDataPath(dataPath);
  * Creates the main window
  */
 const createMainWindow = async (): Promise<void> => {
-  // fetch user settings
-  // TODO: temp
-  // const userSettings = await SettingsService.fetchLocal()
-  const userSettings = {
-    overlayMode: true,
-    visiblityKeybind: 'Command + Esc',
-  };
+  // TODO: Fetch user settings
+  const userSettings = { overlayMode: false };
 
   // create main window
   const screenInfo = ElectronService.getScreenInfo();
@@ -58,11 +54,7 @@ const createMainWindow = async (): Promise<void> => {
   ElectronService.setWindowMode(userSettings.overlayMode, mainWindow);
   ElectronService.setWindowInfo(mainWindow);
   ElectronService.setWindowListeners(mainWindow);
-  ElectronService.setGlobalShortcuts(
-    mainWindow,
-    userSettings.visiblityKeybind,
-    userSettings.overlayMode,
-  );
+  ElectronService.setGlobalShortcuts(mainWindow, VISIBILITY_KEYBIND, userSettings.overlayMode);
 
   // setup tray items
   tray = new Tray(path.join(__dirname, 'tray@2x.png'));

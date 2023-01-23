@@ -22,10 +22,10 @@ const IconButtonContainer = styled(Button)<{ px: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${({ px }) => px};
-  height: ${({ px }) => px};
+  width: ${(props) => props.px};
+  height: ${(props) => props.px};
   border-radius: ${(props) => props.theme.borderRadius.small};
-  margin: ${(props) => props.theme.spacing.large} 0;
+  margin: ${(props) => props.theme.spacing.medium} 0;
 `;
 
 export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {

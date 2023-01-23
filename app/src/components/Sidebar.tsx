@@ -1,13 +1,12 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH_PX } from '../../../common/const';
 import { Module } from '../../../common/types/module';
-import { DarkMode, Grid, LightMode, Settings, Switch } from '../icons';
+import { Settings, Switch } from '../icons';
 import { ActiveModuleIdState, GroupModuleState, ModalState, ThemeState } from '../state';
 import { Button, IconButton } from './Button';
 import { Spacer } from './Common';
-import { Divider } from './Divider';
 
 const SidebarContainer = styled.div`
   display: flex;
@@ -31,18 +30,17 @@ const SidebarBottom = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 0 0 ${(props) => props.theme.spacing.medium} 0;
+  margin-bottom: ${(props) => props.theme.spacing.medium};
 `;
 
 const ButtonContainer = styled(Button)<{ background?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
   cursor: pointer;
+  width: 50px;
+  height: 50px;
   border-radius: ${(props) => props.theme.borderRadius.small};
-  margin: ${(props) => props.theme.spacing.small} 0;
   background: ${({ background }) => background};
 `;
 
@@ -70,31 +68,8 @@ const ModuleButton = ({ id, favicon }: Module): ReactElement => {
       onClick={() => setActiveModuleId(id)}
       background={isActive ? background : undefined}
     >
-      <img src={favicon} width="26px" draggable={false} />
+      <img src={favicon} width="70%" draggable={false} />
     </ButtonContainer>
-  );
-};
-
-const ThemeButton = (): ReactElement => {
-  const [theme, setTheme] = useRecoilState(ThemeState);
-
-  const onClick = useCallback(() => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  }, [theme, setTheme]);
-
-  return (
-    <IconButton onClick={onClick} size="medium">
-      {theme === 'dark' ? <DarkMode /> : <LightMode />}
-    </IconButton>
-  );
-};
-
-const VisibilityButton = (): ReactElement => {
-  // TODO: add visibility action
-  return (
-    <IconButton onClick={() => {}} size="medium">
-      <Grid />
-    </IconButton>
   );
 };
 
@@ -102,31 +77,28 @@ const PreferencesButton = (): ReactElement => {
   const setModal = useSetRecoilState(ModalState);
 
   return (
-    <IconButton onClick={() => setModal('preferences')} size="medium">
-      <Settings />
+    <IconButton onClick={() => setModal('preferences')} size="large">
+      <Settings size={24} />
     </IconButton>
   );
 };
 
 export const Sidebar = (): ReactElement => {
-  const groupModule = useRecoilValue(GroupModuleState);
+  const group = useRecoilValue(GroupModuleState);
 
   return (
     <SidebarContainer>
-      <SidebarTop>
-        <Spacer vertical={3} />
-        <HomeButton />
-        <Spacer vertical={3} />
+      <Spacer vertical={10} />
+      <HomeButton />
+      <Spacer vertical={2} />
 
-        {groupModule.map((module) => (
+      <SidebarTop>
+        {group.map((module) => (
           <ModuleButton key={`module-${module.id}`} {...module} />
         ))}
       </SidebarTop>
 
       <SidebarBottom>
-        <Divider width={39} />
-        <ThemeButton />
-        <VisibilityButton />
         <PreferencesButton />
       </SidebarBottom>
     </SidebarContainer>

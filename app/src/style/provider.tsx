@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useRecoilValue } from 'recoil';
 import { createGlobalStyle, ThemeProvider as DefaultThemeProvider } from 'styled-components';
+import { Bg } from '../components';
 import { ThemeState } from '../state';
 import { DARK_THEME, LIGHT_THEME } from './theme';
 
@@ -9,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: Arial;
     color: ${(props) => props.theme.color.normal};
     user-select: none;
+    background: ${(props) => props.theme.backgroundColor.primary};
 
     margin: 0;
   }

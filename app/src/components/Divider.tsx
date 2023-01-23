@@ -7,9 +7,9 @@ interface Props {
 }
 
 const DividerContainer = styled.hr<{ width: number; height: number }>`
-  margin: ${(props) => props.theme.spacing.veryLarge};
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
+  margin: ${(props) => props.theme.spacing.medium};
   border: ${(props) => props.theme.border.normal};
 `;
 

@@ -1,9 +1,7 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH_PX } from '../../../common/const';
-import { SearchBar } from '../components';
-
-const switchIcon = require('../../assets/switch-header.svg');
+import { SearchBar, SwitchHeader } from '../components';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -12,7 +10,6 @@ const HomeContainer = styled.div`
   align-items: center;
   width: calc(100vw - ${SIDE_BAR_WIDTH_PX}px);
   padding: 0 0 0 ${SIDE_BAR_WIDTH_PX}px;
-  background: ${(props) => props.theme.backgroundColor.primary};
 `;
 
 const Header = styled.img`
@@ -22,7 +19,7 @@ const Header = styled.img`
 export const HomePage = (): ReactElement => {
   return (
     <HomeContainer>
-      <Header src={switchIcon} />
+      <Header src={SwitchHeader} />
       <SearchBar />
     </HomeContainer>
   );
