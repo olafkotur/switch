@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
 import { useRecoilValue } from 'recoil';
 import { createGlobalStyle, ThemeProvider as DefaultThemeProvider } from 'styled-components';
-import { Bg } from '../components';
 import { ThemeState } from '../state';
 import { DARK_THEME, LIGHT_THEME } from './theme';
+import '@fontsource/inter';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: Arial;
+    font-family: Inter;
     color: ${(props) => props.theme.color.normal};
     user-select: none;
     background: ${(props) => props.theme.backgroundColor.primary};

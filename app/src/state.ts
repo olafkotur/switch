@@ -1,18 +1,16 @@
 import { atom } from 'recoil';
-import { TEST_MODULE_GROUP } from './const';
-import { Module, User } from './typings';
 import { ModalName } from './modals';
 import { Themes } from './style/theme';
+import { Module, User } from './typings';
 
 export const ThemeState = atom({
   key: 'theme',
   default: 'dark' as Themes,
 });
 
-export const UserState = atom({
-  key: 'user',
-  // default: null as User | null,
-  default: { username: 'olafkotur', avatar: '' } as User,
+export const IsAuthenticatedState = atom({
+  key: 'isAuthenticated',
+  default: false,
 });
 
 export const ActiveModuleIdState = atom({
@@ -20,11 +18,9 @@ export const ActiveModuleIdState = atom({
   default: null as string | null,
 });
 
-export const GroupModuleState = atom({
-  key: 'groupModule',
-  // default: [] as Module[],
-  // TODO: use dynamic module groups
-  default: TEST_MODULE_GROUP,
+export const ModulesState = atom({
+  key: 'modules',
+  default: [] as Module[],
 });
 
 export const ModalState = atom({

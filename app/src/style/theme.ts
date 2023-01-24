@@ -3,8 +3,8 @@ export type Themes = 'light' | 'dark';
 const COMMON_THEME = {
   fontSize: {
     verySmall: '10px',
-    small: '14px',
-    medium: '16px',
+    small: '12px',
+    medium: '14px',
     large: '18px',
     veryLarge: '32px',
   },
@@ -12,6 +12,7 @@ const COMMON_THEME = {
     small: '3px',
     medium: '5px',
     large: '8px',
+    veryLarge: '10px',
   },
   border: {
     normal: '0.5px solid #ABABAE',

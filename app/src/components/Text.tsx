@@ -4,12 +4,14 @@ interface TextProps {
   faint?: boolean;
   bold?: boolean;
   italic?: boolean;
+  underline?: boolean;
   cursor?: string;
 }
 
 export const Text = styled.span<TextProps>`
   font-weight: ${(props) => (props.bold ? '600' : '400')};
   font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
+  text-decoration: ${(props) => (props.underline ? 'underline' : '')};
   color: ${(props) => {
     if (props.color) {
       return props.color;
@@ -20,12 +22,10 @@ export const Text = styled.span<TextProps>`
 `;
 
 export const TitleText = styled(Text)`
-  font-weight: 700;
   font-size: ${(props) => props.theme.fontSize.veryLarge};
 `;
 
 export const SubtitleText = styled(Text)`
-  font-weight: 400;
   font-size: ${(props) => props.theme.fontSize.large};
 `;
 

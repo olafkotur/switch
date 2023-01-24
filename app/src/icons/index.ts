@@ -14,6 +14,7 @@ export const useDefaultColor = () => {
 
 export * from './Close';
 export * from './DarkMode';
+export * from './Email';
 export * from './Grid';
 export * from './LightMode';
 export * from './Search';

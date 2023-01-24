@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { Settings, Switch } from '../icons';
-import { ActiveModuleIdState, GroupModuleState, ModalState, ThemeState } from '../state';
+import { ActiveModuleIdState, ModulesState, ModalState, ThemeState } from '../state';
 import { Module } from '../typings';
 import { Button, IconButton } from './Button';
 import { Spacer } from './Common';
@@ -47,11 +47,9 @@ const ButtonContainer = styled(Button)<{ background?: string }>`
 const HomeButton = (): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
 
-  const isActive = activeModuleId === null;
-
   return (
     <ButtonContainer onClick={() => setActiveModuleId(null)}>
-      <Switch isActive={isActive} />
+      <Switch />
     </ButtonContainer>
   );
 };
@@ -64,10 +62,7 @@ const ModuleButton = ({ id, favicon }: Module): ReactElement => {
   const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   return (
-    <ButtonContainer
-      onClick={() => setActiveModuleId(id)}
-      background={isActive ? background : undefined}
-    >
+    <ButtonContainer onClick={() => setActiveModuleId(id)} background={isActive ? background : undefined}>
       <img src={favicon} width="70%" draggable={false} />
     </ButtonContainer>
   );
@@ -84,16 +79,16 @@ const PreferencesButton = (): ReactElement => {
 };
 
 export const Sidebar = (): ReactElement => {
-  const group = useRecoilValue(GroupModuleState);
+  const modules = useRecoilValue(ModulesState);
 
   return (
     <SidebarContainer>
-      <Spacer vertical={10} />
+      <Spacer vertical={12} />
       <HomeButton />
       <Spacer vertical={2} />
 
       <SidebarTop>
-        {group.map((module) => (
+        {modules.map((module) => (
           <ModuleButton key={`module-${module.id}`} {...module} />
         ))}
       </SidebarTop>

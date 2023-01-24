@@ -8,14 +8,17 @@ const ICON_BUTTON_SIZES = {
   large: '38px',
 };
 
-interface Props extends HTMLMotionProps<'div'> {}
+interface Props extends HTMLMotionProps<'div'> {
+  disabled?: boolean;
+  width?: string;
+}
 
 interface IconButtonProps extends Props {
   size: keyof typeof ICON_BUTTON_SIZES;
 }
 
 export const Button = ({ ...props }: Props): ReactElement => {
-  return <motion.div {...props} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} />;
+  return <motion.div {...props} whileHover={{ scale: 1.005 }} whileTap={{ scale: 0.995 }} />;
 };
 
 const IconButtonContainer = styled(Button)<{ px: string }>`
@@ -38,14 +41,20 @@ export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
 
 const LargeButtonContainer = styled(Button)`
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 110px;
   height: 50px;
+  justify-content: center;
+  width: ${(props) => props.width ?? '110px'};
   background: ${(props) => props.theme.color.normal};
+  opacity: ${(props) => (props.disabled ? 0.4 : 1)};
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   border-radius: ${(props) => props.theme.borderRadius.medium};
 `;
 
 export const LargeButton = ({ ...props }: Props): ReactElement => {
-  return <LargeButtonContainer>{props.children}</LargeButtonContainer>;
+  return (
+    <LargeButtonContainer {...props} width={props.width}>
+      {props.children}
+    </LargeButtonContainer>
+  );
 };
