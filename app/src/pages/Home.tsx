@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { SIDE_BAR_WIDTH } from '../const';
 import { SearchBar, SwitchHeader } from '../components';
+import { SIDE_BAR_WIDTH } from '../const';
 
 const HomeContainer = styled.div`
   display: flex;

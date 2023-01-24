@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import styled from 'styled-components';
-import { Button, LargeButton, Spacer, SubtitleText } from '../components';
+import { Button, Spacer, SubtitleText } from '../components';
 
 type PreferencesPanel = 'general' | 'account' | 'appearance';
 
