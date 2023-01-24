@@ -4,7 +4,7 @@ import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
 import * as url from 'url';
-import { VISIBILITY_KEYBIND } from '../../common/const';
+import { VISIBILITY_KEYBIND } from '../src/const';
 import { ElectronService } from './helper';
 
 log.info('App is starting...');

@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { SIDE_BAR_WIDTH_PX } from '../../../common/const';
+import { SIDE_BAR_WIDTH } from '../const';
 import { ActiveModuleIdState, GroupModuleState } from '../state';
 
 const ModuleContainer = styled.div`
-  width: calc(100vw - ${SIDE_BAR_WIDTH_PX}px);
-  padding: 0 0 0 ${SIDE_BAR_WIDTH_PX}px;
+  width: calc(100vw - ${SIDE_BAR_WIDTH}px);
+  padding: 0 0 0 ${SIDE_BAR_WIDTH}px;
 `;
 
 const ModuleWebview = styled('webview')<{ isActive: boolean }>`

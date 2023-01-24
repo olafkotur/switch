@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { IconProps, useDefaultColor } from '.';
-import { DEFAULT_ICON_OPACITY, DEFAULT_ICON_SIZE } from '../../../common/const';
+import { DEFAULT_ICON_OPACITY, DEFAULT_ICON_SIZE } from '../const';
 
 export const Search = ({
   color,

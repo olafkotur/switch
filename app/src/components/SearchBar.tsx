@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import styled from 'styled-components';
-import { SEARCH_BAR_PLACEHOLDER } from '../../../common/const';
+import { SEARCH_BAR_PLACEHOLDER } from '../const';
 import { Input, LargeButton, SmallText, Spacer, SubtitleText } from '../components';
 import { Search } from '../icons';
 import { Divider } from './Divider';

@@ -1,8 +1,8 @@
-import { Module } from './types/module';
+import { Module } from './typings';
 
 export const VISIBILITY_KEYBIND = 'Command + Esc';
 
-export const SIDE_BAR_WIDTH_PX = 67;
+export const SIDE_BAR_WIDTH = 67;
 export const DEFAULT_ICON_SIZE = 18;
 export const DEFAULT_ICON_OPACITY = 0.75;
 

@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Background } from './components';
-import { Modal } from './components/Modal';
+import { Modal } from './modals';
 import { Sidebar } from './components/Sidebar';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';

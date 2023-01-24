@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { SIDE_BAR_WIDTH_PX } from '../../../common/const';
-import { Module } from '../../../common/types/module';
+import { SIDE_BAR_WIDTH } from '../const';
 import { Settings, Switch } from '../icons';
 import { ActiveModuleIdState, GroupModuleState, ModalState, ThemeState } from '../state';
+import { Module } from '../typings';
 import { Button, IconButton } from './Button';
 import { Spacer } from './Common';
 
@@ -14,7 +14,7 @@ const SidebarContainer = styled.div`
   flex-direction: column;
   position: fixed;
   height: 100vh;
-  width: ${SIDE_BAR_WIDTH_PX}px;
+  width: ${SIDE_BAR_WIDTH}px;
   padding: ${(props) => props.theme.spacing.medium} 0;
   background: ${(props) => props.theme.backgroundColor.secondary};
   z-index: ${(props) => props.theme.zIndex.sidebar};

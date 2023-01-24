@@ -44,6 +44,7 @@ export const LIGHT_THEME = {
     secondary: '#F8F9F9',
     tertiary: '#307093',
     faint: 'rgba(0, 0, 0, 0.15)',
+    backdrop: 'rgba(0, 0, 0, 0.9)',
   },
 };
 
@@ -59,6 +60,7 @@ export const DARK_THEME = {
     secondary: '#1D1D21',
     tertiary: '#FFFFFF',
     faint: 'rgba(255, 255, 255, 0.15)',
+    backdrop: 'rgba(0, 0, 0, 0.8)',
   },
 };
 

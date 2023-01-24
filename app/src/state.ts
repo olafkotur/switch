@@ -1,8 +1,7 @@
 import { atom } from 'recoil';
-import { TEST_MODULE_GROUP } from '../../common/const';
-import { Module } from '../../common/types/module';
-import { User } from '../../common/types/user';
-import { ModalName } from './components/Modal';
+import { TEST_MODULE_GROUP } from './const';
+import { Module, User } from './typings';
+import { ModalName } from './modals';
 import { Themes } from './style/theme';
 
 export const ThemeState = atom({
