@@ -37,7 +37,6 @@ const ButtonContainer = styled(Button)<{ background?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   width: 50px;
   height: 50px;
   border-radius: ${(props) => props.theme.borderRadius.small};

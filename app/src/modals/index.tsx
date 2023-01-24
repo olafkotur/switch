@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { IconButton } from '../components';
+import { Close } from '../icons';
 import { ModalState } from '../state';
 import { Preferences } from './Preferences';
 
@@ -32,6 +34,13 @@ const ModalContent = styled.div`
   border-radius: ${(props) => props.theme.borderRadius.large};
 `;
 
+const CloseButton = styled(IconButton)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: ${(props) => props.theme.zIndex.modal + 1};
+`;
+
 export const Modal = (): ReactElement => {
   const [modal, setModal] = useRecoilState(ModalState);
 
@@ -49,7 +58,12 @@ export const Modal = (): ReactElement => {
       transition={{ duration: 0.15 }}
     >
       <ModalBackdrop onClick={onDismiss} />
-      <ModalContent>{modal === 'preferences' && <Preferences />}</ModalContent>
+      <ModalContent>
+        <CloseButton onClick={onDismiss} size="large">
+          <Close size={24} />
+        </CloseButton>
+        {modal === 'preferences' && <Preferences />}
+      </ModalContent>
     </ModalContainer>
   );
 };

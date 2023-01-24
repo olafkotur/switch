@@ -24,6 +24,11 @@ const COMMON_THEME = {
     large: '15px',
     veryLarge: '20px',
   },
+  animation: {
+    light: 0.99,
+    medium: 0.98,
+    strong: 0.97,
+  },
   zIndex: {
     background: -10000,
     sidebar: 1000,

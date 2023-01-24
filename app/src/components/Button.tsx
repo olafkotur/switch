@@ -11,14 +11,19 @@ const ICON_BUTTON_SIZES = {
 interface Props extends HTMLMotionProps<'div'> {
   disabled?: boolean;
   width?: string;
+  animation?: number;
 }
 
 interface IconButtonProps extends Props {
   size: keyof typeof ICON_BUTTON_SIZES;
 }
 
+const ButtonContainer = styled(motion.div)`
+  cursor: pointer;
+`;
+
 export const Button = ({ ...props }: Props): ReactElement => {
-  return <motion.div {...props} whileHover={{ scale: 1.005 }} whileTap={{ scale: 0.995 }} />;
+  return <ButtonContainer {...props} whileTap={{ scale: props.animation ?? 0.98 }} />;
 };
 
 const IconButtonContainer = styled(Button)<{ px: string }>`
