@@ -3,6 +3,14 @@ export interface ModelBase {
   createdAt: Date;
 }
 
+export interface JwtAuthData {
+  username: string;
+  password: string;
+  iat?: number;
+  exp?: number;
+}
+
+/***** RESPONSE ******/
 export interface Response {
   code: number;
   status: string;
@@ -10,13 +18,6 @@ export interface Response {
   unix: number;
   message?: string;
   data?: unknown;
-}
-
-export interface JwtAuthData {
-  username: string;
-  password: string;
-  iat?: number;
-  exp?: number;
 }
 
 export interface JwtResponse {
