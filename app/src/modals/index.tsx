@@ -27,8 +27,8 @@ const ModalBackdrop = styled.div`
 
 const ModalContent = styled.div`
   position: absolute;
+  background: transparent;
   z-index: ${(props) => props.theme.zIndex.modal};
-  background: ${(props) => props.theme.backgroundColor.tertiary};
   border-radius: ${(props) => props.theme.borderRadius.large};
 `;
 

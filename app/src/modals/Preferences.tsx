@@ -1,6 +1,6 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Spacer, SubtitleText } from '../components';
+import { Button, ColumnContainer, PreferenceOption, Spacer, SubtitleText } from '../components';
 import { useLogout, useTheme } from '../hooks';
 
 type PreferencesPanel = 'general' | 'account' | 'appearance';
@@ -8,11 +8,9 @@ type PreferencesPanel = 'general' | 'account' | 'appearance';
 const PreferencesContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 70vw;
-  height: 70vh;
+  width: 50vw;
+  height: 50vh;
   position: relative;
-  background: ${(props) => props.theme.backgroundColor.primary};
-  border-radius: ${(props) => props.theme.borderRadius.medium};
 `;
 
 const PreferencesPanelContainer = styled.div`
@@ -21,12 +19,15 @@ const PreferencesPanelContainer = styled.div`
   width: 150px;
   height: calc(100% - 40px);
   padding: ${(props) => props.theme.spacing.veryLarge};
-  border-radius: ${(props) => props.theme.borderRadius.medium};
   background: ${(props) => props.theme.backgroundColor.secondary};
+  border-radius: ${(props) => props.theme.borderRadius.large};
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 `;
 
 const PreferencesButton = styled(Button)`
   width: 100%;
+  margin-bottom: ${(props) => props.theme.spacing.veryLarge};
 `;
 
 const PreferencesContent = styled.div`
@@ -34,12 +35,14 @@ const PreferencesContent = styled.div`
   height: calc(100% - 40px);
   padding: ${(props) => props.theme.spacing.veryLarge};
   background: ${(props) => props.theme.backgroundColor.primary};
-  border-radius: 0 ${(props) => props.theme.borderRadius.medium} ${(props) => props.theme.borderRadius.medium} 0;
+  border-radius: ${(props) => props.theme.borderRadius.large};
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 `;
 
 const PreferencesPanelFooter = styled.div`
   position: absolute;
-  bottom: ${(props) => props.theme.spacing.veryLarge};
+  bottom: 0;
 `;
 
 export const Preferences = (): ReactElement => {
@@ -48,24 +51,42 @@ export const Preferences = (): ReactElement => {
   const theme = useTheme();
   const logout = useLogout();
 
+  const config = useMemo(() => {
+    return [
+      {
+        label: 'General',
+        isActive: selectedPanel === 'general',
+        onClick: () => setSelectedPanel('general'),
+      },
+      {
+        label: 'Account',
+        isActive: selectedPanel === 'account',
+        onClick: () => setSelectedPanel('account'),
+      },
+      {
+        label: 'Appearance',
+        isActive: selectedPanel === 'appearance',
+        onClick: () => setSelectedPanel('appearance'),
+      },
+    ];
+  }, [selectedPanel, setSelectedPanel]);
+
   return (
     <PreferencesContainer>
       <PreferencesPanelContainer>
-        <PreferencesButton onClick={() => setSelectedPanel('general')}>
-          <SubtitleText faint={selectedPanel !== 'general'}>General</SubtitleText>
-        </PreferencesButton>
-        <Spacer vertical={10} />
-        <PreferencesButton onClick={() => setSelectedPanel('account')}>
-          <SubtitleText faint={selectedPanel !== 'account'}>Account</SubtitleText>
-        </PreferencesButton>
-        <Spacer vertical={10} />
-        <PreferencesButton onClick={() => setSelectedPanel('appearance')}>
-          <SubtitleText faint={selectedPanel !== 'appearance'}>Appearance</SubtitleText>
-        </PreferencesButton>
+        {config.map((preference) => (
+          <PreferencesButton onClick={preference.onClick}>
+            <SubtitleText faint={!preference.isActive} cursor="pointer">
+              {preference.label}
+            </SubtitleText>
+          </PreferencesButton>
+        ))}
 
         <PreferencesPanelFooter>
           <PreferencesButton onClick={logout}>
-            <SubtitleText color={theme.color.danger}>Logout</SubtitleText>
+            <SubtitleText color={theme.color.danger} cursor="pointer">
+              Logout
+            </SubtitleText>
           </PreferencesButton>
         </PreferencesPanelFooter>
       </PreferencesPanelContainer>
@@ -80,13 +101,47 @@ export const Preferences = (): ReactElement => {
 };
 
 const GeneralPanel = (): ReactElement => {
-  return <>General Panel</>;
+  return (
+    <ColumnContainer>
+      <PreferenceOption
+        title="Overlay Mode"
+        description="Switch will display over other applications"
+        type="toggle"
+        onChange={console.log}
+      />
+    </ColumnContainer>
+  );
 };
 
 const AccountPanel = (): ReactElement => {
-  return <>Account Panel</>;
+  return (
+    <ColumnContainer>
+      <PreferenceOption
+        title="Update avatar"
+        description="Update your profile avatar picture"
+        type="text"
+        onChange={console.log}
+      />
+      <Spacer vertical={15} />
+      <PreferenceOption
+        title="Change password"
+        description="Update your current password"
+        type="text"
+        onChange={console.log}
+      />
+    </ColumnContainer>
+  );
 };
 
 const AppearancePanel = (): ReactElement => {
-  return <>Appearance Panel</>;
+  return (
+    <ColumnContainer>
+      <PreferenceOption
+        title="Animate Presets"
+        description="Show an animation when resizing Switch using layout presets"
+        type="toggle"
+        onChange={console.log}
+      />
+    </ColumnContainer>
+  );
 };

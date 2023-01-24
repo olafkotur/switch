@@ -6,6 +6,7 @@ export * from './Common';
 export * from './Divider';
 export * from './Input';
 export * from './Loader';
+export * from './PreferenceOption';
 export * from './SearchBar';
 export * from './Sidebar';
 export * from './Text';

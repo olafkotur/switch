@@ -1,12 +1,14 @@
 import React, { HTMLInputTypeAttribute, ReactElement } from 'react';
 import styled from 'styled-components';
+// @ts-ignore - types are not available for this dependency
+import Toggle from 'react-input-switch';
 
 interface InputProps {
-  placeholder: string;
-  value?: string;
+  placeholder?: string;
+  value?: any;
   disabled?: boolean;
   type?: HTMLInputTypeAttribute;
-  onChange?: (value: string) => void;
+  onChange?: (value: any) => void;
 }
 
 const InputContainer = styled.div`
@@ -48,4 +50,8 @@ export const TextInput = ({ value, placeholder, disabled, type = 'text', onChang
       />
     </InputContainer>
   );
+};
+
+export const ToggleInput = ({ value, onChange }: InputProps): ReactElement => {
+  return <Toggle value={value} onChange={onChange} />;
 };

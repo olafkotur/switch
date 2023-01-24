@@ -63,7 +63,7 @@ export const DARK_THEME = {
     secondary: '#1D1D21',
     tertiary: '#FFFFFF',
     faint: 'rgba(255, 255, 255, 0.15)',
-    backdrop: 'rgba(0, 0, 0, 0.8)',
+    backdrop: 'rgba(0, 0, 0, 0.7)',
   },
 };
 
