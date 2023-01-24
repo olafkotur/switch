@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { ResponseService } from '../services/response';
 import { SecurityService } from '../services/security';
 import { UserService } from '../services/user';
+import { JwtAuthData } from '../typings';
 
 export const UserHandler = {
   /**
@@ -83,5 +84,20 @@ export const UserHandler = {
     const refreshToken = SecurityService.generateToken(username, hashedPassword, 'refresh');
 
     return ResponseService.create({ accessToken, refreshToken }, res);
+  },
+
+  /**
+   * Fetch user profile data.
+   * @param req - request object
+   * @param res - response object
+   */
+  fetchProfile: async (_req: Request, res: Response): Promise<void> => {
+    const jwt: JwtAuthData = res.locals.jwt.data;
+    const user = await UserService.fetchSingle(jwt.username);
+    const data = { username: user?.username, avatar: user?.avatar };
+    if (data) {
+      return ResponseService.data(data, res);
+    }
+    return ResponseService.notFound('Profile not found', res);
   },
 };
