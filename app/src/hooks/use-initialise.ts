@@ -3,7 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import { ModulesState, ThemeState } from '../state';
 import { AuthTokens } from '../typings';
 import { useRefresh } from './use-login';
-import { useFetchModules } from './use-modules';
+import { useFetchModules } from './use-module';
 import { useGetStorage } from './use-storage';
 
 export const useInitialise = () => {

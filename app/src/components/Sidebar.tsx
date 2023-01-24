@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
+import { useDeleteModule } from '../hooks';
 import { Settings, Switch } from '../icons';
 import { ActiveModuleIdState, ModulesState, ModalState, ThemeState } from '../state';
 import { Module } from '../typings';
@@ -44,7 +45,7 @@ const ButtonContainer = styled(Button)<{ background?: string }>`
 `;
 
 const HomeButton = (): ReactElement => {
-  const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
+  const setActiveModuleId = useSetRecoilState(ActiveModuleIdState);
 
   return (
     <ButtonContainer onClick={() => setActiveModuleId(null)}>
@@ -56,13 +57,19 @@ const HomeButton = (): ReactElement => {
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
   const theme = useRecoilValue(ThemeState);
+  const deleteModule = useDeleteModule();
 
   const isActive = activeModuleId === _id;
   const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   return (
-    <ButtonContainer onClick={() => setActiveModuleId(_id)} background={isActive ? background : undefined}>
-      <img src={icon} width="70%" draggable={false} />
+    <ButtonContainer
+      onClick={() => setActiveModuleId(_id)}
+      background={isActive ? background : undefined}
+      // TODO: this is a temp solution until delete UI is ready
+      onDoubleClick={() => deleteModule(_id)}
+    >
+      <img src={icon} width="60%" draggable={false} />
     </ButtonContainer>
   );
 };

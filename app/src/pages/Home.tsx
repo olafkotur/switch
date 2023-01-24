@@ -1,7 +1,8 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 import { SearchBar, SwitchHeader } from '../components';
 import { SIDE_BAR_WIDTH } from '../const';
+import { useCreateModule } from '../hooks';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -17,10 +18,14 @@ const Header = styled.img`
 `;
 
 export const HomePage = (): ReactElement => {
+  const [searchValue, setSearchValue] = useState('');
+
+  const createModule = useCreateModule();
+
   return (
     <HomeContainer>
       <Header src={SwitchHeader} />
-      <SearchBar />
+      <SearchBar value={searchValue} setValue={setSearchValue} onSubmit={createModule} />
     </HomeContainer>
   );
 };

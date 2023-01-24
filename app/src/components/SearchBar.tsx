@@ -5,6 +5,12 @@ import { SEARCH_BAR_PLACEHOLDER } from '../const';
 import { Search } from '../icons';
 import { Divider } from './Divider';
 
+interface SearchBarProps {
+  value: string;
+  setValue: (value: string) => void;
+  onSubmit: (value: string) => Promise<void>;
+}
+
 const SearchBarContainer = styled.div`
   display: flex;
   width: 70%;
@@ -31,9 +37,7 @@ const LeftSection = styled.div`
   width: 100%;
 `;
 
-export const SearchBar = (): ReactElement => {
-  const [value, setValue] = useState('');
-
+export const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps): ReactElement => {
   return (
     <SearchBarContainer>
       <LeftSection>
@@ -43,15 +47,11 @@ export const SearchBar = (): ReactElement => {
         <SearchBarInputContainer>
           <SubtitleText>enter full URL:</SubtitleText>
         </SearchBarInputContainer>
-        <SearchBarInput
-          placeholder={SEARCH_BAR_PLACEHOLDER}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
+        <SearchBarInput placeholder={SEARCH_BAR_PLACEHOLDER} value={value} onChange={(e) => setValue(e.target.value)} />
         <Spacer horizontal={7} />
       </LeftSection>
 
-      <LargeButton>
+      <LargeButton onClick={() => onSubmit(value)} disabled={!value}>
         <SmallText bold color="inherit">
           Add
         </SmallText>
