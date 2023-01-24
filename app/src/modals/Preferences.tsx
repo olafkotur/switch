@@ -1,26 +1,28 @@
 import React, { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Spacer, SubtitleText } from '../components';
+import { useLogout, useTheme } from '../hooks';
 
 type PreferencesPanel = 'general' | 'account' | 'appearance';
 
 const PreferencesContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 600px;
-  height: 600px;
+  width: 70vw;
+  height: 70vh;
   position: relative;
-  background: ${(props) => props.theme.backgroundColor.secondary};
+  background: ${(props) => props.theme.backgroundColor.primary};
   border-radius: ${(props) => props.theme.borderRadius.medium};
-  padding: ${(props) => props.theme.spacing.veryLarge};
 `;
 
 const PreferencesPanelContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 150px;
-  padding: 0 ${(props) => props.theme.spacing.large};
+  height: calc(100% - 40px);
+  padding: ${(props) => props.theme.spacing.veryLarge};
+  border-radius: ${(props) => props.theme.borderRadius.medium};
+  background: ${(props) => props.theme.backgroundColor.secondary};
 `;
 
 const PreferencesButton = styled(Button)`
@@ -28,12 +30,23 @@ const PreferencesButton = styled(Button)`
 `;
 
 const PreferencesContent = styled.div`
-  height: 100%;
-  width: 450px;
+  width: calc(70vw - 150px);
+  height: calc(100% - 40px);
+  padding: ${(props) => props.theme.spacing.veryLarge};
+  background: ${(props) => props.theme.backgroundColor.primary};
+  border-radius: 0 ${(props) => props.theme.borderRadius.medium} ${(props) => props.theme.borderRadius.medium} 0;
+`;
+
+const PreferencesPanelFooter = styled.div`
+  position: absolute;
+  bottom: ${(props) => props.theme.spacing.veryLarge};
 `;
 
 export const Preferences = (): ReactElement => {
   const [selectedPanel, setSelectedPanel] = useState<PreferencesPanel>('general');
+
+  const theme = useTheme();
+  const logout = useLogout();
 
   return (
     <PreferencesContainer>
@@ -49,6 +62,12 @@ export const Preferences = (): ReactElement => {
         <PreferencesButton onClick={() => setSelectedPanel('appearance')}>
           <SubtitleText faint={selectedPanel !== 'appearance'}>Appearance</SubtitleText>
         </PreferencesButton>
+
+        <PreferencesPanelFooter>
+          <PreferencesButton onClick={logout}>
+            <SubtitleText color={theme.color.danger}>Logout</SubtitleText>
+          </PreferencesButton>
+        </PreferencesPanelFooter>
       </PreferencesPanelContainer>
 
       <PreferencesContent>

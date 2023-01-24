@@ -39,13 +39,14 @@ export const LIGHT_THEME = {
     faint: 'rgba(0, 0, 0, 0.6)',
     normal: 'rgba(0, 0, 0, 1)',
     inverted: 'rgba(255, 255, 255, 1)',
+    danger: 'rgba(227, 66, 66, 0.8)',
   },
   backgroundColor: {
     primary: '#F2F5F7',
     secondary: '#F8F9F9',
     tertiary: '#307093',
     faint: 'rgba(0, 0, 0, 0.15)',
-    backdrop: 'rgba(0, 0, 0, 0.9)',
+    backdrop: 'rgba(0, 0, 0, 0.7)',
   },
 };
 
@@ -55,6 +56,7 @@ export const DARK_THEME = {
     faint: 'rgba(255, 255, 255, 0.6)',
     normal: 'rgba(255, 255, 255, 1)',
     inverted: 'rgba(0, 0, 0, 1)',
+    danger: 'rgba(227, 66, 66, 0.7)',
   },
   backgroundColor: {
     primary: '#303036',

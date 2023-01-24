@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
-import { IsAuthenticatedState } from '../state';
+import { IsAuthenticatedState, ModalState } from '../state';
 import { useRequest } from './use-request';
 import { useRemoveStorage, useSetStorage } from './use-storage';
 import { useToast } from './use-toast';
@@ -71,9 +71,11 @@ export const useRefresh = () => {
 export const useLogout = () => {
   const removeStorage = useRemoveStorage();
   const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
+  const setModal = useSetRecoilState(ModalState);
 
   return useCallback(() => {
     removeStorage('tokens');
     setIsAuthenticated(false);
+    setModal(null);
   }, [removeStorage, setIsAuthenticated]);
 };
