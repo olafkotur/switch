@@ -52,7 +52,7 @@ export const ModuleHandler = {
    * @param res - response object
    */
   delete: async (req: Request, res: Response): Promise<void> => {
-    const id = req.body.id || '';
+    const id = req.body._id || '';
     if (!id) {
       return ResponseService.bad('Module id must be provided', res);
     }

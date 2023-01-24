@@ -4,9 +4,12 @@ export interface User {
 }
 
 export interface Module {
-  id: string;
+  _id: string;
+  userId: string;
   url: string;
-  favicon: string;
+  icon: string;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface Response {

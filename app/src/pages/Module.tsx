@@ -21,7 +21,7 @@ export const ModulePage = (): ReactElement => {
   return (
     <ModuleContainer>
       {modules.map((module) => (
-        <ModuleWebview key={module.id} src={module.url} isActive={module.id === activeModuleId} />
+        <ModuleWebview key={module._id} src={module.url} isActive={module._id === activeModuleId} />
       ))}
     </ModuleContainer>
   );

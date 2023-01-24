@@ -53,16 +53,16 @@ const HomeButton = (): ReactElement => {
   );
 };
 
-const ModuleButton = ({ id, favicon }: Module): ReactElement => {
+const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
   const theme = useRecoilValue(ThemeState);
 
-  const isActive = activeModuleId === id;
+  const isActive = activeModuleId === _id;
   const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   return (
-    <ButtonContainer onClick={() => setActiveModuleId(id)} background={isActive ? background : undefined}>
-      <img src={favicon} width="70%" draggable={false} />
+    <ButtonContainer onClick={() => setActiveModuleId(_id)} background={isActive ? background : undefined}>
+      <img src={icon} width="70%" draggable={false} />
     </ButtonContainer>
   );
 };
@@ -88,7 +88,7 @@ export const Sidebar = (): ReactElement => {
 
       <SidebarTop>
         {modules.map((module) => (
-          <ModuleButton key={`module-${module.id}`} {...module} />
+          <ModuleButton key={`module-${module._id}`} {...module} />
         ))}
       </SidebarTop>
 

@@ -75,7 +75,7 @@ export const Preferences = (): ReactElement => {
     <PreferencesContainer>
       <PreferencesPanelContainer>
         {config.map((preference) => (
-          <PreferencesButton onClick={preference.onClick}>
+          <PreferencesButton onClick={preference.onClick} key={preference.label}>
             <SubtitleText faint={!preference.isActive} cursor="pointer">
               {preference.label}
             </SubtitleText>
