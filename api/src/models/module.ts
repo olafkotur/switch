@@ -1,16 +1,18 @@
 import { ObjectId } from 'mongodb';
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 import { ModelBase } from '../typings';
 
 export interface ModuleModelData extends ModelBase {
+  userId: Types.ObjectId;
   url: string;
-  favicon: string;
+  icon: string;
 }
 
 const schema = new Schema({
   _id: { type: ObjectId, required: true, index: true },
-  url: { type: String, required: true },
-  favicon: { type: String },
+  userId: { type: ObjectId, required: true },
+  url: { type: String, required: false },
+  icon: { type: String, required: true },
   updatedAt: { type: Date, required: true },
   createdAt: { type: Date, required: true },
 });

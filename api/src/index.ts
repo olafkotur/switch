@@ -1,6 +1,7 @@
 import 'colors';
 import express from 'express';
 import { MONGO_NAME, MONGO_URI, NO_VERIFY_URLS, PORT } from './const';
+import { ModuleHandler } from './handlers/module';
 import { UserHandler } from './handlers/user';
 import { DatabaseService } from './services/database';
 import { ResponseService } from './services/response';
@@ -50,6 +51,7 @@ const main = async (): Promise<void> => {
 
   // setup endpoints
   setupUserHandlers();
+  setupModuleHandlers();
 
   app.listen(PORT, () => console.log(`API listening on port ${PORT}`.cyan));
 };
@@ -59,6 +61,12 @@ const setupUserHandlers = (): void => {
   app.post('/user/refresh', UserHandler.refresh);
   app.post('/user/create', UserHandler.createUser);
   app.get('/user/profile', UserHandler.fetchProfile);
+};
+
+const setupModuleHandlers = (): void => {
+  app.get('/module', ModuleHandler.fetch);
+  app.post('/module/create', ModuleHandler.create);
+  app.delete('/module/delete', ModuleHandler.delete);
 };
 
 main();
