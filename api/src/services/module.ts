@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { ModuleModel, ModuleModelData } from '../models/module';
+import { UtilService } from './util';
 
 export const ModuleService = {
   /**
@@ -16,7 +17,7 @@ export const ModuleService = {
    * @param url - app url
    */
   create: async (args: { userId: Types.ObjectId; url: string }): Promise<ModuleModelData> => {
-    const icon = 'https://www.google.com/favicon.ico'; // TODO: fetch url favicon
+    const icon = await UtilService.fetchUrlFavicon(args.url);
     const data: ModuleModelData = {
       _id: Types.ObjectId(),
       userId: args.userId,
