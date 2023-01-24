@@ -1,4 +1,7 @@
+import { Types } from 'mongoose';
+
 export interface ModelBase {
+  _id: Types.ObjectId;
   updatedAt: Date;
   createdAt: Date;
 }

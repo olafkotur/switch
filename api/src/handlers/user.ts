@@ -94,8 +94,8 @@ export const UserHandler = {
   fetchProfile: async (_req: Request, res: Response): Promise<void> => {
     const jwt: JwtAuthData = res.locals.jwt.data;
     const user = await UserService.fetchSingle(jwt.username);
-    const data = { username: user?.username, avatar: user?.avatar };
-    if (data) {
+    if (user) {
+      const data = { username: user.username, avatar: user.avatar };
       return ResponseService.data(data, res);
     }
     return ResponseService.notFound('Profile not found', res);

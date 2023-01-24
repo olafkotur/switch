@@ -8,4 +8,4 @@ export const MONGO_NAME = ENVIORNMENT === 'production' ? 'data' : 'switch';
 export const PORT = process.env.PORT || 8080;
 export const CRYPTO_SALT = process.env.CRYPTO_SALT || '';
 export const JWT_SECRET = process.env.JWT_SECRET || '';
-export const NO_VERIFY_URLS = ['/login'];
+export const NO_VERIFY_URLS = ['/user/login', '/user/refresh', '/user/create'];

@@ -1,6 +1,7 @@
 import 'colors';
 import express from 'express';
 import { MONGO_NAME, MONGO_URI, NO_VERIFY_URLS, PORT } from './const';
+import { UserHandler } from './handlers/user';
 import { DatabaseService } from './services/database';
 import { ResponseService } from './services/response';
 import { SecurityService } from './services/security';
@@ -31,7 +32,9 @@ const main = async (): Promise<void> => {
     console.log(`Request :: ${req.method} ${req.url} (${req.ip})`);
 
     // skip verify on some urls
-    if (NO_VERIFY_URLS.includes(req.url)) next();
+    if (NO_VERIFY_URLS.includes(req.url)) {
+      return next();
+    }
 
     // decode and verify jwt token
     const jwtToken = (req.headers.authorization || '').replace('Bearer ', '');
@@ -45,7 +48,17 @@ const main = async (): Promise<void> => {
     next();
   });
 
+  // setup endpoints
+  setupUserHandlers();
+
   app.listen(PORT, () => console.log(`API listening on port ${PORT}`.cyan));
+};
+
+const setupUserHandlers = (): void => {
+  app.post('/user/login', UserHandler.login);
+  app.post('/user/refresh', UserHandler.refresh);
+  app.post('/user/create', UserHandler.createUser);
+  app.get('/user/profile', UserHandler.fetchProfile);
 };
 
 main();

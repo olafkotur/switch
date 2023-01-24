@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { UserModel, UserModelData } from '../models/user';
 
 export const UserService = {
@@ -38,6 +39,7 @@ export const UserService = {
 
     // define user model
     const data: UserModelData = {
+      _id: Types.ObjectId(),
       username,
       password,
       avatar,
