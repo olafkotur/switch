@@ -1,46 +1,30 @@
-import MongoClient from 'mongodb'
-import { config } from '../config'
-import { Collection } from '../typings/models'
-
-let database: MongoClient.Db | null = null
+import mongoose from 'mongoose';
 
 export const DatabaseService = {
   /**
    * Establishes the database connection.
-   * @param uri - connection uri
+   * @param uri - target uri to connect to
+   * @param name - name of the database
    */
-  connect: async (uri: string): Promise<boolean> => {
-    return await new Promise((resolve, reject) => {
-      MongoClient.connect(
-        uri,
-        { useUnifiedTopology: true },
-        (error: Error, db: MongoClient.MongoClient) => {
-          if (error) {
-            reject(false)
-          }
-          database = db.db(config.mongoName)
-          console.log(
-            `Database.connect :: Succesfully connected to ${config.mongoName}`
-              .green,
-          )
-          resolve(true)
-        },
-      )
-    })
+  connect: async (args: { uri: string; name: string }): Promise<boolean> => {
+    return await new Promise((resolve) => {
+      mongoose.connect(args.uri, {
+        dbName: args.name,
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      });
+      mongoose.connection.on('connected', () => {
+        console.log(`DatabaseService:connect :: Succesfully connected to "${args.name}" database`.green);
+        resolve(true);
+      });
+    });
   },
 
   /**
-   * Returns requested collection.
-   * @param col - collection name
+   * Safely disconnects database connection.
    */
-  getCollection: (col: Collection) => {
-    return DatabaseService.getDb().collection(col)
+  disconnect: async (): Promise<void> => {
+    await mongoose.connection.close();
+    console.log('DatabaseService:disconnect :: Succesfully disconnected from database');
   },
-
-  /**
-   * Fetches the database object.
-   */
-  getDb: (): MongoClient.Db => {
-    return database as MongoClient.Db
-  },
-}
+};
