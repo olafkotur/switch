@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { ColumnContainer, NavigationBar } from '../components';
+import { ColumnContainer } from '../components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { ActiveModuleIdState, ModulesState } from '../state';
 import { Module } from '../typings';
@@ -34,7 +34,6 @@ const ModuleWebview = (module: Module): ReactElement => {
 
   return (
     <ColumnContainer>
-      {isActive && <NavigationBar module={module} />}
       <Webview id={`webview-${module._id}`} src={module.url} isActive={isActive} />
     </ColumnContainer>
   );
