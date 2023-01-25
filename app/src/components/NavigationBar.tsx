@@ -30,10 +30,8 @@ const ControlsAnimated = styled(motion.div)`
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
-  height: 35px;
+  height: 50px;
   width: calc(100% - 30px);
-  border-bottom-left-radius: ${(props) => props.theme.borderRadius.medium};
-  border-bottom-right-radius: ${(props) => props.theme.borderRadius.medium};
   background: ${(props) => props.theme.backgroundColor.secondary};
   padding: 0 ${(props) => props.theme.spacing.large};
   filter: drop-shadow(${(props) => props.theme.dropShadow.medium});
@@ -45,8 +43,8 @@ const ButtonsContainer = styled(SpaceBetweenContainer)`
 `;
 
 const ModuleIcon = styled.img`
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   border-radius: ${(props) => props.theme.borderRadius.small};
 `;
 
@@ -54,7 +52,7 @@ const ModuleUrl = styled(SmallText)`
   width: calc(100vw - ${SIDE_BAR_WIDTH}px - 185px);
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 2px ${(props) => props.theme.spacing.medium};
+  padding: ${(props) => props.theme.spacing.small} ${(props) => props.theme.spacing.medium};
   background: ${(props) => props.theme.backgroundColor.primary};
   border-radius: ${(props) => props.theme.borderRadius.small};
 `;
@@ -100,8 +98,8 @@ export const NavigationBar = ({ module }: { module: Module }): ReactElement => {
             <Reload />
           </IconButton>
 
-          <IconButton noMargin size="medium" onClick={() => deleteModule(module._id)}>
-            <Close color={theme.color.danger} />
+          <IconButton noMargin size="medium" bg={theme.color.danger} onClick={() => deleteModule(module._id)}>
+            <Close size={20} color="#fff" />
           </IconButton>
         </ButtonsContainer>
       </ControlsAnimated>

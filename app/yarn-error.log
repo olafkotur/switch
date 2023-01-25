@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/olafkotur/.nvm/versions/node/v16.13.0/bin/node /usr/local/bin/yarn add @types/react-input-switch
+  /Users/olafkotur/.nvm/versions/node/v16.13.0/bin/node /usr/local/bin/yarn add @types/react-switch-input
 
 PATH: 
   /Users/olafkotur/.nvm/versions/node/v16.13.0/bin:/usr/local/opt/node@12/bin:/usr/local/opt/mongodb-community@4.2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/olafkotur/.nvm/versions/node/v16.13.0/bin:/usr/local/opt/node@12/bin:/usr/local/opt/mongodb-community@4.2/bin:/Users/olafkotur/Library/Android/sdk/emulator:/Users/olafkotur/Library/Android/sdk/platform-tools:/Users/olafkotur/Library/Android/sdk/emulator:/Users/olafkotur/Library/Android/sdk/platform-tools
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2freact-input-switch: Not found
+  Error: https://registry.yarnpkg.com/@types%2freact-switch-input: Not found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:67029:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140883:22)
       at Request.emit (node:events:390:28)
@@ -63,6 +63,7 @@ npm manifest:
       "react-dom": "^18.2.0",
       "react-input-switch": "^2.2.2",
       "react-query": "^3.39.2",
+      "react-switch-input": "^1.1.0",
       "react-toastify": "^9.1.1",
       "recoil": "^0.7.5",
       "style-loader": "^2.0.0",
@@ -7829,6 +7830,11 @@ Lockfile:
       "@babel/runtime" "^7.5.5"
       broadcast-channel "^3.4.1"
       match-sorter "^6.0.2"
+  
+  react-switch-input@^1.1.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/react-switch-input/-/react-switch-input-1.1.0.tgz#0833b74224059d2317d3e99af89e24916f6c3041"
+    integrity sha512-TnT7E8XI7u0rzMrc78OIsNX5nrMAuAm7qzGkQMckQ7+misa1MGEA4rrY6UT+OPg6Z2JehEBBCTR2+G+K/aXGgw==
   
   react-toastify@^9.1.1:
     version "9.1.1"

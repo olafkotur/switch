@@ -1,12 +1,13 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
-import { Add, Settings, Switch } from '../icons';
-import { ActiveModuleIdState, ModalState, ModulesState, ThemeState } from '../state';
+import { Add, Settings } from '../icons';
+import { ActiveModuleIdState, IsControlsVisibleState, ModalState, ModulesState, ThemeState } from '../state';
 import { Module } from '../typings';
-import { Button, IconButton } from './Button';
-import { Spacer } from './Common';
+import { Button, IconButton, SidebarButton } from './Button';
+import { ModuleIcon, Spacer } from './Common';
+import { Controls } from './Controls';
 
 const SidebarContainer = styled.div`
   display: flex;
@@ -33,35 +34,29 @@ const SidebarBottom = styled.div`
   margin-bottom: ${(props) => props.theme.spacing.medium};
 `;
 
-const SwitchIconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-`;
-
-const ButtonContainer = styled(Button)<{ background?: string }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: ${(props) => props.theme.borderRadius.small};
-  background: ${({ background }) => background};
-`;
-
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
   const theme = useRecoilValue(ThemeState);
+  const [isControlsVisible, setIsControlsVisible] = useRecoilState(IsControlsVisibleState);
 
   const isActive = activeModuleId === _id;
+  const showControls = isControlsVisible && activeModuleId === _id;
   const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
+  const handleOnClick = useCallback(() => {
+    if (isActive) {
+      return setIsControlsVisible(true);
+    }
+    setActiveModuleId(_id);
+  }, [isActive, _id, setActiveModuleId]);
+
   return (
-    <ButtonContainer onClick={() => setActiveModuleId(_id)} background={isActive ? background : undefined}>
-      <img src={icon} width="60%" draggable={false} />
-    </ButtonContainer>
+    <>
+      <Controls _id={_id} icon={icon} isVisible={showControls} />
+      <SidebarButton onClick={handleOnClick} bg={isActive ? background : undefined} opacity={showControls ? 0 : 1}>
+        <ModuleIcon src={icon} draggable={false} />
+      </SidebarButton>
+    </>
   );
 };
 
@@ -73,9 +68,9 @@ const CreateModuleButton = (): ReactElement => {
   const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   return (
-    <ButtonContainer onClick={() => setActiveModuleId(null)} background={isActive ? background : undefined}>
+    <SidebarButton onClick={() => setActiveModuleId(null)} bg={isActive ? background : undefined}>
       <Add size={24} />
-    </ButtonContainer>
+    </SidebarButton>
   );
 };
 
@@ -94,11 +89,7 @@ export const Sidebar = (): ReactElement => {
 
   return (
     <SidebarContainer>
-      <Spacer vertical={12} />
-      <SwitchIconContainer>
-        <Switch />
-      </SwitchIconContainer>
-      <Spacer vertical={2} />
+      <Spacer vertical={10} />
 
       <SidebarTop>
         {modules.map((module) => (

@@ -9,9 +9,9 @@ import 'react-toastify/dist/ReactToastify.min.css';
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: Inter;
-    color: ${(props) => props.theme.color.normal};
     user-select: none;
-    background: ${(props) => props.theme.backgroundColor.primary};
+    color: ${(props) => props.theme.color.normal};
+    background-color: ${(props) => props.theme.backgroundColor.secondary};
 
     margin: 0;
   }

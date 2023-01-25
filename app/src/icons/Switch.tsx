@@ -1,20 +1,11 @@
 import React, { ReactElement } from 'react';
 import { IconProps, useDefaultColor } from '.';
 
-interface SwitchProps extends IconProps {
-  isActive?: boolean;
-}
-
-export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): ReactElement => {
+export const Switch = ({ size = 6.5, opacity = 1 }: IconProps): ReactElement => {
   const defaultColor = useDefaultColor();
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="33.135"
-      height="33.135"
-      viewBox="0 0 33.135 33.135"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="33.135" height="33.135" viewBox="0 0 33.135 33.135">
       <g id="Group_4" data-name="Group 4" transform="translate(-257.635 -1042.635)">
         <rect
           id="Rectangle_1"
@@ -22,7 +13,7 @@ export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): Reac
           width={size}
           height={size}
           transform="translate(266.573 1042.635)"
-          fill={isActive ? defaultColor : '#b33939'}
+          fill="#b33939"
           opacity={opacity}
         />
         <rect
@@ -67,7 +58,7 @@ export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): Reac
           width={size}
           height={size}
           transform="translate(266.573 1069.393)"
-          fill={isActive ? defaultColor : '#b33939'}
+          fill={'#b33939'}
           opacity={opacity}
         />
         <rect
@@ -76,7 +67,7 @@ export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): Reac
           width={size}
           height={size}
           transform="translate(275.455 1069.393)"
-          fill={isActive ? defaultColor : '#307093'}
+          fill="#307093"
           opacity={opacity}
         />
         <rect
@@ -94,7 +85,7 @@ export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): Reac
           width={size}
           height={size}
           transform="translate(284.394 1051.573)"
-          fill={isActive ? defaultColor : '#307093'}
+          fill={'#307093'}
           opacity={opacity}
         />
         <rect
@@ -103,7 +94,7 @@ export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): Reac
           width={size}
           height={size}
           transform="translate(257.635 1060.455)"
-          fill={isActive ? defaultColor : '#cbae61'}
+          fill={'#cbae61'}
           opacity={opacity}
         />
         <rect
@@ -112,7 +103,7 @@ export const Switch = ({ size = 6.5, opacity = 1, isActive }: SwitchProps): Reac
           width={size}
           height={size}
           transform="translate(275.455 1060.455)"
-          fill={isActive ? defaultColor : '#cbae61'}
+          fill={'#cbae61'}
           opacity={opacity}
         />
       </g>

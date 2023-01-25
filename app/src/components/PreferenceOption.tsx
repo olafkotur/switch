@@ -1,14 +1,16 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { ColumnContainer, Spacer } from './Common';
 import { ToggleInput } from './Input';
 import { BodyText, SubtitleText } from './Text';
 
 interface PreferenceOptionProps {
+  id: string;
   title: string;
   description: string;
   type: 'toggle' | 'text';
-  onChange: () => void;
+  value: boolean | string;
+  onChange: (value: boolean | string) => void;
 }
 
 const PreferenceOptionContainer = styled.div`
@@ -18,9 +20,17 @@ const PreferenceOptionContainer = styled.div`
   width: 100%;
 `;
 
-export const PreferenceOption = ({ title, description, type, onChange }: PreferenceOptionProps): ReactElement => {
+export const PreferenceOption = ({
+  id,
+  title,
+  description,
+  type,
+  value,
+  onChange,
+}: PreferenceOptionProps): ReactElement => {
   return (
     <PreferenceOptionContainer>
+      {type === 'toggle' && <ToggleInput id={id} value={value as boolean} onChange={onChange} />}
       <ColumnContainer>
         <SubtitleText>{title}</SubtitleText>
         <Spacer vertical={2} />

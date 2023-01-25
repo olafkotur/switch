@@ -4,6 +4,7 @@ export * from './Background';
 export * from './Button';
 export * from './Common';
 export * from './Divider';
+export * from './Header';
 export * from './Input';
 export * from './Loader';
 export * from './NavigationBar';

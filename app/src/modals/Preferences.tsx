@@ -1,15 +1,17 @@
 import React, { ReactElement, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { Button, ColumnContainer, PreferenceOption, Spacer, SubtitleText } from '../components';
-import { useLogout, useTheme } from '../hooks';
+import { BodyText, Button, ColumnContainer, LargeButton, PreferenceOption, Spacer, SubtitleText } from '../components';
+import { useLogout, useTheme, useToggleTheme } from '../hooks';
+import { ThemeState } from '../state';
 
 type PreferencesPanel = 'general' | 'account' | 'appearance';
 
 const PreferencesContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 50vw;
-  height: 50vh;
+  width: 55vw;
+  height: 55vh;
   position: relative;
 `;
 
@@ -18,6 +20,7 @@ const PreferencesPanelContainer = styled.div`
   flex-direction: column;
   width: 150px;
   height: calc(100% - 40px);
+  position: relative;
   padding: ${(props) => props.theme.spacing.veryLarge};
   background: ${(props) => props.theme.backgroundColor.secondary};
   border-radius: ${(props) => props.theme.borderRadius.large};
@@ -42,7 +45,20 @@ const PreferencesContent = styled.div`
 
 const PreferencesPanelFooter = styled.div`
   position: absolute;
-  bottom: 0;
+  display: flex;
+  justify-content: center;
+  bottom: ${(props) => props.theme.spacing.large};
+`;
+
+const LogoutButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  width: 103px;
+  height: 30px;
+  border-radius: ${(props) => props.theme.borderRadius.medium};
+  background: ${(props) => props.theme.color.danger};
 `;
 
 export const Preferences = (): ReactElement => {
@@ -83,11 +99,11 @@ export const Preferences = (): ReactElement => {
         ))}
 
         <PreferencesPanelFooter>
-          <PreferencesButton onClick={logout}>
-            <SubtitleText color={theme.color.danger} cursor="pointer">
+          <LogoutButton onClick={logout}>
+            <BodyText color="inherit" cursor="inherit">
               Logout
-            </SubtitleText>
-          </PreferencesButton>
+            </BodyText>
+          </LogoutButton>
         </PreferencesPanelFooter>
       </PreferencesPanelContainer>
 
@@ -104,9 +120,11 @@ const GeneralPanel = (): ReactElement => {
   return (
     <ColumnContainer>
       <PreferenceOption
-        title="Overlay Mode"
+        id="overlayMode"
+        title="Overlay mode"
         description="Switch will display over other applications"
         type="toggle"
+        value={false}
         onChange={console.log}
       />
     </ColumnContainer>
@@ -117,16 +135,20 @@ const AccountPanel = (): ReactElement => {
   return (
     <ColumnContainer>
       <PreferenceOption
+        id="updateAvatar"
         title="Update avatar"
         description="Update your profile avatar picture"
         type="text"
+        value=""
         onChange={console.log}
       />
       <Spacer vertical={15} />
       <PreferenceOption
+        id="changePassword"
         title="Change password"
         description="Update your current password"
         type="text"
+        value=""
         onChange={console.log}
       />
     </ColumnContainer>
@@ -134,12 +156,26 @@ const AccountPanel = (): ReactElement => {
 };
 
 const AppearancePanel = (): ReactElement => {
+  const theme = useRecoilValue(ThemeState);
+  const toggleTheme = useToggleTheme();
+
   return (
     <ColumnContainer>
       <PreferenceOption
-        title="Animate Presets"
+        id="darkMode"
+        title="Dark mode"
+        description="Enable dark mode, does not affect any added applications"
+        type="toggle"
+        value={theme === 'dark'}
+        onChange={toggleTheme}
+      />
+      <Spacer vertical={15} />
+      <PreferenceOption
+        id="animatePresets"
+        title="Animate presets"
         description="Show an animation when resizing Switch using layout presets"
         type="toggle"
+        value={false}
         onChange={console.log}
       />
     </ColumnContainer>

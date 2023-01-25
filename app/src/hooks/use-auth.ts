@@ -36,7 +36,7 @@ export const useSignUp = () => {
   return useCallback(
     async ({ username, password }: { username: string; password: string }) => {
       const response = await request({ method: 'POST', url, body: { username, password } });
-      if (response.code !== 200) {
+      if (response.code !== 201) {
         return errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
       }
       await setStorage('tokens', { ...(response.data as Object) });
@@ -78,4 +78,15 @@ export const useLogout = () => {
     setIsAuthenticated(false);
     setModal(null);
   }, [removeStorage, setIsAuthenticated]);
+};
+
+export const useResetPassword = () => {
+  const infoToast = useToast('info');
+
+  return useCallback(
+    ({ oldPassword, newPassword }: { oldPassword?: string; newPassword?: string }) => {
+      infoToast('Password reset not currently implemented');
+    },
+    [infoToast],
+  );
 };

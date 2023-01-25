@@ -2,9 +2,7 @@ import styled from 'styled-components';
 
 export const Spacer = styled.div<{ horizontal?: number; vertical?: number }>`
   padding: ${(props) =>
-    `${props.vertical ?? 0}px ${props.horizontal ?? 0}px ${props.vertical ?? 0}px ${
-      props.horizontal ?? 0
-    }px`};
+    `${props.vertical ?? 0}px ${props.horizontal ?? 0}px ${props.vertical ?? 0}px ${props.horizontal ?? 0}px`};
 `;
 
 export const Avatar = styled.img<{ size?: number }>`
@@ -39,4 +37,13 @@ export const FlexEndContainer = styled(RowContainer)`
 export const SpaceBetweenContainer = styled(RowContainer)`
   width: 100%;
   justify-content: space-between;
+`;
+
+export const RelativeContainer = styled.div`
+  position: relative;
+`;
+
+export const ModuleIcon = styled.img`
+  width: 30px;
+  border-radius: ${(props) => props.theme.borderRadius.medium};
 `;

@@ -1,6 +1,6 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { SearchBar, SwitchHeader } from '../components';
+import { Header, SearchBar, Spacer } from '../components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useCreateModule } from '../hooks';
 
@@ -13,19 +13,27 @@ const HomeContainer = styled.div`
   padding: 0 0 0 ${SIDE_BAR_WIDTH}px;
 `;
 
-const Header = styled.img`
-  margin-bottom: 75px;
-`;
-
 export const HomePage = (): ReactElement => {
   const [searchValue, setSearchValue] = useState('');
 
   const createModule = useCreateModule();
 
+  const isSearchValueValid = useMemo(() => {
+    return new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:[\.|\:][\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm).test(
+      searchValue,
+    );
+  }, [searchValue]);
+
   return (
     <HomeContainer>
-      <Header src={SwitchHeader} />
-      <SearchBar value={searchValue} setValue={setSearchValue} onSubmit={createModule} />
+      <Header />
+      <Spacer vertical={40} />
+      <SearchBar
+        value={searchValue}
+        disabled={!searchValue || !isSearchValueValid}
+        setValue={setSearchValue}
+        onSubmit={createModule}
+      />
     </HomeContainer>
   );
 };

@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { ModulesState, ThemeState } from '../state';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { IsAuthenticatedState, ModulesState, ThemeState } from '../state';
 import { AuthTokens } from '../typings';
-import { useRefresh } from './use-login';
+import { useRefresh } from './use-auth';
 import { useFetchModules } from './use-module';
 import { useGetStorage } from './use-storage';
 
@@ -14,6 +14,8 @@ export const useInitialise = () => {
   const setTheme = useSetRecoilState(ThemeState);
   const setModules = useSetRecoilState(ModulesState);
 
+  const isAuthenticated = useRecoilValue(IsAuthenticatedState);
+
   return useCallback(async () => {
     const theme = await getStorage('theme');
     theme && setTheme(theme);
@@ -23,7 +25,9 @@ export const useInitialise = () => {
       await refresh({ refreshToken: tokens.refreshToken });
     }
 
-    const modules = await fetchModules();
-    setModules(modules);
-  }, [getStorage, refresh, fetchModules, setTheme, setModules]);
+    if (isAuthenticated) {
+      const modules = await fetchModules();
+      setModules(modules);
+    }
+  }, [isAuthenticated, getStorage, refresh, fetchModules, setTheme, setModules]);
 };

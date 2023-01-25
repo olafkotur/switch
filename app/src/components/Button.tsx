@@ -17,6 +17,7 @@ interface Props extends HTMLMotionProps<'div'> {
 interface IconButtonProps extends Props {
   size: keyof typeof ICON_BUTTON_SIZES;
   noMargin?: boolean;
+  bg?: string;
 }
 
 const ButtonContainer = styled(motion.div)`
@@ -27,7 +28,7 @@ export const Button = ({ ...props }: Props): ReactElement => {
   return <ButtonContainer {...props} whileTap={{ scale: props.animation ?? 0.98 }} />;
 };
 
-const IconButtonContainer = styled(Button)<{ px: string; noMargin?: boolean }>`
+const IconButtonContainer = styled(Button)<{ px: string; noMargin?: boolean; bg?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,6 +38,7 @@ const IconButtonContainer = styled(Button)<{ px: string; noMargin?: boolean }>`
   pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   border-radius: ${(props) => props.theme.borderRadius.small};
   margin: ${(props) => (props.noMargin ? 0 : props.theme.spacing.medium)} 0;
+  background: ${(props) => props.bg};
 `;
 
 export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
@@ -66,3 +68,14 @@ export const LargeButton = ({ ...props }: Props): ReactElement => {
     </LargeButtonContainer>
   );
 };
+
+export const SidebarButton = styled(Button)<{ bg?: string; opacity?: number }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  opacity: ${(props) => props.opacity ?? 1};
+  background: ${(props) => props.bg};
+  border-radius: ${(props) => props.theme.borderRadius.small};
+`;

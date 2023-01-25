@@ -32,6 +32,7 @@ const ModalContent = styled.div`
   background: transparent;
   z-index: ${(props) => props.theme.zIndex.modal};
   border-radius: ${(props) => props.theme.borderRadius.large};
+  filter: drop-shadow(${(props) => props.theme.dropShadow.medium});
 `;
 
 const CloseButton = styled(IconButton)`

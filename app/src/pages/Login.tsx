@@ -1,23 +1,23 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { BodyText, Button, LargeButton, SmallText, Spacer, TextInput, TitleText } from '../components';
-import { useLogin, useSignUp, useTheme } from '../hooks';
-import { Email, IconProps } from '../icons';
+import { BodyText, LargeButton, SmallText, Spacer, TextInput, TitleText } from '../components';
+import { useLogin, useResetPassword, useSignUp, useTheme } from '../hooks';
+import { Switch } from '../icons';
 
 type ContentType = 'signup' | 'login';
 
 const SIGN_UP_COPY = {
   title: 'Sign up to Switch',
-  button: 'Sign up with Email',
+  button: 'Sign up',
   anotherWay: 'Already have an account?',
-  anotherWayButton: 'Sign in',
+  anotherWayButton: 'Login',
   footer:
     "By clicking “Sign Up”, you agree to Switch's Terms of Service and acknowledge that Switch's Privacy Policy applies to you.",
 };
 
 const LOGIN_COPY = {
   title: 'Login to Switch',
-  button: 'Login with Email',
+  button: 'Login',
   anotherWay: 'Not registered?',
   anotherWayButton: 'Sign up',
   footer: '',
@@ -61,6 +61,7 @@ export const LoginPage = (): ReactElement => {
   const theme = useTheme();
   const login = useLogin();
   const signUp = useSignUp();
+  const resetPassword = useResetPassword();
 
   const copy = useMemo(() => (contentType === 'signup' ? SIGN_UP_COPY : LOGIN_COPY), [contentType]);
   const isNextDisabled = !username || !password;
@@ -81,6 +82,8 @@ export const LoginPage = (): ReactElement => {
     <LoginPageContainer>
       <LoginPageCard>
         <LoginPageCardContent>
+          <Switch />
+          <Spacer vertical={5} />
           <TitleText>{copy.title}</TitleText>
           <Spacer vertical={24} />
 
@@ -92,7 +95,20 @@ export const LoginPage = (): ReactElement => {
           <LargeButton width="270px" disabled={isNextDisabled} onClick={handleSubmit}>
             <BodyText color={theme.color.inverted}>{copy.button}</BodyText>
           </LargeButton>
+
           <Spacer vertical={16} />
+
+          {contentType === 'login' && (
+            <>
+              <BodyText>
+                Forgot password?{' '}
+                <BodyText bold underline cursor="pointer" onClick={() => resetPassword({})}>
+                  Reset
+                </BodyText>
+              </BodyText>
+              <Spacer vertical={6} />
+            </>
+          )}
 
           <BodyText>
             {copy.anotherWay}{' '}
@@ -100,9 +116,8 @@ export const LoginPage = (): ReactElement => {
               {copy.anotherWayButton}
             </BodyText>
           </BodyText>
-          <Spacer vertical={16} />
 
-          {/* TODO: add forgot password logic */}
+          <Spacer vertical={16} />
 
           <SmallText faint>{copy.footer}</SmallText>
         </LoginPageCardContent>

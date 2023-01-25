@@ -15,7 +15,7 @@ export const IsAuthenticatedState = atom({
 
 export const ActiveModuleIdState = atom({
   key: 'activeModuleId',
-  default: '63cfa1452f25835bd768e09e' as string | null,
+  default: null as string | null,
 });
 
 export const ModulesState = atom({
@@ -26,4 +26,9 @@ export const ModulesState = atom({
 export const ModalState = atom({
   key: 'modal',
   default: null as ModalName | null,
+});
+
+export const IsControlsVisibleState = atom({
+  key: 'isControlsVisible',
+  default: false,
 });

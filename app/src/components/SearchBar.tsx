@@ -1,12 +1,13 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { Input, LargeButton, SmallText, Spacer, SubtitleText } from '../components';
+import { IconButton, Input, Spacer } from '../components';
 import { SEARCH_BAR_PLACEHOLDER } from '../const';
-import { Search } from '../icons';
-import { Divider } from './Divider';
+import { useTheme } from '../hooks';
+import { Add, Search } from '../icons';
 
 interface SearchBarProps {
   value: string;
+  disabled: boolean;
   setValue: (value: string) => void;
   onSubmit: (value: string) => Promise<void>;
 }
@@ -15,47 +16,66 @@ const SearchBarContainer = styled.div`
   display: flex;
   width: 70%;
   height: 50px;
-  background: ${(props) => props.theme.backgroundColor.faint};
+  background: ${(props) => props.theme.backgroundColor.searchBar};
   padding: ${(props) => props.theme.spacing.medium};
   border-radius: ${(props) => props.theme.spacing.large};
   color: ${(props) => props.theme.color.inverted};
 `;
 
-const SearchBarInputContainer = styled.div`
-  min-width: 122px;
-`;
-
 const SearchBarInput = styled(Input)`
   width: 100%;
   margin-bottom: 2px;
-  font-size: ${(props) => props.theme.fontSize.large};
+  font-size: 24px;
 `;
 
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
 `;
 
-export const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps): ReactElement => {
+const CreateModuleButton = styled(IconButton)`
+  align-self: center;
+`;
+
+export const SearchBar = ({ value, disabled, setValue, onSubmit }: SearchBarProps): ReactElement => {
+  const theme = useTheme();
+
+  const handleEnterPress = useCallback(
+    async (event: KeyboardEvent) => {
+      if (event.code === 'Enter' && !disabled) {
+        await onSubmit(value);
+      }
+    },
+    [value, disabled, onSubmit],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keypress', handleEnterPress);
+    return () => window.removeEventListener('keypress', handleEnterPress);
+  }, [handleEnterPress]);
+
   return (
     <SearchBarContainer>
       <LeftSection>
         <Spacer horizontal={7} />
-        <Search size={20} />
-        <Divider height={40} />
-        <SearchBarInputContainer>
-          <SubtitleText>enter full URL:</SubtitleText>
-        </SearchBarInputContainer>
+        <Search size={24} />
+        <Spacer horizontal={7} />
         <SearchBarInput placeholder={SEARCH_BAR_PLACEHOLDER} value={value} onChange={(e) => setValue(e.target.value)} />
         <Spacer horizontal={7} />
       </LeftSection>
 
-      <LargeButton onClick={() => onSubmit(value)} disabled={!value}>
-        <SmallText bold color="inherit">
-          Add
-        </SmallText>
-      </LargeButton>
+      <CreateModuleButton
+        noMargin
+        size="large"
+        onClick={() => onSubmit(value)}
+        disabled={disabled}
+        bg={theme.backgroundColor.tertiary}
+      >
+        <Add size={24} color={theme.color.inverted} />
+      </CreateModuleButton>
+      <Spacer horizontal={4} />
     </SearchBarContainer>
   );
 };

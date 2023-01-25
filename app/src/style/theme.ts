@@ -29,6 +29,11 @@ const COMMON_THEME = {
     medium: '0px 8px 8px rgba(0, 0, 0, 0.35)',
     strong: '0px 12px 12px rgba(0, 0, 0, 0.4)',
   },
+  highlightColor: {
+    primary: '#307093', // cyan
+    secondary: '#CBAE61', // yellow
+    tertiary: '#B33939', // red
+  },
   animation: {
     light: 0.99,
     medium: 0.98,
@@ -46,34 +51,38 @@ const COMMON_THEME = {
 
 export const LIGHT_THEME = {
   ...COMMON_THEME,
+  name: 'light',
   color: {
     faint: 'rgba(0, 0, 0, 0.6)',
-    normal: 'rgba(0, 0, 0, 1)',
-    inverted: 'rgba(255, 255, 255, 1)',
-    danger: 'rgba(227, 66, 66, 0.8)',
+    normal: '#32323E',
+    inverted: '#fff',
+    danger: 'rgba(227, 66, 66, 0.9)',
   },
   backgroundColor: {
-    primary: '#F2F5F7',
-    secondary: '#F8F9F9',
-    tertiary: '#307093',
+    primary: '#F8F9F9',
+    secondary: '#F2F5F7',
+    tertiary: 'rgba(0, 0, 0, 0.8)',
     faint: 'rgba(0, 0, 0, 0.15)',
+    searchBar: '#fff',
     backdrop: 'rgba(0, 0, 0, 0.7)',
   },
 };
 
 export const DARK_THEME = {
   ...COMMON_THEME,
+  name: 'dark',
   color: {
     faint: 'rgba(255, 255, 255, 0.6)',
-    normal: 'rgba(255, 255, 255, 1)',
-    inverted: 'rgba(0, 0, 0, 1)',
-    danger: 'rgba(227, 66, 66, 0.7)',
+    normal: '#fff',
+    inverted: '#32323E',
+    danger: 'rgba(227, 66, 66, 0.9)',
   },
   backgroundColor: {
     primary: '#303036',
     secondary: '#1D1D21',
     tertiary: '#FFFFFF',
     faint: 'rgba(255, 255, 255, 0.15)',
+    searchBar: 'rgba(255, 255, 255, 0.15)',
     backdrop: 'rgba(0, 0, 0, 0.7)',
   },
 };

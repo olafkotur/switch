@@ -14,7 +14,7 @@ const BackgroundContainer = styled.div`
 const BackgroundImage = styled.div`
   width: 100vw;
   height: 100vh;
-  opacity: 0.15;
+  opacity: ${(props) => (props.theme.name === 'light' ? 0.4 : 0.1)};
   background-repeat: repeat;
   background-image: url(${Bg});
 `;
