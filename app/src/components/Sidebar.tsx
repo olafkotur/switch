@@ -5,7 +5,7 @@ import { SIDE_BAR_WIDTH } from '../const';
 import { Add, Settings } from '../icons';
 import { ActiveModuleIdState, IsControlsVisibleState, ModalState, ModulesState, ThemeState } from '../state';
 import { Module } from '../typings';
-import { Button, IconButton, SidebarButton } from './Button';
+import { IconButton, SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Controls } from './Controls';
 
@@ -34,6 +34,27 @@ const SidebarBottom = styled.div`
   margin-bottom: ${(props) => props.theme.spacing.medium};
 `;
 
+export const Sidebar = (): ReactElement => {
+  const modules = useRecoilValue(ModulesState);
+
+  return (
+    <SidebarContainer>
+      <Spacer vertical={10} />
+
+      <SidebarTop>
+        {modules.map((module) => (
+          <ModuleButton key={`module-${module._id}`} {...module} />
+        ))}
+        <CreateModuleButton />
+      </SidebarTop>
+
+      <SidebarBottom>
+        <PreferencesButton />
+      </SidebarBottom>
+    </SidebarContainer>
+  );
+};
+
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
   const theme = useRecoilValue(ThemeState);
@@ -53,7 +74,7 @@ const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   return (
     <>
       <Controls _id={_id} icon={icon} isVisible={showControls} />
-      <SidebarButton onClick={handleOnClick} bg={isActive ? background : undefined} opacity={showControls ? 0 : 1}>
+      <SidebarButton bg={isActive ? background : undefined} onClick={handleOnClick} onContextMenu={handleOnClick}>
         <ModuleIcon src={icon} draggable={false} />
       </SidebarButton>
     </>
@@ -81,26 +102,5 @@ const PreferencesButton = (): ReactElement => {
     <IconButton onClick={() => setModal('preferences')} size="large">
       <Settings size={24} />
     </IconButton>
-  );
-};
-
-export const Sidebar = (): ReactElement => {
-  const modules = useRecoilValue(ModulesState);
-
-  return (
-    <SidebarContainer>
-      <Spacer vertical={10} />
-
-      <SidebarTop>
-        {modules.map((module) => (
-          <ModuleButton key={`module-${module._id}`} {...module} />
-        ))}
-        <CreateModuleButton />
-      </SidebarTop>
-
-      <SidebarBottom>
-        <PreferencesButton />
-      </SidebarBottom>
-    </SidebarContainer>
   );
 };

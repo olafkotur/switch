@@ -62,6 +62,9 @@ export const SearchBar = ({ value, disabled, setValue, onSubmit }: SearchBarProp
         onClick={() => onSubmit(value)}
         disabled={disabled}
         bg={theme.backgroundColor.tertiary}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: disabled ? 0 : 1 }}
+        transition={{ duration: 0.2 }}
       >
         <Add size={24} color={theme.color.inverted} />
       </CreateModuleButton>

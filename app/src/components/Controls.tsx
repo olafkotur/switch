@@ -11,14 +11,12 @@ import { ModuleIcon } from './Common';
 
 const ControlsContainer = styled(motion.div)`
   position: absolute;
-  display: flex;
   align-items: center;
   flex-direction: row;
   height: 50px;
   width: 175px;
-  z-index: 100000000;
   overflow: visible;
-  background: red;
+  z-index: ${(props) => props.theme.zIndex.controls};
   background: ${(props) => props.theme.backgroundColor.primary};
   border-radius: ${(props) => props.theme.borderRadius.small};
 `;
@@ -48,11 +46,7 @@ export const Controls = ({ _id, icon, isVisible }: { _id: string; icon: string; 
 
   return (
     <div ref={ref}>
-      <ControlsContainer
-        initial={{ left: -175 }}
-        animate={{ left: isVisible ? 9 : -175 }}
-        transition={{ duration: 0.15 }}
-      >
+      <ControlsContainer initial={{ display: 'none' }} animate={{ display: isVisible ? 'flex' : 'none' }}>
         <SidebarButton>
           <ModuleIcon src={icon} draggable={false} />
         </SidebarButton>
