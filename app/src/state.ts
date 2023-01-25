@@ -15,7 +15,7 @@ export const IsAuthenticatedState = atom({
 
 export const ActiveModuleIdState = atom({
   key: 'activeModuleId',
-  default: null as string | null,
+  default: '63cfa1452f25835bd768e09e' as string | null,
 });
 
 export const ModulesState = atom({

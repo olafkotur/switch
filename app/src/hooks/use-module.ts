@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
-import { ModulesState } from '../state';
+import { ActiveModuleIdState, ModulesState } from '../state';
 import { Module } from '../typings';
 import { useRequest } from './use-request';
 import { useToast } from './use-toast';
@@ -24,6 +24,7 @@ export const useFetchModules = () => {
 
 export const useCreateModule = () => {
   const [modules, setModules] = useRecoilState(ModulesState);
+  const setActiveModuleId = useSetRecoilState(ActiveModuleIdState);
 
   const url = `${API_BASE_URL}/module/create`;
   const request = useRequest();
@@ -37,14 +38,17 @@ export const useCreateModule = () => {
         return;
       }
 
-      setModules([...modules, response.data as Module]);
+      const module = response.data as Module;
+      setModules([...modules, module]);
+      setActiveModuleId(module._id);
     },
-    [url, modules, request, errorToast, setModules],
+    [url, modules, request, errorToast, setModules, setActiveModuleId],
   );
 };
 
 export const useDeleteModule = () => {
   const [modules, setModules] = useRecoilState(ModulesState);
+  const setActiveModuleId = useSetRecoilState(ActiveModuleIdState);
 
   const url = `${API_BASE_URL}/module/delete`;
   const request = useRequest();
@@ -60,7 +64,8 @@ export const useDeleteModule = () => {
 
       const updatedModules = modules.filter((module) => module._id !== _id);
       setModules(updatedModules);
+      setActiveModuleId(null);
     },
-    [url, modules, request, errorToast, setModules],
+    [url, modules, request, errorToast, setModules, setActiveModuleId],
   );
 };

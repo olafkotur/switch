@@ -1,3 +1,4 @@
+export * from './use-clipboard';
 export * from './use-initialise';
 export * from './use-login';
 export * from './use-module';

@@ -24,6 +24,11 @@ const COMMON_THEME = {
     large: '15px',
     veryLarge: '20px',
   },
+  dropShadow: {
+    light: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    medium: '0px 8px 8px rgba(0, 0, 0, 0.35)',
+    strong: '0px 12px 12px rgba(0, 0, 0, 0.4)',
+  },
   animation: {
     light: 0.99,
     medium: 0.98,
@@ -35,6 +40,7 @@ const COMMON_THEME = {
     backdrop: 5000,
     modal: 7500,
     alert: 7500,
+    controls: 7500,
   },
 };
 

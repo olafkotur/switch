@@ -4,9 +4,10 @@ import { useRecoilValue } from 'recoil';
 import { ThemeState } from '../state';
 import { useTheme } from '../hooks';
 
-export const useToast = (type: TypeOptions) => {
+export const useToast = (type: TypeOptions, duration = 5000) => {
   const options: ToastOptions = {
     type,
+    autoClose: duration,
   };
 
   return useCallback(

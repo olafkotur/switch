@@ -12,11 +12,14 @@ export const useDefaultColor = () => {
   return theme === 'dark' ? '#fff' : '#303036';
 };
 
+export * from './Back';
 export * from './Close';
 export * from './DarkMode';
 export * from './Email';
+export * from './Forward';
 export * from './Grid';
 export * from './LightMode';
+export * from './Reload';
 export * from './Search';
 export * from './Settings';
 export * from './Switch';

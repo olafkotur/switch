@@ -16,6 +16,7 @@ interface Props extends HTMLMotionProps<'div'> {
 
 interface IconButtonProps extends Props {
   size: keyof typeof ICON_BUTTON_SIZES;
+  noMargin?: boolean;
 }
 
 const ButtonContainer = styled(motion.div)`
@@ -26,14 +27,16 @@ export const Button = ({ ...props }: Props): ReactElement => {
   return <ButtonContainer {...props} whileTap={{ scale: props.animation ?? 0.98 }} />;
 };
 
-const IconButtonContainer = styled(Button)<{ px: string }>`
+const IconButtonContainer = styled(Button)<{ px: string; noMargin?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: ${(props) => props.px};
   height: ${(props) => props.px};
+  opacity: ${(props) => (props.disabled ? 0.4 : 1)};
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   border-radius: ${(props) => props.theme.borderRadius.small};
-  margin: ${(props) => props.theme.spacing.medium} 0;
+  margin: ${(props) => (props.noMargin ? 0 : props.theme.spacing.medium)} 0;
 `;
 
 export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
