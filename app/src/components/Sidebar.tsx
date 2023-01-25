@@ -2,9 +2,8 @@ import React, { ReactElement } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
-import { useDeleteModule } from '../hooks';
-import { Settings, Switch } from '../icons';
-import { ActiveModuleIdState, ModulesState, ModalState, ThemeState } from '../state';
+import { Add, Settings, Switch } from '../icons';
+import { ActiveModuleIdState, ModalState, ModulesState, ThemeState } from '../state';
 import { Module } from '../typings';
 import { Button, IconButton } from './Button';
 import { Spacer } from './Common';
@@ -34,6 +33,14 @@ const SidebarBottom = styled.div`
   margin-bottom: ${(props) => props.theme.spacing.medium};
 `;
 
+const SwitchIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+`;
+
 const ButtonContainer = styled(Button)<{ background?: string }>`
   display: flex;
   align-items: center;
@@ -44,32 +51,30 @@ const ButtonContainer = styled(Button)<{ background?: string }>`
   background: ${({ background }) => background};
 `;
 
-const HomeButton = (): ReactElement => {
-  const setActiveModuleId = useSetRecoilState(ActiveModuleIdState);
-
-  return (
-    <ButtonContainer onClick={() => setActiveModuleId(null)}>
-      <Switch />
-    </ButtonContainer>
-  );
-};
-
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
   const theme = useRecoilValue(ThemeState);
-  const deleteModule = useDeleteModule();
 
   const isActive = activeModuleId === _id;
   const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   return (
-    <ButtonContainer
-      onClick={() => setActiveModuleId(_id)}
-      background={isActive ? background : undefined}
-      // TODO: this is a temp solution until delete UI is ready
-      onDoubleClick={() => deleteModule(_id)}
-    >
+    <ButtonContainer onClick={() => setActiveModuleId(_id)} background={isActive ? background : undefined}>
       <img src={icon} width="60%" draggable={false} />
+    </ButtonContainer>
+  );
+};
+
+const CreateModuleButton = (): ReactElement => {
+  const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
+  const theme = useRecoilValue(ThemeState);
+
+  const isActive = activeModuleId === null;
+  const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+
+  return (
+    <ButtonContainer onClick={() => setActiveModuleId(null)} background={isActive ? background : undefined}>
+      <Add size={24} />
     </ButtonContainer>
   );
 };
@@ -90,13 +95,16 @@ export const Sidebar = (): ReactElement => {
   return (
     <SidebarContainer>
       <Spacer vertical={12} />
-      <HomeButton />
+      <SwitchIconContainer>
+        <Switch />
+      </SwitchIconContainer>
       <Spacer vertical={2} />
 
       <SidebarTop>
         {modules.map((module) => (
           <ModuleButton key={`module-${module._id}`} {...module} />
         ))}
+        <CreateModuleButton />
       </SidebarTop>
 
       <SidebarBottom>

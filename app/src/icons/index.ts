@@ -12,6 +12,7 @@ export const useDefaultColor = () => {
   return theme === 'dark' ? '#fff' : '#303036';
 };
 
+export * from './Add';
 export * from './Back';
 export * from './Close';
 export * from './DarkMode';
