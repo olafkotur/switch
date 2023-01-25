@@ -12,6 +12,7 @@ interface Props extends HTMLMotionProps<'div'> {
   disabled?: boolean;
   width?: string;
   animation?: number;
+  bg?: string;
 }
 
 interface IconButtonProps extends Props {
@@ -49,24 +50,20 @@ export const IconButton = ({ ...props }: IconButtonProps): ReactElement => {
   );
 };
 
-const LargeButtonContainer = styled(Button)`
+const LargeButtonContainer = styled(Button)<{ bg?: string }>`
   display: flex;
   align-items: center;
   height: 50px;
   justify-content: center;
   width: ${(props) => props.width ?? '110px'};
-  background: ${(props) => props.theme.color.normal};
+  background: ${(props) => props.bg ?? props.theme.color.normal};
   opacity: ${(props) => (props.disabled ? 0.4 : 1)};
   pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   border-radius: ${(props) => props.theme.borderRadius.medium};
 `;
 
 export const LargeButton = ({ ...props }: Props): ReactElement => {
-  return (
-    <LargeButtonContainer {...props} width={props.width}>
-      {props.children}
-    </LargeButtonContainer>
-  );
+  return <LargeButtonContainer {...props}>{props.children}</LargeButtonContainer>;
 };
 
 export const SidebarButton = styled(Button)<{ bg?: string; opacity?: number }>`

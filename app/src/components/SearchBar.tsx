@@ -2,7 +2,7 @@ import React, { ReactElement, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { IconButton, Input, Spacer } from '../components';
 import { SEARCH_BAR_PLACEHOLDER } from '../const';
-import { useTheme } from '../hooks';
+import { useOnKeyPress, useTheme } from '../hooks';
 import { Add, Search } from '../icons';
 
 interface SearchBarProps {
@@ -42,19 +42,9 @@ const CreateModuleButton = styled(IconButton)`
 export const SearchBar = ({ value, disabled, setValue, onSubmit }: SearchBarProps): ReactElement => {
   const theme = useTheme();
 
-  const handleEnterPress = useCallback(
-    async (event: KeyboardEvent) => {
-      if (event.code === 'Enter' && !disabled) {
-        await onSubmit(value);
-      }
-    },
-    [value, disabled, onSubmit],
-  );
-
-  useEffect(() => {
-    window.addEventListener('keypress', handleEnterPress);
-    return () => window.removeEventListener('keypress', handleEnterPress);
-  }, [handleEnterPress]);
+  useOnKeyPress('Enter', async () => {
+    !disabled && (await onSubmit(value));
+  });
 
   return (
     <SearchBarContainer>

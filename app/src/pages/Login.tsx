@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { BodyText, LargeButton, SmallText, Spacer, TextInput, TitleText } from '../components';
-import { useLogin, useResetPassword, useSignUp, useTheme } from '../hooks';
+import { BodyText, LargeButton, SmallText, Spacer, SubtitleText, TextInput, TitleText } from '../components';
+import { useLogin, useOnKeyPress, useResetPassword, useSignUp, useTheme } from '../hooks';
 import { Switch } from '../icons';
 
 type ContentType = 'signup' | 'login';
@@ -66,6 +66,9 @@ export const LoginPage = (): ReactElement => {
   const copy = useMemo(() => (contentType === 'signup' ? SIGN_UP_COPY : LOGIN_COPY), [contentType]);
   const isNextDisabled = !username || !password;
 
+  const background = contentType === 'signup' ? theme.highlightColor.primary : theme.color.normal;
+  const color = contentType === 'signup' ? theme.color.white : theme.color.inverted;
+
   const toggleContentType = useCallback(() => {
     if (contentType === 'signup') {
       return setContentType('login');
@@ -77,6 +80,10 @@ export const LoginPage = (): ReactElement => {
     const handler = contentType === 'login' ? login : signUp;
     await handler({ username, password });
   }, [username, password, contentType, login, signUp]);
+
+  useOnKeyPress('Enter', async () => {
+    !isNextDisabled && (await handleSubmit());
+  });
 
   return (
     <LoginPageContainer>
@@ -92,8 +99,10 @@ export const LoginPage = (): ReactElement => {
             <TextInput placeholder="password" value={password} onChange={setPassword} type="password" />
           </InputContainer>
 
-          <LargeButton width="270px" disabled={isNextDisabled} onClick={handleSubmit}>
-            <BodyText color={theme.color.inverted}>{copy.button}</BodyText>
+          <LargeButton width="270px" bg={background} disabled={isNextDisabled} onClick={handleSubmit}>
+            <SubtitleText bold color={color}>
+              {copy.button}
+            </SubtitleText>
           </LargeButton>
 
           <Spacer vertical={16} />

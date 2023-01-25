@@ -57,6 +57,8 @@ export const LIGHT_THEME = {
     normal: '#32323E',
     inverted: '#fff',
     danger: 'rgba(227, 66, 66, 0.9)',
+    white: '#fff',
+    black: '32323E',
   },
   backgroundColor: {
     primary: '#F8F9F9',
@@ -76,6 +78,8 @@ export const DARK_THEME = {
     normal: '#fff',
     inverted: '#32323E',
     danger: 'rgba(227, 66, 66, 0.9)',
+    white: '#fff',
+    black: '32323E',
   },
   backgroundColor: {
     primary: '#303036',
