@@ -16,6 +16,7 @@ export * from './Add';
 export * from './Back';
 export * from './Close';
 export * from './DarkMode';
+export * from './Delete';
 export * from './Email';
 export * from './Forward';
 export * from './Grid';

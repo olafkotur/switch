@@ -4,7 +4,7 @@ import React, { ReactElement, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { useDeleteModule, useOnClickout, useTheme } from '../hooks';
-import { Back, Close, Forward, Reload } from '../icons';
+import { Back, Close, Delete, Forward, Reload } from '../icons';
 import { ActiveModuleIdState, IsControlsVisibleState } from '../state';
 import { Button, SidebarButton } from './Button';
 import { ModuleIcon } from './Common';
@@ -41,31 +41,29 @@ export const Controls = ({ _id, icon, isVisible }: { _id: string; icon: string; 
   const deleteModule = useDeleteModule();
 
   useOnClickout([ref], () => {
-    setIsControlsVisible(false);
+    isVisible && setIsControlsVisible(false);
   });
 
   return (
-    <div ref={ref}>
-      <ControlsContainer initial={{ display: 'none' }} animate={{ display: isVisible ? 'flex' : 'none' }}>
-        <SidebarButton>
-          <ModuleIcon src={icon} draggable={false} />
-        </SidebarButton>
+    <ControlsContainer initial={{ display: 'none' }} animate={{ display: isVisible ? 'flex' : 'none' }} ref={ref}>
+      <SidebarButton>
+        <ModuleIcon src={icon} draggable={false} />
+      </SidebarButton>
 
-        <ControlsButtonContainer>
-          <Button onClick={() => webview?.goBack()}>
-            <Back size={24} />
-          </Button>
-          <Button onClick={() => webview?.goForward()}>
-            <Forward size={24} />
-          </Button>
-          <Button onClick={() => webview?.reload()}>
-            <Reload size={24} />
-          </Button>
-          <Button onClick={() => deleteModule(_id)}>
-            <Close size={24} color={theme.color.danger} />
-          </Button>
-        </ControlsButtonContainer>
-      </ControlsContainer>
-    </div>
+      <ControlsButtonContainer>
+        <Button onClick={() => webview?.goBack()}>
+          <Back size={24} />
+        </Button>
+        <Button onClick={() => webview?.goForward()}>
+          <Forward size={24} />
+        </Button>
+        <Button onClick={() => webview?.reload()}>
+          <Reload size={24} />
+        </Button>
+        <Button onClick={() => deleteModule(_id)}>
+          <Delete size={24} color={theme.color.danger} />
+        </Button>
+      </ControlsButtonContainer>
+    </ControlsContainer>
   );
 };
