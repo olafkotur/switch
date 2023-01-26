@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import { ResponseService } from '../services/response';
-import { SecurityService } from '../services/security';
-import { UserService } from '../services/user';
+import { ResponseService, SecurityService, UserService } from '../services';
 import { JwtAuthData } from '../typings';
 
 export const UserHandler = {

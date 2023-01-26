@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { ModuleModel, ModuleModelData } from '../models/module';
+import { ModuleModel, ModuleModelData } from '../models';
 import { UtilService } from './util';
 
 export const ModuleService = {

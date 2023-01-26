@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { ModuleService } from '../services/module';
-import { ResponseService } from '../services/response';
-import { UserService } from '../services/user';
+import { ModuleService, ResponseService, UserService } from '../services';
 import { JwtAuthData } from '../typings';
 
 export const ModuleHandler = {

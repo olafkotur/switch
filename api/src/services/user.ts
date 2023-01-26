@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { UserModel, UserModelData } from '../models/user';
+import { UserModel, UserModelData } from '../models';
 
 export const UserService = {
   /**
