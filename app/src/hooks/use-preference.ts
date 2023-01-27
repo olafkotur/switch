@@ -9,6 +9,8 @@ import { useToast } from './use-toast';
 
 interface UpdatePreference {
   theme?: Themes;
+  overlayMode?: boolean;
+  animatePresets?: boolean;
 }
 
 export const useFetchPreference = () => {

@@ -18,6 +18,8 @@ export interface Preference {
   _id: string;
   userId: string;
   theme: Themes;
+  overlayMode: boolean;
+  animatePresets: boolean;
   updatedAt: Date;
   createdAt: Date;
 }

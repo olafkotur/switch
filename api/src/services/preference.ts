@@ -19,6 +19,8 @@ export const PreferenceService = {
       _id: Types.ObjectId(),
       userId,
       theme: 'dark',
+      overlayMode: false,
+      animatePresets: true,
       updatedAt: new Date(),
       createdAt: new Date(),
     };

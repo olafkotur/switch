@@ -116,6 +116,9 @@ export const Preferences = (): ReactElement => {
 };
 
 const GeneralPanel = (): ReactElement => {
+  const preference = useRecoilValue(PreferenceState);
+  const updatePreference = useUpdatePreference();
+
   return (
     <ColumnContainer>
       <PreferenceOption
@@ -123,8 +126,8 @@ const GeneralPanel = (): ReactElement => {
         title="Overlay mode"
         description="Switch will display over other applications"
         type="toggle"
-        value={false}
-        onChange={console.log}
+        value={preference?.overlayMode ?? false}
+        onChange={(value) => updatePreference({ overlayMode: value as boolean })}
       />
     </ColumnContainer>
   );
@@ -166,7 +169,7 @@ const AppearancePanel = (): ReactElement => {
         description="Enable dark mode, does not affect any added applications"
         type="toggle"
         value={preference?.theme === 'dark' ?? true}
-        onChange={(isDarkTheme) => updatePreference({ theme: isDarkTheme ? 'dark' : 'light' })}
+        onChange={(value) => updatePreference({ theme: value ? 'dark' : 'light' })}
       />
       <Spacer vertical={15} />
       <PreferenceOption
@@ -174,8 +177,8 @@ const AppearancePanel = (): ReactElement => {
         title="Animate presets"
         description="Show an animation when resizing Switch using layout presets"
         type="toggle"
-        value={false}
-        onChange={console.log}
+        value={preference?.animatePresets ?? false}
+        onChange={(value) => updatePreference({ animatePresets: value as boolean })}
       />
     </ColumnContainer>
   );
