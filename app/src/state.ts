@@ -1,16 +1,11 @@
 import { atom } from 'recoil';
 import { ModalName } from './modals';
 import { Themes } from './style/theme';
-import { Module, User } from './typings';
+import { Module, Preference, User } from './typings';
 
 export const ThemeState = atom({
   key: 'theme',
   default: 'dark' as Themes,
-});
-
-export const IsAuthenticatedState = atom({
-  key: 'isAuthenticated',
-  default: false,
 });
 
 export const ActiveModuleIdState = atom({
@@ -26,6 +21,21 @@ export const ModulesState = atom({
 export const ModalState = atom({
   key: 'modal',
   default: null as ModalName | null,
+});
+
+export const UserState = atom({
+  key: 'user',
+  default: null as User | null,
+});
+
+export const PreferenceState = atom({
+  key: 'preference',
+  default: null as Preference | null,
+});
+
+export const IsAuthenticatedState = atom({
+  key: 'isAuthenticated',
+  default: false,
 });
 
 export const IsControlsVisibleState = atom({

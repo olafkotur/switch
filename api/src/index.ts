@@ -63,10 +63,10 @@ const main = async (): Promise<void> => {
 };
 
 const setupUserHandlers = (): void => {
+  app.get('/user', UserHandler.fetch);
   app.post('/user/login', UserHandler.login);
   app.post('/user/refresh', UserHandler.refresh);
   app.post('/user/create', UserHandler.createUser);
-  app.get('/user/profile', UserHandler.fetchProfile);
 };
 
 const setupModuleHandlers = (): void => {

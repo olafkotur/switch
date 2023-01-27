@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { PreferenceModelData, UserModelData } from '../models';
-import { PreferenceService, ResponseService, UserService } from '../services';
-import { JwtAuthData } from '../typings';
+import { PreferenceService, ResponseService } from '../services';
 
 export const PreferenceHandler = {
   /**

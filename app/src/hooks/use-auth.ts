@@ -85,6 +85,7 @@ export const useResetPassword = () => {
 
   return useCallback(
     ({ oldPassword, newPassword }: { oldPassword?: string; newPassword?: string }) => {
+      // TODO: add reset password logic
       infoToast('Password reset not currently implemented');
     },
     [infoToast],

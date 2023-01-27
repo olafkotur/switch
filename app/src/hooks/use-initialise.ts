@@ -1,18 +1,24 @@
 import { useCallback } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { IsAuthenticatedState, ModulesState, ThemeState } from '../state';
+import { IsAuthenticatedState, ModulesState, PreferenceState, ThemeState, UserState } from '../state';
 import { AuthTokens } from '../typings';
 import { useRefresh } from './use-auth';
 import { useFetchModules } from './use-module';
+import { useFetchPreference } from './use-preference';
 import { useGetStorage } from './use-storage';
+import { useFetchUser } from './use-user';
 
 export const useInitialise = () => {
   const getStorage = useGetStorage();
   const refresh = useRefresh();
   const fetchModules = useFetchModules();
+  const fetchUser = useFetchUser();
+  const fetchPreference = useFetchPreference();
 
   const setTheme = useSetRecoilState(ThemeState);
   const setModules = useSetRecoilState(ModulesState);
+  const setUser = useSetRecoilState(UserState);
+  const setPreference = useSetRecoilState(PreferenceState);
 
   const isAuthenticated = useRecoilValue(IsAuthenticatedState);
 
@@ -25,9 +31,28 @@ export const useInitialise = () => {
       await refresh({ refreshToken: tokens.refreshToken });
     }
 
-    if (isAuthenticated) {
-      const modules = await fetchModules();
-      setModules(modules);
+    // only authenticated users past this point
+    if (!isAuthenticated) {
+      return;
     }
-  }, [isAuthenticated, getStorage, refresh, fetchModules, setTheme, setModules]);
+
+    const user = await fetchUser();
+    const preference = await fetchPreference();
+    const modules = await fetchModules();
+
+    setUser(user);
+    setPreference(preference);
+    setModules(modules);
+  }, [
+    isAuthenticated,
+    getStorage,
+    refresh,
+    fetchModules,
+    fetchUser,
+    fetchPreference,
+    setTheme,
+    setModules,
+    setUser,
+    setPreference,
+  ]);
 };

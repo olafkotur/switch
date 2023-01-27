@@ -1,9 +1,19 @@
 import { Request, Response } from 'express';
 import { UserModelData } from '../models';
 import { ResponseService, SecurityService, UserService } from '../services';
-import { JwtAuthData } from '../typings';
 
 export const UserHandler = {
+  /**
+   * Fetch user data.
+   * @param req - request object
+   * @param res - response object
+   */
+  fetch: async (_req: Request, res: Response): Promise<void> => {
+    const user: UserModelData = res.locals.user;
+    const data = { username: user.username, avatar: user.avatar };
+    return ResponseService.data(data, res);
+  },
+
   /**
    * Login via username and password, return a JWT token.
    * @param req - request object
@@ -90,16 +100,5 @@ export const UserHandler = {
     const refreshToken = SecurityService.generateToken(username, hashedPassword, 'refresh');
 
     return ResponseService.create({ accessToken, refreshToken }, res);
-  },
-
-  /**
-   * Fetch user profile data.
-   * @param req - request object
-   * @param res - response object
-   */
-  fetchProfile: async (_req: Request, res: Response): Promise<void> => {
-    const user: UserModelData = res.locals.user;
-    const data = { username: user.username, avatar: user.avatar };
-    return ResponseService.data(data, res);
   },
 };
