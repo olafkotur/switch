@@ -11,11 +11,27 @@ export const PreferenceService = {
   },
 
   /**
-   * Create new or update existing settings
+   * Create default user preferences.
    * @param userId - user id
-   * @param preferences - preferences to upsert
    */
-  upsert: async (userId: Types.ObjectId, data: Partial<PreferenceModelData>): Promise<boolean> => {
+  create: async (userId: Types.ObjectId): Promise<PreferenceModelData> => {
+    const data: PreferenceModelData = {
+      _id: Types.ObjectId(),
+      userId,
+      theme: 'dark',
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    };
+
+    return await PreferenceModel.create(data);
+  },
+
+  /**
+   * Update existing preferences.
+   * @param userId - user id
+   * @param preferences - preferences to update
+   */
+  update: async (userId: Types.ObjectId, data: Partial<PreferenceModelData>): Promise<boolean> => {
     const existing = await PreferenceModel.findOne({ userId });
     if (existing) {
       const result = await PreferenceModel.updateOne({ userId }, { $set: { ...data } });

@@ -58,7 +58,7 @@ export const useRefresh = () => {
       const response = await request({ method: 'POST', url, body: { refreshToken } });
       if (response.code !== 200) {
         removeStorage('tokens');
-        return setIsAuthenticated(true);
+        return setIsAuthenticated(false);
       }
 
       await setStorage('tokens', { ...(response.data as Object) });

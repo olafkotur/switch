@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { UserModel, UserModelData } from '../models';
+import { PreferenceService } from './preference';
 
 export const UserService = {
   /**
@@ -48,7 +49,14 @@ export const UserService = {
     };
 
     // create new user
-    const res = await UserModel.create(data);
-    return { success: res._id != null, message: 'Could not create a user' };
+    const user = await UserModel.create(data);
+    const success = user._id != null;
+
+    // create default user preferences
+    if (success) {
+      await PreferenceService.create(user._id);
+    }
+
+    return { success, message: 'Could not create a user' };
   },
 };

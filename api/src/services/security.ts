@@ -1,7 +1,7 @@
 import crypto from 'crypto-js';
 import jwt from 'jsonwebtoken';
 import { CRYPTO_SALT, JWT_SECRET } from '../const';
-import { JwtAuthData, JwtResponse } from '../typings';
+import { JwtAuthData, JwtRefreshResponse, JwtResponse } from '../typings';
 
 export const SecurityService = {
   /**
@@ -44,7 +44,7 @@ export const SecurityService = {
    * Refreshes a JWT token if the token is valid
    * @param token - token to be verified
    */
-  refreshToken: async (token: string): Promise<object | null> => {
+  refreshToken: async (token: string): Promise<JwtRefreshResponse | null> => {
     return await new Promise((resolve) => {
       jwt.verify(token, JWT_SECRET, (error, decoded) => {
         if (!decoded || decoded.model !== 'refresh' || error) {

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
+import { UserModelData } from '../models';
 import { ModuleService, ResponseService, UserService } from '../services';
 import { JwtAuthData } from '../typings';
 
@@ -10,11 +11,7 @@ export const ModuleHandler = {
    * @param res - response object
    */
   fetch: async (_req: Request, res: Response): Promise<void> => {
-    const jwt: JwtAuthData = res.locals.jwt.data;
-    const user = await UserService.fetchSingle(jwt.username);
-    if (!user) {
-      return ResponseService.notFound('User not found', res);
-    }
+    const user: UserModelData = res.locals.user;
 
     const data = await ModuleService.fetch(user._id);
     return ResponseService.data(data, res);
@@ -26,11 +23,7 @@ export const ModuleHandler = {
    * @param res - response object
    */
   create: async (req: Request, res: Response): Promise<void> => {
-    const jwt: JwtAuthData = res.locals.jwt.data;
-    const user = await UserService.fetchSingle(jwt.username);
-    if (!user) {
-      return ResponseService.notFound('User not found', res);
-    }
+    const user: UserModelData = res.locals.user;
 
     const url = req.body.url || '';
     if (!url) {
@@ -50,13 +43,15 @@ export const ModuleHandler = {
    * @param res - response object
    */
   delete: async (req: Request, res: Response): Promise<void> => {
+    const user: UserModelData = res.locals.user;
+
     const id = req.body._id || '';
     if (!id) {
       return ResponseService.bad('Module id must be provided', res);
     }
 
     const _id = Types.ObjectId(id);
-    const success = await ModuleService.delete(_id);
+    const success = await ModuleService.delete(_id, user._id);
     if (success) {
       return ResponseService.ok('Module successfully deleted', res);
     }

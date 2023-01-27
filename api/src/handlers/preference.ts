@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PreferenceModelData } from '../models';
+import { PreferenceModelData, UserModelData } from '../models';
 import { PreferenceService, ResponseService, UserService } from '../services';
 import { JwtAuthData } from '../typings';
 
@@ -10,11 +10,7 @@ export const PreferenceHandler = {
    * @param res - response object
    */
   fetch: async (_req: Request, res: Response): Promise<void> => {
-    const jwt: JwtAuthData = res.locals.jwt.data;
-    const user = await UserService.fetchSingle(jwt.username);
-    if (!user) {
-      return ResponseService.notFound('User not found', res);
-    }
+    const user: UserModelData = res.locals.user;
 
     const data = await PreferenceService.fetch(user._id);
     if (!data) {
@@ -24,24 +20,19 @@ export const PreferenceHandler = {
   },
 
   /**
-   * Update or add new user preferences to the database.
+   * Update user preferences.
    * @param req - request object
    * @param res - response object
    */
-  upsert: async (req: Request, res: Response): Promise<void> => {
-    const jwt: JwtAuthData = res.locals.jwt.data;
-    const user = await UserService.fetchSingle(jwt.username);
-    if (!user) {
-      return ResponseService.notFound('User not found', res);
-    }
+  update: async (req: Request, res: Response): Promise<void> => {
+    const user: UserModelData = res.locals.user;
 
     const preferences: Partial<PreferenceModelData> = req.body || null;
     if (!preferences) {
       return ResponseService.bad('Missing preferences data to update', res);
     }
 
-    // update or add settings
-    const success = await PreferenceService.upsert(user._id, preferences);
+    const success = await PreferenceService.update(user._id, preferences);
     if (!success) {
       return ResponseService.bad('Could not update preferences', res);
     }

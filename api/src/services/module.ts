@@ -35,8 +35,8 @@ export const ModuleService = {
    * Delete existing module.
    * @param _id - module id
    */
-  delete: async (_id: Types.ObjectId): Promise<boolean> => {
-    const result = await ModuleModel.deleteOne({ _id });
+  delete: async (_id: Types.ObjectId, userId: Types.ObjectId): Promise<boolean> => {
+    const result = await ModuleModel.deleteOne({ _id, userId });
     return result.deletedCount === 1;
   },
 };

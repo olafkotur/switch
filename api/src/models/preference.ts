@@ -9,7 +9,7 @@ export interface PreferenceModelData extends ModelBase {
 
 const schema = new Schema({
   _id: { type: ObjectId, required: true, index: true },
-  userId: { type: ObjectId, required: true, index: true },
+  userId: { type: ObjectId, required: true, index: true, unique: true },
   theme: { type: String, required: true },
   updatedAt: { type: Date, required: true },
   createdAt: { type: Date, required: true },

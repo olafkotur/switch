@@ -4,7 +4,7 @@ import { MONGO_NAME, MONGO_URI, NO_VERIFY_URLS, PORT } from './const';
 import { ModuleHandler } from './handlers/module';
 import { PreferenceHandler } from './handlers/preference';
 import { UserHandler } from './handlers/user';
-import { DatabaseService, ResponseService, SecurityService } from './services';
+import { DatabaseService, ResponseService, SecurityService, UserService } from './services';
 
 export const database = DatabaseService;
 
@@ -44,6 +44,12 @@ const main = async (): Promise<void> => {
       return ResponseService.unauthorized(message, res);
     }
 
+    const user = await UserService.fetchSingle(jwtResponse.data.username);
+    if (!user) {
+      return ResponseService.notFound('User not found', res);
+    }
+
+    res.locals.user = user;
     res.locals.jwt = jwtResponse;
     next();
   });
@@ -71,7 +77,7 @@ const setupModuleHandlers = (): void => {
 
 const setupPreferenceHandlers = (): void => {
   app.get('/preference', PreferenceHandler.fetch);
-  app.post('/preference/update', PreferenceHandler.upsert);
+  app.post('/preference/update', PreferenceHandler.update);
 };
 
 main();

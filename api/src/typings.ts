@@ -27,3 +27,8 @@ export interface JwtResponse {
   data: JwtAuthData;
   error?: string;
 }
+
+export interface JwtRefreshResponse {
+  accessToken: string;
+  refreshToken: string;
+}

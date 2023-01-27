@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { UserModelData } from '../models';
 import { ResponseService, SecurityService, UserService } from '../services';
 import { JwtAuthData } from '../typings';
 
@@ -39,6 +40,13 @@ export const UserHandler = {
     if (!refreshResponse) {
       return ResponseService.unauthorized('Invalid refresh token', res);
     }
+
+    const jwtResponse = await SecurityService.verifyToken(refreshResponse.accessToken);
+    const user = await UserService.fetchSingle(jwtResponse.data.username);
+    if (!user) {
+      return ResponseService.notFound('User not found', res);
+    }
+
     return ResponseService.data(refreshResponse, res);
   },
 
@@ -90,12 +98,8 @@ export const UserHandler = {
    * @param res - response object
    */
   fetchProfile: async (_req: Request, res: Response): Promise<void> => {
-    const jwt: JwtAuthData = res.locals.jwt.data;
-    const user = await UserService.fetchSingle(jwt.username);
-    if (user) {
-      const data = { username: user.username, avatar: user.avatar };
-      return ResponseService.data(data, res);
-    }
-    return ResponseService.notFound('Profile not found', res);
+    const user: UserModelData = res.locals.user;
+    const data = { username: user.username, avatar: user.avatar };
+    return ResponseService.data(data, res);
   },
 };
