@@ -122,6 +122,7 @@ const GeneralPanel = (): ReactElement => {
   return (
     <ColumnContainer>
       <PreferenceOption
+        requiresRestart
         id="overlayMode"
         title="Overlay mode"
         description="Switch will display over other applications"

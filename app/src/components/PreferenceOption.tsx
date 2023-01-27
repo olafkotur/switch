@@ -1,5 +1,6 @@
-import React, { ReactElement, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { useToast } from '../hooks';
 import { ColumnContainer, Spacer } from './Common';
 import { ToggleInput } from './Input';
 import { BodyText, SubtitleText } from './Text';
@@ -11,6 +12,7 @@ interface PreferenceOptionProps {
   type: 'toggle' | 'text';
   value: boolean | string;
   onChange: (value: boolean | string) => void;
+  requiresRestart?: boolean;
 }
 
 const PreferenceOptionContainer = styled.div`
@@ -27,10 +29,24 @@ export const PreferenceOption = ({
   type,
   value,
   onChange,
+  requiresRestart,
 }: PreferenceOptionProps): ReactElement => {
+  const infoToast = useToast('info');
+
+  const handleOnChange = useCallback(
+    (value: boolean | string) => {
+      if (requiresRestart) {
+        infoToast('Please restart the app for the changes to take effect');
+      }
+
+      onChange(value);
+    },
+    [requiresRestart, onChange],
+  );
+
   return (
     <PreferenceOptionContainer>
-      {type === 'toggle' && <ToggleInput id={id} value={value as boolean} onChange={onChange} />}
+      {type === 'toggle' && <ToggleInput id={id} value={value as boolean} onChange={handleOnChange} />}
       <ColumnContainer>
         <SubtitleText>{title}</SubtitleText>
         <Spacer vertical={2} />
