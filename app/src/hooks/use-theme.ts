@@ -1,24 +1,13 @@
-import { useCallback } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { ThemeState } from '../state';
+import { useRecoilValue } from 'recoil';
+import { PreferenceState } from '../state';
 import { DARK_THEME, LIGHT_THEME } from '../style/theme';
-import { useSetStorage } from './use-storage';
 
 export const useTheme = () => {
-  const theme = useRecoilValue(ThemeState);
+  const preference = useRecoilValue(PreferenceState);
+  const theme = preference?.theme ?? 'dark';
+
   if (theme === 'dark') {
     return DARK_THEME;
   }
   return LIGHT_THEME;
-};
-
-export const useToggleTheme = () => {
-  const [theme, setTheme] = useRecoilState(ThemeState);
-  const oppositeTheme = theme === 'dark' ? 'light' : 'dark';
-  const setStorage = useSetStorage();
-
-  return useCallback(() => {
-    setStorage('theme', oppositeTheme);
-    setTheme(oppositeTheme);
-  }, [theme, setStorage, setTheme]);
 };

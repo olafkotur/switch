@@ -1,12 +1,6 @@
 import { atom } from 'recoil';
 import { ModalName } from './modals';
-import { Themes } from './style/theme';
 import { Module, Preference, User } from './typings';
-
-export const ThemeState = atom({
-  key: 'theme',
-  default: 'dark' as Themes,
-});
 
 export const ActiveModuleIdState = atom({
   key: 'activeModuleId',

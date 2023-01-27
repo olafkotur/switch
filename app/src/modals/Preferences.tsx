@@ -1,9 +1,9 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { BodyText, Button, ColumnContainer, LargeButton, PreferenceOption, Spacer, SubtitleText } from '../components';
-import { useLogout, useTheme, useToggleTheme } from '../hooks';
-import { ThemeState } from '../state';
+import { BodyText, Button, ColumnContainer, PreferenceOption, Spacer, SubtitleText } from '../components';
+import { useLogout, useUpdatePreference } from '../hooks';
+import { PreferenceState } from '../state';
 
 type PreferencesPanel = 'general' | 'account' | 'appearance';
 
@@ -64,7 +64,6 @@ const LogoutButton = styled(Button)`
 export const Preferences = (): ReactElement => {
   const [selectedPanel, setSelectedPanel] = useState<PreferencesPanel>('general');
 
-  const theme = useTheme();
   const logout = useLogout();
 
   const config = useMemo(() => {
@@ -156,8 +155,8 @@ const AccountPanel = (): ReactElement => {
 };
 
 const AppearancePanel = (): ReactElement => {
-  const theme = useRecoilValue(ThemeState);
-  const toggleTheme = useToggleTheme();
+  const preference = useRecoilValue(PreferenceState);
+  const updatePreference = useUpdatePreference();
 
   return (
     <ColumnContainer>
@@ -166,8 +165,8 @@ const AppearancePanel = (): ReactElement => {
         title="Dark mode"
         description="Enable dark mode, does not affect any added applications"
         type="toggle"
-        value={theme === 'dark'}
-        onChange={toggleTheme}
+        value={preference?.theme === 'dark' ?? true}
+        onChange={(isDarkTheme) => updatePreference({ theme: isDarkTheme ? 'dark' : 'light' })}
       />
       <Spacer vertical={15} />
       <PreferenceOption

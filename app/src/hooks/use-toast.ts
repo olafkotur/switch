@@ -1,7 +1,5 @@
 import { useCallback } from 'react';
 import { toast, ToastContainerProps, ToastOptions, TypeOptions } from 'react-toastify';
-import { useRecoilValue } from 'recoil';
-import { ThemeState } from '../state';
 import { useTheme } from '../hooks';
 
 export const useToast = (type: TypeOptions, duration = 5000) => {
@@ -20,10 +18,9 @@ export const useToast = (type: TypeOptions, duration = 5000) => {
 
 export const useGetToastProps = (): ToastContainerProps => {
   const theme = useTheme();
-  const themeState = useRecoilValue(ThemeState);
 
   return {
-    theme: themeState,
+    theme: theme.name,
     pauseOnHover: true,
     closeOnClick: true,
     autoClose: 5000,

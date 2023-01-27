@@ -2,8 +2,9 @@ import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
+import { useTheme } from '../hooks';
 import { Add, Settings } from '../icons';
-import { ActiveModuleIdState, IsControlsVisibleState, ModalState, ModulesState, ThemeState } from '../state';
+import { ActiveModuleIdState, IsControlsVisibleState, ModalState, ModulesState } from '../state';
 import { Module } from '../typings';
 import { IconButton, SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
@@ -57,12 +58,12 @@ export const Sidebar = (): ReactElement => {
 
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
-  const theme = useRecoilValue(ThemeState);
   const [isControlsVisible, setIsControlsVisible] = useRecoilState(IsControlsVisibleState);
+  const theme = useTheme();
 
   const isActive = activeModuleId === _id;
   const showControls = isControlsVisible && activeModuleId === _id;
-  const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+  const background = theme.name === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   const handleOnClick = useCallback(() => {
     if (isActive) {
@@ -83,10 +84,10 @@ const ModuleButton = ({ _id, icon }: Module): ReactElement => {
 
 const CreateModuleButton = (): ReactElement => {
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
-  const theme = useRecoilValue(ThemeState);
+  const theme = useTheme();
 
   const isActive = activeModuleId === null;
-  const background = theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+  const background = theme.name === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   return (
     <SidebarButton onClick={() => setActiveModuleId(null)} bg={isActive ? background : undefined}>

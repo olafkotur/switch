@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
-import { useRecoilValue } from 'recoil';
 import { createGlobalStyle, ThemeProvider as DefaultThemeProvider } from 'styled-components';
-import { ThemeState } from '../state';
+import { useTheme } from '../hooks';
 import { DARK_THEME, LIGHT_THEME } from './theme';
+
+// always at the end
 import '@fontsource/inter';
 import 'react-toastify/dist/ReactToastify.min.css';
 
@@ -27,9 +28,10 @@ interface Props {
 }
 
 export const ThemeProvider = ({ children }: Props): ReactElement => {
-  const theme = useRecoilValue(ThemeState);
+  const theme = useTheme();
+
   return (
-    <DefaultThemeProvider theme={theme === 'dark' ? DARK_THEME : LIGHT_THEME}>
+    <DefaultThemeProvider theme={theme.name === 'dark' ? DARK_THEME : LIGHT_THEME}>
       <GlobalStyle />
       {children}
     </DefaultThemeProvider>

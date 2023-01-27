@@ -31,22 +31,8 @@ export const PreferenceService = {
    * @param userId - user id
    * @param preferences - preferences to update
    */
-  update: async (userId: Types.ObjectId, data: Partial<PreferenceModelData>): Promise<boolean> => {
-    const existing = await PreferenceModel.findOne({ userId });
-    if (existing) {
-      const result = await PreferenceModel.updateOne({ userId }, { $set: { ...data } });
-      return result.ok === 1;
-    }
-
-    const preferences: PreferenceModelData = {
-      _id: Types.ObjectId(),
-      userId,
-      theme: data.theme ?? 'dark',
-      updatedAt: new Date(),
-      createdAt: new Date(),
-    };
-
-    const result = await PreferenceModel.create(preferences);
-    return !!result._id;
+  update: async (userId: Types.ObjectId, data: Partial<PreferenceModelData>): Promise<PreferenceModelData | null> => {
+    await PreferenceModel.updateOne({ userId }, { $set: { ...data } });
+    return await PreferenceModel.findOne({ userId });
   },
 };

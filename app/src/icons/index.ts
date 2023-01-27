@@ -1,5 +1,4 @@
-import { useRecoilValue } from 'recoil';
-import { ThemeState } from '../state';
+import { useTheme } from '../hooks';
 
 export interface IconProps {
   color?: string;
@@ -8,8 +7,8 @@ export interface IconProps {
 }
 
 export const useDefaultColor = () => {
-  const theme = useRecoilValue(ThemeState);
-  return theme === 'dark' ? '#fff' : '#303036';
+  const theme = useTheme();
+  return theme.name === 'dark' ? '#fff' : '#303036';
 };
 
 export * from './Add';

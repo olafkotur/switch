@@ -1,4 +1,4 @@
-import { Theme } from './style/theme';
+import { Themes } from './style/theme';
 
 export interface User {
   username: string;
@@ -17,7 +17,7 @@ export interface Module {
 export interface Preference {
   _id: string;
   userId: string;
-  theme: Theme;
+  theme: Themes;
   updatedAt: Date;
   createdAt: Date;
 }

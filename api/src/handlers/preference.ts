@@ -31,10 +31,10 @@ export const PreferenceHandler = {
       return ResponseService.bad('Missing preferences data to update', res);
     }
 
-    const success = await PreferenceService.update(user._id, preferences);
-    if (!success) {
+    const data = await PreferenceService.update(user._id, preferences);
+    if (!data) {
       return ResponseService.bad('Could not update preferences', res);
     }
-    return ResponseService.ok('Preferences updated successfully', res);
+    return ResponseService.data(data, res);
   },
 };

@@ -1,12 +1,11 @@
 import { compressToUTF16, decompressFromUTF16 } from 'async-lz-string';
-import storage from 'electron-json-storage';
 import { useCallback } from 'react';
 
-type StringKey = 'theme';
+type StringKey = '';
 type ObjectKey = 'tokens';
 type ArrayKey = '';
 
-const STRING_KEYS: StringKey[] = ['theme'];
+const STRING_KEYS: StringKey[] = [];
 const OBJECT_KEYS: ObjectKey[] = ['tokens'];
 const ARRAY_KEYS: ArrayKey[] = [];
 

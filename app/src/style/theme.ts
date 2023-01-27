@@ -51,7 +51,7 @@ const COMMON_THEME = {
 
 export const LIGHT_THEME = {
   ...COMMON_THEME,
-  name: 'light',
+  name: 'light' as Themes,
   color: {
     faint: 'rgba(0, 0, 0, 0.6)',
     normal: '#32323E',
@@ -72,7 +72,7 @@ export const LIGHT_THEME = {
 
 export const DARK_THEME = {
   ...COMMON_THEME,
-  name: 'dark',
+  name: 'dark' as Themes,
   color: {
     faint: 'rgba(255, 255, 255, 0.6)',
     normal: '#fff',

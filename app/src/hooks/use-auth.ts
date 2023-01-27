@@ -54,15 +54,15 @@ export const useRefresh = () => {
   const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
 
   return useCallback(
-    async ({ refreshToken }: { refreshToken: string }) => {
+    async ({ refreshToken }: { refreshToken: string }): Promise<boolean> => {
       const response = await request({ method: 'POST', url, body: { refreshToken } });
       if (response.code !== 200) {
         removeStorage('tokens');
-        return setIsAuthenticated(false);
+        return false;
       }
 
       await setStorage('tokens', { ...(response.data as Object) });
-      setIsAuthenticated(true);
+      return true;
     },
     [url, request, setStorage, removeStorage, setIsAuthenticated],
   );
