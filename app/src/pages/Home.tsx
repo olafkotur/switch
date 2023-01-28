@@ -39,21 +39,15 @@ export const HomePage = (): ReactElement => {
   }, [suggestions]);
 
   const isSearchValueValid = useMemo(() => {
-    return new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:[\.|\:][\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm).test(
-      searchValue,
-    );
+    const regex = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:[\.|\:][\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm);
+    return searchValue !== '' && regex.test(searchValue);
   }, [searchValue]);
 
   return (
     <HomeContainer>
       <Header />
       <Spacer vertical={40} />
-      <SearchBar
-        value={searchValue}
-        disabled={!searchValue || !isSearchValueValid}
-        setValue={setSearchValue}
-        onSubmit={createModule}
-      />
+      <SearchBar value={searchValue} isValid={isSearchValueValid} setValue={setSearchValue} onSubmit={createModule} />
 
       <Spacer vertical={20} />
 

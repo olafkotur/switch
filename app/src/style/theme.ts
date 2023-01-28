@@ -1,6 +1,7 @@
 export type Themes = 'light' | 'dark';
 
 const COMMON_THEME = {
+  font: 'Inter',
   fontSize: {
     verySmall: '10px',
     small: '12px',

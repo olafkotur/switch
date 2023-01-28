@@ -29,6 +29,7 @@ export const useCreateModule = () => {
   const url = `${API_BASE_URL}/module/create`;
   const request = useRequest();
   const errorToast = useToast('error');
+  const successToast = useToast('success');
 
   return useCallback(
     async (_url: string) => {
@@ -41,8 +42,9 @@ export const useCreateModule = () => {
       const module = response.data as Module;
       setModules([...modules, module]);
       setActiveModuleId(module._id);
+      successToast('Successfully added a new application');
     },
-    [url, modules, request, errorToast, setModules, setActiveModuleId],
+    [url, modules, request, errorToast, successToast, setModules, setActiveModuleId],
   );
 };
 

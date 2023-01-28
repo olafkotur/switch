@@ -22,10 +22,13 @@ export enum IconNames {
   RELOAD = 'fa-solid fa-rotate-right',
   DELETE = 'fa-solid fa-trash',
   SEARCH = 'fa-solid fa-magnifying-glass',
-  CLOSE = 'fa-solid fa-xmark',
   LOGOUT = 'fa-solid fa-arrow-right-from-bracket',
   CHECK = 'fa-regular fa-square-check',
   CHECK_FILLED = 'fa-solid fa-square-check',
+  CIRCLE_CHECK = 'fa-regular fa-circle-check',
+  ERROR = 'fa-solid fa-circle-exclamation',
+  INFO = 'fa-solid fa-circle-info',
+  WARNING = 'fa-solid fa-triangle-exclamation',
 }
 
 const IconContainer = styled.div<{ size: number; color: string; opacity: number }>`
@@ -56,8 +59,11 @@ library.add(
   Solid.faRotateRight,
   Solid.faTrash,
   Solid.faMagnifyingGlass,
-  Solid.faClose,
   Solid.faArrowRightFromBracket,
   Solid.faSquareCheck,
+  Solid.faCircleExclamation,
+  Solid.faCircleInfo,
+  Solid.faTriangleExclamation,
   Regular.faSquareCheck,
+  Regular.faCircleCheck,
 );

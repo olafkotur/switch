@@ -49,7 +49,7 @@ const App = (): ReactElement => {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
   if (isLoading) {
     return <Loader />;

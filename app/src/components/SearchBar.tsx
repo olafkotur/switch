@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { SEARCH_BAR_PLACEHOLDER } from '../const';
@@ -9,7 +10,7 @@ import { Input } from './Input';
 
 interface SearchBarProps {
   value: string;
-  disabled: boolean;
+  isValid: boolean;
   setValue: (value: string) => void;
   onSubmit: (value: string) => Promise<void>;
 }
@@ -37,15 +38,15 @@ const LeftSection = styled.div`
   width: 100%;
 `;
 
-const CreateModuleButton = styled(IconButton)`
+const ValidContainer = styled(motion.div)`
   align-self: center;
 `;
 
-export const SearchBar = ({ value, disabled, setValue, onSubmit }: SearchBarProps): ReactElement => {
+export const SearchBar = ({ value, isValid, setValue, onSubmit }: SearchBarProps): ReactElement => {
   const theme = useTheme();
 
   useOnKeyPress('Enter', async () => {
-    !disabled && (await onSubmit(value));
+    isValid && (await onSubmit(value));
   });
 
   return (
@@ -58,18 +59,13 @@ export const SearchBar = ({ value, disabled, setValue, onSubmit }: SearchBarProp
         <Spacer horizontal={7} />
       </LeftSection>
 
-      <CreateModuleButton
-        noMargin
-        size="large"
-        onClick={() => onSubmit(value)}
-        disabled={disabled}
-        bg={theme.backgroundColor.tertiary}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: disabled ? 0 : 1 }}
-        transition={{ duration: 0.2 }}
+      <ValidContainer
+        initial={{ color: theme.color.faint }}
+        animate={{ color: isValid ? '#00b894' : theme.color.faint }}
+        transition={{ duration: 0.25 }}
       >
-        <Icon name={IconNames.ADD} color={theme.color.inverted} />
-      </CreateModuleButton>
+        <Icon name={IconNames.CIRCLE_CHECK} color="inherit" size={24} />
+      </ValidContainer>
       <Spacer horizontal={4} />
     </SearchBarContainer>
   );

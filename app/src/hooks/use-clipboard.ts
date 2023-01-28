@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useToast } from './use-toast';
 
 export const useClipboardCopy = () => {
-  const successToast = useToast('success', 2500);
+  const successToast = useToast('success');
 
   return useCallback(
     (value: string) => {

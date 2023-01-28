@@ -11,8 +11,8 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: Inter;
     user-select: none;
+    font-family: ${(props) => props.theme.font};
     color: ${(props) => props.theme.color.normal};
     background-color: ${(props) => props.theme.backgroundColor.secondary};
 

@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
-import { useDefaultColor } from '../icons';
+import { useTheme } from '../hooks';
 
 const Bg = require('../../assets/bg.png');
 const SwitchIcon = require('../../assets/switch-icon.png');
 
 const Switch = (): ReactElement => {
-  const defaultColor = useDefaultColor();
+  const theme = useTheme();
+  const defaultColor = theme.color.normal;
   const size = 6.5;
   const opacity = 1;
 
