@@ -1,7 +1,7 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const rootPath = path.resolve(__dirname, '..')
+const rootPath = path.resolve(__dirname, '..');
 
 module.exports = {
   resolve: {
@@ -9,7 +9,7 @@ module.exports = {
     mainFields: ['main', 'module', 'browser'],
   },
   entry: path.resolve(rootPath, 'src', 'App.tsx'),
-  target: 'electron-renderer',
+  target: 'web',
   devtool: 'source-map',
   module: {
     rules: [
@@ -42,5 +42,9 @@ module.exports = {
     filename: 'js/[name].js',
     publicPath: './',
   },
-  plugins: [new HtmlWebpackPlugin()],
-}
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(rootPath, 'electron/index.ejs'),
+    }),
+  ],
+};

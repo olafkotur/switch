@@ -36,13 +36,10 @@ const createMainWindow = async (): Promise<void> => {
     frame: !userSettings.overlayMode,
     titleBarStyle: userSettings.overlayMode ? 'default' : 'hidden',
     transparent: userSettings.overlayMode,
-    backgroundColor: '#1F2225',
+    backgroundColor: '#F8F9F9',
     webPreferences: {
-      nodeIntegration: true,
       webviewTag: true,
-      enableRemoteModule: true,
       devTools: DEVELOPMENT,
-      plugins: true,
     },
   });
 
@@ -106,4 +103,3 @@ app.on('ready', async () => {
 app.on('window-all-closed', () => {
   app.quit();
 });
-app.allowRendererProcessReuse = true;

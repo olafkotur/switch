@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -70,18 +70,17 @@ const App = (): ReactElement => {
   );
 };
 
-const element = document.createElement('div');
-element.setAttribute('id', 'root');
-document.body.appendChild(element);
-render(
-  <RecoilRoot>
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AppContainer>
-          <App />
-        </AppContainer>
-      </ThemeProvider>
-    </QueryClientProvider>
-  </RecoilRoot>,
-  element,
+const root = createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+  <React.StrictMode>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <AppContainer>
+            <App />
+          </AppContainer>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </RecoilRoot>
+  </React.StrictMode>,
 );

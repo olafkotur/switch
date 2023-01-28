@@ -1,12 +1,10 @@
 import storage from 'electron-json-storage';
 
-export type StorageKey =
-  | 'menuItems'
-  | 'currentWindowInfo'
-  | 'jwtTokens'
-  | 'userSettings'
-  | 'applications';
+export type StorageKey = 'currentWindowInfo';
 
+/**
+ * @deprecated - this should no longer be used
+ */
 export const StorageService = {
   /**
    * Sets an object by name (insert, update)

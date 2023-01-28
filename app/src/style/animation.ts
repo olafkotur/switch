@@ -30,6 +30,7 @@ export const Visibility = ({
   display?: string;
 }): HTMLMotionProps<'div'> => {
   return {
+    initial: { display: 'none' },
     animate: { display: isVisible ? display : 'none' },
   };
 };
