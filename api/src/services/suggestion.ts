@@ -89,6 +89,11 @@ const suggestions: SuggestionData[] = [
     icon: 'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://web.telegram.org/&size=256',
     category: 'messaging',
   },
+  {
+    url: 'https://teams.microsoft.com',
+    icon: 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://teams.microsoft.com&size=256',
+    category: 'messaging',
+  },
 ];
 
 export const SuggestionService = {

@@ -2,7 +2,7 @@ import 'colors';
 import express from 'express';
 import { MONGO_NAME, MONGO_URI, NO_VERIFY_URLS, PORT } from './const';
 import { ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
-import { DatabaseService, ResponseService, SecurityService, SuggestionService, UserService } from './services';
+import { DatabaseService, ResponseService, SecurityService, UserService } from './services';
 
 export const database = DatabaseService;
 
@@ -24,8 +24,6 @@ const main = async (): Promise<void> => {
   app.use(express.urlencoded({ extended: false, limit: '10mb' }));
   app.use(express.json());
   app.use(cors());
-
-  await SuggestionService.create();
 
   // custom middleware
   app.use(async (req, res, next) => {
