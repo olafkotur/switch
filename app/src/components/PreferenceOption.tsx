@@ -1,12 +1,11 @@
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import styled from 'styled-components';
 import { useToast } from '../hooks';
 import { ColumnContainer, Spacer } from './Common';
-import { ToggleInput } from './Input';
+import { CheckBoxInput } from './Input';
 import { BodyText, SubtitleText } from './Text';
 
 interface PreferenceOptionProps {
-  id: string;
   title: string;
   description: string;
   type: 'toggle' | 'text';
@@ -19,11 +18,11 @@ const PreferenceOptionContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
 `;
 
 export const PreferenceOption = ({
-  id,
   title,
   description,
   type,
@@ -46,12 +45,12 @@ export const PreferenceOption = ({
 
   return (
     <PreferenceOptionContainer>
-      {type === 'toggle' && <ToggleInput id={id} value={value as boolean} onChange={handleOnChange} />}
       <ColumnContainer>
         <SubtitleText>{title}</SubtitleText>
         <Spacer vertical={2} />
         <BodyText faint>{description}</BodyText>
       </ColumnContainer>
+      {type === 'toggle' && <CheckBoxInput value={value as boolean} onChange={handleOnChange} />}
     </PreferenceOptionContainer>
   );
 };

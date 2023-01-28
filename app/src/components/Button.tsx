@@ -21,8 +21,9 @@ interface IconButtonProps extends Props {
   bg?: string;
 }
 
-const ButtonContainer = styled(motion.div)`
+const ButtonContainer = styled(motion.div)<{ disabled?: boolean }>`
   cursor: pointer;
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
 `;
 
 export const Button = ({ ...props }: Props): ReactElement => {
@@ -36,7 +37,6 @@ const IconButtonContainer = styled(Button)<{ px: string; noMargin?: boolean; bg?
   width: ${(props) => props.px};
   height: ${(props) => props.px};
   opacity: ${(props) => (props.disabled ? 0.4 : 1)};
-  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   border-radius: ${(props) => props.theme.borderRadius.small};
   margin: ${(props) => (props.noMargin ? 0 : props.theme.spacing.medium)} 0;
   background: ${(props) => props.bg};

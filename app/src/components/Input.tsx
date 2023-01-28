@@ -1,5 +1,7 @@
 import React, { HTMLInputTypeAttribute, ReactElement } from 'react';
 import styled from 'styled-components';
+import { Button } from './Button';
+import { Icon, IconNames } from './Icon';
 
 interface TextInputProps {
   placeholder: string;
@@ -50,69 +52,20 @@ export const TextInput = ({ value, placeholder, disabled, type, onChange }: Text
   );
 };
 
-interface ToggleInputProps {
-  id: string;
+interface CheckBoxInputProps {
   value: boolean;
   disabled?: boolean;
   onChange?: (value: boolean) => void;
 }
 
-const ToggleInputContainer = styled.div`
-  position: relative;
-  margin: 0 ${(props) => props.theme.spacing.small};
-  margin-top: 3px;
-`;
-const ToggleInputLabel = styled.label`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 42px;
-  height: 26px;
-  border-radius: 15px;
-  background: #bebebe;
-  cursor: pointer;
-  &::after {
-    content: '';
-    display: block;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    margin: 1px;
-    background: #ffffff;
-    box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
-    transition: 0.2s;
-  }
-`;
-const ToggleInputInner = styled.input`
-  opacity: 0;
-  z-index: 1;
-  border-radius: 15px;
-  width: 42px;
-  height: 26px;
-  &:checked + ${ToggleInputLabel} {
-    background: ${(props) => props.theme.highlightColor.primary};
-    &::after {
-      content: '';
-      display: block;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      margin-left: 17px;
-      transition: 0.2s;
-    }
-  }
+const CheckBoxInputContainer = styled(Button)`
+  margin: ${(props) => props.theme.spacing.medium};
 `;
 
-export const ToggleInput = ({ id, value, onChange }: ToggleInputProps): ReactElement => {
+export const CheckBoxInput = ({ value, disabled, onChange }: CheckBoxInputProps) => {
   return (
-    <ToggleInputContainer>
-      <ToggleInputInner
-        id={id}
-        type="checkbox"
-        checked={value}
-        onChange={(event) => onChange?.(event.target.checked)}
-      />
-      <ToggleInputLabel htmlFor={id} />
-    </ToggleInputContainer>
+    <CheckBoxInputContainer onClick={() => onChange?.(!value)} disabled={disabled}>
+      <Icon name={value ? IconNames.CHECK_FILLED : IconNames.CHECK} size={30} opacity={disabled ? 0.3 : 1} />
+    </CheckBoxInputContainer>
   );
 };

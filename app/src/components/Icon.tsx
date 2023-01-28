@@ -1,5 +1,6 @@
 import { IconProp, library } from '@fortawesome/fontawesome-svg-core';
-import * as Icons from '@fortawesome/free-solid-svg-icons';
+import * as Solid from '@fortawesome/free-solid-svg-icons';
+import * as Regular from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
@@ -22,6 +23,9 @@ export enum IconNames {
   DELETE = 'fa-solid fa-trash',
   SEARCH = 'fa-solid fa-magnifying-glass',
   CLOSE = 'fa-solid fa-xmark',
+  LOGOUT = 'fa-solid fa-arrow-right-from-bracket',
+  CHECK = 'fa-regular fa-square-check',
+  CHECK_FILLED = 'fa-solid fa-square-check',
 }
 
 const IconContainer = styled.div<{ size: number; color: string; opacity: number }>`
@@ -45,12 +49,15 @@ export const Icon = ({ name, color, size, opacity }: IconProps): ReactElement =>
 };
 
 library.add(
-  Icons.faGear,
-  Icons.faPlus,
-  Icons.faArrowLeft,
-  Icons.faArrowRight,
-  Icons.faRotateRight,
-  Icons.faTrash,
-  Icons.faMagnifyingGlass,
-  Icons.faClose,
+  Solid.faGear,
+  Solid.faPlus,
+  Solid.faArrowLeft,
+  Solid.faArrowRight,
+  Solid.faRotateRight,
+  Solid.faTrash,
+  Solid.faMagnifyingGlass,
+  Solid.faClose,
+  Solid.faArrowRightFromBracket,
+  Solid.faSquareCheck,
+  Regular.faSquareCheck,
 );

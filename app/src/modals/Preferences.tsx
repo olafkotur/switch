@@ -1,7 +1,16 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { BodyText, Button, ColumnContainer, PreferenceOption, Spacer, SubtitleText } from '../components';
+import {
+  BodyText,
+  Button,
+  ColumnContainer,
+  Icon,
+  IconNames,
+  PreferenceOption,
+  Spacer,
+  SubtitleText,
+} from '../components';
 import { useLogout, useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
 
@@ -54,6 +63,7 @@ const LogoutButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: row;
   color: #fff;
   width: 103px;
   height: 30px;
@@ -99,6 +109,8 @@ export const Preferences = (): ReactElement => {
 
         <PreferencesPanelFooter>
           <LogoutButton onClick={logout}>
+            <Icon name={IconNames.LOGOUT} color="inherit" />
+            <Spacer horizontal={3} />
             <BodyText color="inherit" cursor="inherit">
               Logout
             </BodyText>
@@ -123,7 +135,6 @@ const GeneralPanel = (): ReactElement => {
     <ColumnContainer>
       <PreferenceOption
         requiresRestart
-        id="overlayMode"
         title="Overlay mode"
         description="Switch will display over other applications"
         type="toggle"
@@ -138,7 +149,6 @@ const AccountPanel = (): ReactElement => {
   return (
     <ColumnContainer>
       <PreferenceOption
-        id="updateAvatar"
         title="Update avatar"
         description="Update your profile avatar picture"
         type="text"
@@ -147,7 +157,6 @@ const AccountPanel = (): ReactElement => {
       />
       <Spacer vertical={15} />
       <PreferenceOption
-        id="changePassword"
         title="Change password"
         description="Update your current password"
         type="text"
@@ -165,7 +174,6 @@ const AppearancePanel = (): ReactElement => {
   return (
     <ColumnContainer>
       <PreferenceOption
-        id="darkMode"
         title="Dark mode"
         description="Enable dark mode, does not affect any added applications"
         type="toggle"
@@ -174,7 +182,6 @@ const AppearancePanel = (): ReactElement => {
       />
       <Spacer vertical={15} />
       <PreferenceOption
-        id="animatePresets"
         title="Animate presets"
         description="Show an animation when resizing Switch using layout presets"
         type="toggle"

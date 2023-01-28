@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Icon, IconButton, IconNames } from '../components';
 import { ModalState } from '../state';
 import { Preferences } from './Preferences';
 
@@ -34,13 +33,6 @@ const ModalContent = styled.div`
   filter: drop-shadow(${(props) => props.theme.dropShadow.medium});
 `;
 
-const CloseButton = styled(IconButton)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: ${(props) => props.theme.zIndex.modal + 1};
-`;
-
 export const Modal = (): ReactElement => {
   const [modal, setModal] = useRecoilState(ModalState);
 
@@ -58,12 +50,7 @@ export const Modal = (): ReactElement => {
       transition={{ duration: 0.15 }}
     >
       <ModalBackdrop onClick={onDismiss} />
-      <ModalContent>
-        <CloseButton onClick={onDismiss} size="large">
-          <Icon name={IconNames.CLOSE} />
-        </CloseButton>
-        {modal === 'preferences' && <Preferences />}
-      </ModalContent>
+      <ModalContent>{modal === 'preferences' && <Preferences />}</ModalContent>
     </ModalContainer>
   );
 };
