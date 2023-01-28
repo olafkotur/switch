@@ -1,7 +1,7 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { Header, ModuleGroup, SearchBar, Spacer } from '../components';
+import { Header, Suggestions, SearchBar, Spacer } from '../components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useCreateModule } from '../hooks';
 import { SuggestionsState } from '../state';
@@ -17,7 +17,7 @@ const HomeContainer = styled.div`
   padding: 0 0 0 ${SIDE_BAR_WIDTH}px;
 `;
 
-const ModuleGroupContaner = styled.div`
+const SuggestionsContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: calc(70% + 20px);
@@ -30,9 +30,13 @@ export const HomePage = (): ReactElement => {
   const suggestions = useRecoilValue(SuggestionsState);
   const createModule = useCreateModule();
 
-  const productivity = suggestions.filter((suggestion) => suggestion.category === 'productivity');
-  const social = suggestions.filter((suggestion) => suggestion.category === 'social');
-  const messaging = suggestions.filter((suggestion) => suggestion.category === 'messaging');
+  const suggestionGroups = useMemo(() => {
+    return {
+      productivity: suggestions.filter((suggestion) => suggestion.category === 'productivity'),
+      social: suggestions.filter((suggestion) => suggestion.category === 'social'),
+      messaging: suggestions.filter((suggestion) => suggestion.category === 'messaging'),
+    };
+  }, [suggestions]);
 
   const isSearchValueValid = useMemo(() => {
     return new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:[\.|\:][\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm).test(
@@ -53,11 +57,11 @@ export const HomePage = (): ReactElement => {
 
       <Spacer vertical={20} />
 
-      <ModuleGroupContaner>
-        <ModuleGroup title="Productivity" data={productivity} />
-        <ModuleGroup title="Social" data={social} />
-        <ModuleGroup title="Messaging" data={messaging} />
-      </ModuleGroupContaner>
+      <SuggestionsContainer>
+        <Suggestions title="Productivity" data={suggestionGroups.productivity} />
+        <Suggestions title="Social" data={suggestionGroups.social} />
+        <Suggestions title="Messaging" data={suggestionGroups.messaging} />
+      </SuggestionsContainer>
     </HomeContainer>
   );
 };
