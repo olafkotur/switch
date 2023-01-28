@@ -1,8 +1,11 @@
 import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
-import { IsAuthenticatedState, ModalState } from '../state';
+import { IsAuthenticatedState } from '../state';
+import { useDelay } from './use-delay';
+import { useInitialise } from './use-initialise';
 import { useRequest } from './use-request';
+import { useResetState } from './use-reset-state';
 import { useRemoveStorage, useSetStorage } from './use-storage';
 import { useToast } from './use-toast';
 
@@ -11,7 +14,7 @@ export const useLogin = () => {
   const request = useRequest();
   const errorToast = useToast('error');
   const setStorage = useSetStorage();
-  const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
+  const initialise = useInitialise();
 
   return useCallback(
     async ({ username, password }: { username: string; password: string }) => {
@@ -20,9 +23,9 @@ export const useLogin = () => {
         return errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
       }
       await setStorage('tokens', { ...(response.data as Object) });
-      setIsAuthenticated(true);
+      await initialise();
     },
-    [url, request, errorToast, setStorage, setIsAuthenticated],
+    [url, request, errorToast, setStorage, initialise],
   );
 };
 
@@ -31,7 +34,7 @@ export const useSignUp = () => {
   const request = useRequest();
   const errorToast = useToast('error');
   const setStorage = useSetStorage();
-  const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
+  const initialise = useInitialise();
 
   return useCallback(
     async ({ username, password }: { username: string; password: string }) => {
@@ -40,9 +43,9 @@ export const useSignUp = () => {
         return errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
       }
       await setStorage('tokens', { ...(response.data as Object) });
-      setIsAuthenticated(true);
+      await initialise();
     },
-    [url, request, errorToast, setStorage, setIsAuthenticated],
+    [url, request, errorToast, setStorage, initialise],
   );
 };
 
@@ -69,15 +72,15 @@ export const useRefresh = () => {
 };
 
 export const useLogout = () => {
+  const delay = useDelay();
   const removeStorage = useRemoveStorage();
-  const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
-  const setModal = useSetRecoilState(ModalState);
+  const resetState = useResetState();
 
-  return useCallback(() => {
+  return useCallback(async () => {
+    await delay(500);
     removeStorage('tokens');
-    setIsAuthenticated(false);
-    setModal(null);
-  }, [removeStorage, setIsAuthenticated]);
+    resetState();
+  }, [removeStorage, resetState]);
 };
 
 export const useResetPassword = () => {

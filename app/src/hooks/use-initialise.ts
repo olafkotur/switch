@@ -1,8 +1,10 @@
 import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { INITIALISE_TIMEOUT_MS } from '../const';
 import { IsAuthenticatedState, ModulesState, PreferencesState, SuggestionsState, UserState } from '../state';
 import { AuthTokens } from '../typings';
 import { useRefresh } from './use-auth';
+import { useDelay } from './use-delay';
 import { useFetchModules } from './use-module';
 import { useFetchPreferences } from './use-preferences';
 import { useGetStorage } from './use-storage';
@@ -12,6 +14,7 @@ import { useFetchUser } from './use-user';
 export const useInitialise = () => {
   const getStorage = useGetStorage();
   const refresh = useRefresh();
+  const delay = useDelay();
   const fetchModules = useFetchModules();
   const fetchUser = useFetchUser();
   const fetchPreferences = useFetchPreferences();
@@ -39,6 +42,9 @@ export const useInitialise = () => {
     const preferences = await fetchPreferences();
     const modules = await fetchModules();
     const suggestions = await fetchSuggestions();
+
+    // additional waiting for UI updates
+    await delay(INITIALISE_TIMEOUT_MS);
 
     setIsAuthenticated(true);
     setUser(user);

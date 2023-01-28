@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useToast } from '../hooks';
 import { ColumnContainer, Spacer } from './Common';
 import { CheckBoxInput } from './Input';
-import { BodyText, SubtitleText } from './Text';
+import { MediumText, LargeText } from './Text';
 
 interface PreferenceOptionProps {
   title: string;
@@ -46,9 +46,9 @@ export const PreferenceOption = ({
   return (
     <PreferenceOptionContainer>
       <ColumnContainer>
-        <SubtitleText>{title}</SubtitleText>
+        <LargeText>{title}</LargeText>
         <Spacer vertical={2} />
-        <BodyText faint>{description}</BodyText>
+        <MediumText faint>{description}</MediumText>
       </ColumnContainer>
       {type === 'toggle' && <CheckBoxInput value={value as boolean} onChange={handleOnChange} />}
     </PreferenceOptionContainer>

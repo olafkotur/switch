@@ -1,6 +1,7 @@
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
+import { ScaleOnTap } from '../style/animation';
 
 const ICON_BUTTON_SIZES = {
   small: '12px',
@@ -11,7 +12,6 @@ const ICON_BUTTON_SIZES = {
 interface Props extends HTMLMotionProps<'div'> {
   disabled?: boolean;
   width?: string;
-  animation?: number;
   bg?: string;
 }
 
@@ -27,7 +27,7 @@ const ButtonContainer = styled(motion.div)<{ disabled?: boolean }>`
 `;
 
 export const Button = ({ ...props }: Props): ReactElement => {
-  return <ButtonContainer {...props} whileTap={{ scale: props.animation ?? 0.98 }} />;
+  return <ButtonContainer {...props} {...ScaleOnTap({})} />;
 };
 
 const IconButtonContainer = styled(Button)<{ px: string; noMargin?: boolean; bg?: string }>`

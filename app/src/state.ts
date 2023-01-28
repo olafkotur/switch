@@ -2,6 +2,11 @@ import { atom } from 'recoil';
 import { ModalName } from './modals';
 import { Module, Preference, Suggestion, User } from './typings';
 
+export const IsAuthenticatedState = atom({
+  key: 'isAuthenticated',
+  default: false,
+});
+
 export const ActiveModuleIdState = atom({
   key: 'activeModuleId',
   default: null as string | null,
@@ -30,9 +35,4 @@ export const PreferencesState = atom({
 export const SuggestionsState = atom({
   key: 'suggestions',
   default: [] as Suggestion[],
-});
-
-export const IsAuthenticatedState = atom({
-  key: 'isAuthenticated',
-  default: false,
 });

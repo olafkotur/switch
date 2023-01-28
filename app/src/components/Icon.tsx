@@ -6,12 +6,14 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { DEFAULT_ICON_OPACITY, DEFAULT_ICON_SIZE } from '../const';
 import { useTheme } from '../hooks';
+import { HTMLMotionProps, motion } from 'framer-motion';
 
 interface IconProps {
   name: IconNames;
   color?: string;
   size?: number;
   opacity?: number;
+  animation?: HTMLMotionProps<'div'>;
 }
 
 export enum IconNames {
@@ -29,19 +31,21 @@ export enum IconNames {
   ERROR = 'fa-solid fa-circle-exclamation',
   INFO = 'fa-solid fa-circle-info',
   WARNING = 'fa-solid fa-triangle-exclamation',
+  LOADING = 'fa-solid fa-circle-notch',
 }
 
-const IconContainer = styled.div<{ size: number; color: string; opacity: number }>`
+const IconContainer = styled(motion.div)<{ size: number; color: string; opacity: number }>`
   color: ${(props) => props.color};
   font-size: ${(props) => props.size}px;
   opacity: ${(props) => props.opacity};
 `;
 
-export const Icon = ({ name, color, size, opacity }: IconProps): ReactElement => {
+export const Icon = ({ name, color, size, opacity, animation }: IconProps): ReactElement => {
   const theme = useTheme();
 
   return (
     <IconContainer
+      {...animation}
       color={color ?? theme.color.normal}
       size={size ?? DEFAULT_ICON_SIZE}
       opacity={opacity ?? DEFAULT_ICON_OPACITY}
@@ -64,6 +68,7 @@ library.add(
   Solid.faCircleExclamation,
   Solid.faCircleInfo,
   Solid.faTriangleExclamation,
+  Solid.faCircleNotch,
   Regular.faSquareCheck,
   Regular.faCircleCheck,
 );

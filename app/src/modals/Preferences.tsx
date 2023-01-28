@@ -1,18 +1,19 @@
-import React, { ReactElement, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import {
-  BodyText,
+  MediumText,
   Button,
   ColumnContainer,
   Icon,
   IconNames,
   PreferenceOption,
   Spacer,
-  SubtitleText,
+  LargeText,
 } from '../components';
 import { useLogout, useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
+import { Rotate } from '../style/animation';
 
 type PreferencesPanel = 'general' | 'account' | 'appearance';
 
@@ -64,14 +65,15 @@ const LogoutButton = styled(Button)`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  color: #fff;
   width: 103px;
   height: 30px;
+  color: ${(props) => props.theme.color.white};
   border-radius: ${(props) => props.theme.borderRadius.medium};
   background: ${(props) => props.theme.color.danger};
 `;
 
 export const Preferences = (): ReactElement => {
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedPanel, setSelectedPanel] = useState<PreferencesPanel>('general');
 
   const logout = useLogout();
@@ -96,24 +98,36 @@ export const Preferences = (): ReactElement => {
     ];
   }, [selectedPanel, setSelectedPanel]);
 
+  const handleLogout = useCallback(async () => {
+    setIsLoading(true);
+    await logout();
+    setIsLoading(false);
+  }, [isLoading, setIsLoading, logout]);
+
   return (
     <PreferencesContainer>
       <PreferencesPanelContainer>
         {config.map((preference) => (
           <PreferencesButton onClick={preference.onClick} key={preference.label}>
-            <SubtitleText faint={!preference.isActive} cursor="pointer">
+            <LargeText faint={!preference.isActive} cursor="pointer">
               {preference.label}
-            </SubtitleText>
+            </LargeText>
           </PreferencesButton>
         ))}
 
         <PreferencesPanelFooter>
-          <LogoutButton onClick={logout}>
-            <Icon name={IconNames.LOGOUT} color="inherit" />
-            <Spacer horizontal={3} />
-            <BodyText color="inherit" cursor="inherit">
-              Logout
-            </BodyText>
+          <LogoutButton onClick={handleLogout} disabled={isLoading}>
+            {isLoading ? (
+              <Icon name={IconNames.LOADING} color="inherit" animation={Rotate({})} size={14} />
+            ) : (
+              <>
+                <Icon name={IconNames.LOGOUT} color="inherit" size={14} opacity={1} />
+                <Spacer horizontal={3} />
+                <MediumText color="inherit" cursor="inherit">
+                  Logout
+                </MediumText>
+              </>
+            )}
           </LogoutButton>
         </PreferencesPanelFooter>
       </PreferencesPanelContainer>

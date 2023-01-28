@@ -21,15 +21,15 @@ export const Text = styled.span<TextProps>`
   cursor: ${(props) => props.cursor ?? 'auto'};
 `;
 
-export const TitleText = styled(Text)`
+export const VeryLargeText = styled(Text)`
   font-size: ${(props) => props.theme.fontSize.veryLarge};
 `;
 
-export const SubtitleText = styled(Text)`
+export const LargeText = styled(Text)`
   font-size: ${(props) => props.theme.fontSize.large};
 `;
 
-export const BodyText = styled(Text)`
+export const MediumText = styled(Text)`
   font-size: ${(props) => props.theme.fontSize.medium};
 `;
 

@@ -61,7 +61,7 @@ export const SearchBar = ({ value, isValid, setValue, onSubmit }: SearchBarProps
 
       <ValidContainer
         initial={{ color: theme.color.faint }}
-        animate={{ color: isValid ? '#00b894' : theme.color.faint }}
+        animate={{ color: isValid ? theme.highlightColor.quaternary : theme.color.faint }}
         transition={{ duration: 0.25 }}
       >
         <Icon name={IconNames.CIRCLE_CHECK} color="inherit" size={24} />

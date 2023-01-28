@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useTheme } from '../hooks';
 import { ActiveModuleIdState, ModalState, ModulesState } from '../state';
+import { Rotate } from '../style/animation';
 import { Module } from '../typings';
 import { IconButton, SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
@@ -90,20 +91,29 @@ const CreateModuleButton = (): ReactElement => {
   const theme = useTheme();
 
   const isActive = activeModuleId === null;
+  const animation = isActive ? Rotate({ repeat: 0, degrees: 90, duration: 0.3 }) : undefined;
 
   return (
     <SidebarButton onClick={() => setActiveModuleId(null)} bg={isActive ? theme.backgroundColor.module : undefined}>
-      <Icon name={IconNames.ADD} size={20} />
+      <Icon name={IconNames.ADD} size={20} animation={animation} />
     </SidebarButton>
   );
 };
 
 const PreferencesButton = (): ReactElement => {
+  const [isHovering, setIsHovering] = useState(false);
   const setModal = useSetRecoilState(ModalState);
 
+  const animation = isHovering ? Rotate({ duration: 2 }) : undefined;
+
   return (
-    <IconButton onClick={() => setModal('preferences')} size="large">
-      <Icon name={IconNames.SETTINGS} size={20} />
+    <IconButton
+      onClick={() => setModal('preferences')}
+      size="large"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      <Icon name={IconNames.SETTINGS} size={20} animation={animation} />
     </IconButton>
   );
 };

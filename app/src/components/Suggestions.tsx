@@ -4,7 +4,7 @@ import { useCreateModule } from '../hooks';
 import { Suggestion } from '../typings';
 import { Button } from './Button';
 import { ModuleIcon, Spacer } from './Common';
-import { BodyText } from './Text';
+import { MediumText } from './Text';
 
 interface SuggestionsProps {
   title: string;
@@ -18,7 +18,7 @@ const SuggestionsContainer = styled.div`
   border-radius: ${(props) => props.theme.borderRadius.large};
 `;
 
-const Title = styled(BodyText)`
+const Title = styled(MediumText)`
   margin-left: ${(props) => props.theme.spacing.small};
 `;
 

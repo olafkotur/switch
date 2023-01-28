@@ -15,10 +15,11 @@ export const Input = styled.input`
   border: none;
   background: none;
   height: 50px;
-  color: ${(props) => props.theme.color.normal};
-  font-size: ${(props) => props.theme.fontSize.medium};
   height: 100%;
   width: 100%;
+  color: ${(props) => props.theme.color.normal};
+  font-size: ${(props) => props.theme.fontSize.large};
+
   &:focus {
     outline: none;
   }

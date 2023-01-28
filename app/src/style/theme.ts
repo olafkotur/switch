@@ -34,6 +34,7 @@ const COMMON_THEME = {
     primary: '#307093', // cyan
     secondary: '#CBAE61', // yellow
     tertiary: '#B33939', // red
+    quaternary: '#00b894', // green
   },
   animation: {
     light: 0.99,
@@ -56,9 +57,9 @@ export const LIGHT_THEME = {
   color: {
     faint: 'rgba(0, 0, 0, 0.6)',
     normal: '#32323E',
-    inverted: '#fff',
+    inverted: '#ecf0f1',
     danger: 'rgba(227, 66, 66, 0.9)',
-    white: '#fff',
+    white: '#ecf0f1',
     black: '#32323E',
   },
   backgroundColor: {
@@ -66,7 +67,7 @@ export const LIGHT_THEME = {
     secondary: '#F2F5F7',
     tertiary: 'rgba(0, 0, 0, 0.8)',
     faint: 'rgba(0, 0, 0, 0.15)',
-    box: '#fff',
+    box: '#ecf0f1',
     backdrop: 'rgba(0, 0, 0, 0.7)',
     module: 'rgba(0, 0, 0, 0.2)',
   },
@@ -77,16 +78,16 @@ export const DARK_THEME = {
   name: 'dark' as Themes,
   color: {
     faint: 'rgba(255, 255, 255, 0.6)',
-    normal: '#fff',
+    normal: '#ecf0f1',
     inverted: '#32323E',
     danger: 'rgba(227, 66, 66, 0.9)',
-    white: '#fff',
+    white: '#ecf0f1',
     black: '#32323E',
   },
   backgroundColor: {
     primary: '#303036',
     secondary: '#1D1D21',
-    tertiary: '#FFFFFF',
+    tertiary: '#ecf0f1FFF',
     faint: 'rgba(255, 255, 255, 0.15)',
     box: 'rgba(255, 255, 255, 0.15)',
     backdrop: 'rgba(0, 0, 0, 0.7)',

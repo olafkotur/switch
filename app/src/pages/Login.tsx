@@ -1,8 +1,19 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { BodyText, LargeButton, SmallText, Spacer, SubtitleText, TextInput, TitleText } from '../components';
+import {
+  MediumText,
+  LargeButton,
+  SmallText,
+  Spacer,
+  LargeText,
+  Switch,
+  TextInput,
+  VeryLargeText,
+  IconNames,
+  Icon,
+} from '../components';
 import { useLogin, useOnKeyPress, useResetPassword, useSignUp, useTheme } from '../hooks';
-import { Switch } from '../components';
+import { Rotate } from '../style/animation';
 
 type ContentType = 'signup' | 'login';
 
@@ -47,6 +58,7 @@ const LoginPageCardContent = styled.div`
   align-items: center;
   justify-content: center;
   width: 70%;
+  filter: drop-shadow(${(props) => props.theme.dropShadow.medium});
 `;
 
 const InputContainer = styled.div`
@@ -54,6 +66,7 @@ const InputContainer = styled.div`
 `;
 
 export const LoginPage = (): ReactElement => {
+  const [isLoading, setIsLoading] = useState(false);
   const [contentType, setContentType] = useState<ContentType>('login');
   const [username, setUsername] = useState('olafkotur');
   const [password, setPassword] = useState('u$GQN2W7Pmnwd*743m%gVMyDB*cNXdGE');
@@ -66,7 +79,7 @@ export const LoginPage = (): ReactElement => {
   const copy = useMemo(() => (contentType === 'signup' ? SIGN_UP_COPY : LOGIN_COPY), [contentType]);
   const isNextDisabled = !username || !password;
 
-  const background = contentType === 'signup' ? theme.highlightColor.primary : theme.color.normal;
+  const background = contentType === 'signup' ? theme.highlightColor.quaternary : theme.color.normal;
   const color = contentType === 'signup' ? theme.color.white : theme.color.inverted;
 
   const toggleContentType = useCallback(() => {
@@ -77,8 +90,10 @@ export const LoginPage = (): ReactElement => {
   }, [contentType, setContentType]);
 
   const handleSubmit = useCallback(async () => {
+    setIsLoading(true);
     const handler = contentType === 'login' ? login : signUp;
     await handler({ username, password });
+    setIsLoading(false);
   }, [username, password, contentType, login, signUp]);
 
   useOnKeyPress('Enter', async () => {
@@ -91,7 +106,7 @@ export const LoginPage = (): ReactElement => {
         <LoginPageCardContent>
           <Switch />
           <Spacer vertical={5} />
-          <TitleText>{copy.title}</TitleText>
+          <VeryLargeText>{copy.title}</VeryLargeText>
           <Spacer vertical={24} />
 
           <InputContainer>
@@ -99,32 +114,32 @@ export const LoginPage = (): ReactElement => {
             <TextInput placeholder="password" value={password} onChange={setPassword} type="password" />
           </InputContainer>
 
-          <LargeButton width="270px" bg={background} disabled={isNextDisabled} onClick={handleSubmit}>
-            <SubtitleText bold color={color}>
-              {copy.button}
-            </SubtitleText>
+          <LargeButton width="270px" bg={background} disabled={isNextDisabled || isLoading} onClick={handleSubmit}>
+            <LargeText bold color={color}>
+              {isLoading ? <Icon name={IconNames.LOADING} color={color} animation={Rotate({})} /> : copy.button}
+            </LargeText>
           </LargeButton>
 
           <Spacer vertical={16} />
 
           {contentType === 'login' && (
             <>
-              <BodyText>
+              <MediumText>
                 Forgot password?{' '}
-                <BodyText bold underline cursor="pointer" onClick={() => resetPassword({})}>
+                <MediumText bold underline cursor="pointer" onClick={() => resetPassword({})}>
                   Reset
-                </BodyText>
-              </BodyText>
+                </MediumText>
+              </MediumText>
               <Spacer vertical={6} />
             </>
           )}
 
-          <BodyText>
+          <MediumText>
             {copy.anotherWay}{' '}
-            <BodyText bold underline cursor="pointer" onClick={toggleContentType}>
+            <MediumText bold underline cursor="pointer" onClick={toggleContentType}>
               {copy.anotherWayButton}
-            </BodyText>
-          </BodyText>
+            </MediumText>
+          </MediumText>
 
           <Spacer vertical={16} />
 

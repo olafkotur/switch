@@ -5,7 +5,7 @@ import { RecoilRoot, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Loader } from './components';
 import { Sidebar } from './components/Sidebar';
-import { INITIALISE_TIMEOUT_MS } from './const';
+import { APP_TIMEOUT_MS } from './const';
 import { useInitialise } from './hooks';
 import { Modal } from './modals';
 import { HomePage } from './pages/Home';
@@ -44,12 +44,12 @@ const App = (): ReactElement => {
 
   const load = useCallback(async () => {
     await initialise();
-    setTimeout(() => setIsLoading(false), INITIALISE_TIMEOUT_MS);
+    setTimeout(() => setIsLoading(false), APP_TIMEOUT_MS);
   }, [initialise, setIsLoading]);
 
   useEffect(() => {
     load();
-  }, [load]);
+  }, []);
 
   if (isLoading) {
     return <Loader />;
