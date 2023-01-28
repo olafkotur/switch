@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { SEARCH_BAR_PLACEHOLDER } from '../const';
 import { useOnKeyPress, useTheme } from '../hooks';
+import { ChangeColor } from '../style/animation';
 import { IconButton } from './Button';
 import { Spacer } from './Common';
 import { Icon, IconNames } from './Icon';
@@ -45,6 +46,8 @@ const ValidContainer = styled(motion.div)`
 export const SearchBar = ({ value, isValid, setValue, onSubmit }: SearchBarProps): ReactElement => {
   const theme = useTheme();
 
+  const animation = ChangeColor({ color: isValid ? theme.highlightColor.quaternary : theme.color.faint });
+
   useOnKeyPress('Enter', async () => {
     isValid && (await onSubmit(value));
   });
@@ -59,11 +62,7 @@ export const SearchBar = ({ value, isValid, setValue, onSubmit }: SearchBarProps
         <Spacer horizontal={7} />
       </LeftSection>
 
-      <ValidContainer
-        initial={{ color: theme.color.faint }}
-        animate={{ color: isValid ? theme.highlightColor.quaternary : theme.color.faint }}
-        transition={{ duration: 0.25 }}
-      >
+      <ValidContainer {...animation}>
         <Icon name={IconNames.CIRCLE_CHECK} color="inherit" size={24} />
       </ValidContainer>
       <Spacer horizontal={4} />

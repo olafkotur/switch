@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { useDeleteModule, useOnClickout, useTheme } from '../hooks';
 import { ActiveModuleIdState } from '../state';
+import { Visibility } from '../style/animation';
 import { Button, SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Icon, IconNames } from './Icon';
@@ -51,7 +52,7 @@ export const Controls = ({ _id, icon, isVisible, setVisible }: ControlsProps): R
   });
 
   return (
-    <ControlsContainer initial={{ display: 'none' }} animate={{ display: isVisible ? 'flex' : 'none' }} ref={ref}>
+    <ControlsContainer ref={ref} {...Visibility({ isVisible })}>
       <SidebarButton onClick={() => setVisible(false)}>
         <ModuleIcon src={icon} draggable={false} />
       </SidebarButton>

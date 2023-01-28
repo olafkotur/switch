@@ -3,6 +3,7 @@ import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { ModalState } from '../state';
+import { Fade } from '../style/animation';
 import { Preferences } from './Preferences';
 
 export type ModalName = 'preferences';
@@ -43,12 +44,7 @@ export const Modal = (): ReactElement => {
   if (modal == null) return <></>;
 
   return (
-    <ModalContainer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
-    >
+    <ModalContainer {...Fade({})}>
       <ModalBackdrop onClick={onDismiss} />
       <ModalContent>{modal === 'preferences' && <Preferences />}</ModalContent>
     </ModalContainer>

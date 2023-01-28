@@ -21,3 +21,37 @@ export const ScaleOnTap = ({ depth = 0.97 }: { depth?: number }): HTMLMotionProp
     whileTap: { scale: depth },
   };
 };
+
+export const Visibility = ({
+  isVisible,
+  display = 'flex',
+}: {
+  isVisible: boolean;
+  display?: string;
+}): HTMLMotionProps<'div'> => {
+  return {
+    animate: { display: isVisible ? display : 'none' },
+  };
+};
+
+export const ChangeColor = ({
+  color,
+  duration = 0.25,
+}: {
+  color: string;
+  duration?: number;
+}): HTMLMotionProps<'div'> => {
+  return {
+    animate: { color },
+    transition: { duration },
+  };
+};
+
+export const Fade = ({ duration = 0.15 }: { duration?: number }): HTMLMotionProps<'div'> => {
+  return {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { duration },
+  };
+};
