@@ -16,7 +16,7 @@ const SearchBarContainer = styled.div`
   display: flex;
   width: 70%;
   height: 50px;
-  background: ${(props) => props.theme.backgroundColor.searchBar};
+  background: ${(props) => props.theme.backgroundColor.box};
   padding: ${(props) => props.theme.spacing.medium};
   border-radius: ${(props) => props.theme.spacing.large};
   color: ${(props) => props.theme.color.inverted};

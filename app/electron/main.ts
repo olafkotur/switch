@@ -29,8 +29,8 @@ const createMainWindow = async (): Promise<void> => {
   mainWindow = new BrowserWindow({
     width: screenInfo.width,
     height: screenInfo.height,
-    minHeight: 480,
-    minWidth: 720,
+    minHeight: 600,
+    minWidth: 800,
     center: true,
     darkTheme: true,
     frame: !userSettings.overlayMode,

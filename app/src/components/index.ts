@@ -7,6 +7,7 @@ export * from './Divider';
 export * from './Header';
 export * from './Input';
 export * from './Loader';
+export * from './ModuleGroup';
 export * from './PreferenceOption';
 export * from './SearchBar';
 export * from './Sidebar';

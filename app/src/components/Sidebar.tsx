@@ -63,7 +63,6 @@ const ModuleButton = ({ _id, icon }: Module): ReactElement => {
 
   const isActive = activeModuleId === _id;
   const showControls = isControlsVisible && activeModuleId === _id;
-  const background = theme.name === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   const handleOnClick = useCallback(() => {
     if (isActive) {
@@ -75,7 +74,11 @@ const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   return (
     <>
       <Controls _id={_id} icon={icon} isVisible={showControls} />
-      <SidebarButton bg={isActive ? background : undefined} onClick={handleOnClick} onContextMenu={handleOnClick}>
+      <SidebarButton
+        bg={isActive ? theme.backgroundColor.module : undefined}
+        onClick={handleOnClick}
+        onContextMenu={handleOnClick}
+      >
         <ModuleIcon src={icon} draggable={false} />
       </SidebarButton>
     </>
@@ -87,10 +90,9 @@ const CreateModuleButton = (): ReactElement => {
   const theme = useTheme();
 
   const isActive = activeModuleId === null;
-  const background = theme.name === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
   return (
-    <SidebarButton onClick={() => setActiveModuleId(null)} bg={isActive ? background : undefined}>
+    <SidebarButton onClick={() => setActiveModuleId(null)} bg={isActive ? theme.backgroundColor.module : undefined}>
       <Add size={24} />
     </SidebarButton>
   );

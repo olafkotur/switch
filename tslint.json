@@ -18,10 +18,7 @@
     "semicolon": [false],
     "ter-arrow-parens": false,
     "align": false,
-    "max-line-length": [
-      true,
-      { "limit": 120, "ignore-pattern": "//||console." }
-    ],
+    "max-line-length": [true, { "limit": 120, "ignore-pattern": "//||console." }],
     "object-shorthand-properties-first": false,
     "trailing-comma": false
   }

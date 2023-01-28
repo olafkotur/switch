@@ -1,10 +1,8 @@
 import 'colors';
 import express from 'express';
 import { MONGO_NAME, MONGO_URI, NO_VERIFY_URLS, PORT } from './const';
-import { ModuleHandler } from './handlers/module';
-import { PreferenceHandler } from './handlers/preference';
-import { UserHandler } from './handlers/user';
-import { DatabaseService, ResponseService, SecurityService, UserService } from './services';
+import { ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
+import { DatabaseService, ResponseService, SecurityService, SuggestionService, UserService } from './services';
 
 export const database = DatabaseService;
 
@@ -26,6 +24,8 @@ const main = async (): Promise<void> => {
   app.use(express.urlencoded({ extended: false, limit: '10mb' }));
   app.use(express.json());
   app.use(cors());
+
+  await SuggestionService.create();
 
   // custom middleware
   app.use(async (req, res, next) => {
@@ -58,6 +58,7 @@ const main = async (): Promise<void> => {
   setupUserHandlers();
   setupModuleHandlers();
   setupPreferenceHandlers();
+  setupSuggestionHandlers();
 
   app.listen(PORT, () => console.log(`API listening on port ${PORT}`.cyan));
 };
@@ -76,8 +77,12 @@ const setupModuleHandlers = (): void => {
 };
 
 const setupPreferenceHandlers = (): void => {
-  app.get('/preference', PreferenceHandler.fetch);
-  app.post('/preference/update', PreferenceHandler.update);
+  app.get('/preferences', PreferenceHandler.fetch);
+  app.post('/preferences/update', PreferenceHandler.update);
+};
+
+const setupSuggestionHandlers = (): void => {
+  app.get('/suggestions', SuggestionHandler.fetch);
 };
 
 main();

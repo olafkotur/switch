@@ -58,15 +58,16 @@ export const LIGHT_THEME = {
     inverted: '#fff',
     danger: 'rgba(227, 66, 66, 0.9)',
     white: '#fff',
-    black: '32323E',
+    black: '#32323E',
   },
   backgroundColor: {
     primary: '#F8F9F9',
     secondary: '#F2F5F7',
     tertiary: 'rgba(0, 0, 0, 0.8)',
     faint: 'rgba(0, 0, 0, 0.15)',
-    searchBar: '#fff',
+    box: '#fff',
     backdrop: 'rgba(0, 0, 0, 0.7)',
+    module: 'rgba(0, 0, 0, 0.2)',
   },
 };
 
@@ -79,15 +80,16 @@ export const DARK_THEME = {
     inverted: '#32323E',
     danger: 'rgba(227, 66, 66, 0.9)',
     white: '#fff',
-    black: '32323E',
+    black: '#32323E',
   },
   backgroundColor: {
     primary: '#303036',
     secondary: '#1D1D21',
     tertiary: '#FFFFFF',
     faint: 'rgba(255, 255, 255, 0.15)',
-    searchBar: 'rgba(255, 255, 255, 0.15)',
+    box: 'rgba(255, 255, 255, 0.15)',
     backdrop: 'rgba(0, 0, 0, 0.7)',
+    module: 'rgba(255, 255, 255, 0.2)',
   },
 };
 

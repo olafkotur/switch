@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { IsAuthenticatedState, ModulesState, PreferenceState, UserState } from '../state';
+import { useSetRecoilState } from 'recoil';
+import { IsAuthenticatedState, ModulesState, PreferencesState, SuggestionsState, UserState } from '../state';
 import { AuthTokens } from '../typings';
 import { useRefresh } from './use-auth';
 import { useFetchModules } from './use-module';
-import { useFetchPreference } from './use-preference';
+import { useFetchPreferences } from './use-preferences';
 import { useGetStorage } from './use-storage';
+import { useFetchSuggestions } from './use-suggestions';
 import { useFetchUser } from './use-user';
 
 export const useInitialise = () => {
@@ -13,12 +14,14 @@ export const useInitialise = () => {
   const refresh = useRefresh();
   const fetchModules = useFetchModules();
   const fetchUser = useFetchUser();
-  const fetchPreference = useFetchPreference();
+  const fetchPreferences = useFetchPreferences();
+  const fetchSuggestions = useFetchSuggestions();
 
   const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
   const setModules = useSetRecoilState(ModulesState);
   const setUser = useSetRecoilState(UserState);
-  const setPreference = useSetRecoilState(PreferenceState);
+  const setPreferences = useSetRecoilState(PreferencesState);
+  const setSuggestions = useSetRecoilState(SuggestionsState);
 
   return useCallback(async () => {
     const tokens: AuthTokens | null = await getStorage('tokens');
@@ -33,22 +36,25 @@ export const useInitialise = () => {
     }
 
     const user = await fetchUser();
-    const preference = await fetchPreference();
+    const preferences = await fetchPreferences();
     const modules = await fetchModules();
+    const suggestions = await fetchSuggestions();
 
     setIsAuthenticated(true);
     setUser(user);
-    setPreference(preference);
+    setPreferences(preferences);
     setModules(modules);
+    setSuggestions(suggestions);
   }, [
     getStorage,
     refresh,
     fetchModules,
     fetchUser,
-    fetchPreference,
+    fetchPreferences,
     setIsAuthenticated,
     setModules,
     setUser,
-    setPreference,
+    setPreferences,
+    fetchSuggestions,
   ]);
 };

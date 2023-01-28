@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react';
+import { ToastContainer as Toasts } from 'react-toastify';
 import { createGlobalStyle, ThemeProvider as DefaultThemeProvider } from 'styled-components';
-import { useTheme } from '../hooks';
+import { Background } from '../components';
+import { useGetToastProps, useTheme } from '../hooks';
 import { DARK_THEME, LIGHT_THEME } from './theme';
 
 // always at the end
@@ -29,10 +31,13 @@ interface Props {
 
 export const ThemeProvider = ({ children }: Props): ReactElement => {
   const theme = useTheme();
+  const toastProps = useGetToastProps();
 
   return (
     <DefaultThemeProvider theme={theme.name === 'dark' ? DARK_THEME : LIGHT_THEME}>
       <GlobalStyle />
+      <Background />
+      <Toasts {...toastProps} />
       {children}
     </DefaultThemeProvider>
   );

@@ -1,5 +1,7 @@
 import { Types } from 'mongoose';
 
+export type SuggestionCategory = 'productivity' | 'social' | 'messaging';
+
 export interface ModelBase {
   _id: Types.ObjectId;
   updatedAt: Date;

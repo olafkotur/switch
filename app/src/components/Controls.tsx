@@ -46,7 +46,7 @@ export const Controls = ({ _id, icon, isVisible }: { _id: string; icon: string; 
 
   return (
     <ControlsContainer initial={{ display: 'none' }} animate={{ display: isVisible ? 'flex' : 'none' }} ref={ref}>
-      <SidebarButton>
+      <SidebarButton onClick={() => setIsControlsVisible(false)}>
         <ModuleIcon src={icon} draggable={false} />
       </SidebarButton>
 

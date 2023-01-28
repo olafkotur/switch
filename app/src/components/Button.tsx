@@ -66,13 +66,12 @@ export const LargeButton = ({ ...props }: Props): ReactElement => {
   return <LargeButtonContainer {...props}>{props.children}</LargeButtonContainer>;
 };
 
-export const SidebarButton = styled(Button)<{ bg?: string; opacity?: number }>`
+export const SidebarButton = styled(Button)<{ bg?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50px;
   height: 50px;
-  opacity: ${(props) => props.opacity ?? 1};
   background: ${(props) => props.bg};
   border-radius: ${(props) => props.theme.borderRadius.small};
 `;

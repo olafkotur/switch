@@ -2,8 +2,8 @@ import React, { ReactElement, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { BodyText, Button, ColumnContainer, PreferenceOption, Spacer, SubtitleText } from '../components';
-import { useLogout, useUpdatePreference } from '../hooks';
-import { PreferenceState } from '../state';
+import { useLogout, useUpdatePreferences } from '../hooks';
+import { PreferencesState } from '../state';
 
 type PreferencesPanel = 'general' | 'account' | 'appearance';
 
@@ -116,8 +116,8 @@ export const Preferences = (): ReactElement => {
 };
 
 const GeneralPanel = (): ReactElement => {
-  const preference = useRecoilValue(PreferenceState);
-  const updatePreference = useUpdatePreference();
+  const preferences = useRecoilValue(PreferencesState);
+  const updatePreferences = useUpdatePreferences();
 
   return (
     <ColumnContainer>
@@ -127,8 +127,8 @@ const GeneralPanel = (): ReactElement => {
         title="Overlay mode"
         description="Switch will display over other applications"
         type="toggle"
-        value={preference?.overlayMode ?? false}
-        onChange={(value) => updatePreference({ overlayMode: value as boolean })}
+        value={preferences?.overlayMode ?? false}
+        onChange={(value) => updatePreferences({ overlayMode: value as boolean })}
       />
     </ColumnContainer>
   );
@@ -159,8 +159,8 @@ const AccountPanel = (): ReactElement => {
 };
 
 const AppearancePanel = (): ReactElement => {
-  const preference = useRecoilValue(PreferenceState);
-  const updatePreference = useUpdatePreference();
+  const preferences = useRecoilValue(PreferencesState);
+  const updatePreferences = useUpdatePreferences();
 
   return (
     <ColumnContainer>
@@ -169,8 +169,8 @@ const AppearancePanel = (): ReactElement => {
         title="Dark mode"
         description="Enable dark mode, does not affect any added applications"
         type="toggle"
-        value={preference?.theme === 'dark' ?? true}
-        onChange={(value) => updatePreference({ theme: value ? 'dark' : 'light' })}
+        value={preferences?.theme === 'dark' ?? true}
+        onChange={(value) => updatePreferences({ theme: value ? 'dark' : 'light' })}
       />
       <Spacer vertical={15} />
       <PreferenceOption
@@ -178,8 +178,8 @@ const AppearancePanel = (): ReactElement => {
         title="Animate presets"
         description="Show an animation when resizing Switch using layout presets"
         type="toggle"
-        value={preference?.animatePresets ?? false}
-        onChange={(value) => updatePreference({ animatePresets: value as boolean })}
+        value={preferences?.animatePresets ?? false}
+        onChange={(value) => updatePreferences({ animatePresets: value as boolean })}
       />
     </ColumnContainer>
   );

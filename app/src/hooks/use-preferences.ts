@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
-import { PreferenceState } from '../state';
+import { PreferencesState } from '../state';
 import { Themes } from '../style/theme';
 import { Preference } from '../typings';
 import { useRequest } from './use-request';
@@ -13,8 +13,8 @@ interface UpdatePreference {
   animatePresets?: boolean;
 }
 
-export const useFetchPreference = () => {
-  const url = `${API_BASE_URL}/preference`;
+export const useFetchPreferences = () => {
+  const url = `${API_BASE_URL}/preferences`;
   const request = useRequest();
   const errorToast = useToast('error');
 
@@ -29,11 +29,11 @@ export const useFetchPreference = () => {
   }, [url, request, errorToast]);
 };
 
-export const useUpdatePreference = () => {
-  const url = `${API_BASE_URL}/preference/update`;
+export const useUpdatePreferences = () => {
+  const url = `${API_BASE_URL}/preferences/update`;
   const request = useRequest();
   const errorToast = useToast('error');
-  const setPreference = useSetRecoilState(PreferenceState);
+  const setPreferences = useSetRecoilState(PreferencesState);
 
   return useCallback(
     async (data: UpdatePreference): Promise<boolean> => {
@@ -44,9 +44,9 @@ export const useUpdatePreference = () => {
         return false;
       }
 
-      setPreference(response.data as Preference);
+      setPreferences(response.data as Preference);
       return true;
     },
-    [url, request, errorToast, setPreference],
+    [url, request, errorToast, setPreferences],
   );
 };

@@ -1,13 +1,12 @@
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ToastContainer as Toasts } from 'react-toastify';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { Background, Loader } from './components';
+import { Loader } from './components';
 import { Sidebar } from './components/Sidebar';
 import { INITIALISE_TIMEOUT_MS } from './const';
-import { useGetToastProps, useInitialise } from './hooks';
+import { useInitialise } from './hooks';
 import { Modal } from './modals';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
@@ -23,12 +22,17 @@ const AppContainer = styled.div`
   height: 100vh;
 `;
 
+const PageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
 const App = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(true);
 
   const isAuthenticated = useRecoilValue(IsAuthenticatedState);
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
-  const toastProps = useGetToastProps();
   const initialise = useInitialise();
 
   const PageComponent = useMemo(() => {
@@ -38,7 +42,8 @@ const App = (): ReactElement => {
     if (isAuthenticated) {
       return HomePage;
     }
-    return LoginPage;
+
+    return () => <></>;
   }, [isAuthenticated, activeModuleId]);
 
   const load = useCallback(async () => {
@@ -51,22 +56,21 @@ const App = (): ReactElement => {
   }, []);
 
   if (isLoading) {
-    return (
-      <AppContainer>
-        <Background />
-        <Loader />
-      </AppContainer>
-    );
+    return <Loader />;
+  }
+
+  if (!isAuthenticated) {
+    return <LoginPage />;
   }
 
   return (
-    <AppContainer>
-      <Background />
-      <PageComponent />
+    <>
       <Modal />
-      <Toasts {...toastProps} />
-      {isAuthenticated && <Sidebar />}
-    </AppContainer>
+      <Sidebar />
+      <PageContainer>
+        <PageComponent />
+      </PageContainer>
+    </>
   );
 };
 
@@ -77,7 +81,9 @@ render(
   <RecoilRoot>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <App />
+        <AppContainer>
+          <App />
+        </AppContainer>
       </ThemeProvider>
     </QueryClientProvider>
   </RecoilRoot>,

@@ -1,10 +1,10 @@
 import { useRecoilValue } from 'recoil';
-import { PreferenceState } from '../state';
+import { PreferencesState } from '../state';
 import { DARK_THEME, LIGHT_THEME } from '../style/theme';
 
 export const useTheme = () => {
-  const preference = useRecoilValue(PreferenceState);
-  const theme = preference?.theme ?? 'dark';
+  const preferences = useRecoilValue(PreferencesState);
+  const theme = preferences?.theme ?? 'dark';
 
   if (theme === 'dark') {
     return DARK_THEME;
