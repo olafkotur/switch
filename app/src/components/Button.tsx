@@ -73,5 +73,5 @@ export const SidebarButton = styled(Button)<{ bg?: string }>`
   width: 50px;
   height: 50px;
   background: ${(props) => props.bg};
-  border-radius: ${(props) => props.theme.borderRadius.small};
+  border-radius: ${(props) => props.theme.borderRadius.medium};
 `;

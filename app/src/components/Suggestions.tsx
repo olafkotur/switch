@@ -39,7 +39,7 @@ const ListItem = styled(Button)`
   width: 90%;
   margin: ${(props) => props.theme.spacing.small};
   background: ${(props) => props.theme.backgroundColor.module};
-  border-radius: ${(props) => props.theme.borderRadius.small};
+  border-radius: ${(props) => props.theme.borderRadius.medium};
 `;
 
 const Icon = styled(ModuleIcon)`

@@ -36,8 +36,3 @@ export const IsAuthenticatedState = atom({
   key: 'isAuthenticated',
   default: false,
 });
-
-export const IsControlsVisibleState = atom({
-  key: 'isControlsVisible',
-  default: false,
-});

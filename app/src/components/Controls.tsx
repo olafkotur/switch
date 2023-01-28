@@ -1,24 +1,31 @@
 import { WebviewTag } from 'electron';
 import { motion } from 'framer-motion';
 import React, { ReactElement, useRef } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { useDeleteModule, useOnClickout, useTheme } from '../hooks';
-import { ActiveModuleIdState, IsControlsVisibleState } from '../state';
+import { ActiveModuleIdState } from '../state';
 import { Button, SidebarButton } from './Button';
-import { ModuleIcon } from './Common';
+import { ModuleIcon, Spacer } from './Common';
 import { Icon, IconNames } from './Icon';
+
+interface ControlsProps {
+  _id: string;
+  icon: string;
+  isVisible: boolean;
+  setVisible: (value: boolean) => void;
+}
 
 const ControlsContainer = styled(motion.div)`
   position: absolute;
   align-items: center;
   flex-direction: row;
   height: 50px;
-  width: 175px;
+  width: 180px;
   overflow: visible;
   z-index: ${(props) => props.theme.zIndex.controls};
   background: ${(props) => props.theme.backgroundColor.primary};
-  border-radius: ${(props) => props.theme.borderRadius.small};
+  border-radius: ${(props) => props.theme.borderRadius.medium};
 `;
 
 const ControlsButtonContainer = styled.div`
@@ -31,9 +38,8 @@ const ControlsButtonContainer = styled.div`
   filter: drop-shadow(${(props) => props.theme.dropShadow.medium});
 `;
 
-export const Controls = ({ _id, icon, isVisible }: { _id: string; icon: string; isVisible: boolean }): ReactElement => {
+export const Controls = ({ _id, icon, isVisible, setVisible }: ControlsProps): ReactElement => {
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
-  const setIsControlsVisible = useSetRecoilState(IsControlsVisibleState);
 
   const ref = useRef<HTMLDivElement>(null);
   const webview = document.getElementById(`webview-${activeModuleId}`) as WebviewTag | null;
@@ -41,14 +47,16 @@ export const Controls = ({ _id, icon, isVisible }: { _id: string; icon: string; 
   const deleteModule = useDeleteModule();
 
   useOnClickout([ref], () => {
-    isVisible && setIsControlsVisible(false);
+    isVisible && setVisible(false);
   });
 
   return (
     <ControlsContainer initial={{ display: 'none' }} animate={{ display: isVisible ? 'flex' : 'none' }} ref={ref}>
-      <SidebarButton onClick={() => setIsControlsVisible(false)}>
+      <SidebarButton onClick={() => setVisible(false)}>
         <ModuleIcon src={icon} draggable={false} />
       </SidebarButton>
+
+      <Spacer horizontal={1} />
 
       <ControlsButtonContainer>
         <Button onClick={() => webview?.goBack()}>

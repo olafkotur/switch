@@ -1,9 +1,9 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useTheme } from '../hooks';
-import { ActiveModuleIdState, IsControlsVisibleState, ModalState, ModulesState } from '../state';
+import { ActiveModuleIdState, ModalState, ModulesState } from '../state';
 import { Module } from '../typings';
 import { IconButton, SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
@@ -57,8 +57,8 @@ export const Sidebar = (): ReactElement => {
 };
 
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
+  const [isControlsVisible, setIsControlsVisible] = useState(false);
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
-  const [isControlsVisible, setIsControlsVisible] = useRecoilState(IsControlsVisibleState);
   const theme = useTheme();
 
   const isActive = activeModuleId === _id;
@@ -73,7 +73,7 @@ const ModuleButton = ({ _id, icon }: Module): ReactElement => {
 
   return (
     <>
-      <Controls _id={_id} icon={icon} isVisible={showControls} />
+      <Controls _id={_id} icon={icon} isVisible={showControls} setVisible={setIsControlsVisible} />
       <SidebarButton
         bg={isActive ? theme.backgroundColor.module : undefined}
         onClick={handleOnClick}
