@@ -36,14 +36,10 @@ const App = (): ReactElement => {
   const initialise = useInitialise();
 
   const PageComponent = useMemo(() => {
-    if (isAuthenticated && activeModuleId) {
+    if (activeModuleId) {
       return ModulePage;
     }
-    if (isAuthenticated) {
-      return HomePage;
-    }
-
-    return () => <></>;
+    return HomePage;
   }, [isAuthenticated, activeModuleId]);
 
   const load = useCallback(async () => {

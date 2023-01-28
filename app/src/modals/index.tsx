@@ -2,8 +2,7 @@ import { motion } from 'framer-motion';
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { IconButton } from '../components';
-import { Close } from '../icons';
+import { Icon, IconButton, IconNames } from '../components';
 import { ModalState } from '../state';
 import { Preferences } from './Preferences';
 
@@ -61,7 +60,7 @@ export const Modal = (): ReactElement => {
       <ModalBackdrop onClick={onDismiss} />
       <ModalContent>
         <CloseButton onClick={onDismiss} size="large">
-          <Close size={24} />
+          <Icon name={IconNames.CLOSE} />
         </CloseButton>
         {modal === 'preferences' && <Preferences />}
       </ModalContent>

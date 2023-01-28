@@ -4,10 +4,10 @@ import React, { ReactElement, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { useDeleteModule, useOnClickout, useTheme } from '../hooks';
-import { Back, Close, Delete, Forward, Reload } from '../icons';
 import { ActiveModuleIdState, IsControlsVisibleState } from '../state';
 import { Button, SidebarButton } from './Button';
 import { ModuleIcon } from './Common';
+import { Icon, IconNames } from './Icon';
 
 const ControlsContainer = styled(motion.div)`
   position: absolute;
@@ -52,16 +52,16 @@ export const Controls = ({ _id, icon, isVisible }: { _id: string; icon: string; 
 
       <ControlsButtonContainer>
         <Button onClick={() => webview?.goBack()}>
-          <Back size={24} />
+          <Icon name={IconNames.BACK} />
         </Button>
         <Button onClick={() => webview?.goForward()}>
-          <Forward size={24} />
+          <Icon name={IconNames.FORWARD} />
         </Button>
         <Button onClick={() => webview?.reload()}>
-          <Reload size={24} />
+          <Icon name={IconNames.RELOAD} size={17} />
         </Button>
         <Button onClick={() => deleteModule(_id)}>
-          <Delete size={24} color={theme.color.danger} />
+          <Icon name={IconNames.DELETE} color={theme.color.danger} size={17} />
         </Button>
       </ControlsButtonContainer>
     </ControlsContainer>

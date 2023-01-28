@@ -2,7 +2,7 @@ import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { BodyText, LargeButton, SmallText, Spacer, SubtitleText, TextInput, TitleText } from '../components';
 import { useLogin, useOnKeyPress, useResetPassword, useSignUp, useTheme } from '../hooks';
-import { Switch } from '../icons';
+import { Switch } from '../components';
 
 type ContentType = 'signup' | 'login';
 

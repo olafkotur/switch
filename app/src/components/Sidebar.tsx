@@ -3,12 +3,12 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useTheme } from '../hooks';
-import { Add, Settings } from '../icons';
 import { ActiveModuleIdState, IsControlsVisibleState, ModalState, ModulesState } from '../state';
 import { Module } from '../typings';
 import { IconButton, SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Controls } from './Controls';
+import { Icon, IconNames } from './Icon';
 
 const SidebarContainer = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ const CreateModuleButton = (): ReactElement => {
 
   return (
     <SidebarButton onClick={() => setActiveModuleId(null)} bg={isActive ? theme.backgroundColor.module : undefined}>
-      <Add size={24} />
+      <Icon name={IconNames.ADD} size={20} />
     </SidebarButton>
   );
 };
@@ -103,7 +103,7 @@ const PreferencesButton = (): ReactElement => {
 
   return (
     <IconButton onClick={() => setModal('preferences')} size="large">
-      <Settings size={24} />
+      <Icon name={IconNames.SETTINGS} size={20} />
     </IconButton>
   );
 };

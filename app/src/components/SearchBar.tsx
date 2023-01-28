@@ -1,9 +1,11 @@
-import React, { ReactElement, useCallback, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { IconButton, Input, Spacer } from '../components';
 import { SEARCH_BAR_PLACEHOLDER } from '../const';
 import { useOnKeyPress, useTheme } from '../hooks';
-import { Add, Search } from '../icons';
+import { IconButton } from './Button';
+import { Spacer } from './Common';
+import { Icon, IconNames } from './Icon';
+import { Input } from './Input';
 
 interface SearchBarProps {
   value: string;
@@ -50,7 +52,7 @@ export const SearchBar = ({ value, disabled, setValue, onSubmit }: SearchBarProp
     <SearchBarContainer>
       <LeftSection>
         <Spacer horizontal={7} />
-        <Search size={24} />
+        <Icon name={IconNames.SEARCH} size={24} />
         <Spacer horizontal={7} />
         <SearchBarInput placeholder={SEARCH_BAR_PLACEHOLDER} value={value} onChange={(e) => setValue(e.target.value)} />
         <Spacer horizontal={7} />
@@ -66,7 +68,7 @@ export const SearchBar = ({ value, disabled, setValue, onSubmit }: SearchBarProp
         animate={{ opacity: disabled ? 0 : 1 }}
         transition={{ duration: 0.2 }}
       >
-        <Add size={24} color={theme.color.inverted} />
+        <Icon name={IconNames.ADD} color={theme.color.inverted} />
       </CreateModuleButton>
       <Spacer horizontal={4} />
     </SearchBarContainer>
