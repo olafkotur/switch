@@ -29,7 +29,7 @@ export const ModulesState = atom({
 
 export const ModalState = atom({
   key: 'modal',
-  default: 'preferences' as ModalName | null,
+  default: null as ModalName | null,
 });
 
 export const UserState = atom({

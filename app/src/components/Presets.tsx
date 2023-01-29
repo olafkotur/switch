@@ -1,6 +1,7 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import styled from 'styled-components';
 import { PRESET_CONFIG } from '../const';
+import { useSendMessage } from '../hooks';
 import { Button } from './Button';
 
 const PresetsContainer = styled.div`
@@ -28,11 +29,20 @@ const PresetInner = styled.div<{ width: string }>`
 `;
 
 export const Presets = (): ReactElement => {
+  const sendMessage = useSendMessage('window-presets');
+
+  const handleSelectPreset = useCallback(
+    (value: number) => {
+      sendMessage({ name: 'apply-window-preset', value });
+    },
+    [sendMessage],
+  );
+
   return (
     <PresetsContainer>
-      {PRESET_CONFIG.map((width) => (
-        <Preset>
-          <PresetInner width={width} />
+      {PRESET_CONFIG.map((config) => (
+        <Preset key={`${config.value}`} onClick={() => handleSelectPreset(config.value)}>
+          <PresetInner width={config.width} />
         </Preset>
       ))}
     </PresetsContainer>

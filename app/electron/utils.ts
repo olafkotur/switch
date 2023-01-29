@@ -1,7 +1,7 @@
 import { app, BrowserWindow, globalShortcut, Menu, screen, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import path from 'path';
-import { sendWindowEvents, receiveWindowSetup } from './events';
+import { sendWindowEvents, receiveWindowSetup, receiveWindowPresets } from './events';
 import { ScreenProperties, ElectronStorageKey, WindowProperties } from '../src/typings';
 
 let previousScreenProperties: ScreenProperties | null = null;
@@ -31,6 +31,7 @@ export const setStorage = async <T>(key: ElectronStorageKey, data: T): Promise<b
 export const setupWindowEvents = (window: BrowserWindow) => {
   sendWindowEvents(window);
   receiveWindowSetup(window);
+  receiveWindowPresets(window);
 };
 
 export const getWindowProperties = (window: BrowserWindow): WindowProperties => {
@@ -49,15 +50,12 @@ export const getScreenProperties = (): ScreenProperties => {
   return { width: screenSize.width, height: screenSize.height };
 };
 
-export const setWindowProperties = async (
-  window: BrowserWindow,
-  properties: WindowProperties,
-  animate: boolean,
-): Promise<void> => {
+export const setWindowProperties = (window: BrowserWindow, properties: WindowProperties, animate: boolean): void => {
   const width = properties.width;
   const height = properties.height;
   const xPos = properties.xPosition;
   const yPos = properties.yPosition;
+
   window.setSize(width, height, animate);
   window.setPosition(xPos, yPos, animate);
 };

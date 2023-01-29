@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain } from 'electron';
-import { ChannelEvent, ChannelValue, WindowSetup } from '../src/typings';
-import { getStorage, getWindowProperties, setStorage } from './utils';
+import { ChannelEvent, ChannelValue, WindowProperties, WindowSetup } from '../src/typings';
+import { getScreenProperties, getStorage, getWindowProperties, setStorage, setWindowProperties } from './utils';
 
 export const sendWindowEvents = (window: BrowserWindow) => {
   window.on('resize', async () => {
@@ -33,6 +33,26 @@ export const receiveWindowSetup = (window: BrowserWindow) => {
 
     if (type === 'set-animate-presets') {
       await setStorage<WindowSetup>('window-setup', { ...windowSetup, animatePresets: value });
+    }
+  });
+};
+
+export const receiveWindowPresets = (window: BrowserWindow) => {
+  ipcMain.on('window-presets', async (_, args) => {
+    const windowSetup = await getStorage<WindowSetup>('window-setup');
+    const screenProperties = getScreenProperties();
+    const type = args[0] as ChannelEvent;
+    const value = args[1] as ChannelValue;
+
+    if (type === 'apply-window-preset') {
+      const width = screenProperties.width * value;
+      const properties: WindowProperties = {
+        width,
+        height: screenProperties.height,
+        xPosition: 0,
+        yPosition: 0,
+      };
+      setWindowProperties(window, properties, windowSetup?.animatePresets ?? true);
     }
   });
 };

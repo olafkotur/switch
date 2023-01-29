@@ -2,8 +2,13 @@ import { Themes } from './style/theme';
 
 export type ElectronStorageKey = 'window-setup';
 
-export type Channel = 'window-setup' | 'window-events';
-export type ChannelEvent = 'full-screen' | 'set-overlay-mode' | 'set-animate-presets' | 'window-setup-data';
+export type Channel = 'window-setup' | 'window-events' | 'window-presets';
+export type ChannelEvent =
+  | 'full-screen'
+  | 'window-setup-data'
+  | 'set-overlay-mode'
+  | 'set-animate-presets'
+  | 'apply-window-preset';
 export type ChannelValue = any;
 
 export interface WindowSetup {
