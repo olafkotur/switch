@@ -49,9 +49,6 @@ _This repo contains both the `api` and `app`, make sure you're in the correct di
 
 - Run `yarn` to install dependencies
 - Run `yarn start` to start the application
-- Run `yarn start:electron` to start electron only `optional`
-- Run `yarn start:react` to start react front-end only `optional`
-- Note the `app` will wait for the `api` to respond
 
 ## 📦 Publishing
 
