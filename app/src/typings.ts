@@ -1,5 +1,25 @@
 import { Themes } from './style/theme';
 
+export type ElectronStorageKey = 'window-setup';
+
+export type Channels = 'window-setup' | 'window-events';
+
+export interface WindowSetup {
+  overlayMode: boolean;
+}
+
+export interface WindowProperties {
+  width: number;
+  height: number;
+  xPosition: number;
+  yPosition: number;
+}
+
+export interface ScreenProperties {
+  width: number;
+  height: number;
+}
+
 export interface Response {
   code: number;
   status: string;

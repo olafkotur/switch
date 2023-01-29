@@ -1,6 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-
-export type Channels = 'ipc-example';
+import { Channels } from '../src/typings';
 
 const electronHandler = {
   ipcRenderer: {

@@ -148,6 +148,7 @@ const GeneralPanel = (): ReactElement => {
   const handleOverlayMode = useCallback(
     (value: boolean) => {
       updatePreferences({ overlayMode: value });
+      window.electron.ipcRenderer.sendMessage('window-setup', ['overlayMode', value]);
     },
     [updatePreferences],
   );

@@ -1,38 +1,40 @@
-import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import storage from 'electron-json-storage';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
 import * as url from 'url';
 import { VISIBILITY_KEYBIND } from '../src/const';
+import { WindowSetup } from '../src/typings';
 import {
-  getScreenInfo,
+  getScreenProperties,
   getStorage,
+  getWindowProperties,
   setGlobalShortcuts,
-  setWindowInfo,
-  setWindowListeners,
-  setWindowMode,
-  toggleVisibility,
+  setOverlayMode,
+  setupTrayConfiguration,
+  setupWindowEvents,
+  setWindowProperties,
 } from './utils';
 
 log.info('App is starting...');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
-let mainWindow: BrowserWindow;
-let tray: Tray;
+let window: BrowserWindow | null;
 
 const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
 
-const createMainWindow = async (): Promise<void> => {
-  const result = await getStorage('overlayMode');
-  log.info(result);
-  const overlayMode = false;
+app.setName('Switch');
 
-  const screenInfo = getScreenInfo();
-  mainWindow = new BrowserWindow({
-    width: screenInfo.width,
-    height: screenInfo.height,
+const createMainWindow = async (): Promise<void> => {
+  const windowSetup = await getStorage<WindowSetup>('window-setup');
+  const overlayMode = windowSetup?.overlayMode ?? false;
+  const screenProperties = getScreenProperties();
+
+  window = new BrowserWindow({
+    width: screenProperties.width,
+    height: screenProperties.height,
     minHeight: 600,
     minWidth: 800,
     center: true,
@@ -48,31 +50,17 @@ const createMainWindow = async (): Promise<void> => {
     },
   });
 
-  app.setName('Switch');
-  overlayMode && app.dock.hide();
-
-  setWindowMode(overlayMode, mainWindow);
-  setWindowInfo(mainWindow);
-  setWindowListeners(mainWindow);
-  setGlobalShortcuts(mainWindow, VISIBILITY_KEYBIND, overlayMode);
-
-  tray = new Tray(path.join(__dirname, 'tray@2x.png'));
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Toggle Show / Hide',
-      visible: overlayMode,
-      click: () => toggleVisibility(mainWindow),
-    },
-    { type: 'separator', visible: overlayMode },
-    { label: 'Reload', role: 'reload' },
-    { label: 'Quit', role: 'quit' },
-  ]);
-  tray.setContextMenu(contextMenu);
+  const windowProperties = getWindowProperties(window);
+  setOverlayMode(window, overlayMode);
+  setWindowProperties(window, windowProperties);
+  setGlobalShortcuts(window, VISIBILITY_KEYBIND, overlayMode);
+  setupWindowEvents(window);
+  setupTrayConfiguration(window, overlayMode);
 
   if (IS_DEVELOPMENT) {
-    mainWindow.loadURL('http://localhost:4000');
+    window.loadURL('http://localhost:4000');
   } else {
-    mainWindow.loadURL(
+    window.loadURL(
       url.format({
         pathname: path.join(__dirname, 'renderer/index.html'),
         protocol: 'file:',
@@ -81,9 +69,8 @@ const createMainWindow = async (): Promise<void> => {
     );
   }
 
-  mainWindow.on('closed', () => {
-    // @ts-ignore
-    mainWindow = null;
+  window.on('closed', () => {
+    window = null;
   });
 };
 

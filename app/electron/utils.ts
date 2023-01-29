@@ -1,29 +1,39 @@
-import { app, BrowserWindow, globalShortcut, screen } from 'electron';
-import { StorageService } from './storage';
+import { app, BrowserWindow, globalShortcut, Menu, screen, Tray } from 'electron';
 import storage from 'electron-json-storage';
+import path from 'path';
+import { windowEventsListener, windowSetupListener } from './events';
+import { ScreenProperties, ElectronStorageKey, WindowProperties } from '../src/typings';
 
-let previousScreenInfo: ScreenInfo | null = null;
+let previousScreenProperties: ScreenProperties | null = null;
 
-type ScreenInfo = any;
-type WindowInfo = any;
-
-export const getStorage = async (key: string): Promise<object | null> => {
+export const getStorage = async <T>(key: ElectronStorageKey): Promise<T | null> => {
   return await new Promise((resolve, reject) => {
     storage.get(key, (_error, data) => {
       if (data) {
-        resolve(data);
+        resolve(data as T);
       }
       reject(null);
     });
   });
 };
 
-export const getScreenInfo = (): ScreenInfo => {
-  const screenSize = screen.getPrimaryDisplay().workAreaSize;
-  return { width: screenSize.width, height: screenSize.height };
+export const setStorage = async <T>(key: ElectronStorageKey, data: T): Promise<boolean> => {
+  return await new Promise((resolve, reject) => {
+    storage.set(key, data as object, (error) => {
+      if (error) {
+        reject(false);
+      }
+      resolve(true);
+    });
+  });
 };
 
-export const getWindowInfo = (window: BrowserWindow): WindowInfo => {
+export const setupWindowEvents = (window: BrowserWindow) => {
+  windowSetupListener();
+  windowEventsListener(window);
+};
+
+export const getWindowProperties = (window: BrowserWindow): WindowProperties => {
   const size = window.getSize();
   const position = window.getPosition();
   return {
@@ -34,57 +44,51 @@ export const getWindowInfo = (window: BrowserWindow): WindowInfo => {
   };
 };
 
-export const setWindowInfo = async (
+export const getScreenProperties = (): ScreenProperties => {
+  const screenSize = screen.getPrimaryDisplay().workAreaSize;
+  return { width: screenSize.width, height: screenSize.height };
+};
+
+export const setWindowProperties = async (
   window: BrowserWindow,
-  winInfo?: WindowInfo,
-  animate?: boolean,
-  windowPadding?: boolean,
+  properties: WindowProperties,
+  animate = true,
 ): Promise<void> => {
-  const windowInfo = winInfo || ((await StorageService.get('currentWindowInfo')) as WindowInfo | null);
-  if (windowInfo) {
-    const width = windowPadding ? windowInfo.width - 50 : windowInfo.width;
-    const height = windowPadding ? windowInfo.height - 25 : windowInfo.height;
-    const xPos = windowPadding ? windowInfo.xPosition + 25 : windowInfo.xPosition;
-    const yPos = windowPadding ? windowInfo.yPosition + 25 : windowInfo.yPosition;
-    window.setSize(width, height, animate);
-    window.setPosition(xPos, yPos, animate);
-  }
+  const width = properties.width;
+  const height = properties.height;
+  const xPos = properties.xPosition;
+  const yPos = properties.yPosition;
+  window.setSize(width, height, animate);
+  window.setPosition(xPos, yPos, animate);
 };
 
 export const setGlobalShortcuts = (window: BrowserWindow, keybind: string, overlayMode: boolean): void => {
-  const newScreenInfo = getScreenInfo();
-  previousScreenInfo = previousScreenInfo ? previousScreenInfo : { ...newScreenInfo };
+  const screenProperties = getScreenProperties();
+  previousScreenProperties = previousScreenProperties ?? { ...screenProperties };
 
   globalShortcut.register(keybind ? keybind.replace(/\ /g, '') : 'CommandOrControl+Esc', (): void => {
     // check if screen size has changed - happens if user switches displays
     if (
-      newScreenInfo.width !== previousScreenInfo!.width ||
-      previousScreenInfo!.height !== previousScreenInfo!.height
+      screenProperties.width !== previousScreenProperties!.width ||
+      previousScreenProperties!.height !== previousScreenProperties!.height
     ) {
-      previousScreenInfo = { ...newScreenInfo };
-      window.setSize(newScreenInfo.width, newScreenInfo.height);
+      previousScreenProperties = { ...screenProperties };
+      window.setSize(screenProperties.width, screenProperties.height);
       window.reload();
     }
-    overlayMode && toggleVisibility(window);
+    overlayMode && toggleWindowIsVisible(window);
   });
 };
 
-export const setWindowListeners = (window: BrowserWindow): void => {
-  // resize event
-  window.on('resize', async () => {
-    const windowInfo = getWindowInfo(window);
-    await StorageService.set('currentWindowInfo', windowInfo);
-  });
-};
-
-export const setWindowMode = (overlay: boolean, window: BrowserWindow): void => {
+export const setOverlayMode = (window: BrowserWindow, overlayMode: boolean): void => {
   const options = {
-    visible: overlay,
-    alwaysTop: overlay,
-    fullScreen: !overlay,
+    visible: overlayMode,
+    alwaysTop: overlayMode,
+    fullScreen: !overlayMode,
     menu: false,
   };
 
+  overlayMode && app.dock.hide();
   window.setFullScreenable(options.fullScreen);
   window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'floating' : undefined);
   window.setVisibleOnAllWorkspaces(options.visible, {
@@ -92,7 +96,22 @@ export const setWindowMode = (overlay: boolean, window: BrowserWindow): void => 
   });
 };
 
-export const toggleVisibility = (window: BrowserWindow): void => {
+export const setupTrayConfiguration = (mainWindow: BrowserWindow, overlayMode: boolean) => {
+  const tray = new Tray(path.join(__dirname, 'tray@2x.png'));
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Toggle Show / Hide',
+      visible: overlayMode,
+      click: () => toggleWindowIsVisible(mainWindow),
+    },
+    { type: 'separator', visible: overlayMode },
+    { label: 'Reload', role: 'reload' },
+    { label: 'Quit', role: 'quit' },
+  ]);
+  tray.setContextMenu(contextMenu);
+};
+
+export const toggleWindowIsVisible = (window: BrowserWindow): void => {
   const visible = window.isVisible();
   if (visible) {
     return window.hide();
@@ -100,6 +119,6 @@ export const toggleVisibility = (window: BrowserWindow): void => {
   return window.show();
 };
 
-export const quit = (): void => {
+export const quitApplication = (): void => {
   return app.quit();
 };
