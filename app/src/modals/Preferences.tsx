@@ -86,6 +86,7 @@ export const Preferences = (): ReactElement => {
         <PreferenceOption
           requiresRestart
           title="Logout"
+          description="Your changes are automatically saved"
           type="button"
           onClick={logout}
           icon={{ name: IconNames.FORWARD, color: theme.color.danger }}
