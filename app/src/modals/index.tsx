@@ -29,9 +29,12 @@ const ModalBackdrop = styled.div`
 const ModalContent = styled.div`
   position: absolute;
   background: transparent;
+  width: 50vw;
+  height: 50vh;
+  position: relative;
   z-index: ${(props) => props.theme.zIndex.modal};
   border-radius: ${(props) => props.theme.borderRadius.large};
-  filter: drop-shadow(${(props) => props.theme.dropShadow.medium});
+  filter: drop-shadow(${(props) => props.theme.dropShadow.strong});
 `;
 
 export const Modal = (): ReactElement => {

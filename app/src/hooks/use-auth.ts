@@ -72,12 +72,10 @@ export const useRefresh = () => {
 };
 
 export const useLogout = () => {
-  const delay = useDelay();
   const removeStorage = useRemoveStorage();
   const resetState = useResetState();
 
-  return useCallback(async () => {
-    await delay(500);
+  return useCallback(() => {
     removeStorage('tokens');
     resetState();
   }, [removeStorage, resetState]);

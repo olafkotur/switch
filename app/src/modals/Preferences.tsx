@@ -1,150 +1,34 @@
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import {
-  Button,
-  ColumnContainer,
-  Icon,
-  IconNames,
-  LargeText,
-  MediumText,
-  PreferenceOption,
-  Spacer,
-} from '../components';
-import { useLogout, useSendMessage, useUpdatePreferences } from '../hooks';
+import { ButtonInput, CheckBoxInput, ColumnContainer, IconNames, LargeText, MediumText, Spacer } from '../components';
+import { useLogout, useSendMessage, useTheme, useToast, useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
-import { Rotate } from '../style/animation';
-
-type PreferencesPanel = 'general' | 'account' | 'appearance';
 
 const PreferencesContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 55vw;
-  height: 55vh;
-  position: relative;
-`;
-
-const PreferencesPanelContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 150px;
-  height: calc(100% - 40px);
-  position: relative;
+  width: 100%;
+  height: 100%;
   padding: ${(props) => props.theme.spacing.veryLarge};
   background: ${(props) => props.theme.backgroundColor.secondary};
   border-radius: ${(props) => props.theme.borderRadius.large};
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
 `;
 
-const PreferencesButton = styled(Button)`
+const PreferencesList = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  margin-bottom: ${(props) => props.theme.spacing.veryLarge};
-`;
-
-const PreferencesContent = styled.div`
-  width: calc(70vw - 150px);
-  height: calc(100% - 40px);
-  padding: ${(props) => props.theme.spacing.veryLarge};
-  background: ${(props) => props.theme.backgroundColor.primary};
-  border-radius: ${(props) => props.theme.borderRadius.large};
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-`;
-
-const PreferencesPanelFooter = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  bottom: ${(props) => props.theme.spacing.large};
-`;
-
-const LogoutButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  width: 103px;
-  height: 30px;
-  color: ${(props) => props.theme.color.white};
-  border-radius: ${(props) => props.theme.borderRadius.medium};
-  background: ${(props) => props.theme.color.danger};
+  height: 100%;
+  margin-top: -15px;
+  overflow-y: scroll;
 `;
 
 export const Preferences = (): ReactElement => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedPanel, setSelectedPanel] = useState<PreferencesPanel>('general');
-
-  const logout = useLogout();
-
-  const config = useMemo(() => {
-    return [
-      {
-        label: 'General',
-        isActive: selectedPanel === 'general',
-        onClick: () => setSelectedPanel('general'),
-      },
-      {
-        label: 'Account',
-        isActive: selectedPanel === 'account',
-        onClick: () => setSelectedPanel('account'),
-      },
-      {
-        label: 'Appearance',
-        isActive: selectedPanel === 'appearance',
-        onClick: () => setSelectedPanel('appearance'),
-      },
-    ];
-  }, [selectedPanel, setSelectedPanel]);
-
-  const handleLogout = useCallback(async () => {
-    setIsLoading(true);
-    await logout();
-    setIsLoading(false);
-  }, [isLoading, setIsLoading, logout]);
-
-  return (
-    <PreferencesContainer>
-      <PreferencesPanelContainer>
-        {config.map((preference) => (
-          <PreferencesButton onClick={preference.onClick} key={preference.label}>
-            <LargeText faint={!preference.isActive} cursor="pointer">
-              {preference.label}
-            </LargeText>
-          </PreferencesButton>
-        ))}
-
-        <PreferencesPanelFooter>
-          <LogoutButton onClick={handleLogout} disabled={isLoading}>
-            {isLoading ? (
-              <Icon name={IconNames.LOADING} color="inherit" animation={Rotate({})} size={14} />
-            ) : (
-              <>
-                <Icon name={IconNames.LOGOUT} color="inherit" size={14} opacity={1} />
-                <Spacer horizontal={3} />
-                <MediumText color="inherit" cursor="inherit">
-                  Logout
-                </MediumText>
-              </>
-            )}
-          </LogoutButton>
-        </PreferencesPanelFooter>
-      </PreferencesPanelContainer>
-
-      <PreferencesContent>
-        {selectedPanel === 'general' && <GeneralPanel />}
-        {selectedPanel === 'account' && <AccountPanel />}
-        {selectedPanel === 'appearance' && <AppearancePanel />}
-      </PreferencesContent>
-    </PreferencesContainer>
-  );
-};
-
-const GeneralPanel = (): ReactElement => {
   const preferences = useRecoilValue(PreferencesState);
+  const theme = useTheme();
+
   const updatePreferences = useUpdatePreferences();
   const sendMessage = useSendMessage('window-setup');
+  const logout = useLogout();
 
   const handleOverlayMode = useCallback(
     (value: boolean) => {
@@ -155,54 +39,94 @@ const GeneralPanel = (): ReactElement => {
   );
 
   return (
-    <ColumnContainer>
-      <PreferenceOption
-        requiresRestart
-        title="Overlay mode"
-        description="Switch will display over other applications"
-        type="toggle"
-        value={preferences?.overlayMode ?? false}
-        onChange={(value) => handleOverlayMode(value as boolean)}
-      />
-    </ColumnContainer>
+    <PreferencesContainer>
+      <PreferencesList>
+        <PreferenceOption
+          title="Dark mode"
+          description="Enable dark mode, does not affect any added applications"
+          type="toggle"
+          value={preferences?.theme === 'dark' ?? true}
+          onChange={(value) => updatePreferences({ theme: value ? 'dark' : 'light' })}
+        />
+        <PreferenceOption
+          title="Animate presets"
+          description="Show an animation when resizing Switch using layout presets"
+          type="toggle"
+          value={preferences?.animatePresets ?? false}
+          onChange={(value) => updatePreferences({ animatePresets: value as boolean })}
+        />
+        <PreferenceOption
+          requiresRestart
+          title="Overlay mode"
+          description="Switch will display over other applications"
+          type="toggle"
+          value={preferences?.overlayMode ?? false}
+          onChange={(value) => handleOverlayMode(value as boolean)}
+        />
+        <PreferenceOption
+          requiresRestart
+          title="Logout"
+          type="button"
+          onClick={logout}
+          icon={{ name: IconNames.FORWARD, color: theme.color.danger }}
+        />
+      </PreferencesList>
+    </PreferencesContainer>
   );
 };
 
-const AccountPanel = (): ReactElement => {
-  return (
-    <ColumnContainer>
-      <PreferenceOption
-        title="Change password"
-        description="Update your current password"
-        type="text"
-        value=""
-        onChange={console.log}
-      />
-    </ColumnContainer>
+interface PreferenceOptionProps {
+  title: string;
+  type: 'toggle' | 'button';
+  value?: boolean;
+  description?: string;
+  requiresRestart?: boolean;
+  icon?: { name: IconNames; color: string };
+  onClick?: () => void;
+  onChange?: (value: boolean) => void;
+}
+
+const PreferenceOptionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: ${(props) => props.theme.spacing.medium} 0;
+`;
+
+const PreferenceOption = ({
+  title,
+  type,
+  value,
+  description,
+  requiresRestart,
+  icon,
+  onClick,
+  onChange,
+}: PreferenceOptionProps): ReactElement => {
+  const infoToast = useToast('info');
+
+  const handleOnChange = useCallback(
+    (value: boolean) => {
+      if (requiresRestart) {
+        infoToast('Please restart the app for the changes to take effect');
+      }
+
+      onChange?.(value);
+    },
+    [requiresRestart, onChange],
   );
-};
-
-const AppearancePanel = (): ReactElement => {
-  const preferences = useRecoilValue(PreferencesState);
-  const updatePreferences = useUpdatePreferences();
 
   return (
-    <ColumnContainer>
-      <PreferenceOption
-        title="Dark mode"
-        description="Enable dark mode, does not affect any added applications"
-        type="toggle"
-        value={preferences?.theme === 'dark' ?? true}
-        onChange={(value) => updatePreferences({ theme: value ? 'dark' : 'light' })}
-      />
-      <Spacer vertical={15} />
-      <PreferenceOption
-        title="Animate presets"
-        description="Show an animation when resizing Switch using layout presets"
-        type="toggle"
-        value={preferences?.animatePresets ?? false}
-        onChange={(value) => updatePreferences({ animatePresets: value as boolean })}
-      />
-    </ColumnContainer>
+    <PreferenceOptionContainer>
+      <ColumnContainer>
+        <LargeText>{title}</LargeText>
+        <Spacer vertical={2} />
+        {description && <MediumText faint>{description}</MediumText>}
+      </ColumnContainer>
+      {type === 'toggle' && <CheckBoxInput value={value as boolean} onChange={handleOnChange} />}
+      {type === 'button' && icon && onClick && <ButtonInput name={icon.name} color={icon.color} onClick={onClick} />}
+    </PreferenceOptionContainer>
   );
 };

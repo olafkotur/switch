@@ -1,6 +1,6 @@
 import React, { HTMLInputTypeAttribute, ReactElement } from 'react';
 import styled from 'styled-components';
-import { Button } from './Button';
+import { Button, IconButton } from './Button';
 import { Icon, IconNames } from './Icon';
 
 interface TextInputProps {
@@ -68,5 +68,24 @@ export const CheckBoxInput = ({ value, disabled, onChange }: CheckBoxInputProps)
     <CheckBoxInputContainer onClick={() => onChange?.(!value)} disabled={disabled}>
       <Icon name={value ? IconNames.CHECK_FILLED : IconNames.CHECK} size={30} opacity={disabled ? 0.3 : 1} />
     </CheckBoxInputContainer>
+  );
+};
+
+interface ButtonInputProps {
+  name: IconNames;
+  onClick: Function;
+  color?: string;
+  disabled?: boolean;
+}
+
+const ButtonInputContainer = styled(Button)`
+  margin: ${(props) => props.theme.spacing.medium};
+`;
+
+export const ButtonInput = ({ name, onClick, color, disabled }: ButtonInputProps) => {
+  return (
+    <ButtonInputContainer onClick={() => onClick?.()} disabled={disabled}>
+      <Icon name={name} size={28} opacity={disabled ? 0.3 : 1} color={color} />
+    </ButtonInputContainer>
   );
 };

@@ -6,7 +6,7 @@ import { ScaleOnTap } from '../style/animation';
 const ICON_BUTTON_SIZES = {
   small: '12px',
   medium: '21px',
-  large: '38px',
+  large: '30px',
 };
 
 interface Props extends HTMLMotionProps<'div'> {
@@ -38,7 +38,7 @@ const IconButtonContainer = styled(Button)<{ px: string; noMargin?: boolean; bg?
   height: ${(props) => props.px};
   opacity: ${(props) => (props.disabled ? 0.4 : 1)};
   border-radius: ${(props) => props.theme.borderRadius.small};
-  margin: ${(props) => (props.noMargin ? 0 : props.theme.spacing.medium)} 0;
+  margin: ${(props) => (props.noMargin ? 0 : props.theme.spacing.medium)};
   background: ${(props) => props.bg};
 `;
 

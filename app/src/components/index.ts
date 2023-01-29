@@ -7,7 +7,6 @@ export * from './Header';
 export * from './Icon';
 export * from './Input';
 export * from './Loader';
-export * from './PreferenceOption';
 export * from './SearchBar';
 export * from './Sidebar';
 export * from './Suggestions';
