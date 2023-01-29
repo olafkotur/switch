@@ -1,18 +1,18 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import {
-  MediumText,
+  Icon,
+  IconNames,
   LargeButton,
+  LargeText,
+  MediumText,
   SmallText,
   Spacer,
-  LargeText,
   Switch,
   TextInput,
   VeryLargeText,
-  IconNames,
-  Icon,
 } from '../components';
-import { useLogin, useOnKeyPress, useResetPassword, useSignUp, useTheme } from '../hooks';
+import { useLogin, useOnKeyPress, useSignUp, useTheme } from '../hooks';
 import { Rotate } from '../style/animation';
 
 type ContentType = 'signup' | 'login';
@@ -74,7 +74,6 @@ export const LoginPage = (): ReactElement => {
   const theme = useTheme();
   const login = useLogin();
   const signUp = useSignUp();
-  const resetPassword = useResetPassword();
 
   const copy = useMemo(() => (contentType === 'signup' ? SIGN_UP_COPY : LOGIN_COPY), [contentType]);
   const isNextDisabled = !username || !password;
@@ -119,18 +118,6 @@ export const LoginPage = (): ReactElement => {
           </LargeButton>
 
           <Spacer vertical={16} />
-
-          {contentType === 'login' && (
-            <>
-              <MediumText>
-                Forgot password?{' '}
-                <MediumText bold underline cursor="pointer" onClick={() => resetPassword({})}>
-                  Reset
-                </MediumText>
-              </MediumText>
-              <Spacer vertical={6} />
-            </>
-          )}
 
           <MediumText>
             {copy.anotherWay}{' '}
