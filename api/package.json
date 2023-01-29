@@ -6,7 +6,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only ./src/index.ts"
+    "build": "tsc --skipLibCheck",
+    "start": "ts-node-dev --respawn --transpile-only ./src/index.ts",
+    "start:dist": "node ./dist/index.js"
   },
   "dependencies": {
     "colors": "^1.4.0",

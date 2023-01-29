@@ -81,13 +81,7 @@ export const useLogout = () => {
 };
 
 export const useResetPassword = () => {
-  const infoToast = useToast('info');
-
-  return useCallback(
-    ({ oldPassword, newPassword }: { oldPassword?: string; newPassword?: string }) => {
-      // TODO: add reset password logic
-      infoToast('Password reset not currently implemented');
-    },
-    [infoToast],
-  );
+  return useCallback(({ oldPassword, newPassword }: { oldPassword?: string; newPassword?: string }) => {
+    // TODO: add reset password logic
+  }, []);
 };
