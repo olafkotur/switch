@@ -9,7 +9,7 @@ import { ElectronService } from './helper';
 
 log.info('App is starting...');
 
-const DEVELOPMENT = process.env.NODE_ENV === 'development';
+const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 let mainWindow: BrowserWindow;
 let tray: Tray;
 
@@ -39,7 +39,7 @@ const createMainWindow = async (): Promise<void> => {
     backgroundColor: '#F8F9F9',
     webPreferences: {
       webviewTag: true,
-      devTools: DEVELOPMENT,
+      devTools: IS_DEVELOPMENT,
     },
   });
 
@@ -68,7 +68,7 @@ const createMainWindow = async (): Promise<void> => {
   tray.setContextMenu(contextMenu);
 
   // render main window
-  if (DEVELOPMENT) {
+  if (IS_DEVELOPMENT) {
     mainWindow.loadURL('http://localhost:4000');
   } else {
     mainWindow.loadURL(

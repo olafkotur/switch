@@ -1,6 +1,5 @@
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Loader } from './components';
@@ -13,8 +12,6 @@ import { LoginPage } from './pages/Login';
 import { ModulePage } from './pages/Module';
 import { ActiveModuleIdState, IsAuthenticatedState } from './state';
 import { ThemeProvider } from './style/Provider';
-
-const queryClient = new QueryClient();
 
 const AppContainer = styled.div`
   display: flex;
@@ -74,13 +71,11 @@ const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <AppContainer>
-            <App />
-          </AppContainer>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <ThemeProvider>
+        <AppContainer>
+          <App />
+        </AppContainer>
+      </ThemeProvider>
     </RecoilRoot>
   </React.StrictMode>,
 );
