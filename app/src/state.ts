@@ -1,10 +1,20 @@
 import { atom } from 'recoil';
 import { ModalName } from './modals';
-import { Module, Preference, Suggestion, User } from './typings';
+import { Module, Preference, Suggestion, User, WindowSetup } from './typings';
 
 export const IsAuthenticatedState = atom({
   key: 'isAuthenticated',
   default: false,
+});
+
+export const IsFullScreenState = atom({
+  key: 'isFullScreen',
+  default: false,
+});
+
+export const WindowSetupState = atom({
+  key: 'windowSetup',
+  default: {} as WindowSetup,
 });
 
 export const ActiveModuleIdState = atom({

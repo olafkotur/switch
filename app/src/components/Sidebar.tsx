@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useTheme } from '../hooks';
-import { ActiveModuleIdState, ModalState, ModulesState } from '../state';
+import { ActiveModuleIdState, IsFullScreenState, ModalState, ModulesState, WindowSetupState } from '../state';
 import { Rotate } from '../style/animation';
 import { Module } from '../typings';
 import { IconButton, SidebarButton } from './Button';
@@ -38,10 +38,14 @@ const SidebarBottom = styled.div`
 
 export const Sidebar = (): ReactElement => {
   const modules = useRecoilValue(ModulesState);
+  const isFullScreen = useRecoilValue(IsFullScreenState);
+  const windowSetup = useRecoilValue(WindowSetupState);
+
+  const isTrafficLightsShown = !isFullScreen && !windowSetup.overlayMode;
 
   return (
     <SidebarContainer>
-      <Spacer vertical={10} />
+      {isTrafficLightsShown && <Spacer vertical={10} />}
 
       <SidebarTop>
         {modules.map((module) => (

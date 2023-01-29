@@ -1,7 +1,7 @@
 import { app, BrowserWindow, globalShortcut, Menu, screen, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import path from 'path';
-import { windowEventsListener, windowSetupListener } from './events';
+import { sendWindowEvents, receiveWindowSetup } from './events';
 import { ScreenProperties, ElectronStorageKey, WindowProperties } from '../src/typings';
 
 let previousScreenProperties: ScreenProperties | null = null;
@@ -29,8 +29,8 @@ export const setStorage = async <T>(key: ElectronStorageKey, data: T): Promise<b
 };
 
 export const setupWindowEvents = (window: BrowserWindow) => {
-  windowSetupListener();
-  windowEventsListener(window);
+  sendWindowEvents(window);
+  receiveWindowSetup(window);
 };
 
 export const getWindowProperties = (window: BrowserWindow): WindowProperties => {
@@ -85,10 +85,12 @@ export const setOverlayMode = (window: BrowserWindow, overlayMode: boolean): voi
     visible: overlayMode,
     alwaysTop: overlayMode,
     fullScreen: !overlayMode,
+    minimise: !overlayMode,
     menu: false,
   };
 
   overlayMode && app.dock.hide();
+  window.setMinimizable(options.minimise);
   window.setFullScreenable(options.fullScreen);
   window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'floating' : undefined);
   window.setVisibleOnAllWorkspaces(options.visible, {

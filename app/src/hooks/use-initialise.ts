@@ -15,6 +15,7 @@ export const useInitialise = () => {
   const getStorage = useGetStorage();
   const refresh = useRefresh();
   const delay = useDelay();
+
   const fetchModules = useFetchModules();
   const fetchUser = useFetchUser();
   const fetchPreferences = useFetchPreferences();

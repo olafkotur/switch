@@ -11,7 +11,7 @@ import {
   PreferenceOption,
   Spacer,
 } from '../components';
-import { useLogout, useUpdatePreferences } from '../hooks';
+import { useLogout, useSendMessage, useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
 import { Rotate } from '../style/animation';
 
@@ -144,11 +144,12 @@ export const Preferences = (): ReactElement => {
 const GeneralPanel = (): ReactElement => {
   const preferences = useRecoilValue(PreferencesState);
   const updatePreferences = useUpdatePreferences();
+  const sendMessage = useSendMessage('window-setup');
 
   const handleOverlayMode = useCallback(
     (value: boolean) => {
       updatePreferences({ overlayMode: value });
-      window.electron.ipcRenderer.sendMessage('window-setup', ['overlayMode', value]);
+      sendMessage({ name: 'set-overlay-mode', value });
     },
     [updatePreferences],
   );
@@ -170,14 +171,6 @@ const GeneralPanel = (): ReactElement => {
 const AccountPanel = (): ReactElement => {
   return (
     <ColumnContainer>
-      <PreferenceOption
-        title="Update avatar"
-        description="Update your profile avatar picture"
-        type="text"
-        value=""
-        onChange={console.log}
-      />
-      <Spacer vertical={15} />
       <PreferenceOption
         title="Change password"
         description="Update your current password"

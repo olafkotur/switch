@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Loader } from './components';
 import { Sidebar } from './components/Sidebar';
 import { APP_TIMEOUT_MS } from './const';
-import { useInitialise } from './hooks';
+import { useElectronListeners, useInitialise, useSendMessage } from './hooks';
 import { Modal } from './modals';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
@@ -31,6 +31,9 @@ const App = (): ReactElement => {
   const isAuthenticated = useRecoilValue(IsAuthenticatedState);
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
   const initialise = useInitialise();
+  const sendMessage = useSendMessage('window-setup');
+
+  useElectronListeners();
 
   const PageComponent = useMemo(() => {
     if (activeModuleId) {
@@ -46,7 +49,8 @@ const App = (): ReactElement => {
 
   useEffect(() => {
     load();
-  }, []);
+    sendMessage({ name: 'window-setup-data', value: '' });
+  }, [sendMessage]);
 
   if (isLoading) {
     return <Loader />;

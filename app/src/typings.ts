@@ -2,10 +2,12 @@ import { Themes } from './style/theme';
 
 export type ElectronStorageKey = 'window-setup';
 
-export type Channels = 'window-setup' | 'window-events';
+export type Channel = 'window-setup' | 'window-events';
+export type ChannelEvent = 'full-screen' | 'set-overlay-mode' | 'window-setup-data';
+export type ChannelValue = any;
 
 export interface WindowSetup {
-  overlayMode: boolean;
+  overlayMode?: boolean;
 }
 
 export interface WindowProperties {
