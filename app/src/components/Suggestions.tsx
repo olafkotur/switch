@@ -16,16 +16,22 @@ const SuggestionsContainer = styled.div`
   padding: ${(props) => props.theme.spacing.medium};
   background: ${(props) => props.theme.backgroundColor.box};
   border-radius: ${(props) => props.theme.borderRadius.large};
+
+  @media (max-width: 1000px) { {
+    padding: ${(props) => props.theme.spacing.small};
+  }
 `;
 
 const Title = styled(MediumText)`
   margin-left: ${(props) => props.theme.spacing.small};
+
+  @media (max-width: 1000px) {
+    font-size: ${(props) => props.theme.fontSize.small};
+    margin-left: ${(props) => props.theme.spacing.verySmall};
+  }
 `;
 
 const ListContainer = styled.div`
-  overflow-y: scroll;
-  width: 100%;
-  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 `;
@@ -34,18 +40,19 @@ const ListItem = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  padding-top: 100%;
-  width: 90%;
+  aspect-ratio: 1 / 1;
   margin: ${(props) => props.theme.spacing.small};
   background: ${(props) => props.theme.backgroundColor.module};
   border-radius: ${(props) => props.theme.borderRadius.medium};
+
+  @media (max-width: 1000px) { {
+    margin: ${(props) => props.theme.spacing.verySmall};
+  }
 `;
 
 const Icon = styled(ModuleIcon)`
-  position: absolute;
-  top: 25%;
-  width: 55%;
+  width: 60%;
+  aspect-ratio: 1 / 1;
 `;
 
 export const Suggestions = ({ title, data }: SuggestionsProps): ReactElement => {

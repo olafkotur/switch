@@ -44,7 +44,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(rootPath, 'electron/index.ejs'),
+      template: path.join(rootPath, 'electron/index.html'),
     }),
   ],
 };

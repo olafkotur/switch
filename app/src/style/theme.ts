@@ -20,6 +20,7 @@ const COMMON_THEME = {
     strong: '1px solid #ABABAE',
   },
   spacing: {
+    verySmall: '3px',
     small: '5px',
     medium: '10px',
     large: '15px',
