@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Button, Icon, IconButton, IconNames } from '../components';
+import { Icon, IconButton, IconNames } from '../components';
 import { useOnKeyPress } from '../hooks';
 import { ModalState } from '../state';
 import { Fade } from '../style/animation';
@@ -59,7 +59,7 @@ export const Modal = (): ReactElement => {
     setModal(null);
   }, [setModal]);
 
-  useOnKeyPress('Escape', onDismiss);
+  useOnKeyPress({ key: 'Escape', onPress: onDismiss });
 
   if (modal == null) return <></>;
 

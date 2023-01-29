@@ -60,6 +60,7 @@ export const Preferences = (): ReactElement => {
           onChange={(value) => updatePreferences({ theme: value ? 'dark' : 'light' })}
         />
         <Preference
+          requiresRestart
           title="Animate presets"
           description="Show an animation when resizing Switch using layout presets"
           type="toggle"
@@ -75,7 +76,6 @@ export const Preferences = (): ReactElement => {
           onChange={handleOverlayMode}
         />
         <Preference
-          requiresRestart
           title="Logout"
           description="Your changes are automatically saved"
           type="button"

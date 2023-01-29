@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { SEARCH_BAR_PLACEHOLDER } from '../const';
 import { useOnKeyPress, useTheme } from '../hooks';
 import { ChangeColor } from '../style/animation';
-import { IconButton } from './Button';
 import { Spacer } from './Common';
 import { Icon, IconNames } from './Icon';
 import { Input } from './Input';
@@ -48,9 +47,7 @@ export const SearchBar = ({ value, isValid, setValue, onSubmit }: SearchBarProps
 
   const animation = ChangeColor({ color: isValid ? theme.highlightColor.quaternary : theme.color.faint });
 
-  useOnKeyPress('Enter', async () => {
-    isValid && (await onSubmit(value));
-  });
+  useOnKeyPress({ key: 'Enter', onPress: () => isValid && onSubmit(value) });
 
   return (
     <SearchBarContainer>

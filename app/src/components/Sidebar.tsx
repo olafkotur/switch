@@ -1,12 +1,12 @@
 import React, { ReactElement, useCallback, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useTheme } from '../hooks';
 import { ActiveModuleIdState, IsFullScreenState, ModalState, ModulesState, WindowSetupState } from '../state';
 import { Rotate } from '../style/animation';
 import { Module } from '../typings';
-import { IconButton, SidebarButton } from './Button';
+import { SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Controls } from './Controls';
 import { Icon, IconNames } from './Icon';

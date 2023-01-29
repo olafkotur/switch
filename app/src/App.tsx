@@ -1,11 +1,11 @@
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Loader } from './components';
 import { Sidebar } from './components/Sidebar';
 import { APP_TIMEOUT_MS } from './const';
-import { useElectronListeners, useInitialise, useSendMessage } from './hooks';
+import { useElectronListeners, useInitialise, useOnKeyPress, useSendMessage } from './hooks';
 import { Modal } from './modals';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
@@ -32,12 +32,24 @@ const App = (): ReactElement => {
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
   const preferences = useRecoilValue(PreferencesState);
   const windowSetup = useRecoilValue(WindowSetupState);
-  const setModal = useSetRecoilState(ModalState);
+  const [modal, setModal] = useRecoilState(ModalState);
 
   const initialise = useInitialise();
   const sendMessage = useSendMessage('window-setup');
 
   useElectronListeners();
+
+  useOnKeyPress({
+    key: 'Comma',
+    useMeta: true,
+    onPress: () => {
+      if (modal === 'preferences') {
+        setModal(null);
+      } else if (modal === null) {
+        setModal('preferences');
+      }
+    },
+  });
 
   const PageComponent = useMemo(() => {
     if (activeModuleId) {

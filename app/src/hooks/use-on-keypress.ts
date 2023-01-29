@@ -1,14 +1,16 @@
 import { useCallback, useEffect } from 'react';
 
-export const useOnKeyPress = (key: string, handler: () => Promise<void> | void) => {
+export const useOnKeyPress = ({ key, useMeta, onPress }: { key: string; useMeta?: boolean; onPress: Function }) => {
   const handleKeyPress = useCallback(
     async (event: KeyboardEvent) => {
-      if (event.code === key) {
-        await handler();
+      if (useMeta) {
+        event.metaKey && event.code == key && onPress();
+      } else {
+        event.code === key && onPress();
       }
     },
 
-    [key, handler],
+    [key, useMeta, onPress],
   );
 
   useEffect(() => {
