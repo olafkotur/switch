@@ -149,7 +149,7 @@ const GeneralPanel = (): ReactElement => {
     (value: boolean) => {
       updatePreferences({ overlayMode: value });
     },
-    [updatePreferences, setElectronStorage],
+    [updatePreferences],
   );
 
   return (
