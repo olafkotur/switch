@@ -6,9 +6,9 @@ import { Icon, IconNames } from '../components/Icon';
 type ToastType = 'error' | 'info' | 'success';
 
 const TOAST_CONFIG = {
-  error: { name: IconNames.ERROR, color: '#e74c3c', duration: 5000 },
-  info: { name: IconNames.INFO, color: '#2980b9', duration: 5000 },
-  success: { name: IconNames.CIRCLE_CHECK, color: '#27ae60', duration: 2000 },
+  error: { name: IconNames.ERROR, color: '#e74c3c', duration: 5000, toastId: 1 },
+  info: { name: IconNames.INFO, color: '#2980b9', duration: 5000, toastId: 2 },
+  success: { name: IconNames.CIRCLE_CHECK, color: '#27ae60', duration: 2000, toastId: 3 },
 };
 
 export const useToast = (type: ToastType) => {
@@ -25,6 +25,7 @@ export const useToast = (type: ToastType) => {
     progressStyle: {
       background: config.color,
     },
+    toastId: config.toastId, // set to avoid stacking of the same type
   };
 
   return useCallback(

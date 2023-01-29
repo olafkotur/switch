@@ -14,7 +14,7 @@ interface PreferenceProps {
   requiresRestart?: boolean;
   icon?: { name: IconNames; color: string };
   onClick?: () => void;
-  onChange?: (value: boolean) => void;
+  onChange?: (value: boolean) => Promise<boolean>;
 }
 
 const PreferenceContainer = styled.div`
@@ -39,12 +39,11 @@ export const Preference = ({
   const infoToast = useToast('info');
 
   const handleOnChange = useCallback(
-    (value: boolean) => {
-      if (requiresRestart) {
+    async (value: boolean) => {
+      const success = await onChange?.(value);
+      if (success && requiresRestart) {
         infoToast('Please restart the app for the changes to take effect');
       }
-
-      onChange?.(value);
     },
     [requiresRestart, onChange],
   );

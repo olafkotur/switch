@@ -11,8 +11,8 @@ export const useFetchUser = () => {
 
   return useCallback(async (): Promise<User | null> => {
     const response = await request({ method: 'GET', url });
-    if (response.code !== 200) {
-      errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
+    if (response?.code !== 200) {
+      errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
       return null;
     }
 

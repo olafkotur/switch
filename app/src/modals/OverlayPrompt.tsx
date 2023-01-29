@@ -1,7 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { ModalContentContainer } from './index';
 import {
   CommandKey,
   EscapeKey,
@@ -14,7 +13,7 @@ import {
   SpaceBetweenContainer,
   Spacer,
 } from '../components';
-import { useTheme, useUpdatePreferences } from '../hooks';
+import { useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
 
 const OverlayPromptContainer = styled.div`
@@ -37,17 +36,17 @@ const DescriptionContainer = styled.div`
   border-radius: ${(props) => props.theme.borderRadius.medium};
 `;
 
-const Footer = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-`;
-
 export const OverlayPrompt = (): ReactElement => {
-  const theme = useTheme();
   const preferences = useRecoilValue(PreferencesState);
 
   const updatePreferences = useUpdatePreferences();
+
+  const handleOverlayMode = useCallback(
+    async (value: boolean) => {
+      return updatePreferences({ disableOverlayPrompt: value });
+    },
+    [updatePreferences],
+  );
 
   return (
     <OverlayPromptContainer>
@@ -82,7 +81,7 @@ export const OverlayPrompt = (): ReactElement => {
           description="This message will never show again"
           type="toggle"
           value={preferences?.disableOverlayPrompt ?? false}
-          onChange={(value) => updatePreferences({ disableOverlayPrompt: value })}
+          onChange={handleOverlayMode}
         />
       </OverlayPromptContent>
     </OverlayPromptContainer>

@@ -11,8 +11,8 @@ export const useFetchSuggestions = () => {
 
   return useCallback(async (): Promise<Suggestion[]> => {
     const response = await request({ method: 'GET', url });
-    if (response.code !== 200) {
-      errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
+    if (response?.code !== 200) {
+      errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
       return [];
     }
 

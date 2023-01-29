@@ -18,8 +18,8 @@ export const useLogin = () => {
   return useCallback(
     async ({ username, password }: { username: string; password: string }) => {
       const response = await request({ method: 'POST', url, body: { username, password } });
-      if (response.code !== 200) {
-        return errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
+      if (response?.code !== 200) {
+        return errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
       }
       await setStorage('tokens', { ...(response.data as Object) });
       await initialise();
@@ -38,8 +38,8 @@ export const useSignUp = () => {
   return useCallback(
     async ({ username, password }: { username: string; password: string }) => {
       const response = await request({ method: 'POST', url, body: { username, password } });
-      if (response.code !== 201) {
-        return errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
+      if (response?.code !== 201) {
+        return errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
       }
       await setStorage('tokens', { ...(response.data as Object) });
       await initialise();
@@ -58,7 +58,7 @@ export const useRefresh = () => {
   return useCallback(
     async ({ refreshToken }: { refreshToken: string }): Promise<boolean> => {
       const response = await request({ method: 'POST', url, body: { refreshToken } });
-      if (response.code !== 200) {
+      if (response?.code !== 200) {
         removeStorage('tokens');
         return false;
       }

@@ -29,18 +29,25 @@ export const Preferences = (): ReactElement => {
   const sendMessage = useSendMessage('window-setup');
   const logout = useLogout();
 
+  const handleDarkMode = useCallback(
+    async (value: boolean) => {
+      return updatePreferences({ theme: value ? 'dark' : 'light' });
+    },
+    [updatePreferences],
+  );
+
   const handleAnimatePresets = useCallback(
-    (value: boolean) => {
-      updatePreferences({ animatePresets: value });
+    async (value: boolean) => {
       sendMessage({ name: 'set-animate-presets', value });
+      return updatePreferences({ animatePresets: value });
     },
     [updatePreferences, sendMessage],
   );
 
   const handleOverlayMode = useCallback(
-    (value: boolean) => {
-      updatePreferences({ overlayMode: value });
+    async (value: boolean) => {
       sendMessage({ name: 'set-overlay-mode', value });
+      return updatePreferences({ overlayMode: value });
     },
     [updatePreferences, sendMessage],
   );
@@ -57,10 +64,9 @@ export const Preferences = (): ReactElement => {
           description="Enable dark mode, does not affect any added applications"
           type="toggle"
           value={preferences?.theme === 'dark' ?? true}
-          onChange={(value) => updatePreferences({ theme: value ? 'dark' : 'light' })}
+          onChange={handleDarkMode}
         />
         <Preference
-          requiresRestart
           title="Animate presets"
           description="Show an animation when resizing Switch using layout presets"
           type="toggle"

@@ -13,8 +13,8 @@ export const useFetchModules = () => {
 
   return useCallback(async (): Promise<Module[]> => {
     const response = await request({ method: 'GET', url });
-    if (response.code !== 200) {
-      errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
+    if (response?.code !== 200) {
+      errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
       return [];
     }
 
@@ -33,8 +33,8 @@ export const useCreateModule = () => {
   return useCallback(
     async (_url: string) => {
       const response = await request({ method: 'POST', url, body: { url: _url } });
-      if (response.code !== 200) {
-        errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
+      if (response?.code !== 200) {
+        errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
         return;
       }
 
@@ -57,8 +57,8 @@ export const useDeleteModule = () => {
   return useCallback(
     async (_id: string) => {
       const response = await request({ method: 'DELETE', url, body: { _id } });
-      if (response.code !== 200) {
-        errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
+      if (response?.code !== 200) {
+        errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
         return;
       }
 
