@@ -1,113 +1,84 @@
-import { app, BrowserWindow, Menu, Tray } from 'electron'
-import storage from 'electron-json-storage'
-import log from 'electron-log'
-import { autoUpdater } from 'electron-updater'
-import * as path from 'path'
-import * as url from 'url'
-import { ElectronService } from '../src/services/electron'
-import { SettingsService } from '../src/services/settings'
+import { app, BrowserWindow } from 'electron';
+import storage from 'electron-json-storage';
+import log from 'electron-log';
+import { autoUpdater } from 'electron-updater';
+import * as path from 'path';
+import * as url from 'url';
+import { VISIBILITY_KEYBIND } from '../src/const';
+import { WindowSetup } from '../src/typings';
+import {
+  getScreenProperties,
+  getStorage,
+  getWindowProperties,
+  setGlobalShortcuts,
+  setOverlayMode,
+  setupTrayConfiguration,
+  setupWindowEvents,
+  setWindowProperties,
+} from './utils';
 
-log.info('App is starting...')
+log.info('App is starting...');
 
-const DEVELOPMENT = process.env.NODE_ENV === 'development'
-let mainWindow: BrowserWindow
-let tray: Tray
+const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
+let window: BrowserWindow | null;
 
-// storage setup
-const dataPath = storage.getDataPath()
-storage.setDataPath(dataPath)
+const dataPath = storage.getDataPath();
+storage.setDataPath(dataPath);
 
-/**
- * Creates the main window
- */
+app.setName('Switch');
+
 const createMainWindow = async (): Promise<void> => {
-  // fetch user settings
-  const userSettings = await SettingsService.fetchLocal()
+  const screenProperties = getScreenProperties();
+  const windowSetup = await getStorage<WindowSetup>('window-setup');
+  const overlayMode = windowSetup?.overlayMode ?? false;
+  const animatePresets = windowSetup?.animatePresets ?? true;
 
-  // create main window
-  const screenInfo = ElectronService.getScreenInfo()
-  mainWindow = new BrowserWindow({
-    width: screenInfo.width,
-    height: screenInfo.height,
-    minHeight: 480,
-    minWidth: 720,
+  window = new BrowserWindow({
+    width: screenProperties.width,
+    height: screenProperties.height,
+    minHeight: 600,
+    minWidth: 800,
     center: true,
     darkTheme: true,
-    frame: !userSettings.overlayMode,
-    titleBarStyle: userSettings.overlayMode ? 'default' : 'hidden',
-    transparent: userSettings.overlayMode,
-    backgroundColor: '#1F2225',
+    frame: !overlayMode,
+    titleBarStyle: overlayMode ? 'default' : 'hidden',
+    transparent: overlayMode,
+    backgroundColor: '#F8F9F9',
     webPreferences: {
-      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
       webviewTag: true,
-      enableRemoteModule: true,
-      devTools: DEVELOPMENT,
-      plugins: true,
+      devTools: IS_DEVELOPMENT,
     },
-  })
+  });
 
-  // app configuration
-  app.setName('Switch')
-  userSettings.overlayMode && app.dock.hide()
+  const windowProperties = getWindowProperties(window);
+  setOverlayMode(window, overlayMode);
+  setWindowProperties(window, windowProperties, animatePresets);
+  setGlobalShortcuts(window, VISIBILITY_KEYBIND, overlayMode);
+  setupWindowEvents(window);
+  setupTrayConfiguration(window, overlayMode);
 
-  // window configuration
-  ElectronService.setWindowMode(userSettings.overlayMode, mainWindow)
-  ElectronService.setWindowInfo(mainWindow)
-  ElectronService.setWindowListeners(mainWindow)
-  ElectronService.setGlobalShortcuts(
-    mainWindow,
-    userSettings.visiblityKeybind,
-    userSettings.overlayMode,
-  )
-
-  // setup tray items
-  tray = new Tray(path.join(__dirname, 'tray@2x.png'))
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Toggle Show / Hide',
-      visible: userSettings.overlayMode,
-      click: () => ElectronService.toggleVisibility(mainWindow),
-    },
-    { type: 'separator', visible: userSettings.overlayMode },
-    { label: 'Reload', role: 'reload' },
-    { label: 'Quit', role: 'quit' },
-  ])
-  tray.setContextMenu(contextMenu)
-
-  // render main window
-  if (DEVELOPMENT) {
-    mainWindow.loadURL('http://localhost:4000')
+  if (IS_DEVELOPMENT) {
+    window.loadURL('http://localhost:4000');
   } else {
-    mainWindow.loadURL(
+    window.loadURL(
       url.format({
         pathname: path.join(__dirname, 'renderer/index.html'),
         protocol: 'file:',
         slashes: true,
       }),
-    )
+    );
   }
 
-  mainWindow.on('closed', () => {
-    // @ts-ignore
-    mainWindow = null
-  })
-}
+  window.on('closed', () => {
+    window = null;
+  });
+};
 
-/**
- * Sends a status message to the main window
- * @param status - message to be sent
- * @param window - target browser window
- */
-const sendStatusToWindow = (status: string): void => {
-  mainWindow.webContents.send('message', status)
-}
-
-// launch window
 app.on('ready', async () => {
-  await createMainWindow()
-  await autoUpdater.checkForUpdates()
-})
+  await createMainWindow();
+  await autoUpdater.checkForUpdates();
+});
 app.on('window-all-closed', () => {
-  app.quit()
-})
-app.allowRendererProcessReuse = true
+  app.quit();
+});

@@ -1,116 +1,108 @@
-import { createTheme, Theme, ThemeProvider } from '@material-ui/core'
-import storage from 'electron-json-storage'
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider, useDispatch, useSelector } from 'react-redux'
-import { Alert } from './components/Alert'
-import { Dialog } from './components/Dialog'
-import { Loader } from './components/Loader'
-import { Dashboard } from './pages/Dashboard/Dashboard'
-import { Login } from './pages/Login/Login'
-import { setApplications, setError } from './redux/interface'
-import { setAuth, setProfile, setSettings } from './redux/user'
-import { ApplicationService } from './services/application'
-import { SettingsService } from './services/settings'
-import { UserService } from './services/user'
-import { RootState, store } from './store'
-// this line prevents import sorter messing with .css order
-import 'bootstrap/dist/css/bootstrap.css'
-import './custom.css'
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
+import styled from 'styled-components';
+import { Loader } from './components';
+import { Sidebar } from './components/Sidebar';
+import { APP_TIMEOUT_MS } from './const';
+import { useElectronListeners, useInitialise, useOnKeyPress, useSendMessage } from './hooks';
+import { Modal } from './modals';
+import { HomePage } from './pages/Home';
+import { LoginPage } from './pages/Login';
+import { ModulePage } from './pages/Module';
+import { ActiveModuleIdState, IsAuthenticatedState, ModalState, PreferencesState, WindowSetupState } from './state';
+import { ThemeProvider } from './style/Provider';
 
-const App = (): React.ReactElement => {
-  const [loading, setLoading] = React.useState<boolean>(true)
-  const [theme, setTheme] = React.useState<Theme>()
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+`;
 
-  const dispatch = useDispatch()
-  const { settings, auth } = useSelector((state: RootState) => state.user)
-  const { dialog, error } = useSelector((state: RootState) => state.interface)
+const PageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 
-  React.useEffect(() => {
-    // storage setup
-    const dataPath = storage.getDataPath()
-    storage.setDataPath(dataPath)
+const App = (): ReactElement => {
+  const [isLoading, setIsLoading] = useState(true);
 
-    // listen for network changes
-    checkConnection()
+  const isAuthenticated = useRecoilValue(IsAuthenticatedState);
+  const activeModuleId = useRecoilValue(ActiveModuleIdState);
+  const preferences = useRecoilValue(PreferencesState);
+  const windowSetup = useRecoilValue(WindowSetupState);
+  const [modal, setModal] = useRecoilState(ModalState);
 
-    fetchUserData().then(() => setTimeout(() => setLoading(false), 1000))
-  }, [])
+  const initialise = useInitialise();
+  const sendMessage = useSendMessage('window-setup');
 
-  React.useEffect(() => {
-    // theme setup
-    setTheme(
-      createTheme({
-        typography: {
-          fontSize: 14,
-          fontFamily: settings.fontFamily,
-        },
-        palette: {
-          background: { default: '#303136', paper: '#303136' },
-          text: { primary: '#fff' },
-          primary: { main: settings.accentColor },
-          secondary: { main: '#fff' },
-          error: { main: '#b33939' },
-        },
-        overrides: {
-          MuiButton: { label: { fontSize: 12, textTransform: 'lowercase' } },
-        },
-      }),
-    )
-  }, [settings])
+  useElectronListeners();
 
-  /**
-   * Checks if the user is connected to the internet.
-   */
-  const checkConnection = (): void => {
-    const msg =
-      'Cannot connect to the internet, Switch is using latest preferences backup until back online.'
+  useOnKeyPress({
+    key: 'Comma',
+    useMeta: true,
+    onPress: () => {
+      if (modal === 'preferences') {
+        setModal(null);
+      } else if (modal === null) {
+        setModal('preferences');
+      }
+    },
+  });
 
-    // check initial network state
-    !window.navigator.onLine && setTimeout(() => dispatch(setError(msg)), 3000)
+  const PageComponent = useMemo(() => {
+    if (activeModuleId) {
+      return ModulePage;
+    }
+    return HomePage;
+  }, [isAuthenticated, activeModuleId]);
 
-    // listen for network changes
-    window.addEventListener('offline', () => {
-      dispatch(setError(msg))
-    })
+  const load = useCallback(async () => {
+    await initialise();
+    setTimeout(() => setIsLoading(false), APP_TIMEOUT_MS);
+  }, [initialise, setIsLoading]);
+
+  useEffect(() => {
+    load();
+    sendMessage({ name: 'window-setup-data', value: '' });
+  }, [sendMessage]);
+
+  useEffect(() => {
+    if (preferences == null) return;
+    if (preferences.disableOverlayPrompt !== true && windowSetup.overlayMode === true) {
+      setModal('overlay-prompt');
+    }
+  }, [preferences?.disableOverlayPrompt, windowSetup.overlayMode]);
+
+  if (isLoading) {
+    return <Loader />;
   }
 
-  /**
-   * Fetches user data and stores in state.
-   */
-  const fetchUserData = async (): Promise<void> => {
-    const profile = await UserService.fetchProfile()
-    const settings = await SettingsService.fetch()
-    const applications = await ApplicationService.fetch()
-
-    dispatch(setAuth(!!profile))
-    profile && dispatch(setProfile(profile))
-    settings && dispatch(setSettings(settings))
-    applications && dispatch(setApplications(applications))
-  }
-
-  if (loading) {
-    return <Loader />
+  if (!isAuthenticated) {
+    return <LoginPage />;
   }
 
   return (
-    <ThemeProvider theme={theme as Theme}>
-      <div style={{ fontFamily: settings.fontFamily }}>
-        {!auth ? <Login /> : <Dashboard />}
-        {dialog && <Dialog />}
-        {error && <Alert />}
-      </div>
-    </ThemeProvider>
-  )
-}
+    <>
+      <Modal />
+      <Sidebar />
+      <PageContainer>
+        <PageComponent />
+      </PageContainer>
+    </>
+  );
+};
 
-const mainElement = document.createElement('div')
-mainElement.setAttribute('id', 'root')
-document.body.appendChild(mainElement)
-render(
-  // @ts-ignore
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  mainElement,
-)
+const root = createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+  <React.StrictMode>
+    <RecoilRoot>
+      <ThemeProvider>
+        <AppContainer>
+          <App />
+        </AppContainer>
+      </ThemeProvider>
+    </RecoilRoot>
+  </React.StrictMode>,
+);

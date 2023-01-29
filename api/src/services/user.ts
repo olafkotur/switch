@@ -1,14 +1,15 @@
-import { database } from '..'
-import { IUserModel } from '../typings/models'
+import { Types } from 'mongoose';
+import { UserModel, UserModelData } from '../models';
+import { PreferenceService } from './preference';
 
 export const UserService = {
   /**
    * Fetches single user by username.
    * @param username - user name
    */
-  fetchSingle: async (username: string): Promise<IUserModel | null> => {
-    const user = await database.getCollection('users').findOne({ username })
-    return user || null
+  fetchSingle: async (username: string): Promise<UserModelData | null> => {
+    const user = await UserModel.findOne({ username });
+    return user || null;
   },
 
   /**
@@ -16,14 +17,9 @@ export const UserService = {
    * @param username - user name
    * @param password - hashed user password
    */
-  fetchByCredentials: async (
-    username: string,
-    password: string,
-  ): Promise<IUserModel | null> => {
-    const user = await database
-      .getCollection('users')
-      .findOne({ username, password })
-    return user || null
+  fetchByCredentials: async (username: string, password: string): Promise<UserModelData | null> => {
+    const user = await UserModel.findOne({ username, password });
+    return user || null;
   },
 
   /**
@@ -37,22 +33,30 @@ export const UserService = {
     password: string,
     avatar: string,
   ): Promise<{ success: boolean; message?: string }> => {
-    const exists = await database.getCollection('users').findOne({ username })
+    const exists = await UserModel.findOne({ username });
     if (exists) {
-      return { success: false, message: 'User already exists' }
+      return { success: false, message: 'User already exists' };
     }
 
     // define user model
-    const data: IUserModel = {
+    const data: UserModelData = {
+      _id: Types.ObjectId(),
       username,
       password,
       avatar,
       updatedAt: new Date(),
       createdAt: new Date(),
-    }
+    };
 
     // create new user
-    const res = await database.getCollection('users').insertOne(data)
-    return { success: res.result.ok === 1 }
+    const user = await UserModel.create(data);
+    const success = user._id != null;
+
+    // create default user preferences
+    if (success) {
+      await PreferenceService.create(user._id);
+    }
+
+    return { success, message: 'Could not create a user' };
   },
-}
+};

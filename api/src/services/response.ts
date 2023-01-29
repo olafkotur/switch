@@ -1,6 +1,6 @@
-import dayjs from 'dayjs'
-import express from 'express'
-import { IResponse } from '../typings/response'
+import dayjs from 'dayjs';
+import express from 'express';
+import { Response } from '../typings';
 
 export const ResponseService = {
   /**
@@ -9,14 +9,14 @@ export const ResponseService = {
    * @param res - response object
    */
   ok: (msg: string, res: express.Response): void => {
-    const response: IResponse = {
+    const response: Response = {
       code: 200,
       status: 'ok',
       ...ResponseService.buildCommonResponse(),
       message: msg,
-    }
-    res.status(200)
-    res.send(response)
+    };
+    res.status(200);
+    res.send(response);
   },
 
   /**
@@ -25,14 +25,14 @@ export const ResponseService = {
    * @param res - response object
    */
   create: (d: unknown, res: express.Response): void => {
-    const response: IResponse = {
+    const response: Response = {
       code: 201,
       status: 'created',
       ...ResponseService.buildCommonResponse(),
       data: d,
-    }
-    res.status(201)
-    res.send(response)
+    };
+    res.status(201);
+    res.send(response);
   },
 
   /**
@@ -41,14 +41,14 @@ export const ResponseService = {
    * @param res - response object
    */
   bad: (msg: string, res: express.Response): void => {
-    const response: IResponse = {
+    const response: Response = {
       code: 400,
       status: 'bad request',
       ...ResponseService.buildCommonResponse(),
       message: msg,
-    }
-    res.status(400)
-    res.send(response)
+    };
+    res.status(400);
+    res.send(response);
   },
 
   /**
@@ -57,14 +57,14 @@ export const ResponseService = {
    * @param res - response object
    */
   unauthorized: (msg: string, res: express.Response): void => {
-    const response: IResponse = {
+    const response: Response = {
       code: 401,
       status: 'unauthorized',
       ...ResponseService.buildCommonResponse(),
       message: msg,
-    }
-    res.status(401)
-    res.send(response)
+    };
+    res.status(401);
+    res.send(response);
   },
 
   /**
@@ -73,14 +73,14 @@ export const ResponseService = {
    * @param res - response object
    */
   forbidden: (msg: string, res: express.Response): void => {
-    const response: IResponse = {
+    const response: Response = {
       code: 403,
       status: 'forbidden',
       ...ResponseService.buildCommonResponse(),
       message: msg,
-    }
-    res.status(403)
-    res.send(response)
+    };
+    res.status(403);
+    res.send(response);
   },
 
   /**
@@ -89,14 +89,14 @@ export const ResponseService = {
    * @param res - response object
    */
   notFound: (msg: string, res: express.Response): void => {
-    const response: IResponse = {
+    const response: Response = {
       code: 404,
       status: 'not found',
       ...ResponseService.buildCommonResponse(),
       message: msg,
-    }
-    res.status(404)
-    res.send(response)
+    };
+    res.status(404);
+    res.send(response);
   },
 
   /**
@@ -105,14 +105,14 @@ export const ResponseService = {
    * @param res - response object
    */
   data: (d: unknown, res: express.Response): void => {
-    const response: IResponse = {
+    const response: Response = {
       code: 200,
       status: 'ok',
       ...ResponseService.buildCommonResponse(),
       data: d,
-    }
-    res.status(200)
-    res.send(response)
+    };
+    res.status(200);
+    res.send(response);
   },
 
   /**
@@ -121,8 +121,8 @@ export const ResponseService = {
    * @param res - response object
    */
   redirect: (uri: string, res: express.Response): void => {
-    res.status(301)
-    res.redirect(uri)
+    res.status(301);
+    res.redirect(uri);
   },
 
   /**
@@ -132,6 +132,6 @@ export const ResponseService = {
     return {
       date: dayjs().format('MMMM DD YYYY, hh:mm:ss'),
       unix: dayjs().unix(),
-    }
+    };
   },
-}
+};

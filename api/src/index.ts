@@ -1,86 +1,86 @@
-import 'colors'
-import express from 'express'
-import { config } from './config'
-import { ApplicationHandler } from './handlers/application'
-import { SettingsHandler } from './handlers/settings'
-import { UserHandler } from './handlers/user'
-import { DatabaseService } from './services/database'
-import { ResponseService } from './services/response'
-import { SecurityService } from './services/security'
+import 'colors';
+import express from 'express';
+import { MONGO_NAME, MONGO_URI, NO_VERIFY_URLS, PORT } from './const';
+import { ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
+import { DatabaseService, ResponseService, SecurityService, UserService } from './services';
 
-export const database = DatabaseService
+export const database = DatabaseService;
 
-const app: express.Application = express()
-const cors = require('cors')
+const app: express.Application = express();
+const cors = require('cors');
 
 /**
  * Connect api and setup handlers.
  */
 const main = async (): Promise<void> => {
   // connect to database
-  const success = await database.connect(config.mongoUri)
-  exports.database = database
+  const success = await database.connect({ uri: MONGO_URI, name: MONGO_NAME });
+  exports.database = database;
   if (!success) {
-    return console.error('Failed to establish database connection, halting')
+    return console.error('Failed to establish database connection, halting');
   }
 
   // middleware
-  app.use(express.urlencoded({ extended: false, limit: '10mb' }))
-  app.use(express.json())
-  app.use(cors())
+  app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+  app.use(express.json());
+  app.use(cors());
 
   // custom middleware
   app.use(async (req, res, next) => {
-    console.log(`Request :: ${req.method} ${req.url} (${req.ip})`)
+    console.log(`Request :: ${req.method} ${req.url} (${req.ip})`);
 
     // skip verify on some urls
-    if (config.noVerifyUrls.includes(req.url)) next()
-
-    // decode and verify jwt token
-    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '')
-    const jwtResponse = await SecurityService.verifyToken(jwtToken)
-    if (jwtResponse.error) {
-      const message =
-        jwtResponse.error === 'TokenExpiredError'
-          ? 'Token Expired'
-          : 'Invalid authorization'
-      return ResponseService.unauthorized(message, res)
+    if (NO_VERIFY_URLS.includes(req.url)) {
+      return next();
     }
 
-    res.locals.jwt = jwtResponse
-    next()
-  })
+    // decode and verify jwt token
+    const jwtToken = (req.headers.authorization || '').replace('Bearer ', '');
+    const jwtResponse = await SecurityService.verifyToken(jwtToken);
+    if (jwtResponse.error) {
+      const message = jwtResponse.error === 'TokenExpiredError' ? 'Token Expired' : 'Invalid authorization';
+      return ResponseService.unauthorized(message, res);
+    }
+
+    const user = await UserService.fetchSingle(jwtResponse.data.username);
+    if (!user) {
+      return ResponseService.notFound('User not found', res);
+    }
+
+    res.locals.user = user;
+    res.locals.jwt = jwtResponse;
+    next();
+  });
 
   // setup endpoints
-  setupUserHandlers()
-  setupSettingsHandler()
-  setupApplicationHandler()
+  setupUserHandlers();
+  setupModuleHandlers();
+  setupPreferenceHandlers();
+  setupSuggestionHandlers();
 
-  app.listen(config.port, () =>
-    console.log(`API listening on port ${config.port.red}`.cyan),
-  )
-}
+  app.listen(PORT, () => console.log(`API listening on port ${PORT}`.cyan));
+};
 
-/**
- * Setup user handler endpoints.
- */
 const setupUserHandlers = (): void => {
-  app.post('/api/user/login', UserHandler.login)
-  app.post('/api/user/refresh', UserHandler.refresh)
-  app.post('/api/user/create', UserHandler.createUser)
-  app.get('/api/user/profile', UserHandler.fetchProfile)
-}
+  app.get('/user', UserHandler.fetch);
+  app.post('/user/login', UserHandler.login);
+  app.post('/user/refresh', UserHandler.refresh);
+  app.post('/user/create', UserHandler.createUser);
+};
 
-const setupSettingsHandler = (): void => {
-  app.get('/api/settings', SettingsHandler.fetch)
-  app.post('/api/settings/update', SettingsHandler.upsert)
-}
+const setupModuleHandlers = (): void => {
+  app.get('/module', ModuleHandler.fetch);
+  app.post('/module/create', ModuleHandler.create);
+  app.delete('/module/delete', ModuleHandler.delete);
+};
 
-const setupApplicationHandler = (): void => {
-  app.get('/api/application', ApplicationHandler.fetch)
-  app.post('/api/application/create', ApplicationHandler.create)
-  app.put('/api/application/update', ApplicationHandler.update)
-  app.delete('/api/application/delete', ApplicationHandler.delete)
-}
+const setupPreferenceHandlers = (): void => {
+  app.get('/preferences', PreferenceHandler.fetch);
+  app.post('/preferences/update', PreferenceHandler.update);
+};
 
-main()
+const setupSuggestionHandlers = (): void => {
+  app.get('/suggestions', SuggestionHandler.fetch);
+};
+
+main();
