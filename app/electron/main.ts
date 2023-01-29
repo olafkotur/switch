@@ -5,7 +5,15 @@ import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
 import * as url from 'url';
 import { VISIBILITY_KEYBIND } from '../src/const';
-import { ElectronService } from './helper';
+import {
+  getScreenInfo,
+  getStorage,
+  setGlobalShortcuts,
+  setWindowInfo,
+  setWindowListeners,
+  setWindowMode,
+  toggleVisibility,
+} from './utils';
 
 log.info('App is starting...');
 
@@ -13,19 +21,15 @@ const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 let mainWindow: BrowserWindow;
 let tray: Tray;
 
-// storage setup
 const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
 
-/**
- * Creates the main window
- */
 const createMainWindow = async (): Promise<void> => {
-  // TODO: Fetch user settings
-  const userSettings = { overlayMode: false };
+  const result = await getStorage('overlayMode');
+  log.info(result);
+  const overlayMode = false;
 
-  // create main window
-  const screenInfo = ElectronService.getScreenInfo();
+  const screenInfo = getScreenInfo();
   mainWindow = new BrowserWindow({
     width: screenInfo.width,
     height: screenInfo.height,
@@ -33,41 +37,39 @@ const createMainWindow = async (): Promise<void> => {
     minWidth: 800,
     center: true,
     darkTheme: true,
-    frame: !userSettings.overlayMode,
-    titleBarStyle: userSettings.overlayMode ? 'default' : 'hidden',
-    transparent: userSettings.overlayMode,
+    frame: !overlayMode,
+    titleBarStyle: overlayMode ? 'default' : 'hidden',
+    transparent: overlayMode,
     backgroundColor: '#F8F9F9',
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       webviewTag: true,
       devTools: IS_DEVELOPMENT,
     },
   });
 
-  // app configuration
   app.setName('Switch');
-  userSettings.overlayMode && app.dock.hide();
+  overlayMode && app.dock.hide();
 
-  // window configuration
-  ElectronService.setWindowMode(userSettings.overlayMode, mainWindow);
-  ElectronService.setWindowInfo(mainWindow);
-  ElectronService.setWindowListeners(mainWindow);
-  ElectronService.setGlobalShortcuts(mainWindow, VISIBILITY_KEYBIND, userSettings.overlayMode);
+  setWindowMode(overlayMode, mainWindow);
+  setWindowInfo(mainWindow);
+  setWindowListeners(mainWindow);
+  setGlobalShortcuts(mainWindow, VISIBILITY_KEYBIND, overlayMode);
 
-  // setup tray items
   tray = new Tray(path.join(__dirname, 'tray@2x.png'));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Toggle Show / Hide',
-      visible: userSettings.overlayMode,
-      click: () => ElectronService.toggleVisibility(mainWindow),
+      visible: overlayMode,
+      click: () => toggleVisibility(mainWindow),
     },
-    { type: 'separator', visible: userSettings.overlayMode },
+    { type: 'separator', visible: overlayMode },
     { label: 'Reload', role: 'reload' },
     { label: 'Quit', role: 'quit' },
   ]);
   tray.setContextMenu(contextMenu);
 
-  // render main window
   if (IS_DEVELOPMENT) {
     mainWindow.loadURL('http://localhost:4000');
   } else {
@@ -86,16 +88,6 @@ const createMainWindow = async (): Promise<void> => {
   });
 };
 
-/**
- * Sends a status message to the main window
- * @param status - message to be sent
- * @param window - target browser window
- */
-const sendStatusToWindow = (status: string): void => {
-  mainWindow.webContents.send('message', status);
-};
-
-// launch window
 app.on('ready', async () => {
   await createMainWindow();
   await autoUpdater.checkForUpdates();

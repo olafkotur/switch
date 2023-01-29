@@ -5,7 +5,7 @@ type StringKey = '';
 type ObjectKey = 'tokens';
 type ArrayKey = '';
 
-const STRING_KEYS: StringKey[] = [];
+const STRING_KEYS: StringKey[] = [''];
 const OBJECT_KEYS: ObjectKey[] = ['tokens'];
 const ARRAY_KEYS: ArrayKey[] = [];
 

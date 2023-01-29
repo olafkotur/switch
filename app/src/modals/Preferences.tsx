@@ -2,14 +2,14 @@ import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import {
-  MediumText,
   Button,
   ColumnContainer,
   Icon,
   IconNames,
+  LargeText,
+  MediumText,
   PreferenceOption,
   Spacer,
-  LargeText,
 } from '../components';
 import { useLogout, useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
@@ -145,6 +145,13 @@ const GeneralPanel = (): ReactElement => {
   const preferences = useRecoilValue(PreferencesState);
   const updatePreferences = useUpdatePreferences();
 
+  const handleOverlayMode = useCallback(
+    (value: boolean) => {
+      updatePreferences({ overlayMode: value });
+    },
+    [updatePreferences, setElectronStorage],
+  );
+
   return (
     <ColumnContainer>
       <PreferenceOption
@@ -153,7 +160,7 @@ const GeneralPanel = (): ReactElement => {
         description="Switch will display over other applications"
         type="toggle"
         value={preferences?.overlayMode ?? false}
-        onChange={(value) => updatePreferences({ overlayMode: value as boolean })}
+        onChange={(value) => handleOverlayMode(value as boolean)}
       />
     </ColumnContainer>
   );
