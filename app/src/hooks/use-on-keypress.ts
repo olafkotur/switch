@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-export const useOnKeyPress = (key: string, handler: () => Promise<void>) => {
+export const useOnKeyPress = (key: string, handler: () => Promise<void> | void) => {
   const handleKeyPress = useCallback(
     async (event: KeyboardEvent) => {
       if (event.code === key) {
@@ -12,7 +12,7 @@ export const useOnKeyPress = (key: string, handler: () => Promise<void>) => {
   );
 
   useEffect(() => {
-    window.addEventListener('keypress', handleKeyPress);
-    return () => window.removeEventListener('keypress', handleKeyPress);
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
 };

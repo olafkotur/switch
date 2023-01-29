@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Button, Icon, IconNames } from '../components';
+import { Button, Icon, IconButton, IconNames } from '../components';
+import { useOnKeyPress } from '../hooks';
 import { ModalState } from '../state';
 import { Fade } from '../style/animation';
 import { OverlayPrompt } from './OverlayPrompt';
@@ -44,10 +45,11 @@ const ModalContent = styled.div`
   background: ${(props) => props.theme.backgroundColor.secondary};
 `;
 
-const CloseButton = styled(Button)`
+const CloseButton = styled(IconButton)`
   position: absolute;
-  top: ${(props) => props.theme.spacing.large};
-  right: ${(props) => props.theme.spacing.large};
+  top: 0;
+  right: 0;
+  background: ${(props) => props.theme.backgroundColor.faint};
 `;
 
 export const Modal = (): ReactElement => {
@@ -57,13 +59,15 @@ export const Modal = (): ReactElement => {
     setModal(null);
   }, [setModal]);
 
+  useOnKeyPress('Escape', onDismiss);
+
   if (modal == null) return <></>;
 
   return (
     <ModalContainer {...Fade({})}>
       <ModalBackdrop onClick={onDismiss} />
       <ModalContent>
-        <CloseButton onClick={onDismiss}>
+        <CloseButton onClick={onDismiss} size="medium">
           <Icon name={IconNames.CLOSE} />
         </CloseButton>
         {modal === 'preferences' && <Preferences />}

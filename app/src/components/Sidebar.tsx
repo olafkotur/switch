@@ -33,7 +33,7 @@ const SidebarBottom = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: ${(props) => props.theme.spacing.medium};
+  margin-bottom: ${(props) => props.theme.spacing.veryLarge};
 `;
 
 export const Sidebar = (): ReactElement => {
@@ -105,19 +105,15 @@ const CreateModuleButton = (): ReactElement => {
 };
 
 const PreferencesButton = (): ReactElement => {
-  const [isHovering, setIsHovering] = useState(false);
-  const setModal = useSetRecoilState(ModalState);
+  const [modal, setModal] = useRecoilState(ModalState);
+  const theme = useTheme();
 
-  const animation = isHovering ? Rotate({ duration: 2 }) : undefined;
+  const isActive = modal === 'preferences';
+  const animation = isActive ? Rotate({ duration: 2 }) : undefined;
 
   return (
-    <IconButton
-      onClick={() => setModal('preferences')}
-      size="large"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
+    <SidebarButton onClick={() => setModal('preferences')} bg={isActive ? theme.backgroundColor.module : undefined}>
       <Icon name={IconNames.SETTINGS} size={20} animation={animation} />
-    </IconButton>
+    </SidebarButton>
   );
 };
