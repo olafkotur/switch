@@ -16,15 +16,15 @@ export const useInitialise = () => {
   const refresh = useRefresh();
   const delay = useDelay();
 
-  const fetchModules = useFetchModules();
   const fetchUser = useFetchUser();
   const fetchPreferences = useFetchPreferences();
+  const fetchModules = useFetchModules();
   const fetchSuggestions = useFetchSuggestions();
 
   const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
-  const setModules = useSetRecoilState(ModulesState);
   const setUser = useSetRecoilState(UserState);
   const setPreferences = useSetRecoilState(PreferencesState);
+  const setModules = useSetRecoilState(ModulesState);
   const setSuggestions = useSetRecoilState(SuggestionsState);
 
   return useCallback(async () => {
@@ -55,13 +55,14 @@ export const useInitialise = () => {
   }, [
     getStorage,
     refresh,
-    fetchModules,
     fetchUser,
     fetchPreferences,
+    fetchModules,
+    fetchSuggestions,
     setIsAuthenticated,
-    setModules,
     setUser,
     setPreferences,
-    fetchSuggestions,
+    setModules,
+    setSuggestions,
   ]);
 };

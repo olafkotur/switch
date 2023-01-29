@@ -2,11 +2,18 @@ import { motion } from 'framer-motion';
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { Button, Icon, IconNames } from '../components';
 import { ModalState } from '../state';
 import { Fade } from '../style/animation';
+import { OverlayPrompt } from './OverlayPrompt';
 import { Preferences } from './Preferences';
 
-export type ModalName = 'preferences';
+export const ModalContentContainer = styled.div`
+  width: 50vw;
+  height: 50vh;
+  max-width: 800px;
+  max-height: 600px;
+`;
 
 const ModalContainer = styled(motion.div)`
   position: absolute;
@@ -29,14 +36,18 @@ const ModalBackdrop = styled.div`
 const ModalContent = styled.div`
   position: absolute;
   background: transparent;
-  width: 50vw;
-  height: 50vh;
-  max-width: 800px;
-  max-height: 600px;
   position: relative;
   z-index: ${(props) => props.theme.zIndex.modal};
   border-radius: ${(props) => props.theme.borderRadius.large};
   filter: drop-shadow(${(props) => props.theme.dropShadow.strong});
+  padding: ${(props) => props.theme.spacing.veryLarge};
+  background: ${(props) => props.theme.backgroundColor.secondary};
+`;
+
+const CloseButton = styled(Button)`
+  position: absolute;
+  top: ${(props) => props.theme.spacing.large};
+  right: ${(props) => props.theme.spacing.large};
 `;
 
 export const Modal = (): ReactElement => {
@@ -51,7 +62,13 @@ export const Modal = (): ReactElement => {
   return (
     <ModalContainer {...Fade({})}>
       <ModalBackdrop onClick={onDismiss} />
-      <ModalContent>{modal === 'preferences' && <Preferences />}</ModalContent>
+      <ModalContent>
+        <CloseButton onClick={onDismiss}>
+          <Icon name={IconNames.CLOSE} />
+        </CloseButton>
+        {modal === 'preferences' && <Preferences />}
+        {modal === 'overlay-prompt' && <OverlayPrompt />}
+      </ModalContent>
     </ModalContainer>
   );
 };

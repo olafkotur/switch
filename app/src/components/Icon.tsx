@@ -31,6 +31,7 @@ export enum IconNames {
   INFO = 'fa-solid fa-circle-info',
   WARNING = 'fa-solid fa-triangle-exclamation',
   LOADING = 'fa-solid fa-circle-notch',
+  CLOSE = 'fa-solid fa-xmark',
 }
 
 const IconContainer = styled(motion.div)<{ size: number; color: string; opacity: number }>`
@@ -67,6 +68,7 @@ library.add(
   Solid.faCircleInfo,
   Solid.faTriangleExclamation,
   Solid.faCircleNotch,
+  Solid.faClose,
   Regular.faSquareCheck,
   Regular.faCircleCheck,
 );

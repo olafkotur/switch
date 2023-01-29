@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
-import { ModalName } from './modals';
-import { Module, Preference, Suggestion, User, WindowSetup } from './typings';
+import { ModalName } from './typings';
+import { Module, Preferences, Suggestion, User, WindowSetup } from './typings';
 
 export const IsAuthenticatedState = atom({
   key: 'isAuthenticated',
@@ -39,7 +39,7 @@ export const UserState = atom({
 
 export const PreferencesState = atom({
   key: 'preferences',
-  default: null as Preference | null,
+  default: null as Preferences | null,
 });
 
 export const SuggestionsState = atom({

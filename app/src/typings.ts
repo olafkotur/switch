@@ -11,6 +11,8 @@ export type ChannelEvent =
   | 'apply-window-preset';
 export type ChannelValue = any;
 
+export type ModalName = 'preferences' | 'overlay-prompt';
+
 export interface WindowSetup {
   overlayMode?: boolean;
   animatePresets?: boolean;
@@ -56,11 +58,12 @@ export interface Module {
   createdAt: Date;
 }
 
-export interface Preference {
+export interface Preferences {
   _id: string;
   userId: string;
   theme: Themes;
   overlayMode: boolean;
+  disableOverlayPrompt: boolean;
   animatePresets: boolean;
   updatedAt: Date;
   createdAt: Date;

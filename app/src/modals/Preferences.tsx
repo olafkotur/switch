@@ -1,32 +1,23 @@
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import {
-  ButtonInput,
-  CheckBoxInput,
-  ColumnContainer,
-  IconNames,
-  LargeText,
-  MediumText,
-  Presets,
-  Spacer,
-} from '../components';
-import { useLogout, useSendMessage, useTheme, useToast, useUpdatePreferences } from '../hooks';
+import { IconNames, LargeText, MediumText, Preference, Presets, Spacer } from '../components';
+import { useLogout, useSendMessage, useTheme, useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
 
 const PreferencesContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: ${(props) => props.theme.spacing.veryLarge};
-  background: ${(props) => props.theme.backgroundColor.secondary};
-  border-radius: ${(props) => props.theme.borderRadius.large};
+  width: 50vw;
+  height: 50vh;
+  max-width: 800px;
+  max-height: 600px;
 `;
 
-const PreferencesList = styled.div`
+const PreferencesContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
+  position: relative;
   overflow-y: scroll;
 `;
 
@@ -56,26 +47,26 @@ export const Preferences = (): ReactElement => {
 
   return (
     <PreferencesContainer>
-      <PreferencesList>
+      <PreferencesContent>
         <LargeText>Window Presets</LargeText>
         <MediumText faint>Change the size of the window from the selected presets</MediumText>
         <Spacer vertical={5} />
         <Presets />
-        <PreferenceOption
+        <Preference
           title="Dark mode"
           description="Enable dark mode, does not affect any added applications"
           type="toggle"
           value={preferences?.theme === 'dark' ?? true}
           onChange={(value) => updatePreferences({ theme: value ? 'dark' : 'light' })}
         />
-        <PreferenceOption
+        <Preference
           title="Animate presets"
           description="Show an animation when resizing Switch using layout presets"
           type="toggle"
           value={preferences?.animatePresets ?? false}
           onChange={handleAnimatePresets}
         />
-        <PreferenceOption
+        <Preference
           requiresRestart
           title="Overlay mode"
           description="Switch will display over other applications"
@@ -83,7 +74,7 @@ export const Preferences = (): ReactElement => {
           value={preferences?.overlayMode ?? false}
           onChange={handleOverlayMode}
         />
-        <PreferenceOption
+        <Preference
           requiresRestart
           title="Logout"
           description="Your changes are automatically saved"
@@ -91,63 +82,7 @@ export const Preferences = (): ReactElement => {
           onClick={logout}
           icon={{ name: IconNames.FORWARD, color: theme.color.danger }}
         />
-      </PreferencesList>
+      </PreferencesContent>
     </PreferencesContainer>
-  );
-};
-
-interface PreferenceOptionProps {
-  title: string;
-  type: 'toggle' | 'button';
-  value?: boolean;
-  description?: string;
-  requiresRestart?: boolean;
-  icon?: { name: IconNames; color: string };
-  onClick?: () => void;
-  onChange?: (value: boolean) => void;
-}
-
-const PreferenceOptionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin: ${(props) => props.theme.spacing.medium} 0;
-`;
-
-const PreferenceOption = ({
-  title,
-  type,
-  value,
-  description,
-  requiresRestart,
-  icon,
-  onClick,
-  onChange,
-}: PreferenceOptionProps): ReactElement => {
-  const infoToast = useToast('info');
-
-  const handleOnChange = useCallback(
-    (value: boolean) => {
-      if (requiresRestart) {
-        infoToast('Please restart the app for the changes to take effect');
-      }
-
-      onChange?.(value);
-    },
-    [requiresRestart, onChange],
-  );
-
-  return (
-    <PreferenceOptionContainer>
-      <ColumnContainer>
-        <LargeText>{title}</LargeText>
-        <Spacer vertical={2} />
-        {description && <MediumText faint>{description}</MediumText>}
-      </ColumnContainer>
-      {type === 'toggle' && <CheckBoxInput value={value as boolean} onChange={handleOnChange} />}
-      {type === 'button' && icon && onClick && <ButtonInput name={icon.name} color={icon.color} onClick={onClick} />}
-    </PreferenceOptionContainer>
   );
 };

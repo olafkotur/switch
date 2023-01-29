@@ -3,13 +3,14 @@ import { useSetRecoilState } from 'recoil';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
 import { PreferencesState } from '../state';
 import { Themes } from '../style/theme';
-import { Preference } from '../typings';
+import { Preferences } from '../typings';
 import { useRequest } from './use-request';
 import { useToast } from './use-toast';
 
-interface UpdatePreference {
+interface UpdatePreferences {
   theme?: Themes;
   overlayMode?: boolean;
+  disableOverlayPrompt?: boolean;
   animatePresets?: boolean;
 }
 
@@ -18,14 +19,14 @@ export const useFetchPreferences = () => {
   const request = useRequest();
   const errorToast = useToast('error');
 
-  return useCallback(async (): Promise<Preference | null> => {
+  return useCallback(async (): Promise<Preferences | null> => {
     const response = await request({ method: 'GET', url });
     if (response.code !== 200) {
       errorToast(response.message ?? DEFAULT_ERROR_MESSAGE);
       return null;
     }
 
-    return response.data as Preference;
+    return response.data as Preferences;
   }, [url, request, errorToast]);
 };
 
@@ -36,7 +37,7 @@ export const useUpdatePreferences = () => {
   const setPreferences = useSetRecoilState(PreferencesState);
 
   return useCallback(
-    async (data: UpdatePreference): Promise<boolean> => {
+    async (data: UpdatePreferences): Promise<boolean> => {
       const body = data as Record<string, string>;
       const response = await request({ method: 'POST', url, body });
       if (response.code !== 200) {
@@ -44,7 +45,7 @@ export const useUpdatePreferences = () => {
         return false;
       }
 
-      setPreferences(response.data as Preference);
+      setPreferences(response.data as Preferences);
       return true;
     },
     [url, request, errorToast, setPreferences],

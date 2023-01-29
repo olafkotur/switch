@@ -17,7 +17,8 @@ const SuggestionsContainer = styled.div`
   background: ${(props) => props.theme.backgroundColor.box};
   border-radius: ${(props) => props.theme.borderRadius.large};
 
-  @media (max-width: 1000px) { {
+  @media (max-width: 1000px) {
+    width: calc(33% - 20px);
     padding: ${(props) => props.theme.spacing.small};
   }
 `;

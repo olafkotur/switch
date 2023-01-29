@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { RecoilRoot, useRecoilValue } from 'recoil';
+import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Loader } from './components';
 import { Sidebar } from './components/Sidebar';
@@ -10,7 +10,7 @@ import { Modal } from './modals';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
 import { ModulePage } from './pages/Module';
-import { ActiveModuleIdState, IsAuthenticatedState } from './state';
+import { ActiveModuleIdState, IsAuthenticatedState, ModalState, PreferencesState, WindowSetupState } from './state';
 import { ThemeProvider } from './style/Provider';
 
 const AppContainer = styled.div`
@@ -30,6 +30,10 @@ const App = (): ReactElement => {
 
   const isAuthenticated = useRecoilValue(IsAuthenticatedState);
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
+  const preferences = useRecoilValue(PreferencesState);
+  const windowSetup = useRecoilValue(WindowSetupState);
+  const setModal = useSetRecoilState(ModalState);
+
   const initialise = useInitialise();
   const sendMessage = useSendMessage('window-setup');
 
@@ -51,6 +55,13 @@ const App = (): ReactElement => {
     load();
     sendMessage({ name: 'window-setup-data', value: '' });
   }, [sendMessage]);
+
+  useEffect(() => {
+    if (preferences == null) return;
+    if (preferences.disableOverlayPrompt !== true && windowSetup.overlayMode === true) {
+      setModal('overlay-prompt');
+    }
+  }, [preferences?.disableOverlayPrompt, windowSetup.overlayMode]);
 
   if (isLoading) {
     return <Loader />;

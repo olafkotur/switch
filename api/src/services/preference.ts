@@ -21,6 +21,7 @@ export const PreferenceService = {
       theme: 'dark',
       overlayMode: false,
       animatePresets: true,
+      disableOverlayPrompt: false,
       updatedAt: new Date(),
       createdAt: new Date(),
     };
