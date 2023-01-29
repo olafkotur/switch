@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, Tray } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
@@ -42,8 +42,7 @@ const createMainWindow = async (): Promise<void> => {
     transparent: overlayMode,
     backgroundColor: '#F8F9F9',
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      preload: path.join(__dirname, 'preload.js'),
       webviewTag: true,
       devTools: IS_DEVELOPMENT,
     },
