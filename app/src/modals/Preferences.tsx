@@ -38,16 +38,22 @@ export const Preferences = (): ReactElement => {
 
   const handleAnimatePresets = useCallback(
     async (value: boolean) => {
-      sendMessage({ name: 'set-animate-presets', value });
-      return updatePreferences({ animatePresets: value });
+      const success = await updatePreferences({ animatePresets: value });
+      if (success) {
+        sendMessage({ name: 'set-animate-presets', value });
+      }
+      return success;
     },
     [updatePreferences, sendMessage],
   );
 
   const handleOverlayMode = useCallback(
     async (value: boolean) => {
-      sendMessage({ name: 'set-overlay-mode', value });
-      return updatePreferences({ overlayMode: value });
+      const success = await updatePreferences({ overlayMode: value });
+      if (success) {
+        sendMessage({ name: 'set-overlay-mode', value });
+      }
+      return success;
     },
     [updatePreferences, sendMessage],
   );

@@ -96,9 +96,7 @@ export const LoginPage = (): ReactElement => {
     setIsLoading(false);
   }, [username, password, contentType, login, signUp]);
 
-  useOnKeyPress('Enter', async () => {
-    !isNextDisabled && (await handleSubmit());
-  });
+  useOnKeyPress({ key: 'Enter', onPress: () => !isNextDisabled && handleSubmit() });
 
   return (
     <LoginPageContainer>
