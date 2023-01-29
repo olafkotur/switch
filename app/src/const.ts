@@ -7,10 +7,10 @@ export const SIDE_BAR_WIDTH = 67;
 export const DEFAULT_ICON_SIZE = 18;
 export const DEFAULT_ICON_OPACITY = 0.75;
 export const SEARCH_BAR_PLACEHOLDER = 'https://notion.so';
-// export const INITIALISE_TIMEOUT_MS = 500;
-// export const APP_TIMEOUT_MS = 1000;
-export const INITIALISE_TIMEOUT_MS = 250;
-export const APP_TIMEOUT_MS = 0;
+
+export const INITIALISE_TIMEOUT_MS = 500;
+export const APP_TIMEOUT_MS = 250;
+
 export const PRESET_CONFIG = [
   { width: '100%', value: 1 },
   { width: '75%', value: 0.75 },

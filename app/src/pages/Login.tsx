@@ -68,8 +68,8 @@ const InputContainer = styled.div`
 export const LoginPage = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [contentType, setContentType] = useState<ContentType>('login');
-  const [username, setUsername] = useState('olafkotur');
-  const [password, setPassword] = useState('u$GQN2W7Pmnwd*743m%gVMyDB*cNXdGE');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const theme = useTheme();
   const login = useLogin();
