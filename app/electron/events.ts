@@ -30,5 +30,9 @@ export const receiveWindowSetup = (window: BrowserWindow) => {
     if (type === 'set-overlay-mode') {
       await setStorage<WindowSetup>('window-setup', { ...windowSetup, overlayMode: value });
     }
+
+    if (type === 'set-animate-presets') {
+      await setStorage<WindowSetup>('window-setup', { ...windowSetup, animatePresets: value });
+    }
   });
 };

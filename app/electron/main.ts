@@ -28,9 +28,10 @@ storage.setDataPath(dataPath);
 app.setName('Switch');
 
 const createMainWindow = async (): Promise<void> => {
+  const screenProperties = getScreenProperties();
   const windowSetup = await getStorage<WindowSetup>('window-setup');
   const overlayMode = windowSetup?.overlayMode ?? false;
-  const screenProperties = getScreenProperties();
+  const animatePresets = windowSetup?.animatePresets ?? true;
 
   window = new BrowserWindow({
     width: screenProperties.width,
@@ -52,7 +53,7 @@ const createMainWindow = async (): Promise<void> => {
 
   const windowProperties = getWindowProperties(window);
   setOverlayMode(window, overlayMode);
-  setWindowProperties(window, windowProperties);
+  setWindowProperties(window, windowProperties, animatePresets);
   setGlobalShortcuts(window, VISIBILITY_KEYBIND, overlayMode);
   setupWindowEvents(window);
   setupTrayConfiguration(window, overlayMode);

@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
 import { IsAuthenticatedState } from '../state';
-import { useDelay } from './use-delay';
 import { useInitialise } from './use-initialise';
 import { useRequest } from './use-request';
 import { useResetState } from './use-reset-state';

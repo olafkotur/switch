@@ -52,7 +52,7 @@ export const getScreenProperties = (): ScreenProperties => {
 export const setWindowProperties = async (
   window: BrowserWindow,
   properties: WindowProperties,
-  animate = true,
+  animate: boolean,
 ): Promise<void> => {
   const width = properties.width;
   const height = properties.height;

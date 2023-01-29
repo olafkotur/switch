@@ -30,12 +30,20 @@ export const Preferences = (): ReactElement => {
   const sendMessage = useSendMessage('window-setup');
   const logout = useLogout();
 
+  const handleAnimatePresets = useCallback(
+    (value: boolean) => {
+      updatePreferences({ animatePresets: value });
+      sendMessage({ name: 'set-animate-presets', value });
+    },
+    [updatePreferences, sendMessage],
+  );
+
   const handleOverlayMode = useCallback(
     (value: boolean) => {
       updatePreferences({ overlayMode: value });
       sendMessage({ name: 'set-overlay-mode', value });
     },
-    [updatePreferences],
+    [updatePreferences, sendMessage],
   );
 
   return (
@@ -53,7 +61,7 @@ export const Preferences = (): ReactElement => {
           description="Show an animation when resizing Switch using layout presets"
           type="toggle"
           value={preferences?.animatePresets ?? false}
-          onChange={(value) => updatePreferences({ animatePresets: value as boolean })}
+          onChange={handleAnimatePresets}
         />
         <PreferenceOption
           requiresRestart
@@ -61,7 +69,7 @@ export const Preferences = (): ReactElement => {
           description="Switch will display over other applications"
           type="toggle"
           value={preferences?.overlayMode ?? false}
-          onChange={(value) => handleOverlayMode(value as boolean)}
+          onChange={handleOverlayMode}
         />
         <PreferenceOption
           requiresRestart
