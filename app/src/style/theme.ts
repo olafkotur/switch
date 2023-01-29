@@ -88,7 +88,7 @@ export const DARK_THEME = {
   backgroundColor: {
     primary: '#303036',
     secondary: '#1D1D21',
-    tertiary: '#ecf0f1FFF',
+    tertiary: '#ecf0f1',
     faint: 'rgba(255, 255, 255, 0.15)',
     box: 'rgba(255, 255, 255, 0.15)',
     backdrop: 'rgba(0, 0, 0, 0.7)',

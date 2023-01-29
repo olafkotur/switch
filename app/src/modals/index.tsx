@@ -31,6 +31,8 @@ const ModalContent = styled.div`
   background: transparent;
   width: 50vw;
   height: 50vh;
+  max-width: 800px;
+  max-height: 600px;
   position: relative;
   z-index: ${(props) => props.theme.zIndex.modal};
   border-radius: ${(props) => props.theme.borderRadius.large};

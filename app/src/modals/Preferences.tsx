@@ -1,7 +1,16 @@
 import React, { ReactElement, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { ButtonInput, CheckBoxInput, ColumnContainer, IconNames, LargeText, MediumText, Spacer } from '../components';
+import {
+  ButtonInput,
+  CheckBoxInput,
+  ColumnContainer,
+  IconNames,
+  LargeText,
+  MediumText,
+  Presets,
+  Spacer,
+} from '../components';
 import { useLogout, useSendMessage, useTheme, useToast, useUpdatePreferences } from '../hooks';
 import { PreferencesState } from '../state';
 
@@ -18,7 +27,6 @@ const PreferencesList = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin-top: -15px;
   overflow-y: scroll;
 `;
 
@@ -49,6 +57,10 @@ export const Preferences = (): ReactElement => {
   return (
     <PreferencesContainer>
       <PreferencesList>
+        <LargeText>Window Presets</LargeText>
+        <MediumText faint>Change the size of the window from the selected presets</MediumText>
+        <Spacer vertical={5} />
+        <Presets />
         <PreferenceOption
           title="Dark mode"
           description="Enable dark mode, does not affect any added applications"
