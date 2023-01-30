@@ -1,1 +1,1 @@
-web: npm run-script start:dist
+web: npm run-script start:dist -w api

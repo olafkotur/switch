@@ -1,5 +1,5 @@
 {
-  "name": "switch-api",
+  "name": "api",
   "main": "./dist/main.js",
   "repository": "git@github.com:olafkotur/switch.git",
   "author": "olafkotur <olafkotur97@gmail.com>",

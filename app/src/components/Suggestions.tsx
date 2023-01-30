@@ -43,7 +43,7 @@ const ListItem = styled(Button)`
   justify-content: center;
   aspect-ratio: 1 / 1;
   margin: ${(props) => props.theme.spacing.small};
-  background: ${(props) => props.theme.backgroundColor.module};
+  background: ${(props) => props.theme.backgroundColor.faint};
   border-radius: ${(props) => props.theme.borderRadius.medium};
 
   @media (max-width: 1000px) { {
