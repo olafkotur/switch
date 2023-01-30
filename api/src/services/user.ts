@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { UserModel, UserModelData } from '../models';
 import { PreferenceService } from './preference';
 
@@ -33,7 +34,8 @@ export const UserService = {
     }
 
     // define user model
-    const data: Omit<UserModelData, '_id'> = {
+    const data: UserModelData = {
+      _id: Types.ObjectId(),
       username,
       password,
       updatedAt: new Date(),

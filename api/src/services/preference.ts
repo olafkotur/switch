@@ -15,7 +15,8 @@ export const PreferenceService = {
    * @param userId - user id
    */
   create: async (userId: Types.ObjectId): Promise<PreferenceModelData> => {
-    const data: Omit<PreferenceModelData, '_id'> = {
+    const data: PreferenceModelData = {
+      _id: Types.ObjectId(),
       userId,
       theme: 'dark',
       overlayMode: false,
