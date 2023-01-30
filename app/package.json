@@ -78,6 +78,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "build": {
+    "electronVersion": "22.1.0",
     "afterSign": "scripts/notarize.js",
     "appId": "com.electron.switch",
     "productName": "Switch",

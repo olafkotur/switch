@@ -8,6 +8,11 @@ exports.default = async function notarizing(context) {
     return console.error('This application only supports macOS');
   }
 
+  const { APPLEID, APPLEPASS } = process.env;
+  if (!APPLEID || !APPLEPASS) {
+    return console.error('Apple authentication details are missing');
+  }
+
   const appName = context.packager.appInfo.productFilename;
 
   return await notarize({
