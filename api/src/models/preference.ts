@@ -11,7 +11,7 @@ export interface PreferenceModelData extends ModelBase {
 }
 
 const schema = new Schema({
-  _id: { type: ObjectId, required: true, index: true },
+  _id: { type: ObjectId, index: true },
   userId: { type: ObjectId, required: true, index: true, unique: true },
   theme: { type: String, required: true },
   overlayMode: { type: Boolean, required: true },
