@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 import { UserModel, UserModelData } from '../models';
 import { PreferenceService } from './preference';
 
@@ -26,24 +25,17 @@ export const UserService = {
    * Creates new user and saves in db.
    * @param username - user name
    * @param password - user password
-   * @param avatar - user avatar
    */
-  createUser: async (
-    username: string,
-    password: string,
-    avatar: string,
-  ): Promise<{ success: boolean; message?: string }> => {
+  createUser: async (username: string, password: string): Promise<{ success: boolean; message?: string }> => {
     const exists = await UserModel.findOne({ username });
     if (exists) {
       return { success: false, message: 'User already exists' };
     }
 
     // define user model
-    const data: UserModelData = {
-      _id: Types.ObjectId(),
+    const data: Omit<UserModelData, '_id'> = {
       username,
       password,
-      avatar,
       updatedAt: new Date(),
       createdAt: new Date(),
     };

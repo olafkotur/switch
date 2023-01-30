@@ -19,8 +19,7 @@ export const ModuleService = {
   create: async (args: { userId: Types.ObjectId; url: string }): Promise<ModuleModelData> => {
     const icon = await UtilService.fetchUrlFavicon(args.url);
     const url = args.url.includes('http://') || args.url.includes('https://') ? args.url : `https://${args.url}`;
-    const data: ModuleModelData = {
-      _id: Types.ObjectId(),
+    const data: Omit<ModuleModelData, '_id'> = {
       userId: args.userId,
       url,
       icon,

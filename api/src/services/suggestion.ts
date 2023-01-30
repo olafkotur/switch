@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 import { SuggestionModel, SuggestionModelData } from '../models';
 
 interface SuggestionData extends Omit<SuggestionModelData, '_id' | 'updatedAt' | 'createdAt'> {}
@@ -118,9 +117,8 @@ export const SuggestionService = {
       return console.error('SuggestionService:create :: Could not delete previous suggestions'.red);
     }
 
-    const data: SuggestionModelData[] = suggestions.map((suggestion) => ({
+    const data: Omit<SuggestionModelData, '_id'>[] = suggestions.map((suggestion) => ({
       ...suggestion,
-      _id: Types.ObjectId(),
       updatedAt: new Date(),
       createdAt: new Date(),
     }));

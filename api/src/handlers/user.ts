@@ -10,7 +10,7 @@ export const UserHandler = {
    */
   fetch: async (_req: Request, res: Response): Promise<void> => {
     const user: UserModelData = res.locals.user;
-    const data = { username: user.username, avatar: user.avatar };
+    const data = { username: user.username };
     return ResponseService.data(data, res);
   },
 
@@ -68,7 +68,6 @@ export const UserHandler = {
   createUser: async (req: Request, res: Response): Promise<void> => {
     const username = req.body.username || '';
     const password = req.body.password || '';
-    const avatar = req.body.avatar || '';
     if (!username || !password) {
       return ResponseService.bad('Missing username or password', res);
     }
@@ -90,7 +89,7 @@ export const UserHandler = {
 
     // create new user
     const hashedPassword = SecurityService.hash(password);
-    const result = await UserService.createUser(username, hashedPassword, avatar);
+    const result = await UserService.createUser(username, hashedPassword);
     if (!result.success) {
       return ResponseService.bad(result.message || 'Unknown error occurred', res);
     }
