@@ -64,13 +64,12 @@ export const LIGHT_THEME = {
     black: '#32323E',
   },
   backgroundColor: {
-    primary: '#F8F9F9',
+    primary: '#E9ECF0',
     secondary: '#F2F5F7',
     tertiary: 'rgba(0, 0, 0, 0.8)',
-    faint: 'rgba(0, 0, 0, 0.15)',
+    faint: 'rgba(0, 0, 0, 0.1)',
     box: '#ecf0f1',
     backdrop: 'rgba(0, 0, 0, 0.7)',
-    module: 'rgba(0, 0, 0, 0.2)',
   },
 };
 
@@ -89,10 +88,9 @@ export const DARK_THEME = {
     primary: '#303036',
     secondary: '#1D1D21',
     tertiary: '#ecf0f1',
-    faint: 'rgba(255, 255, 255, 0.15)',
+    faint: 'rgba(255, 255, 255, 0.1)',
     box: 'rgba(255, 255, 255, 0.15)',
     backdrop: 'rgba(0, 0, 0, 0.7)',
-    module: 'rgba(255, 255, 255, 0.2)',
   },
 };
 

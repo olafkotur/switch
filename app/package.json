@@ -1,5 +1,5 @@
 {
-  "name": "switch",
+  "name": "app",
   "version": "2.0.0",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./dist/main.js",

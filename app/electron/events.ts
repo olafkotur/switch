@@ -1,13 +1,8 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import { ChannelEvent, ChannelValue, WindowProperties, WindowSetup } from '../src/typings';
-import { getScreenProperties, getStorage, getWindowProperties, setStorage, setWindowProperties } from './utils';
+import { getScreenProperties, getStorage, setStorage, setWindowProperties } from './utils';
 
 export const sendWindowEvents = (window: BrowserWindow) => {
-  window.on('resize', async () => {
-    const windowProperties = getWindowProperties(window);
-    window.webContents.send('window-events', ['resize', windowProperties]);
-  });
-
   window.on('enter-full-screen', () => {
     window.webContents.send('window-events', ['full-screen', true]);
   });
