@@ -46,7 +46,8 @@ export const SecurityService = {
    */
   refreshToken: async (token: string): Promise<JwtRefreshResponse | null> => {
     return await new Promise((resolve) => {
-      jwt.verify(token, JWT_SECRET, (error, decoded) => {
+      jwt.verify(token, JWT_SECRET, (error, decode) => {
+        const decoded = decode as jwt.JwtPayload;
         if (!decoded || decoded.model !== 'refresh' || error) {
           return resolve(null);
         }
