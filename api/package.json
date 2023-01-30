@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc --skipLibCheck",
     "start": "ts-node-dev --respawn --transpile-only ./src/index.ts",
-    "start:dist": "npm-run-all build && node ./dist/index.js"
+    "start:dist": "npm run build && node ./dist/index.js"
   },
   "dependencies": {
     "colors": "^1.4.0",
