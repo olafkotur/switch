@@ -1,5 +1,6 @@
 {
   "name": "api",
+  "version": "0.0.1",
   "main": "./dist/main.js",
   "repository": "git@github.com:olafkotur/switch.git",
   "author": "olafkotur <olafkotur97@gmail.com>",
@@ -8,7 +9,7 @@
   "scripts": {
     "build": "tsc --skipLibCheck",
     "start": "ts-node-dev --respawn --transpile-only ./src/index.ts",
-    "start:dist": "node ./dist/index.js"
+    "start:dist": "npm-run-all build && node ./dist/index.js"
   },
   "dependencies": {
     "colors": "^1.4.0",
