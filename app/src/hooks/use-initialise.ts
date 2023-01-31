@@ -5,7 +5,6 @@ import { IsAuthenticatedState, ModulesState, PreferencesState, SuggestionsState,
 import { AuthTokens } from '../typings';
 import { useRefresh } from './use-auth';
 import { useDelay } from './use-delay';
-import { useSendMessage } from './use-electron-events';
 import { useFetchModules } from './use-module';
 import { useFetchPreferences } from './use-preferences';
 import { useGetStorage } from './use-storage';
@@ -16,7 +15,6 @@ export const useInitialise = () => {
   const getStorage = useGetStorage();
   const refresh = useRefresh();
   const delay = useDelay();
-  const sendMessage = useSendMessage('window-setup');
 
   const fetchUser = useFetchUser();
   const fetchPreferences = useFetchPreferences();
@@ -46,23 +44,17 @@ export const useInitialise = () => {
     const modules = await fetchModules();
     const suggestions = await fetchSuggestions();
 
-    // send preferences to electron
-    if (preferences) {
-      sendMessage({ name: 'set-overlay-mode', value: preferences.overlayMode });
-    }
-
-    // additional waiting for UI updates
-    await delay(INITIALISE_TIMEOUT_MS);
-
     setIsAuthenticated(true);
     setUser(user);
     setPreferences(preferences);
     setModules(modules);
     setSuggestions(suggestions);
+
+    // additional waiting for UI & electron events
+    await delay(INITIALISE_TIMEOUT_MS);
   }, [
     getStorage,
     refresh,
-    sendMessage,
     fetchUser,
     fetchPreferences,
     fetchModules,

@@ -18,6 +18,11 @@ export const receiveWindowSetup = (window: BrowserWindow) => {
     const type = args[0] as ChannelEvent;
     const value = args[1] as ChannelValue;
 
+    // override overlay mode with current electron config
+    if (windowSetup) {
+      windowSetup.overlayMode = window.isAlwaysOnTop();
+    }
+
     if (type === 'window-setup-data') {
       window.webContents.send('window-setup', ['window-setup-data', windowSetup]);
     }

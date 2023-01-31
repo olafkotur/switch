@@ -6,7 +6,6 @@ export * from './Divider';
 export * from './Header';
 export * from './Icon';
 export * from './Input';
-export * from './Loader';
 export * from './Preference';
 export * from './Presets';
 export * from './SearchBar';

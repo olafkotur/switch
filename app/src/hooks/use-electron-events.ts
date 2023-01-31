@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { IsFullScreenState, WindowSetupState } from '../state';
 import { Channel, ChannelEvent, ChannelValue } from '../typings';
+import { useUpdatePreferences } from './use-preferences';
 
 export const useSendMessage = (channel: Channel) => {
   return useCallback(
@@ -15,6 +16,7 @@ export const useSendMessage = (channel: Channel) => {
 export const useElectronListeners = () => {
   const setIsFullScreen = useSetRecoilState(IsFullScreenState);
   const setWindowSetup = useSetRecoilState(WindowSetupState);
+  const updatePreferences = useUpdatePreferences();
 
   const windowEvents = useCallback(
     (...args: any[]) => {
@@ -29,12 +31,15 @@ export const useElectronListeners = () => {
   );
 
   const windowSetup = useCallback(
-    (...args: any[]) => {
+    async (...args: any[]) => {
       const type = args[0][0] as ChannelEvent;
       const value = args[0][1] as ChannelValue;
 
       if (type === 'window-setup-data') {
         setWindowSetup(value);
+
+        // sync local preferences with remote
+        await updatePreferences({ overlayMode: value?.overlayMode ?? false });
       }
     },
     [setWindowSetup],
