@@ -24,8 +24,8 @@ export enum IconNames {
   RELOAD = 'fa-solid fa-rotate-right',
   DELETE = 'fa-solid fa-trash',
   SEARCH = 'fa-solid fa-magnifying-glass',
-  CHECK = 'fa-regular fa-square-check',
-  CHECK_FILLED = 'fa-solid fa-square-check',
+  SQUARE = 'fa-regular fa-square',
+  SQUARE_CHECK = 'fa-solid fa-square-check',
   CIRCLE_CHECK = 'fa-regular fa-circle-check',
   ERROR = 'fa-solid fa-circle-exclamation',
   INFO = 'fa-solid fa-circle-info',
@@ -69,6 +69,6 @@ library.add(
   Solid.faTriangleExclamation,
   Solid.faCircleNotch,
   Solid.faClose,
-  Regular.faSquareCheck,
+  Regular.faSquare,
   Regular.faCircleCheck,
 );
