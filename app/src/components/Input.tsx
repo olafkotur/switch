@@ -66,7 +66,7 @@ const CheckBoxInputContainer = styled(Button)`
 export const CheckBoxInput = ({ value, disabled, onChange }: CheckBoxInputProps) => {
   return (
     <CheckBoxInputContainer onClick={() => onChange?.(!value)} disabled={disabled}>
-      <Icon name={value ? IconNames.CHECK_FILLED : IconNames.CHECK} size={30} opacity={disabled ? 0.3 : 1} />
+      <Icon name={value ? IconNames.SQUARE_CHECK : IconNames.SQUARE} size={30} opacity={disabled ? 0.3 : 1} />
     </CheckBoxInputContainer>
   );
 };
