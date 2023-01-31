@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useResetRecoilState } from 'recoil';
 import {
   ActiveModuleIdState,
+  IsAppLoadingState,
   IsAuthenticatedState,
   ModalState,
   ModulesState,
@@ -11,6 +12,7 @@ import {
 } from '../state';
 
 export const useResetState = () => {
+  const resetIsAppLoading = useResetRecoilState(IsAppLoadingState);
   const resetIsAuthenticated = useResetRecoilState(IsAuthenticatedState);
   const resetActiveModuleId = useResetRecoilState(ActiveModuleIdState);
   const resetModules = useResetRecoilState(ModulesState);
@@ -20,6 +22,7 @@ export const useResetState = () => {
   const resetSuggestions = useResetRecoilState(SuggestionsState);
 
   return useCallback(() => {
+    resetIsAppLoading();
     resetIsAuthenticated();
     resetActiveModuleId();
     resetModules();
@@ -28,6 +31,7 @@ export const useResetState = () => {
     resetPreferences();
     resetSuggestions();
   }, [
+    resetIsAppLoading,
     resetIsAuthenticated,
     resetActiveModuleId,
     resetModules,

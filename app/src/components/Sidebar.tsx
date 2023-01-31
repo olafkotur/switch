@@ -1,8 +1,8 @@
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
-import { useTheme } from '../hooks';
+import { useOnKeyPress, useTheme } from '../hooks';
 import { ActiveModuleIdState, IsFullScreenState, ModalState, ModulesState, WindowSetupState } from '../state';
 import { Rotate } from '../style/animation';
 import { Module } from '../typings';
@@ -37,11 +37,24 @@ const SidebarBottom = styled.div`
 `;
 
 export const Sidebar = (): ReactElement => {
+  const [modal, setModal] = useRecoilState(ModalState);
   const modules = useRecoilValue(ModulesState);
   const isFullScreen = useRecoilValue(IsFullScreenState);
   const windowSetup = useRecoilValue(WindowSetupState);
 
   const isTrafficLightsShown = !isFullScreen && !windowSetup.overlayMode;
+
+  useOnKeyPress({
+    key: 'Comma',
+    useMeta: true,
+    onPress: () => {
+      if (modal === 'preferences') {
+        setModal(null);
+      } else if (modal === null) {
+        setModal('preferences');
+      }
+    },
+  });
 
   return (
     <SidebarContainer>

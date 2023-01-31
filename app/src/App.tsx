@@ -1,9 +1,9 @@
 import React, { ReactElement, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
+import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Sidebar } from './components/Sidebar';
-import { useElectronListeners, useOnKeyPress } from './hooks';
+import { useElectronListeners } from './hooks';
 import { Modal } from './modals';
 import { HomePage } from './pages/Home';
 import { Loading } from './pages/Loading';
@@ -37,21 +37,9 @@ const App = (): ReactElement => {
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
   const preferences = useRecoilValue(PreferencesState);
   const windowSetup = useRecoilValue(WindowSetupState);
-  const [modal, setModal] = useRecoilState(ModalState);
+  const setModal = useSetRecoilState(ModalState);
 
   useElectronListeners();
-
-  useOnKeyPress({
-    key: 'Comma',
-    useMeta: true,
-    onPress: () => {
-      if (modal === 'preferences') {
-        setModal(null);
-      } else if (modal === null) {
-        setModal('preferences');
-      }
-    },
-  });
 
   useEffect(() => {
     if (preferences && !preferences.disableOverlayPrompt && windowSetup.overlayMode) {
