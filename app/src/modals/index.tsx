@@ -49,6 +49,7 @@ const CloseButton = styled(IconButton)`
   position: absolute;
   top: 0;
   right: 0;
+  z-index: ${(props) => props.theme.zIndex.modal};
   background: ${(props) => props.theme.backgroundColor.faint};
 `;
 
