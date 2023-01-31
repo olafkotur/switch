@@ -14,6 +14,14 @@ export type ChannelValue = any;
 
 export type ModalName = 'preferences' | 'overlay-prompt';
 
+export interface WebView {
+  goBack: () => void;
+  goForward: () => void;
+  reload: () => void;
+  setUserAgent: (value: string) => void;
+  addEventListener: (name: string, event: EventListener) => void;
+}
+
 export interface WindowSetup {
   overlayMode?: boolean;
   animatePresets?: boolean;

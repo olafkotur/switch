@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
-import React, { ReactElement, useRef } from 'react';
+import React, { ReactElement, useMemo, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { useDeleteModule, useOnClickout, useTheme } from '../hooks';
 import { ActiveModuleIdState } from '../state';
 import { Visibility } from '../style/animation';
+import { WebView } from '../typings';
 import { Button, SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Icon, IconNames } from './Icon';
@@ -41,9 +42,12 @@ export const Controls = ({ _id, icon, isVisible, setVisible }: ControlsProps): R
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
 
   const ref = useRef<HTMLDivElement>(null);
-  const webview = document.getElementById(`webview-${activeModuleId}`) as any | null;
   const theme = useTheme();
   const deleteModule = useDeleteModule();
+
+  const webview = useMemo(() => {
+    return document.getElementById(`webview-${activeModuleId}`) as WebView | null;
+  }, [activeModuleId]);
 
   useOnClickout([ref], () => {
     isVisible && setVisible(false);
@@ -58,13 +62,13 @@ export const Controls = ({ _id, icon, isVisible, setVisible }: ControlsProps): R
       <Spacer horizontal={1} />
 
       <ControlsButtonContainer>
-        <Button onClick={() => webview?.goBack()}>
+        <Button onClick={() => webview?.goBack()} disabled={!webview}>
           <Icon name={IconNames.BACK} />
         </Button>
-        <Button onClick={() => webview?.goForward()}>
+        <Button onClick={() => webview?.goForward()} disabled={!webview}>
           <Icon name={IconNames.FORWARD} />
         </Button>
-        <Button onClick={() => webview?.reload()}>
+        <Button onClick={() => webview?.reload()} disabled={!webview}>
           <Icon name={IconNames.RELOAD} size={17} />
         </Button>
         <Button onClick={() => deleteModule(_id)}>

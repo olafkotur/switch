@@ -13,6 +13,7 @@ import {
   setOverlayMode,
   setupTrayConfiguration,
   setupWindowEvents,
+  setWindowOpenHandler,
   setWindowProperties,
 } from './utils';
 
@@ -44,9 +45,9 @@ const createMainWindow = async (): Promise<void> => {
     transparent: overlayMode,
     backgroundColor: '#F8F9F9',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
       webviewTag: true,
       devTools: IS_DEVELOPMENT,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
@@ -54,6 +55,7 @@ const createMainWindow = async (): Promise<void> => {
   setOverlayMode(window, overlayMode);
   setWindowProperties(window, windowProperties, animatePresets);
   setGlobalShortcuts(window, VISIBILITY_KEYBIND, overlayMode);
+  setWindowOpenHandler(window);
   setupWindowEvents(window);
   setupTrayConfiguration(window, overlayMode);
 

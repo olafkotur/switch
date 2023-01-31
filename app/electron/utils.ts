@@ -1,4 +1,4 @@
-import { app, BrowserWindow, globalShortcut, Menu, screen, Tray } from 'electron';
+import { app, BrowserWindow, globalShortcut, Menu, screen, shell, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import path from 'path';
 import { sendWindowEvents, receiveWindowSetup, receiveWindowPresets, receiveStorageControl } from './events';
@@ -94,6 +94,15 @@ export const setOverlayMode = (window: BrowserWindow, overlayMode: boolean): voi
   window.setAlwaysOnTop(options.alwaysTop, options.alwaysTop ? 'floating' : undefined);
   window.setVisibleOnAllWorkspaces(options.visible, {
     visibleOnFullScreen: options.visible,
+  });
+};
+
+export const setWindowOpenHandler = (window: BrowserWindow) => {
+  window.webContents.on('did-attach-webview', (_, wc) => {
+    wc.setWindowOpenHandler(({ url }) => {
+      shell.openExternal(url);
+      return { action: 'deny' };
+    });
   });
 };
 
