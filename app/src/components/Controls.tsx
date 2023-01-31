@@ -1,4 +1,3 @@
-import { WebviewTag } from 'electron';
 import { motion } from 'framer-motion';
 import React, { ReactElement, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -34,7 +33,6 @@ const ControlsButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 5px;
   width: 115px;
   filter: drop-shadow(${(props) => props.theme.dropShadow.medium});
 `;
@@ -43,7 +41,7 @@ export const Controls = ({ _id, icon, isVisible, setVisible }: ControlsProps): R
   const activeModuleId = useRecoilValue(ActiveModuleIdState);
 
   const ref = useRef<HTMLDivElement>(null);
-  const webview = document.getElementById(`webview-${activeModuleId}`) as WebviewTag | null;
+  const webview = document.getElementById(`webview-${activeModuleId}`) as any | null;
   const theme = useTheme();
   const deleteModule = useDeleteModule();
 

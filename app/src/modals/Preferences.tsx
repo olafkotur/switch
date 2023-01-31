@@ -7,9 +7,7 @@ import { PreferencesState } from '../state';
 
 const PreferencesContainer = styled.div`
   width: 50vw;
-  height: 50vh;
   max-width: 800px;
-  max-height: 600px;
 `;
 
 const PreferencesContent = styled.div`
@@ -62,6 +60,7 @@ export const Preferences = (): ReactElement => {
     <PreferencesContainer>
       <PreferencesContent>
         <LargeText>Window Presets</LargeText>
+        <Spacer vertical={2} />
         <MediumText faint>Change the size of the window from the selected presets</MediumText>
         <Spacer vertical={5} />
         <Presets />
@@ -74,7 +73,7 @@ export const Preferences = (): ReactElement => {
         />
         <Preference
           title="Animate presets"
-          description="Show an animation when resizing Switch using layout presets"
+          description="Show an animation when resizing window presets"
           type="toggle"
           value={preferences?.animatePresets ?? false}
           onChange={handleAnimatePresets}

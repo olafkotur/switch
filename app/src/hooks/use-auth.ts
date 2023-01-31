@@ -1,7 +1,5 @@
 import { useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
-import { IsAuthenticatedState } from '../state';
 import { useInitialise } from './use-initialise';
 import { useRequest } from './use-request';
 import { useResetState } from './use-reset-state';
@@ -53,7 +51,6 @@ export const useRefresh = () => {
   const request = useRequest();
   const setStorage = useSetStorage();
   const removeStorage = useRemoveStorage();
-  const setIsAuthenticated = useSetRecoilState(IsAuthenticatedState);
 
   return useCallback(
     async ({ refreshToken }: { refreshToken: string }): Promise<boolean> => {
@@ -66,7 +63,7 @@ export const useRefresh = () => {
       await setStorage('tokens', { ...(response.data as Object) });
       return true;
     },
-    [url, request, setStorage, removeStorage, setIsAuthenticated],
+    [url, request, setStorage, removeStorage],
   );
 };
 
@@ -78,10 +75,4 @@ export const useLogout = () => {
     removeStorage('tokens');
     resetState();
   }, [removeStorage, resetState]);
-};
-
-export const useResetPassword = () => {
-  return useCallback(({ oldPassword, newPassword }: { oldPassword?: string; newPassword?: string }) => {
-    // TODO: add reset password logic
-  }, []);
 };

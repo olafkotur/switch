@@ -84,14 +84,14 @@ export const UserHandler = {
     // check if user exists
     const user = await UserService.fetchSingle(username);
     if (user) {
-      return ResponseService.bad('Username has already been taken', res);
+      return ResponseService.bad('Username is not available', res);
     }
 
     // create new user
     const hashedPassword = SecurityService.hash(password);
     const result = await UserService.createUser(username, hashedPassword);
     if (!result.success) {
-      return ResponseService.bad(result.message || 'Unknown error occurred', res);
+      return ResponseService.bad(result.message || 'Could not create user', res);
     }
 
     // generate a jwt token for the user

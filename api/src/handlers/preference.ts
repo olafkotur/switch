@@ -13,7 +13,7 @@ export const PreferenceHandler = {
 
     const data = await PreferenceService.fetch(user._id);
     if (!data) {
-      return ResponseService.notFound('Settings not found', res);
+      return ResponseService.notFound('Preferences not found', res);
     }
     return ResponseService.data(data, res);
   },

@@ -9,7 +9,7 @@ export interface SuggestionModelData extends ModelBase {
 }
 
 const schema = new Schema({
-  _id: { type: ObjectId, required: true, index: true },
+  _id: { type: ObjectId, required: true },
   url: { type: String, required: false },
   icon: { type: String, required: true },
   category: { type: String, required: true },

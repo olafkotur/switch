@@ -10,6 +10,9 @@ export const SuggestionHandler = {
    */
   fetch: async (_req: Request, res: Response): Promise<void> => {
     const data = await SuggestionService.fetch();
+    if (!data) {
+      return ResponseService.notFound('Suggestions not found', res);
+    }
     return ResponseService.data(data, res);
   },
 };

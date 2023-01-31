@@ -1,5 +1,5 @@
-import React, { ReactElement, useCallback, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useTheme } from '../hooks';
@@ -91,14 +91,15 @@ const ModuleButton = ({ _id, icon }: Module): ReactElement => {
 };
 
 const CreateModuleButton = (): ReactElement => {
-  const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
+  const activeModuleId = useRecoilValue(ActiveModuleIdState);
+  const resetActiveModuleId = useResetRecoilState(ActiveModuleIdState);
   const theme = useTheme();
 
   const isActive = activeModuleId === null;
   const animation = isActive ? Rotate({ repeat: 0, degrees: 90, duration: 0.3 }) : undefined;
 
   return (
-    <SidebarButton onClick={() => setActiveModuleId(null)} bg={isActive ? theme.backgroundColor.faint : undefined}>
+    <SidebarButton onClick={resetActiveModuleId} bg={isActive ? theme.backgroundColor.faint : undefined}>
       <Icon name={IconNames.ADD} size={20} animation={animation} />
     </SidebarButton>
   );

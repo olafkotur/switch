@@ -12,6 +12,7 @@ export const DatabaseService = {
         dbName: args.name,
         useUnifiedTopology: true,
         useNewUrlParser: true,
+        useCreateIndex: true,
       });
       mongoose.connection.on('connected', () => {
         console.log(`DatabaseService:connect :: Succesfully connected to "${args.name}" database`.green);

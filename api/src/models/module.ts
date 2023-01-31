@@ -9,7 +9,7 @@ export interface ModuleModelData extends ModelBase {
 }
 
 const schema = new Schema({
-  _id: { type: ObjectId, required: true, index: true },
+  _id: { type: ObjectId, required: true },
   userId: { type: ObjectId, required: true },
   url: { type: String, required: false },
   icon: { type: String, required: true },

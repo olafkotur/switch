@@ -3,7 +3,6 @@ import storage from 'electron-json-storage';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
-import * as url from 'url';
 import { VISIBILITY_KEYBIND } from '../src/const';
 import { WindowSetup } from '../src/typings';
 import {
@@ -61,13 +60,7 @@ const createMainWindow = async (): Promise<void> => {
   if (IS_DEVELOPMENT) {
     window.loadURL('http://localhost:4000');
   } else {
-    window.loadURL(
-      url.format({
-        pathname: path.join(__dirname, 'renderer/index.html'),
-        protocol: 'file:',
-        slashes: true,
-      }),
-    );
+    window.loadFile(path.join(__dirname, 'renderer/index.html'));
   }
 
   window.on('closed', () => {

@@ -2,6 +2,11 @@ import { atom } from 'recoil';
 import { ModalName } from './typings';
 import { Module, Preferences, Suggestion, User, WindowSetup } from './typings';
 
+export const IsAppLoadingState = atom({
+  key: 'isAppLoading',
+  default: true,
+});
+
 export const IsAuthenticatedState = atom({
   key: 'isAuthenticated',
   default: false,

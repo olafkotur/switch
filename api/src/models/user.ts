@@ -8,7 +8,7 @@ export interface UserModelData extends ModelBase {
 }
 
 const schema = new Schema({
-  _id: { type: ObjectId, index: true },
+  _id: { type: ObjectId, required: true },
   username: { type: String, required: true, unique: true, index: true },
   password: { type: String, required: true },
   updatedAt: { type: Date, required: true },

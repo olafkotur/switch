@@ -11,13 +11,13 @@ const suggestions: SuggestionData[] = [
     category: 'productivity',
   },
   {
-    url: 'https://www.dropbox.com/login',
-    icon: 'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.dropbox.com/login&size=256',
+    url: 'https://mail.google.com',
+    icon: 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://mail.google.com&size=256',
     category: 'productivity',
   },
   {
-    url: 'https://linear.app',
-    icon: 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://linear.app/&size=256',
+    url: 'https://calendar.google.com',
+    icon: 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://calendar.google.com/&size=256',
     category: 'productivity',
   },
   {
