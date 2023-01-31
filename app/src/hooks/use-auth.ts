@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { API_BASE_URL, DEFAULT_ERROR_MESSAGE } from '../const';
+import { useSendMessage } from './use-electron-events';
 import { useInitialise } from './use-initialise';
 import { useRequest } from './use-request';
 import { useResetState } from './use-reset-state';
@@ -70,9 +71,11 @@ export const useRefresh = () => {
 export const useLogout = () => {
   const removeStorage = useRemoveStorage();
   const resetState = useResetState();
+  const sendMessage = useSendMessage('storage-control');
 
   return useCallback(() => {
     removeStorage('tokens');
     resetState();
-  }, [removeStorage, resetState]);
+    sendMessage({ name: 'clear-storage', value: true });
+  }, [removeStorage, resetState, sendMessage]);
 };

@@ -1,7 +1,7 @@
 import { app, BrowserWindow, globalShortcut, Menu, screen, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import path from 'path';
-import { sendWindowEvents, receiveWindowSetup, receiveWindowPresets } from './events';
+import { sendWindowEvents, receiveWindowSetup, receiveWindowPresets, receiveStorageControl } from './events';
 import { ScreenProperties, ElectronStorageKey, WindowProperties } from '../src/typings';
 
 let previousScreenProperties: ScreenProperties | null = null;
@@ -32,6 +32,7 @@ export const setupWindowEvents = (window: BrowserWindow) => {
   sendWindowEvents(window);
   receiveWindowSetup(window);
   receiveWindowPresets(window);
+  receiveStorageControl(window);
 };
 
 export const getWindowProperties = (window: BrowserWindow): WindowProperties => {

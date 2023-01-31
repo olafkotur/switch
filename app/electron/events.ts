@@ -56,3 +56,14 @@ export const receiveWindowPresets = (window: BrowserWindow) => {
     }
   });
 };
+
+export const receiveStorageControl = (window: BrowserWindow) => {
+  ipcMain.on('storage-control', async (_, args) => {
+    const type = args[0] as ChannelEvent;
+
+    if (type === 'clear-storage') {
+      window.webContents.session.clearCache();
+      window.webContents.session.clearStorageData();
+    }
+  });
+};

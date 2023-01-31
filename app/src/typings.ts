@@ -2,13 +2,14 @@ import { Themes } from './style/theme';
 
 export type ElectronStorageKey = 'window-setup';
 
-export type Channel = 'window-setup' | 'window-events' | 'window-presets';
+export type Channel = 'window-setup' | 'window-events' | 'window-presets' | 'storage-control';
 export type ChannelEvent =
   | 'full-screen'
   | 'window-setup-data'
   | 'set-overlay-mode'
   | 'set-animate-presets'
-  | 'apply-window-preset';
+  | 'apply-window-preset'
+  | 'clear-storage';
 export type ChannelValue = any;
 
 export type ModalName = 'preferences' | 'overlay-prompt';

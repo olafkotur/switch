@@ -27,7 +27,7 @@ export const Loading = (): ReactElement => {
 
   useEffect(() => {
     load();
-    sendMessage({ name: 'window-setup-data', value: '' });
+    sendMessage({ name: 'window-setup-data', value: true });
   }, [sendMessage]);
 
   return (
