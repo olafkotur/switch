@@ -18,7 +18,7 @@ export const sendUpdateEvents = (window: BrowserWindow) => {
     window.webContents.send('app-updates', ['update-available', true]);
   });
 
-  updater.on('update-not-available', () => {
+  updater.on('update-not-available', async () => {
     window.webContents.send('app-updates', ['update-available', false]);
   });
 
@@ -34,6 +34,10 @@ export const sendUpdateEvents = (window: BrowserWindow) => {
 export const receiveUpdateEvents = (_window: BrowserWindow) => {
   ipcMain.on('app-updates', (_, args) => {
     const type = args[0] as ChannelEvent;
+
+    if (type === 'check-for-update') {
+      updater.checkForUpdates();
+    }
 
     if (type === 'quit-and-install') {
       updater.quitAndInstall();

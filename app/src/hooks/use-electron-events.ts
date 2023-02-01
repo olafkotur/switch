@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { IsFullScreenState, WindowSetupState } from '../state';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { AppUpdatesState, IsFullScreenState, WindowSetupState } from '../state';
 import { Channel, ChannelEvent, ChannelValue } from '../typings';
 import { useUpdatePreferences } from './use-preferences';
 
@@ -14,6 +14,7 @@ export const useSendMessage = (channel: Channel) => {
 };
 
 export const useElectronListeners = () => {
+  const [appUpdates, setAppUpdates] = useRecoilState(AppUpdatesState);
   const setIsFullScreen = useSetRecoilState(IsFullScreenState);
   const setWindowSetup = useSetRecoilState(WindowSetupState);
   const updatePreferences = useUpdatePreferences();
@@ -45,8 +46,29 @@ export const useElectronListeners = () => {
     [setWindowSetup],
   );
 
+  const _appUpdates = useCallback(
+    (...args: any) => {
+      const type = args[0][0] as ChannelEvent;
+      const value = args[0][1] as ChannelValue;
+
+      if (type === 'update-available') {
+        setAppUpdates({ ...appUpdates, isUpdateAvailable: value, isCheckingForUpdate: false });
+      }
+
+      if (type === 'update-downloading') {
+        setAppUpdates({ ...appUpdates, isUpdateDownloading: true });
+      }
+
+      if (type === 'update-downloaded') {
+        setAppUpdates({ ...appUpdates, isUpdateDownloaded: true });
+      }
+    },
+    [appUpdates, setAppUpdates],
+  );
+
   useEffect(() => {
     window.electron.ipcRenderer.on('window-events', windowEvents);
     window.electron.ipcRenderer.on('window-setup', windowSetup);
+    window.electron.ipcRenderer.on('app-updates', _appUpdates);
   }, []);
 };

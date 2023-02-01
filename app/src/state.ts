@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { ModalName } from './typings';
+import { AppUpdates, ModalName } from './typings';
 import { Module, Preferences, Suggestion, User, WindowSetup } from './typings';
 
 export const IsAppLoadingState = atom({
@@ -20,6 +20,16 @@ export const IsFullScreenState = atom({
 export const WindowSetupState = atom({
   key: 'windowSetup',
   default: {} as WindowSetup,
+});
+
+export const AppUpdatesState = atom({
+  key: 'appUpdates',
+  default: {
+    isCheckingForUpdate: true,
+    isUpdateAvailable: null,
+    isUpdateDownloading: null,
+    isUpdateDownloaded: null,
+  } as AppUpdates,
 });
 
 export const ActiveModuleIdState = atom({

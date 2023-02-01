@@ -1,15 +1,15 @@
 import { app, BrowserWindow, globalShortcut, Menu, screen, shell, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import path from 'path';
+import { ElectronStorageKey, ScreenProperties, WindowProperties } from '../src/typings';
 import {
-  sendWindowEvents,
-  receiveWindowSetup,
-  receiveWindowPresets,
   receiveStorageControl,
-  sendUpdateEvents,
   receiveUpdateEvents,
+  receiveWindowPresets,
+  receiveWindowSetup,
+  sendUpdateEvents,
+  sendWindowEvents,
 } from './events';
-import { ScreenProperties, ElectronStorageKey, WindowProperties } from '../src/typings';
 
 let previousScreenProperties: ScreenProperties | null = null;
 

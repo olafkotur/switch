@@ -10,7 +10,7 @@ export type ChannelEvent =
   | 'set-animate-presets'
   | 'apply-window-preset'
   | 'clear-storage'
-  | 'checking-for-update'
+  | 'check-for-update'
   | 'update-available'
   | 'update-downloading'
   | 'update-downloaded'
@@ -43,6 +43,13 @@ export interface WindowProperties {
 export interface ScreenProperties {
   width: number;
   height: number;
+}
+
+export interface AppUpdates {
+  isCheckingForUpdate: boolean;
+  isUpdateAvailable: boolean | null;
+  isUpdateDownloading: boolean | null;
+  isUpdateDownloaded: boolean | null;
 }
 
 export interface Response {

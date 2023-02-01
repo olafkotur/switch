@@ -35,7 +35,7 @@ const COMMON_THEME = {
     primary: '#307093', // cyan
     secondary: '#CBAE61', // yellow
     tertiary: '#B33939', // red
-    quaternary: '#00b894', // green
+    quaternary: '#218c74', // green
   },
   animation: {
     light: 0.99,

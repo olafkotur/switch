@@ -23,7 +23,6 @@ log.transports.file.resolvePath = (vars) => {
 log.info('App is starting...');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
-let window: BrowserWindow | null;
 
 const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
@@ -36,7 +35,7 @@ const createMainWindow = async (): Promise<void> => {
   const overlayMode = windowSetup?.overlayMode ?? false;
   const animatePresets = windowSetup?.animatePresets ?? true;
 
-  window = new BrowserWindow({
+  const window = new BrowserWindow({
     width: screenProperties.width,
     height: screenProperties.height,
     minHeight: 600,
@@ -67,16 +66,13 @@ const createMainWindow = async (): Promise<void> => {
   } else {
     window.loadFile(path.join(__dirname, 'renderer/index.html'));
   }
-
-  window.on('closed', () => {
-    window = null;
-  });
 };
 
 app.on('ready', async () => {
   await createMainWindow();
-  updater.init({ autoDownload: true, checkUpdateOnStart: true, url: AUTO_UPDATE_SOURCE });
+  updater.init({ autoDownload: true, checkUpdateOnStart: false, url: AUTO_UPDATE_SOURCE });
 });
+
 app.on('window-all-closed', () => {
   app.quit();
 });
