@@ -1,9 +1,9 @@
 import { app, BrowserWindow } from 'electron';
 import storage from 'electron-json-storage';
 import log from 'electron-log';
-import { autoUpdater } from 'electron-updater';
+import updater from 'electron-simple-updater';
 import * as path from 'path';
-import { VISIBILITY_KEYBIND } from '../src/const';
+import { AUTO_UPDATE_SOURCE, VISIBILITY_KEYBIND } from '../src/const';
 import { WindowSetup } from '../src/typings';
 import {
   getScreenProperties,
@@ -11,12 +11,15 @@ import {
   getWindowProperties,
   setGlobalShortcuts,
   setOverlayMode,
+  setupEvents,
   setupTrayConfiguration,
-  setupWindowEvents,
   setWindowOpenHandler,
   setWindowProperties,
 } from './utils';
 
+log.transports.file.resolvePath = (vars) => {
+  return path.join(vars.libraryTemplate.replace('{appName}', 'Switch'), vars.fileName ?? '');
+};
 log.info('App is starting...');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
@@ -56,7 +59,7 @@ const createMainWindow = async (): Promise<void> => {
   setWindowProperties(window, windowProperties, animatePresets);
   setGlobalShortcuts(window, VISIBILITY_KEYBIND, overlayMode);
   setWindowOpenHandler(window);
-  setupWindowEvents(window);
+  setupEvents(window);
   setupTrayConfiguration(window, overlayMode);
 
   if (IS_DEVELOPMENT) {
@@ -72,7 +75,7 @@ const createMainWindow = async (): Promise<void> => {
 
 app.on('ready', async () => {
   await createMainWindow();
-  await autoUpdater.checkForUpdates();
+  updater.init({ autoDownload: true, checkUpdateOnStart: true, url: AUTO_UPDATE_SOURCE });
 });
 app.on('window-all-closed', () => {
   app.quit();

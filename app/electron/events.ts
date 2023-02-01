@@ -1,4 +1,5 @@
 import { BrowserWindow, ipcMain } from 'electron';
+import updater from 'electron-simple-updater';
 import { ChannelEvent, ChannelValue, WindowProperties, WindowSetup } from '../src/typings';
 import { getScreenProperties, getStorage, setStorage, setWindowProperties } from './utils';
 
@@ -9,6 +10,34 @@ export const sendWindowEvents = (window: BrowserWindow) => {
 
   window.on('leave-full-screen', () => {
     window.webContents.send('window-events', ['full-screen', false]);
+  });
+};
+
+export const sendUpdateEvents = (window: BrowserWindow) => {
+  updater.on('update-available', () => {
+    window.webContents.send('app-updates', ['update-available', true]);
+  });
+
+  updater.on('update-not-available', () => {
+    window.webContents.send('app-updates', ['update-available', false]);
+  });
+
+  updater.on('update-downloading', () => {
+    window.webContents.send('app-updates', ['update-downloading', true]);
+  });
+
+  updater.on('update-downloaded', () => {
+    window.webContents.send('app-updates', ['update-downloaded', true]);
+  });
+};
+
+export const receiveUpdateEvents = (_window: BrowserWindow) => {
+  ipcMain.on('app-updates', (_, args) => {
+    const type = args[0] as ChannelEvent;
+
+    if (type === 'quit-and-install') {
+      updater.quitAndInstall();
+    }
   });
 };
 

@@ -2,14 +2,20 @@ import { Themes } from './style/theme';
 
 export type ElectronStorageKey = 'window-setup';
 
-export type Channel = 'window-setup' | 'window-events' | 'window-presets' | 'storage-control';
+export type Channel = 'window-setup' | 'window-events' | 'window-presets' | 'storage-control' | 'app-updates';
 export type ChannelEvent =
   | 'full-screen'
   | 'window-setup-data'
   | 'set-overlay-mode'
   | 'set-animate-presets'
   | 'apply-window-preset'
-  | 'clear-storage';
+  | 'clear-storage'
+  | 'checking-for-update'
+  | 'update-available'
+  | 'update-downloading'
+  | 'update-downloaded'
+  | 'quit-and-install';
+
 export type ChannelValue = any;
 
 export type ModalName = 'preferences' | 'overlay-prompt';

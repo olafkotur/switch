@@ -1,7 +1,14 @@
 import { app, BrowserWindow, globalShortcut, Menu, screen, shell, Tray } from 'electron';
 import storage from 'electron-json-storage';
 import path from 'path';
-import { sendWindowEvents, receiveWindowSetup, receiveWindowPresets, receiveStorageControl } from './events';
+import {
+  sendWindowEvents,
+  receiveWindowSetup,
+  receiveWindowPresets,
+  receiveStorageControl,
+  sendUpdateEvents,
+  receiveUpdateEvents,
+} from './events';
 import { ScreenProperties, ElectronStorageKey, WindowProperties } from '../src/typings';
 
 let previousScreenProperties: ScreenProperties | null = null;
@@ -28,8 +35,10 @@ export const setStorage = async <T>(key: ElectronStorageKey, data: T): Promise<b
   });
 };
 
-export const setupWindowEvents = (window: BrowserWindow) => {
+export const setupEvents = (window: BrowserWindow) => {
+  sendUpdateEvents(window);
   sendWindowEvents(window);
+  receiveUpdateEvents(window);
   receiveWindowSetup(window);
   receiveWindowPresets(window);
   receiveStorageControl(window);
@@ -127,8 +136,4 @@ export const toggleWindowIsVisible = (window: BrowserWindow): void => {
     return window.hide();
   }
   return window.show();
-};
-
-export const quitApplication = (): void => {
-  return app.quit();
 };
