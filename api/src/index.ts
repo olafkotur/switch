@@ -1,6 +1,6 @@
 import 'colors';
 import express from 'express';
-import { MONGO_NAME, MONGO_URI, NO_VERIFY_URLS, PORT } from './const';
+import { MONGO_NAME, MONGO_URL, NO_VERIFY_URLS, PORT } from './const';
 import { ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
 import { DatabaseService, ResponseService, SecurityService, SuggestionService, UserService } from './services';
 
@@ -14,7 +14,7 @@ const cors = require('cors');
  */
 const main = async (): Promise<void> => {
   // connect to database
-  const success = await database.connect({ uri: MONGO_URI, name: MONGO_NAME });
+  const success = await database.connect({ uri: MONGO_URL, name: MONGO_NAME });
   exports.database = database;
   if (!success) {
     return console.error('Failed to establish database connection, halting');
