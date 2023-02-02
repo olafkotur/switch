@@ -7,8 +7,7 @@ export const IS_PRODUCTION = process.env.NODE_ENV !== 'development';
 
 export const VISIBILITY_KEYBIND = 'Command + Esc';
 
-// export const API_BASE_URL = IS_PRODUCTION ? 'https://switch-production.up.railway.app/' : 'http://localhost:8080';
-export const API_BASE_URL = 'https://switch-production.up.railway.app';
+export const API_BASE_URL = IS_PRODUCTION ? 'https://switch-api.up.railway.app' : 'http://localhost:8080';
 export const AUTO_UPDATE_SOURCE = 'https://raw.githubusercontent.com/olafkotur/switch-releases/main/updates.json';
 export const DEFAULT_ERROR_MESSAGE = 'Unknown error occurred, a developer has been notified.';
 

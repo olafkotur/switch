@@ -20,6 +20,8 @@ const main = async (): Promise<void> => {
     return console.error('Failed to establish database connection, halting');
   }
 
+  await SuggestionService.create();
+
   // middleware
   app.use(express.urlencoded({ extended: false, limit: '10mb' }));
   app.use(express.json());
