@@ -3,7 +3,7 @@ import storage from 'electron-json-storage';
 import log from 'electron-log';
 import updater from 'electron-simple-updater';
 import * as path from 'path';
-import { AUTO_UPDATE_SOURCE, VISIBILITY_KEYBIND } from '../src/const';
+import { AUTO_UPDATE_SOURCE, IS_PRODUCTION, VISIBILITY_KEYBIND } from '../src/const';
 import { WindowSetup } from '../src/typings';
 import {
   getScreenProperties,
@@ -21,8 +21,6 @@ log.transports.file.resolvePath = (vars) => {
   return path.join(vars.libraryTemplate.replace('{appName}', 'Switch'), vars.fileName ?? '');
 };
 log.info('App is starting...');
-
-const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 
 const dataPath = storage.getDataPath();
 storage.setDataPath(dataPath);
@@ -48,7 +46,7 @@ const createMainWindow = async (): Promise<void> => {
     backgroundColor: '#F8F9F9',
     webPreferences: {
       webviewTag: true,
-      devTools: IS_DEVELOPMENT,
+      devTools: !IS_PRODUCTION,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
@@ -61,10 +59,10 @@ const createMainWindow = async (): Promise<void> => {
   setupEvents(window);
   setupTrayConfiguration(window, overlayMode);
 
-  if (IS_DEVELOPMENT) {
-    window.loadURL('http://localhost:4000');
-  } else {
+  if (IS_PRODUCTION) {
     window.loadFile(path.join(__dirname, 'renderer/index.html'));
+  } else {
+    window.loadURL('http://localhost:4000');
   }
 };
 

@@ -1,3 +1,8 @@
+// @ts-expect-error
+import Package from '../package.json';
+
+export const APP_VERSION = Package?.version ?? '0.0.0';
+
 export const IS_PRODUCTION = process.env.NODE_ENV !== 'development';
 
 export const VISIBILITY_KEYBIND = 'Command + Esc';
@@ -12,7 +17,7 @@ export const DEFAULT_ICON_OPACITY = 0.75;
 export const SEARCH_BAR_PLACEHOLDER = 'https://notion.so';
 
 export const INITIALISE_TIMEOUT_MS = 250;
-export const APP_TIMEOUT_MS = 250;
+export const APP_TIMEOUT_MS = 500;
 export const REQUEST_TIMEOUT_MS = 15000;
 
 export const PRESET_CONFIG = [

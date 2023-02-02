@@ -1,17 +1,25 @@
 import { useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { INITIALISE_TIMEOUT_MS } from '../const';
-import { IsAuthenticatedState, ModulesState, PreferencesState, SuggestionsState, UserState } from '../state';
+import {
+  IsAuthenticatedState,
+  ModulesState,
+  PreferencesState,
+  SuggestionsState,
+  UserState,
+  WindowSetupState,
+} from '../state';
 import { AuthTokens } from '../typings';
 import { useRefresh } from './use-auth';
 import { useDelay } from './use-delay';
 import { useFetchModules } from './use-module';
-import { useFetchPreferences } from './use-preferences';
+import { useFetchPreferences, useUpdatePreferences } from './use-preferences';
 import { useGetStorage } from './use-storage';
 import { useFetchSuggestions } from './use-suggestions';
 import { useFetchUser } from './use-user';
 
 export const useInitialise = () => {
+  const windowSetup = useRecoilValue(WindowSetupState);
   const getStorage = useGetStorage();
   const refresh = useRefresh();
   const delay = useDelay();
@@ -26,6 +34,8 @@ export const useInitialise = () => {
   const setPreferences = useSetRecoilState(PreferencesState);
   const setModules = useSetRecoilState(ModulesState);
   const setSuggestions = useSetRecoilState(SuggestionsState);
+
+  const updatePreferences = useUpdatePreferences();
 
   return useCallback(async () => {
     const tokens: AuthTokens | null = await getStorage('tokens');
@@ -50,9 +60,12 @@ export const useInitialise = () => {
     setModules(modules);
     setSuggestions(suggestions);
 
+    await updatePreferences({ overlayMode: windowSetup.overlayMode ?? false });
+
     // additional waiting for UI & electron events
     await delay(INITIALISE_TIMEOUT_MS);
   }, [
+    windowSetup,
     getStorage,
     refresh,
     fetchUser,
@@ -64,5 +77,6 @@ export const useInitialise = () => {
     setPreferences,
     setModules,
     setSuggestions,
+    updatePreferences,
   ]);
 };
