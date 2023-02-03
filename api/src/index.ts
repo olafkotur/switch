@@ -2,7 +2,7 @@ import 'colors';
 import express from 'express';
 import { MONGO_NAME, MONGO_URL, NO_VERIFY_URLS, PORT } from './const';
 import { ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
-import { DatabaseService, ResponseService, SecurityService, SuggestionService, UserService } from './services';
+import { DatabaseService, ResponseService, SecurityService, UserService } from './services';
 
 export const database = DatabaseService;
 
@@ -19,8 +19,6 @@ const main = async (): Promise<void> => {
   if (!success) {
     return console.error('Failed to establish database connection, halting');
   }
-
-  await SuggestionService.create();
 
   // middleware
   app.use(express.urlencoded({ extended: false, limit: '10mb' }));
