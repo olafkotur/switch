@@ -6,7 +6,7 @@
     "allowJs": true,
     "jsx": "react",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./build",
     "strict": true,
     "esModuleInterop": true
   }

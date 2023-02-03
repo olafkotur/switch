@@ -1,5 +1,0 @@
-yarn run v1.22.17
-$ npm-run-all -p start:react start:preload electron:serve
-$ cross-env NODE_ENV=development webpack-dev-server --config webpack/react.webpack.js --mode development
-$ cross-env NODE_ENV=development webpack --config webpack/preload.webpack.js --mode development
-$ wait-on http-get://localhost:4000/ && npm run start:electron

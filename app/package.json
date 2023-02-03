@@ -2,7 +2,7 @@
   "name": "app",
   "version": "2.0.0",
   "description": "Switch - Built with Electron, React and TypeScript",
-  "main": "./dist/main.js",
+  "main": "./build/main.js",
   "keywords": [],
   "author": "Olaf Kotur <olafkotur97@gmail.com>",
   "license": "MIT",
@@ -94,7 +94,7 @@
     "files": [
       "package.json",
       ".env",
-      "dist/**"
+      "build/**"
     ]
   },
   "config": {
