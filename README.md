@@ -86,4 +86,5 @@ _This repo contains both the `api` and `app`, make sure you're in the correct di
 - Some `webapps` such as Whatsapp can sometimes break due to requiring a specific Chrome version
 
 <br />
-Built with ❤️ Olaf Kotur
+
+Built with ❤️ by Olaf Kotur
