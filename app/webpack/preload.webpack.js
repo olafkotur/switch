@@ -32,7 +32,7 @@ module.exports = {
     __dirname: false,
   },
   output: {
-    path: path.resolve(rootPath, 'dist'),
+    path: path.resolve(rootPath, 'build'),
     filename: 'preload.js',
   },
 };

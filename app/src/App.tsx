@@ -17,7 +17,7 @@ import {
   PreferencesState,
   WindowSetupState,
 } from './state';
-import { ThemeProvider } from './style/Provider';
+import { ThemeProvider } from './style/provider';
 
 const AppContainer = styled.div`
   display: flex;

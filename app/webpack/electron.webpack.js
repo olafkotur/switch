@@ -1,6 +1,6 @@
-const path = require('path')
+const path = require('path');
 
-const rootPath = path.resolve(__dirname, '..')
+const rootPath = path.resolve(__dirname, '..');
 
 module.exports = {
   resolve: {
@@ -32,7 +32,7 @@ module.exports = {
     __dirname: false,
   },
   output: {
-    path: path.resolve(rootPath, 'dist'),
+    path: path.resolve(rootPath, 'build'),
     filename: '[name].js',
   },
-}
+};

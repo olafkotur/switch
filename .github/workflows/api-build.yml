@@ -1,4 +1,4 @@
-name: api-typecheck
+name: api-build
 
 on:
   pull_request:

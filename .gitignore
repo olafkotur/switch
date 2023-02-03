@@ -1,9 +1,9 @@
-# common
+# directories
 node_modules
 coverage
 build
-dist
 packages
+dump
 
 # misc
 .DS_Store
@@ -11,9 +11,3 @@ packages
 .env
 .csv
 .vscode
-
-# api
-dist/**
-*/assets/db/*
-!*/assets/db/doNotRemove
-dump/
