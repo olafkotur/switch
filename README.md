@@ -11,6 +11,8 @@
 Lightweight overlay browser
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+![example workflow](https://github.com/olafkotur/pebble/actions/workflows/api-build.yml/badge.svg)
+![example workflow](https://github.com/olafkotur/pebble/actions/workflows/app-build.yml/badge.svg)
 
 </div>
 
@@ -28,16 +30,19 @@ My use case started with just wanting to check my [Notion](https://notion.so) no
 
 ## ⬇️ Download
 
-- Only available on `macOS` for the time being
+- Only available on `macOS` (Intel & Apple Silicon)
 - Head over to the [releases](https://github.com/olafkotur/switch/releases) and download the latest `.dmg` file
 - You'll receive auto-updates so you only need to do this once
-- **Switch is currently invite-only, reach out to me if you'd like a code, otherwise feel free to spin-up a local instance**
+- **Switch is currently invite-only, reach out to a code owner if you'd like a code, otherwise feel free to spin-up a local instance**
 
 ## 🔨 Setup
 
 _This repo contains both the `api` and `app`, make sure you're in the correct directory._
 
-- Create a copy of `default.env` as `.env`
+> **Note**
+> You will need a .env configuration to setup this project, please reach out for details.
+
+<br />
 
 **To setup the `./api`, follow the below instructions:**
 
@@ -55,6 +60,7 @@ _This repo contains both the `api` and `app`, make sure you're in the correct di
 - Update the version in `app/package.json`
 - Run `yarn package` to create a package for publishing
 - Create a new release in [olafkotur/switch-releases](https://github.com/olafkotur/switch-releases/releases) repository
+- Upload `.dmg` and `.zip` files from package output to the release
 - Update [release file](https://github.com/olafkotur/switch-releases/blob/master/release.json) with the latest version info
 - Update [updates file](https://github.com/olafkotur/switch-releases/blob/master/updates.json) with the latest version info
 - Automatic updates will be rolled out to all users
@@ -78,4 +84,6 @@ _This repo contains both the `api` and `app`, make sure you're in the correct di
 
 - Streaming services will not work due to additional licensing required to do so e.g. Netflix, Disney Plus
 - Some `webapps` such as Whatsapp can sometimes break due to requiring a specific Chrome version
-- Overlay mode doesn't work when the app is started whilst using another full-screen application
+
+<br />
+Built with ❤️ Olaf Kotur
