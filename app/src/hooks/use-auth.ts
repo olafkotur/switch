@@ -15,8 +15,8 @@ export const useLogin = () => {
   const initialise = useInitialise();
 
   return useCallback(
-    async ({ username, password }: { username: string; password: string }) => {
-      const response = await request({ method: 'POST', url, body: { username, password } });
+    async ({ email, password }: { email: string; password: string }) => {
+      const response = await request({ method: 'POST', url, body: { email, password } });
       if (response?.code !== 200) {
         return errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
       }
@@ -35,8 +35,8 @@ export const useSignUp = () => {
   const initialise = useInitialise();
 
   return useCallback(
-    async ({ username, password }: { username: string; password: string }) => {
-      const response = await request({ method: 'POST', url, body: { username, password } });
+    async ({ email, password }: { email: string; password: string }) => {
+      const response = await request({ method: 'POST', url, body: { email, password } });
       if (response?.code !== 201) {
         return errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
       }
