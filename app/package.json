@@ -31,6 +31,7 @@
     "electron-log": "4",
     "electron-simple-updater": "^2.0.11",
     "file-loader": "^6.2.0",
+    "firebase": "^9.17.1",
     "framer-motion": "^8.5.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

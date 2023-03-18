@@ -1,8 +1,10 @@
+import { initializeApp } from 'firebase/app';
 import React, { ReactElement, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Sidebar } from './components/Sidebar';
+import { FIREBASE_CONFIG } from './const';
 import { useElectronListeners } from './hooks';
 import { Modal } from './modals';
 import { HomePage } from './pages/Home';
@@ -18,6 +20,8 @@ import {
   WindowSetupState,
 } from './state';
 import { ThemeProvider } from './style/provider';
+
+initializeApp(FIREBASE_CONFIG);
 
 const AppContainer = styled.div`
   display: flex;
