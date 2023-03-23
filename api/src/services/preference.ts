@@ -22,6 +22,7 @@ export const PreferenceService = {
       overlayMode: false,
       animatePresets: true,
       disableOverlayPrompt: false,
+      showTutorial: true,
       updatedAt: new Date(),
       createdAt: new Date(),
     };

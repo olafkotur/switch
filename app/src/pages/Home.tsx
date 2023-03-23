@@ -51,7 +51,7 @@ export const HomePage = (): ReactElement => {
 
       <Spacer vertical={20} />
 
-      <SuggestionsContainer>
+      <SuggestionsContainer className="my-first-step">
         <Suggestions title="Productivity" data={suggestionGroups.productivity} />
         <Suggestions title="Social" data={suggestionGroups.social} />
         <Suggestions title="Messaging" data={suggestionGroups.messaging} />

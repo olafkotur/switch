@@ -112,7 +112,11 @@ const CreateModuleButton = (): ReactElement => {
   const animation = isActive ? Rotate({ repeat: 0, degrees: 90, duration: 0.3 }) : undefined;
 
   return (
-    <SidebarButton onClick={resetActiveModuleId} bg={isActive ? theme.backgroundColor.faint : undefined}>
+    <SidebarButton
+      className="tutorial-step-1"
+      onClick={resetActiveModuleId}
+      bg={isActive ? theme.backgroundColor.faint : undefined}
+    >
       <Icon name={IconNames.ADD} size={20} animation={animation} />
     </SidebarButton>
   );
@@ -126,7 +130,11 @@ const PreferencesButton = (): ReactElement => {
   const animation = isActive ? Rotate({ duration: 2 }) : undefined;
 
   return (
-    <SidebarButton onClick={() => setModal('preferences')} bg={isActive ? theme.backgroundColor.faint : undefined}>
+    <SidebarButton
+      className="tutorial-step-4"
+      onClick={() => setModal('preferences')}
+      bg={isActive ? theme.backgroundColor.faint : undefined}
+    >
       <Icon name={IconNames.SETTINGS} size={20} animation={animation} />
     </SidebarButton>
   );

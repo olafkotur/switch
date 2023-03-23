@@ -14,3 +14,5 @@ export * from './use-storage';
 export * from './use-suggestions';
 export * from './use-theme';
 export * from './use-toast';
+export * from './use-tutorial';
+export * from './use-user';

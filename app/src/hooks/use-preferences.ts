@@ -12,6 +12,7 @@ interface UpdatePreferences {
   overlayMode?: boolean;
   disableOverlayPrompt?: boolean;
   animatePresets?: boolean;
+  showTutorial?: boolean;
 }
 
 export const useFetchPreferences = () => {

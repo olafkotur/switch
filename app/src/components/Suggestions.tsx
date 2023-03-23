@@ -60,7 +60,7 @@ export const Suggestions = ({ title, data }: SuggestionsProps): ReactElement => 
   const createModule = useCreateModule();
 
   return (
-    <SuggestionsContainer>
+    <SuggestionsContainer className="tutorial-step-3">
       <Title bold>{title}</Title>
       <Spacer vertical={5} />
 

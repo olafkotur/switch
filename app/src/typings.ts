@@ -87,6 +87,7 @@ export interface Preferences {
   overlayMode: boolean;
   disableOverlayPrompt: boolean;
   animatePresets: boolean;
+  showTutorial: boolean;
   updatedAt: Date;
   createdAt: Date;
 }

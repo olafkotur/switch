@@ -50,7 +50,7 @@ export const SearchBar = ({ value, isValid, setValue, onSubmit }: SearchBarProps
   useOnKeyPress({ key: 'Enter', onPress: () => isValid && onSubmit(value) });
 
   return (
-    <SearchBarContainer>
+    <SearchBarContainer className="tutorial-step-2">
       <LeftSection>
         <Spacer horizontal={7} />
         <Icon name={IconNames.SEARCH} size={24} />
