@@ -12,7 +12,11 @@ const steps: Step[] = [
     content: 'Search for any website you may wish to add to Switch e.g. https://notion.so',
   },
   { target: '.tutorial-step-3', content: 'Alternatively, you can add from one of the suggested applications' },
-  { target: '.tutorial-step-4', content: 'You can visit the preferences panel for any additional settings' },
+  {
+    target: '.tutorial-step-4',
+    content: 'Switch is currently invite-only, you can send an invite to your friends here',
+  },
+  { target: '.tutorial-step-5', content: 'You can visit the preferences panel for any additional settings' },
 ];
 
 export const TutorialSteps: Step[] = steps.map((value) => ({ ...defaultStepOptions, ...value }));

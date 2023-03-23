@@ -7,7 +7,7 @@ export const InviteService = {
    * @param userId - user id
    */
   fetch: async (userId: Types.ObjectId): Promise<InviteModelData[]> => {
-    return await InviteModel.find({ userId });
+    return await InviteModel.find({ userId }).sort({ createdAt: -1 });
   },
 
   /**

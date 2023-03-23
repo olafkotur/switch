@@ -33,6 +33,8 @@ export enum IconNames {
   LOADING = 'fa-solid fa-circle-notch',
   CLOSE = 'fa-solid fa-xmark',
   REPEAT = 'fa-solid fa-repeat',
+  TICKET = 'fa-solid fa-ticket',
+  SEND = 'fa-solid fa-paper-plane',
 }
 
 const IconContainer = styled(motion.div)<{ size: number; color: string; opacity: number }>`
@@ -71,6 +73,8 @@ library.add(
   Solid.faCircleNotch,
   Solid.faClose,
   Solid.faRepeat,
+  Solid.faTicket,
+  Solid.faPaperPlane,
   Regular.faSquare,
   Regular.faCircleCheck,
 );

@@ -11,7 +11,12 @@ export const InviteHandler = {
   fetch: async (_req: Request, res: Response): Promise<void> => {
     const user: UserModelData = res.locals.user;
     const response = await InviteService.fetch(user._id);
-    const data = response.map((invite) => ({ email: invite.email, createdAt: invite.createdAt }));
+    const data = response.map((invite) => ({
+      _id: invite._id,
+      email: invite.email,
+      updatedAt: invite.createdAt,
+      createdAt: invite.createdAt,
+    }));
 
     return ResponseService.data(data, res);
   },
@@ -38,6 +43,6 @@ export const InviteHandler = {
 
     // TODO: send an email to this user, TBC of how this can be done
     await InviteService.create(user._id, email);
-    return ResponseService.ok('Invite sent!', res);
+    return ResponseService.create('Invite sent', res);
   },
 };

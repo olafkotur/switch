@@ -18,7 +18,7 @@ export type ChannelEvent =
 
 export type ChannelValue = any;
 
-export type ModalName = 'preferences' | 'overlay-prompt';
+export type ModalName = 'invite' | 'preferences' | 'overlay-prompt';
 
 export interface WebView {
   goBack: () => void;
@@ -97,6 +97,13 @@ export interface Suggestion {
   url: string;
   icon: string;
   category: 'productivity' | 'social' | 'messaging';
+  updatedAt: Date;
+  createdAt: Date;
+}
+
+export interface Invite {
+  _id: string;
+  email: string;
   updatedAt: Date;
   createdAt: Date;
 }
