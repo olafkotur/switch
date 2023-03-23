@@ -5,7 +5,7 @@ import { PreferenceService } from './preference';
 export const UserService = {
   /**
    * Fetches single user by email.
-   * @param email - user name
+   * @param email - email addreess
    */
   fetchSingle: async (email: string): Promise<UserModelData | null> => {
     const user = await UserModel.findOne({ email });
@@ -14,7 +14,7 @@ export const UserService = {
 
   /**
    * Fetches single user by credentials
-   * @param email - user name
+   * @param email - email addreess
    * @param password - hashed user password
    */
   fetchByCredentials: async (email: string, password: string): Promise<UserModelData | null> => {
@@ -23,8 +23,17 @@ export const UserService = {
   },
 
   /**
+   * Fetches single user by email
+   * @param email - email addreess
+   */
+  fetchByEmail: async (email: string): Promise<UserModelData | null> => {
+    const user = await UserModel.findOne({ email });
+    return user || null;
+  },
+
+  /**
    * Creates new user and saves in db.
-   * @param email - user name
+   * @param email - email addreess
    * @param password - user password
    */
   createUser: async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
