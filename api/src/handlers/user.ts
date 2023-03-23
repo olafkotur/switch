@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserModelData } from '../models';
-import { ResponseService, SecurityService, UserService } from '../services';
+import { InviteService, ResponseService, SecurityService, UserService, UtilService } from '../services';
 
 export const UserHandler = {
   /**
@@ -68,13 +68,14 @@ export const UserHandler = {
   createUser: async (req: Request, res: Response): Promise<void> => {
     const email = req.body.email || '';
     const password = req.body.password || '';
-    if (!email || !password) {
-      return ResponseService.bad('Missing email or password', res);
+
+    const isEmailValid = UtilService.validateEmail(email);
+    if (!isEmailValid) {
+      return ResponseService.bad('Email is not valid', res);
     }
 
-    // check password strength
-    const validPassword = SecurityService.validatePassword(password);
-    if (!validPassword) {
+    const isPasswordValid = SecurityService.validatePassword(password);
+    if (!isPasswordValid) {
       return ResponseService.bad(
         'Password must contain at least 8 characters, one lowercase and uppercase letter and one special character',
         res,
@@ -85,6 +86,15 @@ export const UserHandler = {
     const user = await UserService.fetchSingle(email);
     if (user) {
       return ResponseService.bad('Email is already registered', res);
+    }
+
+    // check if user is invited
+    const isUserInvited = await InviteService.fetchByEmail(email);
+    if (!isUserInvited) {
+      return ResponseService.notFound(
+        'Switch is currently invite only, an existing user must first send you an invitation before you sign up',
+        res,
+      );
     }
 
     // create new user
