@@ -1,9 +1,9 @@
 import React, { ReactElement, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { IconNames, LargeText, MediumText, Preference, Presets, Spacer } from '../components';
 import { useLogout, useSendMessage, useTheme, useUpdatePreferences } from '../hooks';
-import { PreferencesState } from '../state';
+import { ActiveModuleIdState, ModalState, PreferencesState } from '../state';
 
 const PreferencesContainer = styled.div`
   width: 50vw;
@@ -22,6 +22,9 @@ const PreferencesContent = styled.div`
 export const Preferences = (): ReactElement => {
   const preferences = useRecoilValue(PreferencesState);
   const theme = useTheme();
+
+  const setModal = useSetRecoilState(ModalState);
+  const setActiveModuleId = useSetRecoilState(ActiveModuleIdState);
 
   const updatePreferences = useUpdatePreferences();
   const sendMessage = useSendMessage('window-setup');
@@ -56,6 +59,14 @@ export const Preferences = (): ReactElement => {
     [updatePreferences, sendMessage],
   );
 
+  const handleShowTutorial = useCallback(() => {
+    // user must be on the home page for the tutorial to take effect
+    setModal(null);
+    setActiveModuleId(null);
+
+    updatePreferences({ showTutorial: true });
+  }, [updatePreferences, setModal]);
+
   return (
     <PreferencesContainer>
       <PreferencesContent>
@@ -85,6 +96,13 @@ export const Preferences = (): ReactElement => {
           type="toggle"
           value={preferences?.overlayMode ?? false}
           onChange={handleOverlayMode}
+        />
+        <Preference
+          title="Show Tutorial"
+          description="Replay the quick tour of Switch"
+          type="button"
+          onClick={handleShowTutorial}
+          icon={{ name: IconNames.REPEAT, color: theme.color.normal }}
         />
         <Preference
           title="Logout"

@@ -9,13 +9,6 @@ import { Fade } from '../style/animation';
 import { OverlayPrompt } from './OverlayPrompt';
 import { Preferences } from './Preferences';
 
-export const ModalContentContainer = styled.div`
-  width: 50vw;
-  height: 50vh;
-  max-width: 800px;
-  max-height: 600px;
-`;
-
 const ModalContainer = styled(motion.div)`
   position: absolute;
   display: flex;
@@ -36,8 +29,6 @@ const ModalBackdrop = styled.div`
 
 const ModalContent = styled.div`
   position: absolute;
-  background: transparent;
-  position: relative;
   z-index: ${(props) => props.theme.zIndex.modal};
   border-radius: ${(props) => props.theme.borderRadius.large};
   filter: drop-shadow(${(props) => props.theme.dropShadow.strong});

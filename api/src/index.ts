@@ -42,7 +42,7 @@ const main = async (): Promise<void> => {
       return ResponseService.unauthorized(message, res);
     }
 
-    const user = await UserService.fetchSingle(jwtResponse.data.username);
+    const user = await UserService.fetchSingle(jwtResponse.data.email);
     if (!user) {
       return ResponseService.notFound('User not found', res);
     }

@@ -10,32 +10,32 @@ export const UserHandler = {
    */
   fetch: async (_req: Request, res: Response): Promise<void> => {
     const user: UserModelData = res.locals.user;
-    const data = { username: user.username };
+    const data = { email: user.email };
     return ResponseService.data(data, res);
   },
 
   /**
-   * Login via username and password, return a JWT token.
+   * Login via email and password, return a JWT token.
    * @param req - request object
    * @param res - response object
    */
   login: async (req: Request, res: Response): Promise<void> => {
-    const username = req.body.username || '';
+    const email = req.body.email || '';
     const password = req.body.password || '';
-    if (!username || !password) {
-      return ResponseService.bad('Missing username or password', res);
+    if (!email || !password) {
+      return ResponseService.bad('Missing email or password', res);
     }
 
     // check if user exists
     const hashedPassword = SecurityService.hash(password);
-    const user = await UserService.fetchByCredentials(username, hashedPassword);
+    const user = await UserService.fetchByCredentials(email, hashedPassword);
     if (!user) {
-      return ResponseService.notFound('Invalid username or password', res);
+      return ResponseService.notFound('Invalid email or password', res);
     }
 
     // generate a jwt token for the user
-    const accessToken = SecurityService.generateToken(username, hashedPassword, 'access');
-    const refreshToken = SecurityService.generateToken(username, hashedPassword, 'refresh');
+    const accessToken = SecurityService.generateToken(email, hashedPassword, 'access');
+    const refreshToken = SecurityService.generateToken(email, hashedPassword, 'refresh');
     return ResponseService.data({ accessToken, refreshToken }, res);
   },
 
@@ -52,7 +52,7 @@ export const UserHandler = {
     }
 
     const jwtResponse = await SecurityService.verifyToken(refreshResponse.accessToken);
-    const user = await UserService.fetchSingle(jwtResponse.data.username);
+    const user = await UserService.fetchSingle(jwtResponse.data.email);
     if (!user) {
       return ResponseService.notFound('User not found', res);
     }
@@ -61,15 +61,15 @@ export const UserHandler = {
   },
 
   /**
-   * Register a new user via username and password.
+   * Register a new user via email and password.
    * @param req - request object
    * @param res - response object
    */
   createUser: async (req: Request, res: Response): Promise<void> => {
-    const username = req.body.username || '';
+    const email = req.body.email || '';
     const password = req.body.password || '';
-    if (!username || !password) {
-      return ResponseService.bad('Missing username or password', res);
+    if (!email || !password) {
+      return ResponseService.bad('Missing email or password', res);
     }
 
     // check password strength
@@ -82,21 +82,21 @@ export const UserHandler = {
     }
 
     // check if user exists
-    const user = await UserService.fetchSingle(username);
+    const user = await UserService.fetchSingle(email);
     if (user) {
-      return ResponseService.bad('Username is not available', res);
+      return ResponseService.bad('Email is already registered', res);
     }
 
     // create new user
     const hashedPassword = SecurityService.hash(password);
-    const result = await UserService.createUser(username, hashedPassword);
+    const result = await UserService.createUser(email, hashedPassword);
     if (!result.success) {
       return ResponseService.bad(result.message || 'Could not create user', res);
     }
 
     // generate a jwt token for the user
-    const accessToken = SecurityService.generateToken(username, hashedPassword, 'access');
-    const refreshToken = SecurityService.generateToken(username, hashedPassword, 'refresh');
+    const accessToken = SecurityService.generateToken(email, hashedPassword, 'access');
+    const refreshToken = SecurityService.generateToken(email, hashedPassword, 'refresh');
 
     return ResponseService.create({ accessToken, refreshToken }, res);
   },

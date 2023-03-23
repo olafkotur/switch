@@ -8,6 +8,7 @@ export interface PreferenceModelData extends ModelBase {
   overlayMode: boolean;
   disableOverlayPrompt: boolean;
   animatePresets: boolean;
+  showTutorial: boolean;
 }
 
 const schema = new Schema({
@@ -17,6 +18,7 @@ const schema = new Schema({
   overlayMode: { type: Boolean, required: true },
   disableOverlayPrompt: { type: Boolean, required: true },
   animatePresets: { type: Boolean, required: true },
+  showTutorial: { type: Boolean, required: true },
   updatedAt: { type: Date, required: true },
   createdAt: { type: Date, required: true },
 });

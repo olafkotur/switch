@@ -9,7 +9,7 @@ export interface ModelBase {
 }
 
 export interface JwtAuthData {
-  username: string;
+  email: string;
   password: string;
   iat?: number;
   exp?: number;

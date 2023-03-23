@@ -25,3 +25,13 @@ export const PRESET_CONFIG = [
   { width: '75%', value: 0.75 },
   { width: '50%', value: 0.5 },
 ];
+
+export const FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyDBMyFWpFWc9Ws79K_DhoXQOutgsZT-vCg',
+  authDomain: 'switch-3dd9a.firebaseapp.com',
+  projectId: 'switch-3dd9a',
+  storageBucket: 'switch-3dd9a.appspot.com',
+  messagingSenderId: '605914968202',
+  appId: '1:605914968202:web:3d5a6b07c920e351bffd73',
+  measurementId: 'G-171CHTHC36',
+};

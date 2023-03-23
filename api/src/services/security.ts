@@ -30,12 +30,12 @@ export const SecurityService = {
 
   /**
    * Performs a JWT encryption in order to create a token.
-   * @param username - user name
+   * @param email - user name
    * @param password - password of the user
    */
-  generateToken: (username: string, password: string, model: 'access' | 'refresh'): string => {
+  generateToken: (email: string, password: string, model: 'access' | 'refresh'): string => {
     const expiresIn = model === 'access' ? '2h' : '7d';
-    return jwt.sign({ username, password, model }, JWT_SECRET, {
+    return jwt.sign({ email, password, model }, JWT_SECRET, {
       expiresIn,
     });
   },
@@ -53,12 +53,12 @@ export const SecurityService = {
         }
         // clean payload and generate a new token
         const payload: JwtAuthData = {
-          username: decoded.username,
+          email: decoded.email,
           password: decoded.password,
         };
         const tokens = {
-          accessToken: SecurityService.generateToken(payload.username, payload.password, 'access'),
-          refreshToken: SecurityService.generateToken(payload.username, payload.password, 'refresh'),
+          accessToken: SecurityService.generateToken(payload.email, payload.password, 'access'),
+          refreshToken: SecurityService.generateToken(payload.email, payload.password, 'refresh'),
         };
         resolve(tokens);
       });

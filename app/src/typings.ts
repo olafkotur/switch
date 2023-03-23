@@ -67,7 +67,7 @@ export interface AuthTokens {
 }
 
 export interface User {
-  username: string;
+  email: string;
   avatar: string;
 }
 
@@ -87,6 +87,7 @@ export interface Preferences {
   overlayMode: boolean;
   disableOverlayPrompt: boolean;
   animatePresets: boolean;
+  showTutorial: boolean;
   updatedAt: Date;
   createdAt: Date;
 }

@@ -68,7 +68,7 @@ const InputContainer = styled.div`
 export const LoginPage = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [contentType, setContentType] = useState<ContentType>('login');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const theme = useTheme();
@@ -76,7 +76,7 @@ export const LoginPage = (): ReactElement => {
   const signUp = useSignUp();
 
   const copy = useMemo(() => (contentType === 'signup' ? SIGN_UP_COPY : LOGIN_COPY), [contentType]);
-  const isNextDisabled = !username || !password;
+  const isNextDisabled = !email || !password;
 
   const background = contentType === 'signup' ? theme.highlightColor.quaternary : theme.color.normal;
   const color = contentType === 'signup' ? theme.color.white : theme.color.inverted;
@@ -91,9 +91,9 @@ export const LoginPage = (): ReactElement => {
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
     const handler = contentType === 'login' ? login : signUp;
-    await handler({ username, password });
+    await handler({ email, password });
     setIsLoading(false);
-  }, [username, password, contentType, login, signUp]);
+  }, [email, password, contentType, login, signUp]);
 
   useOnKeyPress({ key: 'Enter', onPress: () => !isNextDisabled && handleSubmit() });
 
@@ -107,7 +107,7 @@ export const LoginPage = (): ReactElement => {
           <Spacer vertical={24} />
 
           <InputContainer>
-            <TextInput placeholder="username" value={username} onChange={setUsername} />
+            <TextInput placeholder="email" value={email} onChange={setEmail} />
             <TextInput placeholder="password" value={password} onChange={setPassword} type="password" />
           </InputContainer>
 

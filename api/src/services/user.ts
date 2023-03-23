@@ -4,31 +4,31 @@ import { PreferenceService } from './preference';
 
 export const UserService = {
   /**
-   * Fetches single user by username.
-   * @param username - user name
+   * Fetches single user by email.
+   * @param email - user name
    */
-  fetchSingle: async (username: string): Promise<UserModelData | null> => {
-    const user = await UserModel.findOne({ username });
+  fetchSingle: async (email: string): Promise<UserModelData | null> => {
+    const user = await UserModel.findOne({ email });
     return user || null;
   },
 
   /**
    * Fetches single user by credentials
-   * @param username - user name
+   * @param email - user name
    * @param password - hashed user password
    */
-  fetchByCredentials: async (username: string, password: string): Promise<UserModelData | null> => {
-    const user = await UserModel.findOne({ username, password });
+  fetchByCredentials: async (email: string, password: string): Promise<UserModelData | null> => {
+    const user = await UserModel.findOne({ email, password });
     return user || null;
   },
 
   /**
    * Creates new user and saves in db.
-   * @param username - user name
+   * @param email - user name
    * @param password - user password
    */
-  createUser: async (username: string, password: string): Promise<{ success: boolean; message?: string }> => {
-    const exists = await UserModel.findOne({ username });
+  createUser: async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
+    const exists = await UserModel.findOne({ email });
     if (exists) {
       return { success: false, message: 'User already exists' };
     }
@@ -36,7 +36,7 @@ export const UserService = {
     // define user model
     const data: UserModelData = {
       _id: Types.ObjectId(),
-      username,
+      email,
       password,
       updatedAt: new Date(),
       createdAt: new Date(),
