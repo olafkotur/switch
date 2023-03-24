@@ -1,7 +1,7 @@
 import 'colors';
 import express from 'express';
 import { MONGO_NAME, MONGO_URL, NO_VERIFY_URLS, PORT } from './const';
-import { ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
+import { InviteHandler, ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
 import { DatabaseService, ResponseService, SecurityService, UserService } from './services';
 
 export const database = DatabaseService;
@@ -57,6 +57,7 @@ const main = async (): Promise<void> => {
   setupModuleHandlers();
   setupPreferenceHandlers();
   setupSuggestionHandlers();
+  setupInviteHandlers();
 
   app.listen(PORT, () => console.log(`API listening on port ${PORT}`.cyan));
 };
@@ -81,6 +82,11 @@ const setupPreferenceHandlers = (): void => {
 
 const setupSuggestionHandlers = (): void => {
   app.get('/suggestions', SuggestionHandler.fetch);
+};
+
+const setupInviteHandlers = (): void => {
+  app.get('/invites', InviteHandler.fetch);
+  app.post('/invites/create', InviteHandler.create);
 };
 
 main();

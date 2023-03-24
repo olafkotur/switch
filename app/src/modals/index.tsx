@@ -6,6 +6,7 @@ import { Icon, IconButton, IconNames } from '../components';
 import { useOnKeyPress } from '../hooks';
 import { ModalState } from '../state';
 import { Fade } from '../style/animation';
+import { Invite } from './Invite';
 import { OverlayPrompt } from './OverlayPrompt';
 import { Preferences } from './Preferences';
 
@@ -62,6 +63,7 @@ export const Modal = (): ReactElement => {
         <CloseButton onClick={onDismiss} size="medium">
           <Icon name={IconNames.CLOSE} />
         </CloseButton>
+        {modal === 'invite' && <Invite />}
         {modal === 'preferences' && <Preferences />}
         {modal === 'overlay-prompt' && <OverlayPrompt />}
       </ModalContent>

@@ -68,6 +68,7 @@ export const Sidebar = (): ReactElement => {
       </SidebarTop>
 
       <SidebarBottom>
+        <InviteButton />
         <PreferencesButton />
       </SidebarBottom>
     </SidebarContainer>
@@ -122,6 +123,23 @@ const CreateModuleButton = (): ReactElement => {
   );
 };
 
+const InviteButton = (): ReactElement => {
+  const [modal, setModal] = useRecoilState(ModalState);
+  const theme = useTheme();
+
+  const isActive = modal === 'invite';
+
+  return (
+    <SidebarButton
+      className="tutorial-step-4"
+      onClick={() => setModal('invite')}
+      bg={isActive ? theme.backgroundColor.faint : undefined}
+    >
+      <Icon name={IconNames.TICKET} size={20} />
+    </SidebarButton>
+  );
+};
+
 const PreferencesButton = (): ReactElement => {
   const [modal, setModal] = useRecoilState(ModalState);
   const theme = useTheme();
@@ -131,7 +149,7 @@ const PreferencesButton = (): ReactElement => {
 
   return (
     <SidebarButton
-      className="tutorial-step-4"
+      className="tutorial-step-5"
       onClick={() => setModal('preferences')}
       bg={isActive ? theme.backgroundColor.faint : undefined}
     >
