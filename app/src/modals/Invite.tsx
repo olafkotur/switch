@@ -69,8 +69,8 @@ export const Invite = (): ReactElement => {
         <LargeText>Invite to Switch</LargeText>
         <Spacer vertical={5} />
         <MediumText faint>
-          The app is currently in beta so we're trying to limit downloads during this time. If you wish to invite
-          someone, please feel free to do so - they will be sent an email with instructions.
+          Our app is still being tested, so we want to limit the number of downloads. If you want to invite your friends
+          to try it out, you can do so!
         </MediumText>
         <Spacer vertical={15} />
 
