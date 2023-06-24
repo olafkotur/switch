@@ -1,8 +1,9 @@
 import React, { ReactElement, useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { useTheme, useNavigate } from '../hooks';
-import { ThemeState } from '../state';
+import { useTheme } from '../hooks';
+import { PageState, ThemeState } from '../state';
+import { Pages } from '../typings';
 import { Switch } from './Asset';
 import { IconButton } from './Button';
 import { RowContainer, Spacer } from './Common';
@@ -40,7 +41,7 @@ const BetaText = styled(MediumText)`
 export const Header = (): ReactElement => {
   const theme = useTheme();
   const setTheme = useSetRecoilState(ThemeState);
-  const navigate = useNavigate();
+  const setPage = useSetRecoilState(PageState);
 
   const handleToggleTheme = useCallback(() => {
     if (theme.name === 'dark') {
@@ -51,7 +52,7 @@ export const Header = (): ReactElement => {
 
   return (
     <HeaderContainer>
-      <LogoContainer onClick={() => navigate('/')}>
+      <LogoContainer onClick={() => setPage(Pages.HOME)}>
         <Switch />
         <Spacer horizontal={10} />
         <VeryLargeText>Switch</VeryLargeText>

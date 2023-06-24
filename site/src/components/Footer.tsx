@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { useNavigate } from '../hooks';
+import { PageState } from '../state';
+import { Pages } from '../typings';
 import { Button } from './Button';
 import { Spacer } from './Common';
 import { MediumText } from './Text';
@@ -17,19 +19,19 @@ const FooterContainer = styled.div`
 `;
 
 export const Footer = (): ReactElement => {
-  const navigate = useNavigate();
+  const setPage = useSetRecoilState(PageState);
 
   return (
     <FooterContainer>
       <MediumText>Made with ❤️</MediumText>
       <Spacer horizontal={5} />
 
-      <Button onClick={() => navigate('/privacy')}>
+      <Button onClick={() => setPage(Pages.PRIVACY)}>
         <MediumText cursor="pointer">Privacy</MediumText>
       </Button>
       <Spacer horizontal={5} />
 
-      <Button onClick={() => navigate('/terms')}>
+      <Button onClick={() => setPage(Pages.TERMS)}>
         <MediumText cursor="pointer">Terms</MediumText>
       </Button>
     </FooterContainer>
