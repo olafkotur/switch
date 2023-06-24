@@ -9,7 +9,7 @@
   "scripts": {
     "build": "react-scripts build",
     "start": "react-scripts start",
-    "serve": "serve ./build"
+    "start:prod": "serve ./build"
   },
   "dependencies": {
     "@fontsource/inter": "^4.5.12",
