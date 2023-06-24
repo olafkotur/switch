@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
@@ -110,10 +110,7 @@ const CreateModuleButton = (): ReactElement => {
   const theme = useTheme();
 
   const isActive = activeModuleId === null;
-  const animation = useMemo(
-    () => (isActive ? Rotate({ repeat: 0, degrees: 90, duration: 0.3 }) : undefined),
-    [isActive],
-  );
+  const animation = isActive ? Rotate({ repeat: 0, degrees: 90, duration: 0.3 }) : undefined;
 
   return (
     <SidebarButton
