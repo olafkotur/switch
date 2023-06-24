@@ -23,6 +23,7 @@ interface IconButtonProps extends Props {
 
 const ButtonContainer = styled(motion.div)<{ disabled?: boolean }>`
   cursor: pointer;
+  user-select: none;
   pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
 `;
 

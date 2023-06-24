@@ -26,6 +26,7 @@ export const useToast = (type: ToastType) => {
       background: config.color,
     },
     toastId: config.toastId, // set to avoid stacking of the same type
+    position: 'bottom-right',
   };
 
   return useCallback(

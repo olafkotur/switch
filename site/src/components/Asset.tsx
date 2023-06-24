@@ -3,6 +3,8 @@ import { useTheme } from '../hooks';
 
 const Bg = require('../assets/bg.png');
 const SwitchIcon = require('../assets/switch-icon.png');
+const DemoDark = require('../assets/demo-dark.png');
+const DemoLight = require('../assets/demo-light.png');
 
 const Switch = (): ReactElement => {
   const theme = useTheme();
@@ -151,4 +153,4 @@ const EscapeKey = (): ReactElement => {
   );
 };
 
-export { Bg, SwitchIcon, Switch, CommandKey, EscapeKey };
+export { Bg, SwitchIcon, DemoDark, DemoLight, Switch, CommandKey, EscapeKey };

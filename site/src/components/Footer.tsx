@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { Spacer } from './Common';
-import { SmallText } from './Text';
+import { MediumText } from './Text';
 
 const FooterContainer = styled.div`
   position: absolute;
@@ -16,13 +16,13 @@ const FooterContainer = styled.div`
 export const Footer = (): ReactElement => {
   return (
     <FooterContainer>
-      <SmallText>Made with ❤️</SmallText>
+      <MediumText>Made with ❤️</MediumText>
       <Spacer horizontal={5} />
 
-      <SmallText>Privacy</SmallText>
+      <MediumText>Privacy</MediumText>
       <Spacer horizontal={5} />
 
-      <SmallText>Terms</SmallText>
+      <MediumText>Terms</MediumText>
     </FooterContainer>
   );
 };
