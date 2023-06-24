@@ -6,17 +6,17 @@ import { useTheme } from './use-theme';
 const defaultStepOptions: Partial<Step> = { placement: 'left', showProgress: true, disableBeacon: true };
 
 const steps: Step[] = [
-  { target: '.tutorial-step-1', content: 'Click here to add a new application' },
+  { target: '.tutorial-step-1', content: 'Click the button to add a new application.' },
   {
     target: '.tutorial-step-2',
-    content: 'Search for any website you may wish to add to Switch e.g. https://notion.so',
+    content: 'Search for any website you want to add, like https://notion.so.',
   },
-  { target: '.tutorial-step-3', content: 'Alternatively, you can add from one of the suggested applications' },
+  { target: '.tutorial-step-3', content: 'Or, choose from our suggested applications.' },
   {
     target: '.tutorial-step-4',
-    content: 'Switch is currently invite-only, you can send an invite to your friends here',
+    content: 'Need an invite? Send one to your friends here.',
   },
-  { target: '.tutorial-step-5', content: 'You can visit the preferences panel for any additional settings' },
+  { target: '.tutorial-step-5', content: 'Lastly, check out the preferences panel for more settings.' },
 ];
 
 export const TutorialSteps: Step[] = steps.map((value) => ({ ...defaultStepOptions, ...value }));
