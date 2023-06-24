@@ -36,6 +36,7 @@ export const COMMON_THEME = {
     strong: '0px 12px 12px rgba(0, 0, 0, 0.4)',
   },
   zIndex: {
+    background: -10000,
     sidebar: 1000,
     backdrop: 5000,
     panel: 7000,

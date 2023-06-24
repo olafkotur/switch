@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { toast, ToastContainerProps, ToastOptions } from 'react-toastify';
-import { Icon, IconNames } from '../components';
-import { useTheme } from './use-theme';
+import { useTheme } from '.';
+import { Icon, IconNames } from '../components/Icon';
 
 type ToastType = 'error' | 'info' | 'success';
 
