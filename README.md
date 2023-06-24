@@ -10,9 +10,9 @@
 
 Lightweight overlay browser
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-![example workflow](https://github.com/olafkotur/switch/actions/workflows/api-build.yml/badge.svg)
-![example workflow](https://github.com/olafkotur/switch/actions/workflows/app-build.yml/badge.svg)
+![api-build](https://github.com/olafkotur/switch/actions/workflows/api-build.yml/badge.svg)
+![app-build](https://github.com/olafkotur/switch/actions/workflows/app-build.yml/badge.svg)
+![site-build](https://github.com/olafkotur/switch/actions/workflows/site-build.yml/badge.svg)
 
 </div>
 
