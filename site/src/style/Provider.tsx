@@ -5,6 +5,7 @@ import { createGlobalStyle, ThemeProvider as DefaultThemeProvider } from 'styled
 import { useGetToastProps } from '../hooks';
 import { ThemeState } from '../state';
 import { DARK_THEME, LIGHT_THEME } from './theme';
+import { Background } from '../components';
 
 // always at the end
 import '@fontsource/inter';
@@ -36,6 +37,7 @@ export const ThemeProvider = ({ children }: Props): ReactElement => {
   return (
     <DefaultThemeProvider theme={theme === 'dark' ? DARK_THEME : LIGHT_THEME}>
       <GlobalStyle />
+      <Background />
       <Toasts {...toastProps} />
       {children}
     </DefaultThemeProvider>

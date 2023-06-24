@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { toast, ToastContainerProps, ToastOptions } from 'react-toastify';
-import { Icon, IconNames } from '../components';
-import { useTheme } from './use-theme';
+import { useTheme } from '.';
+import { Icon, IconNames } from '../components/Icon';
 
 type ToastType = 'error' | 'info' | 'success';
 
@@ -26,6 +26,7 @@ export const useToast = (type: ToastType) => {
       background: config.color,
     },
     toastId: config.toastId, // set to avoid stacking of the same type
+    position: 'bottom-right',
   };
 
   return useCallback(

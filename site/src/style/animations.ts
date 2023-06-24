@@ -56,12 +56,3 @@ export const Fade = ({ duration = 0.15 }: { duration?: number }): HTMLMotionProp
     transition: { duration },
   };
 };
-
-export const Slide = ({ width, duration = 0.2 }: { width: string; duration?: number }): HTMLMotionProps<'div'> => {
-  return {
-    initial: { right: `-${width}`, display: 'none' },
-    animate: { right: 0, display: '' },
-    exit: { right: `-${width}`, display: 'none' },
-    transition: { duration },
-  };
-};

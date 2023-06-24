@@ -5,3 +5,8 @@ export const ThemeState = atom({
   key: 'theme',
   default: 'dark' as Themes,
 });
+
+export const DownloadingState = atom({
+  key: 'isDownloading',
+  default: false,
+});

@@ -36,13 +36,8 @@ export const COMMON_THEME = {
     strong: '0px 12px 12px rgba(0, 0, 0, 0.4)',
   },
   zIndex: {
-    sidebar: 1000,
-    backdrop: 5000,
-    panel: 7000,
-    modal: 7500,
+    background: -10000,
     alert: 7500,
-    actions: 7500,
-    tooltip: 10000,
   },
 };
 
@@ -61,9 +56,6 @@ export const LIGHT_THEME = {
     primary: '#E9ECF0',
     secondary: '#F2F5F7',
     tertiary: 'rgba(0, 0, 0, 0.8)',
-    faint: 'rgba(0, 0, 0, 0.2)',
-    selected: 'rgba(0, 0, 0, 0.2)',
-    backdrop: 'rgba(0, 0, 0, 0.9)',
   },
 };
 
@@ -82,9 +74,6 @@ export const DARK_THEME = {
     primary: '#303036',
     secondary: '#1D1D21',
     tertiary: '#ecf0f1',
-    faint: 'rgba(255, 255, 255, 0.2)',
-    selected: 'rgba(255, 255, 255, 0.2)',
-    backdrop: 'rgba(0, 0, 0, 0.8)',
   },
 };
 
