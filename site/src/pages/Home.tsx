@@ -14,6 +14,7 @@ const HomePageContainer = styled.div`
 const Banner = styled.img`
   width: 90vw;
   max-width: 1024px;
+  user-select: none;
 `;
 
 export const HomePage = (): ReactElement => {

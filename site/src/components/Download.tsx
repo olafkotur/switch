@@ -31,7 +31,9 @@ export const Download = ({ expanded }: { expanded?: boolean }): ReactElement => 
     >
       <Icon name={IconNames.DOWNLOAD} size={14} color={theme.color.white} />
       <Spacer horizontal={2} />
-      <MediumText color={theme.color.white}>{expanded ? 'MacOS Intel & Silicon' : 'Download'}</MediumText>
+      <MediumText cursor="pointer" color={theme.color.white}>
+        {expanded ? 'MacOS Intel & Silicon' : 'Download'}
+      </MediumText>
     </LargeButton>
   );
 };
