@@ -1,0 +1,50 @@
+{
+  "name": "site",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "Olaf Kotur <olafkotur97@gmail.com>",
+  "license": "MIT",
+  "repository": "git@github.com:olafkotur/pebble.git",
+  "scripts": {
+    "build": "react-scripts build",
+    "start": "react-scripts start",
+    "serve": "serve ./build"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^4.5.12",
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "dayjs": "^1.11.5",
+    "framer-motion": "^7.1.0",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-toastify": "^9.1.1",
+    "recoil": "^0.7.5",
+    "serve": "^14.2.0",
+    "styled-components": "^5.3.5",
+    "typescript": "^4.8.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.184",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@types/styled-components": "^5.1.26",
+    "react-scripts": "^5.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
