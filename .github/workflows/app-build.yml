@@ -5,6 +5,7 @@ on:
     branches: ['main']
     paths:
       - 'app/**'
+      - '.github/workflows/app-build.yml'
 
 jobs:
   build:
