@@ -1,12 +1,11 @@
-import React, { ReactElement, useCallback, useState } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { useTheme } from '../hooks';
+import { useTheme, useNavigate } from '../hooks';
 import { ThemeState } from '../state';
 import { Switch } from './Asset';
 import { IconButton } from './Button';
 import { RowContainer, Spacer } from './Common';
-import { Download } from './Download';
 import { Icon, IconNames } from './Icon';
 import { MediumText, VeryLargeText } from './Text';
 
@@ -23,12 +22,15 @@ const LogoContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
+  user-select: none;
 `;
 
 const BetaText = styled(MediumText)`
   display: flex;
   align-items: center;
   height: 30px;
+  user-select: none;
   color: ${(props) => props.theme.color.white};
   background: ${(props) => props.theme.highlightColor.quaternary};
   border-radius: ${(props) => props.theme.borderRadius.small};
@@ -38,6 +40,7 @@ const BetaText = styled(MediumText)`
 export const Header = (): ReactElement => {
   const theme = useTheme();
   const setTheme = useSetRecoilState(ThemeState);
+  const navigate = useNavigate();
 
   const handleToggleTheme = useCallback(() => {
     if (theme.name === 'dark') {
@@ -48,7 +51,7 @@ export const Header = (): ReactElement => {
 
   return (
     <HeaderContainer>
-      <LogoContainer>
+      <LogoContainer onClick={() => navigate('/')}>
         <Switch />
         <Spacer horizontal={10} />
         <VeryLargeText>Switch</VeryLargeText>
