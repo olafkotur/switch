@@ -68,9 +68,10 @@ export const Invite = (): ReactElement => {
       <InviteContent>
         <LargeText>Invite to Switch</LargeText>
         <Spacer vertical={5} />
+
         <MediumText faint>
-          Our app is still being tested, so we want to limit the number of downloads. If you want to invite your friends
-          to try it out, you can do so!
+          We're currently fine-tuning our app through testing, and to ensure a smooth experience, we're managing the
+          number of downloads. If you're excited to invite your friends and let them try it out, you absolutely can!
         </MediumText>
         <Spacer vertical={15} />
 
@@ -83,9 +84,9 @@ export const Invite = (): ReactElement => {
             <Icon name={IconNames.SEND} />
           </SendButton>
         </SpaceBetweenContainer>
-
         <Spacer vertical={10} />
-        <MediumText bold>Previous Invites ({invites.length})</MediumText>
+
+        <MediumText bold>Sent invites ({invites.length})</MediumText>
         {invites.map((invite, index) => (
           <div key={`invite-${index}`}>
             <Spacer vertical={5} />
