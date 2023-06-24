@@ -3,6 +3,8 @@ name: app-build
 on:
   pull_request:
     branches: ['main']
+    paths:
+      - 'app/**'
 
 jobs:
   build:

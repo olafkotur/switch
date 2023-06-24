@@ -1,9 +1,11 @@
-name: Build and deploy site
+name: deploy-site
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'docs/**'
 
 jobs:
   github-pages:
@@ -13,4 +15,4 @@ jobs:
       - uses: helaili/jekyll-action@v2
         with:
           token: $GH_TOKEN
-          target_branch: main
+          target_branch: mainsite
