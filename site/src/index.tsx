@@ -1,19 +1,17 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom/client';
-import { RecoilRoot, useRecoilState } from 'recoil';
+import { RecoilRoot } from 'recoil';
 import styled from 'styled-components';
 import { ThemeProvider } from './style/Provider';
 import { Footer, Header } from './components';
 import { HomePage } from './pages/Home';
-import { TermsPage } from './pages/Terms';
-import { PrivacyPage } from './pages/Privacy';
-import { PageState } from './state';
-import { Pages } from './typings';
+import { MAX_PAGE_WIDTH } from './const';
+import { Modal } from './modals';
 
 const AppContainer = styled.div`
   height: 100vh;
   margin: 0 auto;
-  max-width: 1024px;
+  max-width: ${MAX_PAGE_WIDTH}px;
   position: relative;
   padding-bottom: env(safe-area-inset-bottom, 30px);
 `;
@@ -23,26 +21,11 @@ const PageContainer = styled.div`
 `;
 
 const App = (): ReactElement => {
-  const [page, setPage] = useRecoilState(PageState);
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const requestedPage = urlParams.get('page');
-    if (requestedPage == null) return;
-
-    const isValid = Object.values(Pages).includes(requestedPage as Pages);
-    if (isValid === false) return;
-
-    setPage(requestedPage as Pages);
-  }, []);
-
   return (
     <>
       <Header />
       <PageContainer>
-        {page === 'home' && <HomePage />}
-        {page === 'privacy' && <PrivacyPage />}
-        {page === 'terms' && <TermsPage />}
+        <HomePage />
       </PageContainer>
       <Footer />
     </>
@@ -54,6 +37,7 @@ root.render(
   <React.StrictMode>
     <RecoilRoot>
       <ThemeProvider>
+        <Modal />
         <AppContainer>
           <App />
         </AppContainer>

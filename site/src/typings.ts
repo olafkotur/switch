@@ -1,5 +1,4 @@
-export enum Pages {
-  HOME = 'home',
+export enum ModalName {
   PRIVACY = 'privacy',
   TERMS = 'terms',
 }

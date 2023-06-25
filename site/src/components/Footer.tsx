@@ -1,37 +1,36 @@
 import React, { ReactElement } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { PageState } from '../state';
-import { Pages } from '../typings';
+import { MAX_PAGE_WIDTH } from '../const';
+import { ModalState } from '../state';
+import { ModalName } from '../typings';
 import { Button } from './Button';
 import { Spacer } from './Common';
 import { MediumText } from './Text';
 
 const FooterContainer = styled.div`
-  position: absolute;
+  position: fixed;
   display: flex;
-  width: 100%;
   height: 30px;
-  justify-content: center;
   align-items: center;
   user-select: none;
+  justify-content: center;
+  width: 100%;
+  max-width: ${MAX_PAGE_WIDTH}px;
   bottom: ${(props) => props.theme.spacing.medium};
 `;
 
 export const Footer = (): ReactElement => {
-  const setPage = useSetRecoilState(PageState);
+  const setModal = useSetRecoilState(ModalState);
 
   return (
     <FooterContainer>
-      <MediumText>Made with ❤️</MediumText>
-      <Spacer horizontal={5} />
-
-      <Button onClick={() => setPage(Pages.PRIVACY)}>
+      <Button onClick={() => setModal(ModalName.PRIVACY)}>
         <MediumText cursor="pointer">Privacy</MediumText>
       </Button>
       <Spacer horizontal={5} />
 
-      <Button onClick={() => setPage(Pages.TERMS)}>
+      <Button onClick={() => setModal(ModalName.TERMS)}>
         <MediumText cursor="pointer">Terms</MediumText>
       </Button>
     </FooterContainer>
