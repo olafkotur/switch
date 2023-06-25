@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 import styled from 'styled-components';
-import { ThemeProvider } from './style/Provider';
 import { Footer, Header } from './components';
-import { HomePage } from './pages/Home';
 import { MAX_PAGE_WIDTH } from './const';
 import { Modal } from './modals';
+import { HomePage } from './pages/Home';
+import { ThemeProvider } from './style/Provider';
 
 const AppContainer = styled.div`
   height: 100vh;

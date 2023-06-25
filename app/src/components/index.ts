@@ -3,6 +3,7 @@ export * from './Background';
 export * from './Button';
 export * from './Common';
 export * from './Divider';
+export * from './DragDrop';
 export * from './Header';
 export * from './Icon';
 export * from './Input';

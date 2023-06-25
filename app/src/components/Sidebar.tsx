@@ -9,6 +9,7 @@ import { Module } from '../typings';
 import { SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Controls } from './Controls';
+import { DragDrop } from './DragDrop';
 import { Icon, IconNames } from './Icon';
 
 const SidebarContainer = styled.div`
@@ -61,9 +62,7 @@ export const Sidebar = (): ReactElement => {
       {isTrafficLightsShown && <Spacer vertical={10} />}
 
       <SidebarTop>
-        {modules.map((module) => (
-          <ModuleButton key={`module-${module._id}`} {...module} />
-        ))}
+        <DragDrop id="modules" data={modules} component={(data) => <ModuleButton {...(data as Module)} />} />
         <CreateModuleButton />
       </SidebarTop>
 

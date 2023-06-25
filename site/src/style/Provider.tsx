@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react';
 import { ToastContainer as Toasts } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { createGlobalStyle, ThemeProvider as DefaultThemeProvider } from 'styled-components';
+import { Background } from '../components';
 import { useGetToastProps } from '../hooks';
 import { ThemeState } from '../state';
 import { DARK_THEME, LIGHT_THEME } from './theme';
-import { Background } from '../components';
 
 // always at the end
 import '@fontsource/inter';

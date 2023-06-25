@@ -81,13 +81,11 @@ const App = (): ReactElement => {
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <RecoilRoot>
-      <ThemeProvider>
-        <AppContainer>
-          <App />
-        </AppContainer>
-      </ThemeProvider>
-    </RecoilRoot>
-  </React.StrictMode>,
+  <RecoilRoot>
+    <ThemeProvider>
+      <AppContainer>
+        <App />
+      </AppContainer>
+    </ThemeProvider>
+  </RecoilRoot>,
 );

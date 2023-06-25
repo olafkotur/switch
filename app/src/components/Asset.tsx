@@ -151,4 +151,4 @@ const EscapeKey = (): ReactElement => {
   );
 };
 
-export { Bg, SwitchIcon, Switch, CommandKey, EscapeKey };
+export { Bg, CommandKey, EscapeKey, Switch, SwitchIcon };
