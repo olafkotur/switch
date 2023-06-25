@@ -10,6 +10,8 @@ import { SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Controls } from './Controls';
 import { Icon, IconNames } from './Icon';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDrop } from './DragDrop';
 
 const SidebarContainer = styled.div`
   display: flex;
@@ -61,9 +63,7 @@ export const Sidebar = (): ReactElement => {
       {isTrafficLightsShown && <Spacer vertical={10} />}
 
       <SidebarTop>
-        {modules.map((module) => (
-          <ModuleButton key={`module-${module._id}`} {...module} />
-        ))}
+        <DragDrop id="modules" data={modules} component={(data) => <ModuleButton {...(data as Module)} />} />
         <CreateModuleButton />
       </SidebarTop>
 

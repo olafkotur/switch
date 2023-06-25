@@ -12,3 +12,4 @@ export * from './SearchBar';
 export * from './Sidebar';
 export * from './Suggestions';
 export * from './Text';
+export * from './DragDrop';
