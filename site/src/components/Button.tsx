@@ -1,7 +1,7 @@
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { ScaleOnTap } from '../style/animations';
+import { ScaleOnTap } from '../style/animation';
 
 const ICON_BUTTON_SIZES = {
   small: '12px',

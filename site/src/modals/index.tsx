@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Icon, IconButton, IconNames } from '../components';
 import { useOnKeyPress } from '../hooks';
 import { ModalState } from '../state';
-import { Fade } from '../style/animations';
+import { Fade } from '../style/animation';
 import { ModalName } from '../typings';
 import { Privacy } from './Privacy';
 import { Terms } from './Terms';
