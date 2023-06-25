@@ -2,6 +2,7 @@ import React, { ReactElement, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { LargeText, Spacer, VeryLargeText, Download, DemoDark, DemoLight } from '../components';
+import { MAX_PAGE_WIDTH } from '../const';
 import { ThemeState } from '../state';
 
 const HomePageContainer = styled.div`
@@ -13,7 +14,7 @@ const HomePageContainer = styled.div`
 
 const Banner = styled.img`
   width: 90vw;
-  max-width: 1024px;
+  max-width: ${MAX_PAGE_WIDTH}px;
   user-select: none;
 `;
 
