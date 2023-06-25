@@ -5,17 +5,25 @@ export const DragDrop = ({
   id,
   data,
   component,
+  setIsDragging,
 }: {
   id: string;
   data: object[];
   component: (data: object) => ReactElement;
+  setIsDragging: (value: boolean) => void;
 }): ReactElement => {
-  const handleDragEnd = useCallback((result: DropResult) => {
-    console.log({ result });
-  }, []);
+  const handleDragEnd = useCallback(
+    (result: DropResult) => {
+      // id of the module
+      // current position
+      // target position
+      setIsDragging(false);
+    },
+    [setIsDragging],
+  );
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DragDropContext onBeforeDragStart={() => setIsDragging(true)} onDragEnd={handleDragEnd}>
       <Droppable droppableId={id}>
         {(provided) => (
           <div ref={provided.innerRef}>

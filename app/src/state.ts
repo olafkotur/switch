@@ -60,3 +60,8 @@ export const SuggestionsState = atom({
   key: 'suggestions',
   default: [] as Suggestion[],
 });
+
+export const EditModuleState = atom({
+  key: 'editModule',
+  default: false,
+});

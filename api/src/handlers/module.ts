@@ -37,6 +37,30 @@ export const ModuleHandler = {
   },
 
   /**
+   * Update existing module.
+   * @param req - request object
+   * @param res - response object
+   */
+  update: async (req: Request, res: Response): Promise<void> => {
+    const id = req.body._id || '';
+    const data = req.body.data;
+    if (!id || data == null) {
+      return ResponseService.bad('Missing update data', res);
+    }
+
+    if (typeof data.position !== 'number') {
+      return ResponseService.bad('Invalid update data', res);
+    }
+
+    const _id = Types.ObjectId(id);
+    const success = await ModuleService.update({ _id, data });
+    if (success) {
+      return ResponseService.ok('Module successfully updated', res);
+    }
+    return ResponseService.bad('Could not update module', res);
+  },
+
+  /**
    * Delete existing module.
    * @param req - request object
    * @param res - response object
