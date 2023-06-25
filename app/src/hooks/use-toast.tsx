@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { toast, ToastContainerProps, ToastOptions } from 'react-toastify';
+import { ToastContainerProps, ToastOptions, toast } from 'react-toastify';
 import { useTheme } from '.';
 import { Icon, IconNames } from '../components/Icon';
 

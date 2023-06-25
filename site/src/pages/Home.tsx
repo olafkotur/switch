@@ -1,7 +1,7 @@
 import React, { ReactElement, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { LargeText, Spacer, VeryLargeText, Download, DemoDark, DemoLight } from '../components';
+import { DemoDark, DemoLight, Download, LargeText, Spacer, VeryLargeText } from '../components';
 import { MAX_PAGE_WIDTH } from '../const';
 import { ThemeState } from '../state';
 

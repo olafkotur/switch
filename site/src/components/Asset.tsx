@@ -119,4 +119,4 @@ const Switch = (): ReactElement => {
   );
 };
 
-export { Bg, SwitchIcon, DemoDark, DemoLight, Switch };
+export { Bg, DemoDark, DemoLight, Switch, SwitchIcon };

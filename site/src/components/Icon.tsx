@@ -1,12 +1,12 @@
 import { IconProp, library } from '@fortawesome/fontawesome-svg-core';
-import * as Solid from '@fortawesome/free-solid-svg-icons';
 import * as Regular from '@fortawesome/free-regular-svg-icons';
+import * as Solid from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { HTMLMotionProps, motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { DEFAULT_ICON_OPACITY, DEFAULT_ICON_SIZE } from '../const';
 import { useTheme } from '../hooks';
-import { HTMLMotionProps, motion } from 'framer-motion';
 
 interface IconProps {
   name: IconNames;

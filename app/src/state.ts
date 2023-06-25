@@ -1,6 +1,5 @@
 import { atom } from 'recoil';
-import { AppUpdates, ModalName } from './typings';
-import { Module, Preferences, Suggestion, User, WindowSetup } from './typings';
+import { AppUpdates, ModalName, Module, Preferences, Suggestion, User, WindowSetup } from './typings';
 
 export const IsAppLoadingState = atom({
   key: 'isAppLoading',

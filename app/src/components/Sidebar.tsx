@@ -9,9 +9,8 @@ import { Module } from '../typings';
 import { SidebarButton } from './Button';
 import { ModuleIcon, Spacer } from './Common';
 import { Controls } from './Controls';
-import { Icon, IconNames } from './Icon';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { DragDrop } from './DragDrop';
+import { Icon, IconNames } from './Icon';
 
 const SidebarContainer = styled.div`
   display: flex;

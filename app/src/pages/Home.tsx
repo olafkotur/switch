@@ -1,7 +1,7 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { Header, Suggestions, SearchBar, Spacer } from '../components';
+import { Header, SearchBar, Spacer, Suggestions } from '../components';
 import { SIDE_BAR_WIDTH } from '../const';
 import { useCreateModule } from '../hooks';
 import { SuggestionsState } from '../state';

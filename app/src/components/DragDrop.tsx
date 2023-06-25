@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 
 export const DragDrop = ({
   id,

@@ -1,6 +1,6 @@
 import React, { HTMLInputTypeAttribute, ReactElement } from 'react';
 import styled from 'styled-components';
-import { Button, IconButton } from './Button';
+import { Button } from './Button';
 import { Icon, IconNames } from './Icon';
 
 interface TextInputProps {

@@ -1,0 +1,16 @@
+{
+  "name": "switch",
+  "version": "1.0.0",
+  "repository": "git@github.com:olafkotur/switch.git",
+  "author": "olafkotur <olafkotur97@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"app/**/*.{js,jsx,ts,tsx}\" \"api/**/*.{js,jsx,ts,tsx}\" \"site/**/*.{js,jsx,ts,tsx}\" --ignore \"build/**/*\""
+  },
+  "dependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "typescript": "^5.1.3"
+  }
+}

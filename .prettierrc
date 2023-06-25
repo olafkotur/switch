@@ -2,11 +2,16 @@
   "singleQuote": true,
   "trailingComma": "all",
   "arrowParens": "always",
-  "vetur.format.defaultFormatterOptions": {
-    "prettier": {
-      "singleQuote": true,
-      "arrowParens": "always"
+  "printWidth": 120,
+  "plugins": ["prettier-plugin-organize-imports"],
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "options": {
+        "prettier-plugin-organize-imports": {
+          "importOrder": ["^\\u0000", "^@\\w", "^[./]", "^\\../", "^"]
+        }
+      }
     }
-  },
-  "printWidth": 120
+  ]
 }

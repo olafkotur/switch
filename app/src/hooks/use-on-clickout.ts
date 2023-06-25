@@ -1,4 +1,4 @@
-import { useCallback, useEffect, RefObject } from 'react';
+import { RefObject, useCallback, useEffect } from 'react';
 
 export const useOnClickout = (ignoredRefs: RefObject<Element>[], handler: Function) => {
   const onMouseDown = useCallback(
