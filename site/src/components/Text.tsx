@@ -8,10 +8,10 @@ interface TextProps {
   cursor?: string;
 }
 
-export const Text = styled.span<TextProps>`
+const Text = styled.span<TextProps>`
   font-weight: ${(props) => (props.bold ? '600' : '400')};
   font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
-  text-decoration: ${(props) => (props.underline ? 'underline' : '')};
+  text-decoration: ${(props) => (props.underline ? 'underline' : 'none')};
   color: ${(props) => {
     if (props.color) {
       return props.color;
@@ -35,4 +35,21 @@ export const MediumText = styled(Text)`
 
 export const SmallText = styled(Text)`
   font-size: ${(props) => props.theme.fontSize.small};
+`;
+
+const Link = styled.a<TextProps>`
+  font-weight: ${(props) => (props.bold ? '600' : '400')};
+  font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
+  text-decoration: ${(props) => (props.underline ? 'underline' : 'none')};
+  color: ${(props) => {
+    if (props.color) {
+      return props.color;
+    }
+    return props.faint ? props.theme.color.faint : props.theme.color.normal;
+  }};
+  cursor: ${(props) => props.cursor ?? 'auto'};
+`;
+
+export const MediumLink = styled(Link)`
+  font-size: ${(props) => props.theme.fontSize.medium};
 `;

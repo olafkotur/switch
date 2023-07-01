@@ -8,10 +8,10 @@ interface TextProps {
   cursor?: string;
 }
 
-export const Text = styled.span<TextProps>`
+const Text = styled.span<TextProps>`
   font-weight: ${(props) => (props.bold ? '600' : '400')};
   font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
-  text-decoration: ${(props) => (props.underline ? 'underline' : '')};
+  text-decoration: ${(props) => (props.underline ? 'underline' : 'none')};
   color: ${(props) => {
     if (props.color) {
       return props.color;
