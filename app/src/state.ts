@@ -16,6 +16,11 @@ export const IsFullScreenState = atom({
   default: false,
 });
 
+export const IsReorderingModuleState = atom({
+  key: 'isReorderingModule',
+  default: false,
+});
+
 export const WindowSetupState = atom({
   key: 'windowSetup',
   default: {} as WindowSetup,

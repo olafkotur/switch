@@ -72,6 +72,7 @@ const setupUserHandlers = (): void => {
 const setupModuleHandlers = (): void => {
   app.get('/module', ModuleHandler.fetch);
   app.post('/module/create', ModuleHandler.create);
+  app.post('/module/update', ModuleHandler.update);
   app.delete('/module/delete', ModuleHandler.delete);
 };
 

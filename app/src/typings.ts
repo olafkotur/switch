@@ -74,6 +74,7 @@ export interface User {
 export interface Module {
   _id: string;
   userId: string;
+  position: number;
   url: string;
   icon: string;
   updatedAt: Date;

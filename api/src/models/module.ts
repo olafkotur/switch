@@ -6,6 +6,7 @@ export interface ModuleModelData extends ModelBase {
   userId: Types.ObjectId;
   url: string;
   icon: string;
+  position: number;
 }
 
 const schema = new Schema({
@@ -13,6 +14,7 @@ const schema = new Schema({
   userId: { type: ObjectId, required: true },
   url: { type: String, required: false },
   icon: { type: String, required: true },
+  position: { type: Number, required: true },
   updatedAt: { type: Date, required: true },
   createdAt: { type: Date, required: true },
 });

@@ -1,9 +1,16 @@
 import React, { ReactElement, useCallback, useState } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
-import { useOnKeyPress, useTheme } from '../hooks';
-import { ActiveModuleIdState, IsFullScreenState, ModalState, ModulesState, WindowSetupState } from '../state';
+import { useOnKeyPress, useReorderModule, useTheme } from '../hooks';
+import {
+  ActiveModuleIdState,
+  IsFullScreenState,
+  IsReorderingModuleState,
+  ModalState,
+  ModulesState,
+  WindowSetupState,
+} from '../state';
 import { Rotate } from '../style/animation';
 import { Module } from '../typings';
 import { SidebarButton } from './Button';
@@ -42,6 +49,8 @@ export const Sidebar = (): ReactElement => {
   const modules = useRecoilValue(ModulesState);
   const isFullScreen = useRecoilValue(IsFullScreenState);
   const windowSetup = useRecoilValue(WindowSetupState);
+  const setIsReorderingModule = useSetRecoilState(IsReorderingModuleState);
+  const reorderModule = useReorderModule();
 
   const isTrafficLightsShown = !isFullScreen && !windowSetup.overlayMode;
 
@@ -62,7 +71,14 @@ export const Sidebar = (): ReactElement => {
       {isTrafficLightsShown && <Spacer vertical={10} />}
 
       <SidebarTop>
-        <DragDrop id="modules" data={modules} component={(data) => <ModuleButton {...(data as Module)} />} />
+        <DragDrop
+          id="modules"
+          uid="_id"
+          data={modules}
+          component={(data) => <ModuleButton {...(data as Module)} />}
+          setIsDragging={setIsReorderingModule}
+          onComplete={reorderModule}
+        />
         <CreateModuleButton />
       </SidebarTop>
 
@@ -77,6 +93,7 @@ export const Sidebar = (): ReactElement => {
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [isControlsVisible, setIsControlsVisible] = useState(false);
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
+  const isEditingModule = useRecoilValue(IsReorderingModuleState);
   const theme = useTheme();
 
   const isActive = activeModuleId === _id;
@@ -93,6 +110,7 @@ const ModuleButton = ({ _id, icon }: Module): ReactElement => {
     <>
       <Controls _id={_id} icon={icon} isVisible={showControls} setVisible={setIsControlsVisible} />
       <SidebarButton
+        disabled={isEditingModule}
         bg={isActive ? theme.backgroundColor.faint : undefined}
         onClick={handleOnClick}
         onContextMenu={handleOnClick}

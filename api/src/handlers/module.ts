@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { UserModelData } from '../models';
+import { ModuleModelData, UserModelData } from '../models';
 import { ModuleService, ResponseService } from '../services';
 
 export const ModuleHandler = {
@@ -34,6 +34,30 @@ export const ModuleHandler = {
       return ResponseService.data(module, res);
     }
     return ResponseService.bad('Could not create module', res);
+  },
+
+  /**
+   * Update existing module.
+   * @param req - request object
+   * @param res - response object
+   */
+  update: async (req: Request, res: Response): Promise<void> => {
+    const id = req.body._id || '';
+    const data = req.body.data as Partial<ModuleModelData>;
+    if (!id || data == null || data.position == null) {
+      return ResponseService.bad('Missing update data', res);
+    }
+
+    if (typeof data.position !== 'number') {
+      return ResponseService.bad('Invalid update data', res);
+    }
+
+    const _id = Types.ObjectId(id);
+    const success = await ModuleService.update({ _id, data });
+    if (success) {
+      return ResponseService.ok('Module successfully updated', res);
+    }
+    return ResponseService.bad('Could not update module', res);
   },
 
   /**
