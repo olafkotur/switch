@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Switch - Built with Electron, React and TypeScript",
   "main": "./build/main.js",
   "keywords": [],
@@ -52,6 +52,7 @@
     "@commitlint/cli": "^9.0.1",
     "@commitlint/config-conventional": "^9.0.1",
     "@commitlint/core": "^9.0.1",
+    "@electron/notarize": "^2.1.0",
     "@testing-library/react": "^10.4.3",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-json-storage": "^4.0.0",
@@ -68,7 +69,6 @@
     "electron": "^22.1.0",
     "electron-builder": "^23.6.0",
     "electron-devtools-installer": "^3.1.0",
-    "electron-notarize": "^1.0.0",
     "electron-packager": "^15.2.0",
     "html-webpack-plugin": "^4.2.0",
     "npm-run-all": "^4.1.5",
@@ -84,13 +84,14 @@
   "build": {
     "electronVersion": "22.1.0",
     "afterSign": "scripts/notarize.js",
-    "appId": "com.electron.switch",
+    "appId": "dev.switchapp.switch",
     "productName": "Switch",
     "dmg": {
-      "sign": false
+      "sign": true
     },
     "mac": {
-      "icon": "assets/switch-icon.png"
+      "icon": "assets/switch-icon.png",
+      "provisioningProfile": "./Switch.provisionprofile"
     },
     "directories": {
       "output": "packages"

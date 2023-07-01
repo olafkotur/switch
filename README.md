@@ -58,6 +58,8 @@ _This repo contains both the `api` and `app`, make sure you're in the correct di
 ## 📦 Publishing
 
 - Update the version in `app/package.json`
+- Install Developer ID certificate and Provision Profile locally
+- Ensure a provision profile exists at the root of this project `Switch.provisionprofile`
 - Run `yarn package` to create a package for publishing
 - Create a new release in [olafkotur/switch-releases](https://github.com/olafkotur/switch-releases/releases) repository
 - Upload `.dmg` and `.zip` files from package output to the release
