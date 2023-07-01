@@ -69,3 +69,48 @@ export const useDeleteModule = () => {
     [url, modules, request, errorToast, setModules, setActiveModuleId],
   );
 };
+
+export const useUpdateModule = () => {
+  const [modules, setModules] = useRecoilState(ModulesState);
+  const setActiveModuleId = useSetRecoilState(ActiveModuleIdState);
+
+  const url = `${API_BASE_URL}/module/update`;
+  const request = useRequest();
+  const errorToast = useToast('error');
+
+  return useCallback(
+    async (_id: string, position: number) => {
+      const response = await request({ method: 'POST', url, body: { _id, data: { position } } });
+      if (response?.code !== 200) {
+        errorToast(response?.message ?? DEFAULT_ERROR_MESSAGE);
+        return;
+      }
+    },
+    [url, modules, request, errorToast, setModules, setActiveModuleId],
+  );
+};
+
+export const useReorderModule = () => {
+  const [modules, setModules] = useRecoilState(ModulesState);
+  const updateModule = useUpdateModule();
+
+  return useCallback(
+    async ({ _id, position }: { _id: string; position: number }) => {
+      const moduleIndex = modules.findIndex((module) => module._id === _id);
+      if (moduleIndex === -1) return;
+
+      const modulesCopy = [...modules];
+      const [removedModule] = modulesCopy.splice(moduleIndex, 1);
+      modulesCopy.splice(position, 0, removedModule);
+
+      const updatedModules = modulesCopy.map((module, index) => ({
+        ...module,
+        position: index,
+      }));
+
+      setModules(updatedModules);
+      await updateModule(_id, position);
+    },
+    [modules, setModules],
+  );
+};

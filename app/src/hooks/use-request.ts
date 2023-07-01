@@ -7,7 +7,7 @@ import { useToast } from './use-toast';
 interface RequestConfig {
   method: 'GET' | 'POST' | 'DELETE';
   url: string;
-  body?: Record<string, string | number>;
+  body?: Record<string, string | number | object>;
 }
 
 export const useRequest = () => {

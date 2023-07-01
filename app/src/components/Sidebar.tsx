@@ -2,11 +2,11 @@ import React, { ReactElement, useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { SIDE_BAR_WIDTH } from '../const';
-import { useOnKeyPress, useTheme } from '../hooks';
+import { useOnKeyPress, useReorderModule, useTheme } from '../hooks';
 import {
   ActiveModuleIdState,
-  EditModuleState,
   IsFullScreenState,
+  IsReorderingModuleState,
   ModalState,
   ModulesState,
   WindowSetupState,
@@ -49,7 +49,8 @@ export const Sidebar = (): ReactElement => {
   const modules = useRecoilValue(ModulesState);
   const isFullScreen = useRecoilValue(IsFullScreenState);
   const windowSetup = useRecoilValue(WindowSetupState);
-  const setIsEditingModule = useSetRecoilState(EditModuleState);
+  const setIsReorderingModule = useSetRecoilState(IsReorderingModuleState);
+  const reorderModule = useReorderModule();
 
   const isTrafficLightsShown = !isFullScreen && !windowSetup.overlayMode;
 
@@ -72,9 +73,11 @@ export const Sidebar = (): ReactElement => {
       <SidebarTop>
         <DragDrop
           id="modules"
+          uid="_id"
           data={modules}
           component={(data) => <ModuleButton {...(data as Module)} />}
-          setIsDragging={setIsEditingModule}
+          setIsDragging={setIsReorderingModule}
+          onComplete={reorderModule}
         />
         <CreateModuleButton />
       </SidebarTop>
@@ -90,7 +93,7 @@ export const Sidebar = (): ReactElement => {
 const ModuleButton = ({ _id, icon }: Module): ReactElement => {
   const [isControlsVisible, setIsControlsVisible] = useState(false);
   const [activeModuleId, setActiveModuleId] = useRecoilState(ActiveModuleIdState);
-  const isEditingModule = useRecoilValue(EditModuleState);
+  const isEditingModule = useRecoilValue(IsReorderingModuleState);
   const theme = useTheme();
 
   const isActive = activeModuleId === _id;

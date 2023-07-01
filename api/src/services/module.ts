@@ -46,10 +46,9 @@ export const ModuleService = {
    */
   update: async (args: { _id: Types.ObjectId; data: Partial<ModuleModelData> }) => {
     const { position } = args.data;
-    if (position == null) return false;
 
     const moduleToUpdate = await ModuleModel.findOne({ _id: args._id });
-    if (moduleToUpdate == null) {
+    if (moduleToUpdate == null || position == null) {
       return false;
     }
 
@@ -58,21 +57,21 @@ export const ModuleService = {
       return true;
     }
 
-    // update the module's position
-    await ModuleModel.updateOne({ _id: args._id }, { $set: { position } });
+    // determine the range of positions to update
+    const currentPosition = moduleToUpdate.position;
+    const newPosition = position;
+    const minPosition = Math.min(currentPosition, newPosition);
+    const maxPosition = Math.max(currentPosition, newPosition);
 
     // shift positions of modules in between
-    if (moduleToUpdate.position < position) {
-      await ModuleModel.updateMany(
-        { position: { $gt: moduleToUpdate.position, $lte: position } },
-        { $inc: { position: -1 } },
-      );
+    if (currentPosition < newPosition) {
+      await ModuleModel.updateMany({ position: { $gt: minPosition, $lte: maxPosition } }, { $inc: { position: -1 } });
     } else {
-      await ModuleModel.updateMany(
-        { position: { $gte: position, $lt: moduleToUpdate.position } },
-        { $inc: { position: 1 } },
-      );
+      await ModuleModel.updateMany({ position: { $gte: minPosition, $lt: maxPosition } }, { $inc: { position: 1 } });
     }
+
+    // update the module's position
+    await ModuleModel.updateOne({ _id: args._id }, { $set: { position } });
 
     return true;
   },
