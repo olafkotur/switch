@@ -44,8 +44,9 @@ export const ModuleService = {
    * @param _id - module id
    * @param data - data to update
    */
-  update: async (args: { _id: Types.ObjectId; data: { position: number } }) => {
+  update: async (args: { _id: Types.ObjectId; data: Partial<ModuleModelData> }) => {
     const { position } = args.data;
+    if (position == null) return false;
 
     const moduleToUpdate = await ModuleModel.findOne({ _id: args._id });
     if (moduleToUpdate == null) {

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { UserModelData } from '../models';
+import { ModuleModelData, UserModelData } from '../models';
 import { ModuleService, ResponseService } from '../services';
-import { ModuleUpdateData } from '../typings';
 
 export const ModuleHandler = {
   /**
@@ -44,7 +43,7 @@ export const ModuleHandler = {
    */
   update: async (req: Request, res: Response): Promise<void> => {
     const id = req.body._id || '';
-    const data = req.body.data as ModuleUpdateData;
+    const data = req.body.data as Partial<ModuleModelData>;
     if (!id || data == null || data.position == null) {
       return ResponseService.bad('Missing update data', res);
     }
