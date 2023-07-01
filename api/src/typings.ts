@@ -15,6 +15,10 @@ export interface JwtAuthData {
   exp?: number;
 }
 
+export interface ModuleUpdateData {
+  position: number;
+}
+
 /***** RESPONSE ******/
 export interface Response {
   code: number;
