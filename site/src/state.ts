@@ -11,8 +11,3 @@ export const ModalState = atom({
   key: 'modal',
   default: null as ModalName | null,
 });
-
-export const DownloadingState = atom({
-  key: 'isDownloading',
-  default: false,
-});

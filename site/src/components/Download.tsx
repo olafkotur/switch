@@ -1,24 +1,23 @@
-import React, { ReactElement, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { ReactElement, useCallback, useState } from 'react';
+import { DOWNLOAD_URL } from '../const';
 import { useTheme, useToast } from '../hooks';
-import { DownloadingState } from '../state';
 import { LargeButton } from './Button';
 import { Spacer } from './Common';
 import { Icon, IconNames } from './Icon';
-import { MediumText } from './Text';
+import { MediumLink } from './Text';
 
 export const Download = ({ expanded }: { expanded?: boolean }): ReactElement => {
-  const [isDownloading, setIsDownloading] = useRecoilState(DownloadingState);
+  const [disabled, setDisabled] = useState(false);
 
   const theme = useTheme();
   const successToast = useToast('success');
 
-  const onDownload = useCallback(() => {
-    setIsDownloading(true);
-    successToast('Download started');
+  const handleDownload = useCallback(() => {
+    setDisabled(true);
+    successToast('Download will start shortly');
 
     setTimeout(() => {
-      setIsDownloading(false);
+      setDisabled(false);
     }, 5000);
   }, [successToast]);
 
@@ -26,14 +25,14 @@ export const Download = ({ expanded }: { expanded?: boolean }): ReactElement => 
     <LargeButton
       bg={theme.highlightColor.secondary}
       width={expanded ? '190px' : undefined}
-      disabled={isDownloading}
-      onClick={onDownload}
+      disabled={disabled}
+      onClick={handleDownload}
     >
       <Icon name={IconNames.DOWNLOAD} size={14} color={theme.color.white} />
       <Spacer horizontal={2} />
-      <MediumText cursor="pointer" color={theme.color.white}>
+      <MediumLink cursor="pointer" color={theme.color.white} href={DOWNLOAD_URL} underline={false}>
         {expanded ? 'MacOS Intel & Silicon' : 'Download'}
-      </MediumText>
+      </MediumLink>
     </LargeButton>
   );
 };
