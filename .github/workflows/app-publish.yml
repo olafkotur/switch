@@ -53,27 +53,36 @@ jobs:
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
 
-      - name: Upload Artifact
+      - name: Upload Artifact .dmg
         uses: actions/upload-artifact@v2
         with:
-          name: dmg-zip
-          path: ${{ env.WORKING_DIRECTORY }}/packages
+          name: dmg
+          path: ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ steps.get_version.outputs.version }}.dmg
+
+      - name: Upload Artifact .zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: zip
+          path: ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ steps.get_version.outputs.version }}-mac.zip
 
   create-release:
     needs: package-app
     runs-on: ubuntu-latest
     steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dmg-zip
-          path: ${{ github.workspace }}/artifacts
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
       - name: Get Version
         id: get_version
         run: |
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "::set-output name=version::$VERSION"
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dmg-zip
+          path: ${{ github.workspace }}/artifacts
 
       - name: Create Release
         run: |
@@ -90,6 +99,15 @@ jobs:
     needs: create-release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
+          echo "::set-output name=version::$VERSION"
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
