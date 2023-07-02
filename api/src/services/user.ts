@@ -1,5 +1,7 @@
 import { Types } from 'mongoose';
+import { SIGNUP_DISCORD_HOOK } from '../const';
 import { UserModel, UserModelData } from '../models';
+import { DiscordService } from './discord';
 import { PreferenceService } from './preference';
 
 export const UserService = {
@@ -55,11 +57,17 @@ export const UserService = {
     const user = await UserModel.create(data);
     const success = user._id != null;
 
-    // create default user preferences
-    if (success) {
-      await PreferenceService.create(user._id);
+    if (success === false) {
+      return { success, message: 'Could not create a user' };
     }
 
-    return { success, message: 'Could not create a user' };
+    // create default user preferences
+    await PreferenceService.create(user._id);
+
+    // send notification to discord
+    const msg = `:rocket: \`${email}\` has signed up to Switch`;
+    await DiscordService.message(msg, SIGNUP_DISCORD_HOOK, true);
+
+    return { success };
   },
 };
