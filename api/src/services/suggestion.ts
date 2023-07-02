@@ -115,7 +115,7 @@ export const SuggestionService = {
   create: async () => {
     const result = await SuggestionModel.deleteMany({});
     if (result.ok !== 1) {
-      return console.error('SuggestionService:create :: Could not delete previous suggestions'.red);
+      return console.error('SuggestionService:create :: Could not delete previous suggestions');
     }
 
     const data: SuggestionModelData[] = suggestions.map((suggestion) => ({
@@ -126,6 +126,6 @@ export const SuggestionService = {
     }));
 
     await SuggestionModel.insertMany(data);
-    console.log(`SuggestionService:create :: Created ${suggestions.length} suggestions`.green);
+    console.info(`SuggestionService:create :: Created ${suggestions.length} suggestions`);
   },
 };

@@ -15,7 +15,7 @@ export const DatabaseService = {
         useCreateIndex: true,
       });
       mongoose.connection.on('connected', () => {
-        console.log(`DatabaseService:connect :: Succesfully connected to "${args.name}" database`.green);
+        console.log(`DatabaseService:connect :: Succesfully connected to "${args.name}" database`);
         resolve(true);
       });
     });

@@ -21,7 +21,7 @@ export const EmailService = {
     html: string;
   }): Promise<void> => {
     if (SEND_EMAILS === false) {
-      return console.error(`EmailService:send :: Skipping sending email to ${to}`.yellow);
+      return console.log(`EmailService:send :: Skipping sending email to ${to}`);
     }
 
     const transporter = nodemailer.createTransport({
@@ -39,8 +39,8 @@ export const EmailService = {
 
     const isAccepted = info.accepted.includes(to);
     if (isAccepted) {
-      return console.info(`EmailService:send :: Could not send email to ${to}`.red);
+      return console.error(`EmailService:send :: Could not send email to ${to}`);
     }
-    return console.info(`EmailService:send :: Successfully sent email to ${to}`.green);
+    return console.info(`EmailService:send :: Successfully sent email to ${to}`);
   },
 };
