@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 import { SIGNUP_DISCORD_HOOK } from '../const';
 import { UserModel, UserModelData } from '../models';
 import { DiscordService } from './discord';
+import { InviteService } from './invite';
 import { PreferenceService } from './preference';
 
 export const UserService = {
@@ -64,6 +65,12 @@ export const UserService = {
 
     // create default user preferences
     await PreferenceService.create(user._id);
+
+    // update invite if it exists
+    const invite = await InviteService.fetchByEmail(email);
+    if (invite != null) {
+      await InviteService.update(invite._id, true);
+    }
 
     // send notification to discord
     const msg = `:rocket: \`${email}\` has signed up to Switch`;

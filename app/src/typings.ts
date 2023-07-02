@@ -105,6 +105,7 @@ export interface Suggestion {
 export interface Invite {
   _id: string;
   email: string;
+  registered: boolean;
   updatedAt: Date;
   createdAt: Date;
 }
