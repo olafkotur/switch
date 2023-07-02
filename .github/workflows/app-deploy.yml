@@ -34,7 +34,6 @@ jobs:
           security unlock-keychain -p mysecretpassword ~/Library/Keychains/build.keychain
           security import ./app/Switch.provisionprofile -k ~/Library/MobileDevice/Provisioning\ Profiles/
           security find-identity -v -p codesigning | grep "Developer ID Application" | awk '{print $2}' | xargs -I{} security import -k ~/Library/Keychains/build.keychain -P {} -T /usr/bin/codesign
-        shell: /bin/bash -e
 
       - name: Install Dependencies
         working-directory: ${{ env.WORKING_DIRECTORY }}
