@@ -1,8 +1,7 @@
-import 'colors';
 import express from 'express';
-import { MONGO_NAME, MONGO_URL, NO_VERIFY_URLS, PORT } from './const';
+import { LOGS_DISCORD_HOOK, MONGO_NAME, MONGO_URL, NO_VERIFY_URLS, PORT } from './const';
 import { InviteHandler, ModuleHandler, PreferenceHandler, SuggestionHandler, UserHandler } from './handlers';
-import { DatabaseService, ResponseService, SecurityService, UserService } from './services';
+import { DatabaseService, DiscordService, ResponseService, SecurityService, UserService } from './services';
 
 export const database = DatabaseService;
 
@@ -13,11 +12,13 @@ const cors = require('cors');
  * Connect api and setup handlers.
  */
 const main = async (): Promise<void> => {
+  captureLogs();
+
   // connect to database
   const success = await database.connect({ uri: MONGO_URL, name: MONGO_NAME });
   exports.database = database;
   if (!success) {
-    return console.error('Failed to establish database connection, halting'.red);
+    return console.error('Failed to establish database connection, halting');
   }
 
   // middleware
@@ -59,7 +60,23 @@ const main = async (): Promise<void> => {
   setupSuggestionHandlers();
   setupInviteHandlers();
 
-  app.listen(PORT, () => console.log(`API listening on port ${PORT}`.cyan));
+  app.listen(PORT, () => console.log(`API listening on port ${PORT}`));
+};
+
+const captureLogs = (): void => {
+  const originalInfo = console.info;
+  console.info = async (...args) => {
+    const msg = `:information_source: Captured \`console.info\` event\`\`\`${args.join(' ')}\`\`\`\u200B`;
+    await DiscordService.message(msg, LOGS_DISCORD_HOOK);
+    originalInfo.apply(console, args);
+  };
+
+  const originalError = console.error;
+  console.error = async (...args) => {
+    const msg = `:fire: Captured \`console.error\` event\`\`\`${args.join(' ')}\`\`\`\u200B`;
+    await DiscordService.message(msg, LOGS_DISCORD_HOOK);
+    originalError.apply(console, args);
+  };
 };
 
 const setupUserHandlers = (): void => {

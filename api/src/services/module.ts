@@ -49,7 +49,7 @@ export const ModuleService = {
 
     const moduleToUpdate = await ModuleModel.findOne({ _id: args._id });
     if (moduleToUpdate == null || position == null) {
-      console.error(`ModuleService:delete :: Could not find module to update with id ${args._id}`.red);
+      console.error(`ModuleService:delete :: Could not find module to update with id ${args._id}`);
       return false;
     }
 
@@ -84,13 +84,13 @@ export const ModuleService = {
   delete: async (_id: Types.ObjectId, userId: Types.ObjectId): Promise<boolean> => {
     const moduleToDelete = await ModuleModel.findOne({ _id, userId });
     if (moduleToDelete == null) {
-      console.error(`ModuleService:delete :: Could not find module to delete with id ${_id}`.red);
+      console.error(`ModuleService:delete :: Could not find module to delete with id ${_id}`);
       return false;
     }
 
     const result = await ModuleModel.deleteOne({ _id, userId });
     if (result.deletedCount !== 1) {
-      console.error(`ModuleService:delete :: Could not delete module with id ${_id}`.red);
+      console.error(`ModuleService:delete :: Could not delete module with id ${_id}`);
       return false;
     }
 
