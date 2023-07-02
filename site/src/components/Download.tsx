@@ -28,7 +28,7 @@ export const Download = ({ expanded }: { expanded?: boolean }): ReactElement => 
       disabled={disabled}
       onClick={handleDownload}
     >
-      <Icon name={IconNames.DOWNLOAD} size={14} color={theme.color.white} />
+      <Icon name={IconNames.APPLE} color={theme.color.white} />
       <Spacer horizontal={2} />
       <MediumLink cursor="pointer" color={theme.color.white} href={DOWNLOAD_URL} underline={false}>
         {expanded ? 'MacOS Intel & Silicon' : 'Download'}
