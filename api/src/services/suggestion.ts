@@ -126,6 +126,6 @@ export const SuggestionService = {
     }));
 
     await SuggestionModel.insertMany(data);
-    console.log(`SuggestionService:create :: Created ${suggestions.length} suggestions`.green);
+    console.info(`SuggestionService:create :: Created ${suggestions.length} suggestions`.green);
   },
 };

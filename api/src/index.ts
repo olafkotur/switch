@@ -17,7 +17,7 @@ const main = async (): Promise<void> => {
   const success = await database.connect({ uri: MONGO_URL, name: MONGO_NAME });
   exports.database = database;
   if (!success) {
-    return console.error('Failed to establish database connection, halting');
+    return console.error('Failed to establish database connection, halting'.red);
   }
 
   // middleware

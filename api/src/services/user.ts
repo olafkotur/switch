@@ -58,6 +58,7 @@ export const UserService = {
     const success = user._id != null;
 
     if (success === false) {
+      console.error(`UserService:createUser :: Could not create user with email ${email}`.red);
       return { success, message: 'Could not create a user' };
     }
 
