@@ -8,12 +8,12 @@
 # [] Create a pull request in switch-releases containing changes in updates.json and releases.json
 # [] Update the release .dmg location in /site
 
-name: app-deploy
+name: app-publish
 on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  publish:
     runs-on: macos-latest
     env:
       WORKING_DIRECTORY: ./app
