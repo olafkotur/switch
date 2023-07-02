@@ -73,11 +73,13 @@ jobs:
       - name: Get Version
         id: get_version
         run: |
+          export GH_TOKEN=${{ secrets.GH_TOKEN }}
           VERSION=$(node -pe "require('${{ env.WORKING_DIRECTORY }}/package.json').version")
           echo "::set-output name=version::$VERSION"
 
       - name: Create Release
         run: |
+          export GH_TOKEN=${{ secrets.GH_TOKEN }}
           VERSION=${{ steps.get_version.outputs.version }}
           curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/json" \
@@ -87,6 +89,7 @@ jobs:
       - name: Get Release ID
         id: get_release_id
         run: |
+          export GH_TOKEN=${{ secrets.GH_TOKEN }}
           VERSION=${{ steps.get_version.outputs.version }}
           RESPONSE=$(curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/repos/olafkotur/switch-releases/releases/tags/v$VERSION")
@@ -95,6 +98,7 @@ jobs:
 
       - name: Upload .dmg file
         run: |
+          export GH_TOKEN=${{ secrets.GH_TOKEN }}
           RELEASE_ID=${{ steps.get_release_id.outputs.release_id }}
           VERSION=${{ steps.get_version.outputs.version }}
           UPLOAD_URL="https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION.dmg"
@@ -105,6 +109,7 @@ jobs:
 
       - name: Upload .zip file
         run: |
+          export GH_TOKEN=${{ secrets.GH_TOKEN }}
           RELEASE_ID=${{ steps.get_release_id.outputs.release_id }}
           VERSION=${{ steps.get_version.outputs.version }}
           UPLOAD_URL="https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION-mac.zip"
