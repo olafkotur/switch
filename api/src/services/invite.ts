@@ -31,6 +31,7 @@ export const InviteService = {
       _id: Types.ObjectId(),
       userId,
       email,
+      registered: false,
       updatedAt: new Date(),
       createdAt: new Date(),
     };
@@ -44,5 +45,16 @@ export const InviteService = {
     });
 
     return await InviteModel.create(data);
+  },
+
+  /**
+   * Update existing new invite.
+   * @param _id - invite id
+   * @param registered - registered
+   *
+   */
+  update: async (_id: Types.ObjectId, registered: boolean): Promise<boolean> => {
+    const result = await InviteModel.updateOne({ _id }, { $set: { registered } });
+    return result.ok === 1;
   },
 };

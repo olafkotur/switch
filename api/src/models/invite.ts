@@ -5,12 +5,14 @@ import { ModelBase } from '../typings';
 export interface InviteModelData extends ModelBase {
   userId: Types.ObjectId;
   email: string;
+  registered: boolean;
 }
 
 const schema = new Schema({
   _id: { type: ObjectId, required: true },
   userId: { type: ObjectId, required: true },
   email: { type: String, required: true, unique: true },
+  registered: { type: Boolean, required: true },
   updatedAt: { type: Date, required: true },
   createdAt: { type: Date, required: true },
 });
