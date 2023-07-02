@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { EMAIL_USERNAME } from '../const';
+import { EMAIL_USERNAME, INVITE_EMAIL } from '../const';
 import { InviteModel, InviteModelData } from '../models';
 import { EmailService } from './email';
 
@@ -40,7 +40,7 @@ export const InviteService = {
       to: email,
       from: EMAIL_USERNAME,
       subject: "You've been invited to Switch",
-      html: 'Hello World',
+      html: INVITE_EMAIL,
     });
 
     return await InviteModel.create(data);
