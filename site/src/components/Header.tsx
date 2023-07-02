@@ -1,6 +1,7 @@
 import React, { ReactElement, useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { DISCORD_INVITE } from '../const';
 import { useTheme } from '../hooks';
 import { ThemeState } from '../state';
 import { Switch } from './Asset';
@@ -48,6 +49,10 @@ export const Header = (): ReactElement => {
     setTheme('dark');
   }, [theme.name, setTheme]);
 
+  const handleDiscord = useCallback(() => {
+    window.open(DISCORD_INVITE, '_blank');
+  }, []);
+
   return (
     <HeaderContainer>
       <LogoContainer>
@@ -57,8 +62,12 @@ export const Header = (): ReactElement => {
       </LogoContainer>
 
       <RowContainer>
-        <IconButton size="large" bg={theme.backgroundColor.primary} onClick={handleToggleTheme}>
+        <IconButton noMargin size="large" bg={theme.backgroundColor.primary} onClick={handleToggleTheme}>
           <Icon name={theme.name === 'dark' ? IconNames.SUN : IconNames.MOON} />
+        </IconButton>
+
+        <IconButton size="large" bg={theme.backgroundColor.primary} onClick={handleDiscord}>
+          <Icon name={IconNames.DISCORD} />
         </IconButton>
 
         <BetaText bold>Private Beta</BetaText>

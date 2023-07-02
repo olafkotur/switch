@@ -1,4 +1,5 @@
 import { IconProp, library } from '@fortawesome/fontawesome-svg-core';
+import * as Brands from '@fortawesome/free-brands-svg-icons';
 import * as Regular from '@fortawesome/free-regular-svg-icons';
 import * as Solid from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +18,6 @@ interface IconProps {
 }
 
 export enum IconNames {
-  DOWNLOAD = 'fa-solid fa-download',
   CHEVRON_UP = 'fa-solid fa-chevron-up',
   CHEVRON_RIGHT = 'fa-solid fa-chevron-right',
   CHEVRON_DOWN = 'fa-solid fa-chevron-down',
@@ -28,6 +28,8 @@ export enum IconNames {
   CLOSE = 'fa-solid fa-xmark',
   CIRCLE_CHECK = 'fa-regular fa-circle-check',
   ERROR = 'fa-solid fa-circle-exclamation',
+  DISCORD = 'fab fa-discord',
+  APPLE = 'fab fa-apple',
 }
 
 const IconContainer = styled(motion.div)<{ size: number; color: string; opacity: number }>`
@@ -52,7 +54,6 @@ export const Icon = ({ name, color, size, opacity, animation }: IconProps): Reac
 };
 
 library.add(
-  Solid.faDownload,
   Solid.faChevronUp,
   Solid.faChevronRight,
   Solid.faChevronDown,
@@ -62,4 +63,6 @@ library.add(
   Solid.faCircleInfo,
   Solid.faXmark,
   Regular.faCircleCheck,
+  Brands.faDiscord,
+  Brands.faApple,
 );
