@@ -1,13 +1,3 @@
-# [x] Pull latest code from main/app
-# [x] Run yarn install to download libraries
-# [x] Get values for APPLE credentials
-# [x] Pull certificates (Developer ID and Provisioning Profile)
-# [x] Save Provisioning Profile in /app
-# [x] Run yarn package to create a signed application
-# [] Create a new release with .dmg and .zip files in switch-releases repository
-# [] Create a pull request in switch-releases containing changes in updates.json and releases.json
-# [] Update the release .dmg location in /site
-
 name: app-publish
 on:
   workflow_dispatch:
@@ -110,3 +100,24 @@ jobs:
             -H "Content-Type: application/octet-stream" \
             --data-binary @${{ env.WORKING_DIRECTORY }}/packages/Switch-$VERSION-mac.zip \
             "$UPLOAD_URL"
+
+      - name: Update JSON files
+        run: |
+          VERSION=${{ steps.get_version.outputs.version }}
+          RELEASE_ID=${{ steps.get_release_id.outputs.release_id }}
+
+          # update releases.json
+          jq --arg version "$VERSION" --arg releaseId "$RELEASE_ID" \
+            '.url = "https://uploads.github.com/repos/olafkotur/switch-releases/releases/" + $releaseId + "/assets?name=Switch-" + $version + "-mac.zip"' \
+            releases.json > releases.json.tmp && mv releases.json.tmp releases.json
+
+          PUB_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
+          jq --arg date "$PUB_DATE" '.pub_date = $date' releases.json > releases.json.tmp && mv releases.json.tmp releases.json
+
+          # update updates.json
+          jq --arg readme "Release $VERSION" '.darwin-x64-prod.readme = $readme' updates.json > updates.json.tmp && mv updates.json.tmp updates.json
+
+          jq --arg install "https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION.dmg" \
+            '.darwin-x64-prod.install = $install' updates.json > updates.json.tmp && mv updates.json.tmp updates.json
+
+          jq --arg version "$VERSION" '.darwin-x64-prod.version = $version' updates.json > updates.json.tmp && mv updates.json.tmp updates.json
