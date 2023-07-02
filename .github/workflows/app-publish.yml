@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  package-app:
     runs-on: macos-latest
     env:
       WORKING_DIRECTORY: ./app
@@ -53,71 +53,67 @@ jobs:
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dmg-zip
+          path: ${{ env.WORKING_DIRECTORY }}/packages
+
+  create-release:
+    needs: package-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dmg-zip
+          path: ${{ github.workspace }}/artifacts
+
       - name: Get Version
         id: get_version
         run: |
-          export GH_TOKEN=${{ secrets.GH_TOKEN }}
-          VERSION=$(node -pe "require('${{ env.WORKING_DIRECTORY }}/package.json').version")
+          VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "::set-output name=version::$VERSION"
 
       - name: Create Release
         run: |
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
           VERSION=${{ steps.get_version.outputs.version }}
-          curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
+          RESPONSE=$(curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"tag_name\": \"v$VERSION\", \"name\": \"Release v$VERSION\"}" \
-            "https://api.github.com/repos/olafkotur/switch-releases/releases"
-
-      - name: Get Release ID
-        id: get_release_id
-        run: |
-          export GH_TOKEN=${{ secrets.GH_TOKEN }}
-          VERSION=${{ steps.get_version.outputs.version }}
-          RESPONSE=$(curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/repos/olafkotur/switch-releases/releases/tags/v$VERSION")
+            "https://api.github.com/repos/olafkotur/switch-releases/releases")
           RELEASE_ID=$(echo "$RESPONSE" | jq -r '.id')
           echo "::set-output name=release_id::$RELEASE_ID"
+
+  upload-artifacts:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dmg-zip
+          path: ${{ github.workspace }}/artifacts
 
       - name: Upload .dmg file
         run: |
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
-          RELEASE_ID=${{ steps.get_release_id.outputs.release_id }}
-          VERSION=${{ steps.get_version.outputs.version }}
+          RELEASE_ID=${{ needs.create-release.outputs.release_id }}
+          VERSION=${{ needs.create-release.outputs.get_version }}
           UPLOAD_URL="https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION.dmg"
           curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/octet-stream" \
-            --data-binary @${{ env.WORKING_DIRECTORY }}/packages/Switch-$VERSION.dmg \
+            --data-binary @${{ github.workspace }}/artifacts/*.dmg \
             "$UPLOAD_URL"
 
       - name: Upload .zip file
         run: |
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
-          RELEASE_ID=${{ steps.get_release_id.outputs.release_id }}
-          VERSION=${{ steps.get_version.outputs.version }}
+          RELEASE_ID=${{ needs.create-release.outputs.release_id }}
+          VERSION=${{ needs.create-release.outputs.get_version }}
           UPLOAD_URL="https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION-mac.zip"
           curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/octet-stream" \
-            --data-binary @${{ env.WORKING_DIRECTORY }}/packages/Switch-$VERSION-mac.zip \
+            --data-binary @${{ github.workspace }}/artifacts/*.zip \
             "$UPLOAD_URL"
-
-      - name: Update JSON files
-        run: |
-          VERSION=${{ steps.get_version.outputs.version }}
-          RELEASE_ID=${{ steps.get_release_id.outputs.release_id }}
-
-          # update releases.json
-          jq --arg version "$VERSION" --arg releaseId "$RELEASE_ID" \
-            '.url = "https://uploads.github.com/repos/olafkotur/switch-releases/releases/" + $releaseId + "/assets?name=Switch-" + $version + "-mac.zip"' \
-            releases.json > releases.json.tmp && mv releases.json.tmp releases.json
-
-          PUB_DATE=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
-          jq --arg date "$PUB_DATE" '.pub_date = $date' releases.json > releases.json.tmp && mv releases.json.tmp releases.json
-
-          # update updates.json
-          jq --arg readme "Release $VERSION" '.darwin-x64-prod.readme = $readme' updates.json > updates.json.tmp && mv updates.json.tmp updates.json
-
-          jq --arg install "https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION.dmg" \
-            '.darwin-x64-prod.install = $install' updates.json > updates.json.tmp && mv updates.json.tmp updates.json
-
-          jq --arg version "$VERSION" '.darwin-x64-prod.version = $version' updates.json > updates.json.tmp && mv updates.json.tmp updates.json
