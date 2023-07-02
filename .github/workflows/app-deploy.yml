@@ -21,19 +21,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Pull Certificates from Apple
-        run: |
-          sudo gem install fastlane
-          fastlane run fetch_certificates
-        env:
-          FASTLANE_APPLE_ID: ${{ secrets.APPLE_ID }}
-          FASTLANE_APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          FASTLANE_APPLE_TEAM_NAME: Olaf Kotur
-
       - name: Add Certificates to Keychain
         run: |
-          echo "${{ secrets.MY_CERTIFICATE }}" | base64 --decode > certificate.p12
-          echo "${{ secrets.MY_PROVISIONING_PROFILE }}" | base64 --decode > ./app/Switch.provisionprofile
+          echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > certificate.p12
+          echo "${{ secrets.APPLE_PROVISION_PROFILE }}" | base64 --decode > ./app/Switch.provisionprofile
           security create-keychain -p ${{ secrets.SECRETS_PASSWORD }} build.keychain
           security import certificate.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple: -s -k ${{ secrets.SECRETS_PASSWORD }} build.keychain
