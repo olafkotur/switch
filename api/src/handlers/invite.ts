@@ -41,7 +41,6 @@ export const InviteHandler = {
       return ResponseService.bad('Email is already invited', res);
     }
 
-    // TODO: send an email to this user, TBC of how this can be done
     await InviteService.create(user._id, email);
     return ResponseService.create('Invite sent', res);
   },

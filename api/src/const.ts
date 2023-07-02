@@ -11,3 +11,7 @@ export const PORT = process.env.PORT || 8080;
 export const CRYPTO_SALT = process.env.CRYPTO_SALT || '';
 export const JWT_SECRET = process.env.JWT_SECRET || '';
 export const NO_VERIFY_URLS = ['/release', '/user/login', '/user/refresh', '/user/create'];
+
+export const SEND_EMAILS = ENVIORNMENT === 'production';
+export const EMAIL_USERNAME = process.env.EMAIL_USERNAME ?? '';
+export const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD ?? '';
