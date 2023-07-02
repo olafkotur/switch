@@ -1,0 +1,51 @@
+# [x] Pull latest code from main/app
+# [x] Run yarn install to download libraries
+# [x] Get values for APPLE credentials
+# [x] Pull certificates (Developer ID and Provisioning Profile)
+# [x] Save Provisioning Profile in /app
+# [x] Run yarn package to create a signed application
+# [] Create a new release with .dmg and .zip files in switch-releases repository
+# [] Create a pull request in switch-releases containing changes in updates.json and releases.json
+# [] Update the release .dmg location in /site
+
+name: app-deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    env:
+      WORKING_DIRECTORY: ./app
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Pull Certificates from Apple
+        run: |
+          sudo gem install fastlane
+          fastlane run fetch_certificates
+        env:
+          FASTLANE_APPLE_ID: ${{ secrets.APPLE_ID }}
+          FASTLANE_APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          FASTLANE_APPLE_TEAM_NAME: Olaf Kotur
+
+      - name: Add Certificates to Keychain
+        run: |
+          echo "${{ secrets.MY_CERTIFICATE }}" | base64 --decode > certificate.p12
+          echo "${{ secrets.MY_PROVISIONING_PROFILE }}" | base64 --decode > ./app/Switch.provisionprofile
+          security create-keychain -p ${{ secrets.SECRETS_PASSWORD }} build.keychain
+          security import certificate.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k ${{ secrets.SECRETS_PASSWORD }} build.keychain
+          security set-keychain-settings -lut 7200 ~/Library/Keychains/build.keychain
+          security unlock-keychain -p ${{ secrets.SECRETS_PASSWORD }} ~/Library/Keychains/build.keychain
+          security import ./app/Switch.provisionprofile -k ~/Library/MobileDevice/Provisioning\ Profiles/
+          security find-identity -v -p codesigning | grep "Developer ID Application" | awk '{print $2}' | xargs -I{} security import -k ~/Library/Keychains/build.keychain -P {} -T /usr/bin/codesign
+
+      - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: yarn install --frozen-lockfile
+
+      - name: Run yarn package
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: yarn package
