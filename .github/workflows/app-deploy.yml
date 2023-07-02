@@ -23,11 +23,10 @@ jobs:
 
       - name: Add Certificates to Keychain
         env:
-          WORKING_DIRECTORY: ./app
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE }}
-          P12_PASSWORD: ${{ secrets.APPLE_SECRETS_PASSWORD }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.APPLE_PROVISION_PROFILE }}
-          KEYCHAIN_PASSWORD: ${{ secrets.APPLE_SECRETS_PASSWORD }}
+          WORKING_DIRECTORY: ${{ env.WORKING_DIRECTORY }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_PROVISION_PROFILE: ${{ secrets.APPLE_PROVISION_PROFILE }}
+          APPLE_SECRETS_PASSWORD: ${{ secrets.APPLE_SECRETS_PASSWORD }}
         run: |
           # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/Certificates.p12
@@ -35,20 +34,20 @@ jobs:
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           # import certificate and provisioning profile from secrets
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+          echo -n "$APPLE_CERTIFICATE" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$APPLE_PROVISION_PROFILE" | base64 --decode -o $PP_PATH
 
           # create temporary keychain
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security create-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security unlock-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
 
           # import certificate to keychain
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $CERTIFICATE_PATH -P "$APPLE_SECRETS_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
-          # apply provisioning profile
-          cp $PP_PATH ./app
+          # copy profile to working directory
+          cp $PP_PATH ${{ env.WORKING_DIRECTORY }}
 
       - name: Install Dependencies
         working-directory: ${{ env.WORKING_DIRECTORY }}
@@ -56,4 +55,8 @@ jobs:
 
       - name: Run yarn package
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: yarn package
+        run: |
+          export APPLE_ID=${{ secrets.APPLE_ID }}
+          export APPLE_PASS=${{ secrets.APPLE_PASS }}
+          export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
+          yarn package
