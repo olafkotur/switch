@@ -10,7 +10,7 @@ import {
   Spacer,
   TextInput,
 } from '../components';
-import { useCreateInvite, useFetchInvites, useOnKeyPress, useValidateEmail } from '../hooks';
+import { useCreateInvite, useFetchInvites, useOnKeyPress, useTheme, useValidateEmail } from '../hooks';
 import { Invite as InviteType } from '../typings';
 
 const InviteContainer = styled.div`
@@ -38,9 +38,21 @@ const SendButton = styled(IconButton)`
   background: ${(props) => props.theme.highlightColor.quaternary};
 `;
 
+const ListItem = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: ${(props) => props.theme.borderRadius.medium};
+  background: ${(props) => props.theme.backgroundColor.primary};
+  margin: ${(props) => props.theme.spacing.small} 0;
+  padding: ${(props) => props.theme.spacing.medium};
+`;
+
 export const Invite = (): ReactElement => {
   const [email, setEmail] = useState('');
   const [invites, setInvites] = useState<InviteType[]>([]);
+  const theme = useTheme();
 
   const validateEmail = useValidateEmail();
   const createInvite = useCreateInvite();
@@ -87,11 +99,14 @@ export const Invite = (): ReactElement => {
         <Spacer vertical={10} />
 
         <MediumText bold>Sent invites ({invites.length})</MediumText>
-        {invites.map((invite, index) => (
-          <div key={`invite-${index}`}>
-            <Spacer vertical={5} />
+        {invites.map((invite) => (
+          <ListItem key={invite._id}>
             <MediumText faint>{invite.email}</MediumText>
-          </div>
+            <Icon
+              name={IconNames.CIRCLE_CHECK}
+              color={invite.registered ? theme.highlightColor.quaternary : theme.color.faint}
+            />
+          </ListItem>
         ))}
       </InviteContent>
     </InviteContainer>

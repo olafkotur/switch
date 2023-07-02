@@ -14,6 +14,7 @@ export const InviteHandler = {
     const data = response.map((invite) => ({
       _id: invite._id,
       email: invite.email,
+      registered: invite.registered,
       updatedAt: invite.createdAt,
       createdAt: invite.createdAt,
     }));
