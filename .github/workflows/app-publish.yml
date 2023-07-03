@@ -11,6 +11,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
+          echo "::set-output name=version::$VERSION"
+
       - name: Add Certificates to Keychain
         run: |
           # set environment
@@ -52,12 +58,6 @@ jobs:
           export APPLE_PASS=${{ secrets.APPLE_PASS }}
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
-
-      - name: Get Version
-        id: get_version
-        run: |
-          VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
-          echo "::set-output name=version::$VERSION"
 
       - name: Upload Artifact .dmg
         uses: actions/upload-artifact@v2
