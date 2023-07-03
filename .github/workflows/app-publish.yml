@@ -26,6 +26,9 @@ jobs:
           draft: true
           prerelease: false
 
+      - name: Set Release ID
+        run: echo "RELEASE_ID=${{ steps.create_release.outputs.id }}" >> $GITHUB_ENV
+
   # package-app:
   #   needs: create-release
   #   runs-on: macos-latest
@@ -78,14 +81,13 @@ jobs:
   #         yarn package
 
   publish-release:
-    needs:
-      - create-release
+    needs: create-release
     runs-on: ubuntu-latest
     steps:
       - name: Publish Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_ID: ${{ needs.create-release.outputs.create_release_id }}
+          RELEASE_ID: ${{ env.RELEASE_ID }}
         run: |
           API_URL="https://api.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}"
           AUTH_HEADER="Authorization: Bearer $GITHUB_TOKEN"
