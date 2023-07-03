@@ -39,8 +39,8 @@ export const EmailService = {
 
     const isAccepted = info.accepted.includes(to);
     if (isAccepted) {
-      return console.error(`EmailService:send :: Could not send email to ${to}`);
+      return console.info(`EmailService:send :: Successfully sent email to ${to}`);
     }
-    return console.info(`EmailService:send :: Successfully sent email to ${to}`);
+    return console.error(`EmailService:send :: Could not send email to ${to}`);
   },
 };

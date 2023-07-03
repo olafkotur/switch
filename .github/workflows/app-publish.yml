@@ -78,12 +78,6 @@ jobs:
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "::set-output name=version::$VERSION"
 
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dmg-zip
-          path: ${{ github.workspace }}/artifacts
-
       - name: Create Release
         run: |
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
@@ -95,7 +89,7 @@ jobs:
           RELEASE_ID=$(echo "$RESPONSE" | jq -r '.id')
           echo "::set-output name=release_id::$RELEASE_ID"
 
-  upload-artifacts:
+  upload-release:
     needs: create-release
     runs-on: ubuntu-latest
     steps:
@@ -108,17 +102,23 @@ jobs:
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "::set-output name=version::$VERSION"
 
-      - name: Download Artifacts
+      - name: Download Artifact .dmg
         uses: actions/download-artifact@v2
         with:
-          name: dmg-zip
-          path: ${{ github.workspace }}/artifacts
+          name: dmg
+          path: ${{ github.workspace }}/artifacts/Switch-${{ steps.get_version.outputs.version }}.dmg
+
+      - name: Download Artifact .zip
+        uses: actions/download-artifact@v2
+        with:
+          name: zip
+          path: ${{ github.workspace }}/artifacts/Switch-${{ steps.get_version.outputs.version }}-mac.zip
 
       - name: Upload .dmg file
         run: |
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
           RELEASE_ID=${{ needs.create-release.outputs.release_id }}
-          VERSION=${{ needs.create-release.outputs.get_version }}
+          VERSION=${{ steps.get_version.outputs.version }}
           UPLOAD_URL="https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION.dmg"
           curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/octet-stream" \
@@ -129,9 +129,14 @@ jobs:
         run: |
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
           RELEASE_ID=${{ needs.create-release.outputs.release_id }}
-          VERSION=${{ needs.create-release.outputs.get_version }}
+          VERSION=${{ steps.get_version.outputs.version }}
           UPLOAD_URL="https://uploads.github.com/repos/olafkotur/switch-releases/releases/$RELEASE_ID/assets?name=Switch-$VERSION-mac.zip"
           curl -sSL -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/octet-stream" \
             --data-binary @${{ github.workspace }}/artifacts/*.zip \
             "$UPLOAD_URL"
+
+# still to do
+# bump-release job
+# bump-site job
+# notify changes on discord
