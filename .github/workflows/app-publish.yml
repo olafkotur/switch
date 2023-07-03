@@ -93,8 +93,8 @@ jobs:
           yarn package
 
           mkdir -p $RUNNER_TEMP/artifacts
-          cp ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}.dmg $RUNNER_TEMP/artifacts/
-          cp ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}-mac.zip $RUNNER_TEMP/artifacts/
+          cp ./packages/Switch-${{ env.VERSION }}.dmg $RUNNER_TEMP/artifacts/
+          cp ./packages/Switch-${{ env.VERSION }}-mac.zip $RUNNER_TEMP/artifacts/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -155,3 +155,6 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_bucket: switch-releases
           source_dir: ${{ env.ASSET_DIRECTORY }}
+# https://github.com/marketplace/actions/create-release
+# https://github.com/marketplace/actions/release-assets
+# https://stackoverflow.com/questions/45240336/how-to-use-github-release-api-to-make-a-release-without-source-code
