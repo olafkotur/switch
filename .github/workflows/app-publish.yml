@@ -44,6 +44,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
       - name: Add Certificates to Keychain
         run: |
           # set environment
@@ -86,23 +92,16 @@ jobs:
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
 
-  publish-release:
-    needs:
-      - create-release
-      - package-app
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Release ID
-        id: get_release_id
-        uses: i3h/share-data@v1
-        with:
-          share-id: release_id
-          mode: get
-          key: release_id
+      - name: Copy Release Assets
+        run: |
+          mkdir -p release-assets
+          cp ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}.dmg release-assets/
+          cp ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}-mac.zip release-assets/
 
-      - name: Publish Release
-        uses: StuYarrow/publish-release@v1.1.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload to S3
+        uses: shallwefootball/upload-s3-action@v1.3.3
         with:
-          id: ${{ steps.get_release_id.outputs.data }}.
+          aws_key_id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_bucket: switch-releases
+          source_dir: ${{ env.WORKING_DIRECTORY }}/release-assets/
