@@ -13,7 +13,7 @@ jobs:
         id: get_version
         run: |
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Create Release
         id: create_release
@@ -27,18 +27,32 @@ jobs:
           prerelease: false
 
       - name: Set Release ID
-        run: echo "RELEASE_ID=${{ steps.create_release.outputs.id }}" >> $GITHUB_ENV
+        id: set_release_id
+        uses: i3h/share-data@v1
+        with:
+          share-id: release_id
+          mode: set
+          key: release_id
+          value: ${{ steps.create_release.outputs.id }}
 
   publish-release:
     needs: create-release
     runs-on: ubuntu-latest
     steps:
+      - name: Get Release ID
+        id: get_release_id
+        uses: i3h/share-data@v1
+        with:
+          share-id: release_id
+          mode: get
+          key: release_id
+
       - name: Publish Release
         uses: StuYarrow/publish-release@v1.1.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          id: ${{ needs.create-release.outputs.create_release_id }}
+          id: ${{ steps.get_release_id.outputs.data }}.
 
   # package-app:
   #   needs: create-release
