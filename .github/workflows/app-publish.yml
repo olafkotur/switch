@@ -90,5 +90,6 @@ jobs:
       - name: Update Release
         uses: johnwbyrd/update-release@v1.0.0
         with:
-          releaseId: ${{ needs.create-release.outputs.create_release_id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: v${{ env.VERSION }}
           draft: false
