@@ -15,6 +15,32 @@ jobs:
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
+      - name: List Releases
+        id: list_releases
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { data } = await github.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log(JSON.stringify(data));
+
+      - name: Check Existing Release
+        id: check_existing_release
+        run: |
+          VERSION=${{ env.VERSION }}
+          RELEASES=${{ steps.list_releases.outputs.data }}
+          for RELEASE in $RELEASES; do
+            if [[ $(echo "$RELEASE" | jq -r '.tag_name') == "v$VERSION" ]]; then
+              echo "Existing release with version $VERSION found. Exiting early."
+              echo "::set-output name=release_exists::true"
+              exit 0
+            fi
+          done
+          echo "No existing release with version $VERSION found."
+          echo "::set-output name=release_exists::false"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -35,8 +61,61 @@ jobs:
           key: release_id
           value: ${{ steps.create_release.outputs.id }}
 
-  publish-release:
+  package-app:
     needs: create-release
+    runs-on: macos-latest
+    env:
+      WORKING_DIRECTORY: ./app
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Add Certificates to Keychain
+        run: |
+          # set environment
+          export WORKING_DIRECTORY=${{ env.WORKING_DIRECTORY }}
+          export APPLE_CERTIFICATE=${{ secrets.APPLE_CERTIFICATE }}
+          export APPLE_PROVISION_PROFILE=${{ secrets.APPLE_PROVISION_PROFILE }}
+          export APPLE_SECRETS_PASSWORD=${{ secrets.APPLE_SECRETS_PASSWORD }}
+
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/Certificates.p12
+          PP_PATH=$RUNNER_TEMP/Switch.provisionprofile
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$APPLE_CERTIFICATE" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$APPLE_PROVISION_PROFILE" | base64 --decode -o $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$APPLE_SECRETS_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # copy profile to working directory
+          cp $PP_PATH ${{ env.WORKING_DIRECTORY }}
+
+      - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: yarn install --frozen-lockfile
+
+      - name: Package Application
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          export GH_TOKEN=${{ secrets.GH_TOKEN }}
+          export APPLE_ID=${{ secrets.APPLE_ID }}
+          export APPLE_PASS=${{ secrets.APPLE_PASS }}
+          export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
+          yarn package
+
+  publish-release:
+    needs:
+      - create-release
+      - package-app
     runs-on: ubuntu-latest
     steps:
       - name: Get Release ID
@@ -53,54 +132,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           id: ${{ steps.get_release_id.outputs.data }}.
-
-  # package-app:
-  #   needs: create-release
-  #   runs-on: macos-latest
-  #   env:
-  #     WORKING_DIRECTORY: ./app
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2
-
-  #     - name: Add Certificates to Keychain
-  #       run: |
-  #         # set environment
-  #         export WORKING_DIRECTORY=${{ env.WORKING_DIRECTORY }}
-  #         export APPLE_CERTIFICATE=${{ secrets.APPLE_CERTIFICATE }}
-  #         export APPLE_PROVISION_PROFILE=${{ secrets.APPLE_PROVISION_PROFILE }}
-  #         export APPLE_SECRETS_PASSWORD=${{ secrets.APPLE_SECRETS_PASSWORD }}
-
-  #         # create variables
-  #         CERTIFICATE_PATH=$RUNNER_TEMP/Certificates.p12
-  #         PP_PATH=$RUNNER_TEMP/Switch.provisionprofile
-  #         KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-
-  #         # import certificate and provisioning profile from secrets
-  #         echo -n "$APPLE_CERTIFICATE" | base64 --decode -o $CERTIFICATE_PATH
-  #         echo -n "$APPLE_PROVISION_PROFILE" | base64 --decode -o $PP_PATH
-
-  #         # create temporary keychain
-  #         security create-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
-  #         security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-  #         security unlock-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
-
-  #         # import certificate to keychain
-  #         security import $CERTIFICATE_PATH -P "$APPLE_SECRETS_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-  #         security list-keychain -d user -s $KEYCHAIN_PATH
-
-  #         # copy profile to working directory
-  #         cp $PP_PATH ${{ env.WORKING_DIRECTORY }}
-
-  #     - name: Install Dependencies
-  #       working-directory: ${{ env.WORKING_DIRECTORY }}
-  #       run: yarn install --frozen-lockfile
-
-  #     - name: Package Application
-  #       working-directory: ${{ env.WORKING_DIRECTORY }}
-  #       run: |
-  #         export GH_TOKEN=${{ secrets.GH_TOKEN }}
-  #         export APPLE_ID=${{ secrets.APPLE_ID }}
-  #         export APPLE_PASS=${{ secrets.APPLE_PASS }}
-  #         export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
-  #         yarn package
