@@ -92,14 +92,15 @@ jobs:
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
 
-          mv ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}.dmg ${{ runner.temp }}/artifacts/
-          mv ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}-mac.zip ${{ runner.temp }}/artifacts/
+          mkdir -p $RUNNER_TEMP/artifacts
+          mv ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}.dmg $RUNNER_TEMP/artifacts/
+          mv ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}-mac.zip $RUNNER_TEMP/artifacts/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: release-assets
-          path: ${{ runner.temp }}/artifacts
+          path: $RUNNER_TEMP/artifacts
 
   publish-release:
     needs:
