@@ -93,8 +93,8 @@ jobs:
           yarn package
 
           mkdir -p $RUNNER_TEMP/artifacts
-          mv ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}.dmg $RUNNER_TEMP/artifacts/
-          mv ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}-mac.zip $RUNNER_TEMP/artifacts/
+          cp ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}.dmg $RUNNER_TEMP/artifacts/
+          cp ${{ env.WORKING_DIRECTORY }}/packages/Switch-${{ env.VERSION }}-mac.zip $RUNNER_TEMP/artifacts/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
