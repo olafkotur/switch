@@ -84,7 +84,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Publish Release
-        uses: github-actions/update-release@v1
-        with:
-          release-id: ${{ needs.create-release.outputs.create_release_id }}
-          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_ID=${{ needs.create-release.outputs.create_release_id }}
+          API_URL="https://api.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}"
+
+          curl -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" $API_URL \
+            -d '{
+              "draft": false
+            }'
