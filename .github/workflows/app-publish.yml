@@ -29,6 +29,17 @@ jobs:
       - name: Set Release ID
         run: echo "RELEASE_ID=${{ steps.create_release.outputs.id }}" >> $GITHUB_ENV
 
+  publish-release:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish Release
+        uses: StuYarrow/publish-release@v1.1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          id: ${{ needs.create-release.outputs.create_release_id }}
+
   # package-app:
   #   needs: create-release
   #   runs-on: macos-latest
@@ -79,14 +90,3 @@ jobs:
   #         export APPLE_PASS=${{ secrets.APPLE_PASS }}
   #         export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
   #         yarn package
-
-  publish-release:
-    needs: create-release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Publish Release
-        uses: StuYarrow/publish-release@v1.1.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          id: ${{ steps.create_release.outputs.id }}
