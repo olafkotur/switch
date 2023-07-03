@@ -15,33 +15,6 @@ jobs:
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: List Releases
-        id: list_releases
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const { data } = await github.repos.listReleases({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            console.log(JSON.stringify(data));
-
-      - name: Check Existing Release
-        id: check_existing_release
-        run: |
-          VERSION="${{ env.VERSION }}"
-          RELEASES="${{ steps.list_releases.outputs.data }}"
-          for RELEASE in $RELEASES; do
-            TAG_NAME=$(echo "$RELEASE" | jq -r '.tag_name')
-            if [[ "$TAG_NAME" == "v$VERSION" ]]; then
-              echo "Existing release with version $VERSION found. Exiting early."
-              echo "::set-output name=release_exists::true"
-              exit 0
-            fi
-          done
-          echo "No existing release with version $VERSION found."
-          echo "::set-output name=release_exists::false"
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
