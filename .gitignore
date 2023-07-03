@@ -4,6 +4,7 @@ coverage
 build
 packages
 dump
+release
 
 # misc
 .DS_Store

@@ -90,7 +90,9 @@ jobs:
           echo "::set-output name=release_id::$RELEASE_ID"
 
   upload-release:
-    needs: create-release
+    needs:
+      - package-app
+      - create-release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
