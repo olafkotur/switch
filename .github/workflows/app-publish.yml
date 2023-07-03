@@ -84,12 +84,9 @@ jobs:
     needs: create-release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Update Release
-        uses: johnwbyrd/update-release@v1.0.0
+      - name: Publish Release
+        uses: StuYarrow/publish-release@v1.1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: v${{ env.VERSION }}
-          draft: false
+          id: ${{ steps.create_release.outputs.id }}
