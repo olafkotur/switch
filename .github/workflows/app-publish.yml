@@ -29,10 +29,11 @@ jobs:
       - name: Check Existing Release
         id: check_existing_release
         run: |
-          VERSION=${{ env.VERSION }}
-          RELEASES=${{ steps.list_releases.outputs.data }}
+          VERSION="${{ env.VERSION }}"
+          RELEASES="${{ steps.list_releases.outputs.data }}"
           for RELEASE in $RELEASES; do
-            if [[ $(echo "$RELEASE" | jq -r '.tag_name') == "v$VERSION" ]]; then
+            TAG_NAME=$(echo "$RELEASE" | jq -r '.tag_name')
+            if [[ "$TAG_NAME" == "v$VERSION" ]]; then
               echo "Existing release with version $VERSION found. Exiting early."
               echo "::set-output name=release_exists::true"
               exit 0
