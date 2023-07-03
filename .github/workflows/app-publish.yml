@@ -84,17 +84,11 @@ jobs:
     needs: create-release
     runs-on: ubuntu-latest
     steps:
-      - name: Publish Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_ID: ${{ env.RELEASE_ID }}
-        run: |
-          API_URL="https://api.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}"
-          AUTH_HEADER="Authorization: Bearer $GITHUB_TOKEN"
-          CONTENT_TYPE_HEADER="Content-Type: application/json"
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-          # Update the release draft to false
-          curl -X PATCH -H "$AUTH_HEADER" -H "$CONTENT_TYPE_HEADER" "$API_URL" \
-            -d '{
-              "draft": false
-            }'
+      - name: Update Release
+        uses: johnwbyrd/update-release@v1.0.0
+        with:
+          releaseId: ${{ needs.create-release.outputs.create_release_id }}
+          draft: false
