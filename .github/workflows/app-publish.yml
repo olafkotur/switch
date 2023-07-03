@@ -80,17 +80,19 @@ jobs:
   publish-release:
     needs:
       - create-release
-      # - package-app
     runs-on: ubuntu-latest
     steps:
       - name: Publish Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_ID: ${{ needs.create-release.outputs.create_release_id }}
         run: |
-          RELEASE_ID=${{ needs.create-release.outputs.create_release_id }}
           API_URL="https://api.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}"
+          AUTH_HEADER="Authorization: Bearer $GITHUB_TOKEN"
+          CONTENT_TYPE_HEADER="Content-Type: application/json"
 
-          curl -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" $API_URL \
+          # Update the release draft to false
+          curl -X PATCH -H "$AUTH_HEADER" -H "$CONTENT_TYPE_HEADER" "$API_URL" \
             -d '{
               "draft": false
             }'
