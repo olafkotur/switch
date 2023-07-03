@@ -53,6 +53,12 @@ jobs:
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
 
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
+          echo "::set-output name=version::$VERSION"
+
       - name: Upload Artifact .dmg
         uses: actions/upload-artifact@v2
         with:
