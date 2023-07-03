@@ -4,7 +4,7 @@ const path = require('path');
 const packageJsonPath = '../package.json';
 const version = require(packageJsonPath).version;
 
-const releaseDirectory = '../release';
+const releaseDirectory = './release-assets';
 const releaseJsonPath = path.join(releaseDirectory, 'release.json');
 const updatesJsonPath = path.join(releaseDirectory, 'updates.json');
 
@@ -24,6 +24,5 @@ const updatesJson = {
   },
 };
 
-fs.mkdirSync(releaseDirectory, { recursive: true });
 fs.writeFileSync(releaseJsonPath, JSON.stringify(releaseJson, null, 2));
 fs.writeFileSync(updatesJsonPath, JSON.stringify(updatesJson, null, 2));
