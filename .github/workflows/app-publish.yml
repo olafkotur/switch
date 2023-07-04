@@ -1,16 +1,3 @@
-# workflow
-# [] Create a draft release on /switch
-# [] Package application and upload to draft release
-# [] Generate release.json and updates.json
-# [] Upload release files to draft release
-# [] Publish release and make latest
-# [] Clone published release to /switch-releases
-
-# resources
-# https://github.com/marketplace/actions/create-release
-# https://github.com/marketplace/actions/release-assets
-# https://stackoverflow.com/questions/45240336/how-to-use-github-release-api-to-make-a-release-without-source-code
-
 name: app-publish
 on:
   workflow_dispatch:
@@ -30,14 +17,13 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: v${{ env.VERSION }}
-          release_name: Release v${{ env.VERSION }}
+          tag: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
           draft: true
-          prerelease: false
 
       - name: Set Release ID
         id: set_release_id
@@ -105,16 +91,6 @@ jobs:
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
 
-          mkdir -p $RUNNER_TEMP/artifacts
-          cp ./packages/Switch-${{ env.VERSION }}.dmg $RUNNER_TEMP/artifacts/
-          cp ./packages/Switch-${{ env.VERSION }}-mac.zip $RUNNER_TEMP/artifacts/
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-assets
-          path: $RUNNER_TEMP/artifacts
-
   publish-release:
     needs:
       - create-release
@@ -134,37 +110,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          id: ${{ steps.get_release_id.outputs.data }}.
+          id: ${{ steps.get_release_id.outputs.data }}
 
-  upload-assets:
+  clone-release:
     needs:
       - create-release
       - package-app
       - publish-release
     runs-on: ubuntu-latest
-    env:
-      WORKING_DIRECTORY: ./app
-      ASSET_DIRECTORY: ./app/release-assets
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Create Directory
-        run: mkdir -p ${{ env.ASSET_DIRECTORY }}
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
+      - name: Copy release assets
+        id: Release-AIO
+        uses: Hs1r1us/Release-AIO@v2.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          name: release-assets
-          path: ${{ env.ASSET_DIRECTORY }}
-
-      - name: Generate Release JSON
-        run: node ./${{ env.WORKING_DIRECTORY }}/scripts/release.js
-
-      - name: Upload to S3
-        uses: shallwefootball/upload-s3-action@v1.3.3
-        with:
-          aws_key_id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_bucket: switch-releases
-          source_dir: ${{ env.ASSET_DIRECTORY }}
+          tag_name: inherit
+          release_name: Switch
+          body: Please visit https://app.switchapp.dev for more information
+          repo: olafkotur/switch-releases
