@@ -36,8 +36,6 @@ jobs:
         with:
           tag: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
-          artifacts: 'release.tar.gz,foo/*.txt'
-          bodyFile: 'body.md'
           draft: true
 
       - name: Set Release ID
