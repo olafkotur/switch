@@ -1,3 +1,16 @@
+# workflow
+# [] Create a draft release on /switch
+# [] Package application and upload to draft release
+# [] Generate release.json and updates.json
+# [] Upload release files to draft release
+# [] Publish release and make latest
+# [] Clone published release to /switch-releases
+
+# resources
+# https://github.com/marketplace/actions/create-release
+# https://github.com/marketplace/actions/release-assets
+# https://stackoverflow.com/questions/45240336/how-to-use-github-release-api-to-make-a-release-without-source-code
+
 name: app-publish
 on:
   workflow_dispatch:
@@ -155,6 +168,3 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_bucket: switch-releases
           source_dir: ${{ env.ASSET_DIRECTORY }}
-# https://github.com/marketplace/actions/create-release
-# https://github.com/marketplace/actions/release-assets
-# https://stackoverflow.com/questions/45240336/how-to-use-github-release-api-to-make-a-release-without-source-code
