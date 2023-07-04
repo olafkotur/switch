@@ -39,7 +39,7 @@ jobs:
         with:
           tag: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
-          artifacts: release-assets
+          artifacts: release-assets/*.json
           draft: true
 
       - name: Set Release ID
