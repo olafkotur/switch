@@ -24,5 +24,6 @@ const updatesJson = {
   },
 };
 
+fs.mkdirSync(releaseDirectory, { recursive: true });
 fs.writeFileSync(releaseJsonPath, JSON.stringify(releaseJson, null, 2));
 fs.writeFileSync(updatesJsonPath, JSON.stringify(updatesJson, null, 2));
