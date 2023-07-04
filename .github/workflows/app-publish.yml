@@ -71,24 +71,23 @@ jobs:
         with:
           id: ${{ steps.get_release_id.outputs.data }}
 
-  # clone-release:
-  #   needs:
-  #     - create-release
-  #     - publish-release
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name:
-  #       run: |
-  #         mkdir temp
-  #         touch temp/hello-world.txt
+  clone-release:
+    needs:
+      - create-release
+      - publish-release
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          mkdir temp
+          touch temp/hello-world.txt
 
-  #     - name: Copy release assets
-  #       id: Release-AIO
-  #       uses: Hs1r1us/Release-AIO@v2.0.0
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-  #       with:
-  #         tag_name: inherit
-  #         body: hello world test
-  #         repo: olafkotur/switch-releases
-  #         asset_files: ./temp
+      - name: Copy release assets
+        id: Release-AIO
+        uses: Hs1r1us/Release-AIO@v2.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: inherit
+          body: hello world test
+          repo: olafkotur/switch-releases
