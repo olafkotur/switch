@@ -15,9 +15,6 @@ jobs:
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: Generate Assets
-        run: node app/scripts/release.js
-
       - name: Create Release
         id: create_release
         env:
@@ -26,7 +23,6 @@ jobs:
         with:
           tag: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
-          artifacts: release-assets/*.json
           draft: true
 
       - name: Set Release ID
