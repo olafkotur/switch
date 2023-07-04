@@ -1,16 +1,3 @@
-# workflow
-# [] Create a draft release on /switch
-# [] Package application and upload to draft release
-# [] Generate release.json and updates.json
-# [] Upload release files to draft release
-# [] Publish release and make latest
-# [] Clone published release to /switch-releases
-
-# resources
-# https://github.com/marketplace/actions/create-release
-# https://github.com/marketplace/actions/release-assets
-# https://stackoverflow.com/questions/45240336/how-to-use-github-release-api-to-make-a-release-without-source-code
-
 name: app-publish
 on:
   workflow_dispatch:
@@ -51,9 +38,67 @@ jobs:
           key: release_id
           value: ${{ steps.create_release.outputs.id }}
 
+  package-app:
+    needs: create-release
+    runs-on: macos-latest
+    env:
+      WORKING_DIRECTORY: ./app
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: Add Certificates to Keychain
+        run: |
+          # set environment
+          export WORKING_DIRECTORY=${{ env.WORKING_DIRECTORY }}
+          export APPLE_CERTIFICATE=${{ secrets.APPLE_CERTIFICATE }}
+          export APPLE_PROVISION_PROFILE=${{ secrets.APPLE_PROVISION_PROFILE }}
+          export APPLE_SECRETS_PASSWORD=${{ secrets.APPLE_SECRETS_PASSWORD }}
+
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/Certificates.p12
+          PP_PATH=$RUNNER_TEMP/Switch.provisionprofile
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$APPLE_CERTIFICATE" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$APPLE_PROVISION_PROFILE" | base64 --decode -o $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$APPLE_SECRETS_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$APPLE_SECRETS_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # copy profile to working directory
+          cp $PP_PATH ${{ env.WORKING_DIRECTORY }}
+
+      - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: yarn install --frozen-lockfile
+
+      - name: Package Application
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          export GH_TOKEN=${{ secrets.GH_TOKEN }}
+          export APPLE_ID=${{ secrets.APPLE_ID }}
+          export APPLE_PASS=${{ secrets.APPLE_PASS }}
+          export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
+          yarn package
+
   publish-release:
     needs:
       - create-release
+      - package-app
     runs-on: ubuntu-latest
     steps:
       - name: Get Release ID
@@ -74,14 +119,10 @@ jobs:
   clone-release:
     needs:
       - create-release
+      - package-app
       - publish-release
     runs-on: ubuntu-latest
     steps:
-      - name:
-        run: |
-          mkdir temp
-          touch temp/hello-world.txt
-
       - name: Copy release assets
         id: Release-AIO
         uses: Hs1r1us/Release-AIO@v2.0.0
@@ -90,5 +131,5 @@ jobs:
         with:
           tag_name: inherit
           release_name: Switch
-          body: hello world test
+          body: Please visit https://app.switchapp.dev for more information
           repo: olafkotur/switch-releases
