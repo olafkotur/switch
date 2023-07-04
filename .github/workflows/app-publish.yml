@@ -32,13 +32,13 @@ jobs:
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ncipollo/release-action@v1
-          with:
-            tag: v${{ env.VERSION }}
-            name: Release v${{ env.VERSION }}
-            artifacts: "release.tar.gz,foo/*.txt"
-            bodyFile: "body.md"
-            draft: true
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          artifacts: 'release.tar.gz,foo/*.txt'
+          bodyFile: 'body.md'
+          draft: true
 
       - name: Set Release ID
         id: set_release_id
