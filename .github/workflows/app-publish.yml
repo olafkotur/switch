@@ -1,3 +1,16 @@
+# workflow
+# [] Create a draft release on /switch
+# [] Package application and upload to draft release
+# [] Generate release.json and updates.json
+# [] Upload release files to draft release
+# [] Publish release and make latest
+# [] Clone published release to /switch-releases
+
+# resources
+# https://github.com/marketplace/actions/create-release
+# https://github.com/marketplace/actions/release-assets
+# https://stackoverflow.com/questions/45240336/how-to-use-github-release-api-to-make-a-release-without-source-code
+
 name: app-publish
 on:
   workflow_dispatch:
@@ -13,7 +26,7 @@ jobs:
         id: get_version
         run: |
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
-          echo "::set-output name=version::$VERSION"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -21,10 +34,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.get_version.outputs.version }}
-          release_name: Release v${{ steps.get_version.outputs.version }}
-          draft: false
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          draft: true
           prerelease: false
+
+      - name: Set Release ID
+        id: set_release_id
+        uses: i3h/share-data@v1
+        with:
+          share-id: release_id
+          mode: set
+          key: release_id
+          value: ${{ steps.create_release.outputs.id }}
 
   package-app:
     needs: create-release
@@ -39,7 +61,7 @@ jobs:
         id: get_version
         run: |
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
-          echo "::set-output name=version::$VERSION"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Add Certificates to Keychain
         run: |
@@ -74,7 +96,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: yarn install --frozen-lockfile
 
-      - name: Package
+      - name: Package Application
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
@@ -82,3 +104,67 @@ jobs:
           export APPLE_PASS=${{ secrets.APPLE_PASS }}
           export APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
           yarn package
+
+          mkdir -p $RUNNER_TEMP/artifacts
+          cp ./packages/Switch-${{ env.VERSION }}.dmg $RUNNER_TEMP/artifacts/
+          cp ./packages/Switch-${{ env.VERSION }}-mac.zip $RUNNER_TEMP/artifacts/
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-assets
+          path: $RUNNER_TEMP/artifacts
+
+  publish-release:
+    needs:
+      - create-release
+      - package-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Release ID
+        id: get_release_id
+        uses: i3h/share-data@v1
+        with:
+          share-id: release_id
+          mode: get
+          key: release_id
+
+      - name: Publish Release
+        uses: StuYarrow/publish-release@v1.1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          id: ${{ steps.get_release_id.outputs.data }}.
+
+  upload-assets:
+    needs:
+      - create-release
+      - package-app
+      - publish-release
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIRECTORY: ./app
+      ASSET_DIRECTORY: ./app/release-assets
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Create Directory
+        run: mkdir -p ${{ env.ASSET_DIRECTORY }}
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: release-assets
+          path: ${{ env.ASSET_DIRECTORY }}
+
+      - name: Generate Release JSON
+        run: node ./${{ env.WORKING_DIRECTORY }}/scripts/release.js
+
+      - name: Upload to S3
+        uses: shallwefootball/upload-s3-action@v1.3.3
+        with:
+          aws_key_id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_bucket: switch-releases
+          source_dir: ${{ env.ASSET_DIRECTORY }}
