@@ -30,14 +30,15 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ env.VERSION }}
-          release_name: Release v${{ env.VERSION }}
-          draft: true
-          prerelease: false
+      - uses: ncipollo/release-action@v1
+          with:
+            tag: v${{ env.VERSION }}
+            name: Release v${{ env.VERSION }}
+            artifacts: "release.tar.gz,foo/*.txt"
+            bodyFile: "body.md"
+            draft: true
 
       - name: Set Release ID
         id: set_release_id
@@ -66,26 +67,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          id: ${{ steps.get_release_id.outputs.data }}.
+          id: ${{ steps.get_release_id.outputs.data }}
 
-  clone-release:
-    needs:
-      - create-release
-      - publish-release
-    runs-on: ubuntu-latest
-    steps:
-      - name:
-        run: |
-          mkdir temp
-          touch temp/hello-world.txt
+  # clone-release:
+  #   needs:
+  #     - create-release
+  #     - publish-release
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name:
+  #       run: |
+  #         mkdir temp
+  #         touch temp/hello-world.txt
 
-      - name: Copy release assets
-        id: Release-AIO
-        uses: Hs1r1us/Release-AIO@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          tag_name: inherit
-          body: hello world test
-          repo: olafkotur/switch-releases
-          asset_files: ./temp
+  #     - name: Copy release assets
+  #       id: Release-AIO
+  #       uses: Hs1r1us/Release-AIO@v2.0.0
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  #       with:
+  #         tag_name: inherit
+  #         body: hello world test
+  #         repo: olafkotur/switch-releases
+  #         asset_files: ./temp
