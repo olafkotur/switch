@@ -4,7 +4,6 @@ coverage
 build
 packages
 dump
-release
 
 # misc
 .DS_Store
@@ -13,3 +12,4 @@ release
 .csv
 .vscode
 *.provisionprofile
+*.txt
