@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const RELEASE_NOTES_FILE = './release-notes.txt';
-const VERSION = JSON.parse(fs.readFileSync('package.json', 'utf-8')).version;
+const VERSION = JSON.parse(fs.readFileSync('./app/package.json', 'utf-8')).version;
 
 /**
  * Last Update: v2.0.2
