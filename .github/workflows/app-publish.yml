@@ -15,6 +15,9 @@ jobs:
           VERSION=$(node -pe "require('${{ github.workspace }}/app/package.json').version")
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
+      - name: Generate Release Notes
+        run: node ./app/scripts/release-notes.js
+
       - name: Create Release
         id: create_release
         env:
@@ -24,6 +27,7 @@ jobs:
           tag: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
           draft: true
+          artifacts: ./release-notes.txt
 
       - name: Set Release ID
         id: set_release_id
